@@ -1,4 +1,4 @@
-package com.kingdee.hrp.sms.common.menu.Controller;
+package com.kingdee.hrp.sms.common.menu.controller;
 
 import com.kingdee.hrp.sms.common.menu.model.Menu;
 import org.springframework.stereotype.Controller;
