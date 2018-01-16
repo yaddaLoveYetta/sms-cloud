@@ -148,6 +148,13 @@
             <version>${log4j2.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.yadda</groupId>
+            <artifactId>webapi-core</artifactId>
+            <version>1.0.0</version>
+
+        </dependency>
+
     </dependencies>
 
     <build>

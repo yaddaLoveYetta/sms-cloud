@@ -4,4 +4,116 @@
          version="3.0">
 
     <display-name>Archetype Created Web Application</display-name>
+
+
+    <context-param>
+        <param-name>log4jConfiguration</param-name>
+        <param-value>classpath:/config/log4j2.xml</param-value>
+    </context-param>
+    <!--自动加载log4j2 -->
+    <context-param>
+        <param-name>isLog4jAutoInitializationDisabled</param-name>
+        <param-value>false</param-value>
+    </context-param>
+
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>classpath:/config/applicationContext.xml</param-value>
+    </context-param>
+    <context-param>
+        <param-name>webAppRootKey</param-name>
+        <param-value>sms-cloud.root</param-value>
+    </context-param>
+
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+    <!-- HttpSessionAttributeListener -->
+    <listener>
+        <listener-class>com.kingdee.hrp.sms.common.filter.SessionAttributeListener</listener-class>
+    </listener>
+
+    <!-- 防止Spring内存溢出监听器 -->
+    <listener>
+        <listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>
+    </listener>
+
+    <!-- 字符编码过滤器,只对post请求有效，get请求到达之前已经被TomCat用ISO-8859-1 编码 -->
+    <filter>
+        <filter-name>encodingFilter</filter-name>
+        <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+        <init-param>
+            <param-name>encoding</param-name>
+            <param-value>UTF-8</param-value>
+        </init-param>
+        <init-param>
+            <param-name>forceEncoding</param-name>
+            <param-value>true</param-value>
+        </init-param>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>encodingFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <servlet>
+        <servlet-name>spring</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>classpath:/config/spring-mvc.xml</param-value>
+        </init-param>
+        <load-on-startup>2</load-on-startup>
+        <async-supported>true</async-supported>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>spring</servlet-name>
+        <url-pattern>/sms-cloud/manager/*</url-pattern>
+    </servlet-mapping>
+
+    <!--第三方系统对接api -->
+    <servlet>
+        <servlet-name>openApi</servlet-name>
+        <servlet-class>com.yadda.api.core.ApiServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>openApi</servlet-name>
+        <url-pattern>/sms-cloud/api/*</url-pattern>
+    </servlet-mapping>
+
+    <!-- Druid监控 -->
+    <servlet>
+        <servlet-name>DruidView</servlet-name>
+        <servlet-class>com.alibaba.druid.support.http.StatViewServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DruidView</servlet-name>
+        <url-pattern>/druid/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>*.ico</url-pattern>
+        <url-pattern>*.css</url-pattern>
+        <url-pattern>*.png</url-pattern>
+        <url-pattern>*.swf</url-pattern>
+        <url-pattern>*.jpg</url-pattern>
+        <url-pattern>*.gif</url-pattern>
+        <url-pattern>*.js</url-pattern>
+        <url-pattern>*.eot</url-pattern>
+        <url-pattern>*.woff</url-pattern>
+        <url-pattern>*.ttf</url-pattern>
+        <url-pattern>*.shtml</url-pattern>
+        <url-pattern>*.html</url-pattern>
+        <url-pattern>*.mp3</url-pattern>
+        <url-pattern>*.properties</url-pattern>
+        <url-pattern>*.pdf</url-pattern>
+    </servlet-mapping>
+
+    <!-- 30分钟无操作,session失效 -->
+    <session-config>
+        <session-timeout>30</session-timeout>
+    </session-config>
+
 </web-app>

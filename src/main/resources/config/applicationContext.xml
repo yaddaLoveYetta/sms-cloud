@@ -12,16 +12,12 @@
 		http://www.springframework.org/schema/tx
 		http://www.springframework.org/schema/tx/spring-tx.xsd">
 
-	<!-- import jdbc.properties -->
-	<!-- <context:property-placeholder location="classpath:/config/jdbc-sqlserver.properties" -->
-	<!-- ignore-unresolvable="true" /> -->
-
 	<!-- 将多个配置文件读取到容器中，交给Spring管理 -->
 	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 		<property name="locations">
 			<list>
 				<!-- 这里支持多种寻址方式：classpath和file -->
-				<value>classpath:/config/jdbc-sqlserver.properties</value>
+				<value>classpath:/config/jdbc-mysql.properties</value>
 			</list>
 		</property>
 	</bean>
