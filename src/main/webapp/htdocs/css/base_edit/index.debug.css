@@ -1,0 +1,190 @@
+.pic_box {
+	width: 180px;
+	height: 100px;
+	float: left;
+	position: relative;
+	border: 1px solid #ccc;
+	margin: 2px;
+}
+
+.pic_box .pic {
+	display: block;
+}
+
+.pic_box img {
+	width: 100%;
+	height: 100px;
+}
+
+.pic_box .del_pic {
+	position: absolute;
+	top: 1px;
+	right: 1px;
+	width: 24px;
+	height: 24px;
+	cursor: pointer;
+	background: url(img/close.png) no-repeat;
+}
+
+.uploadify-queue {
+	float: left;
+}
+
+.data-table {
+	float: left;
+	width: 530px;
+}
+
+.sms-F7selector {
+	position: relative;
+}
+
+.sms-F7selector input {
+	border: 1px solid #dddddd;
+	height: 20px;
+	width: 174px;
+	padding: 5px 28px 5px 8px;
+}
+
+.sms-F7selector span[data-role="btn"] {
+	vertical-align: top;
+	display: inline-block;
+	background: #ddd;
+	cursor: pointer;
+	position: absolute;
+	top: 1px;
+	right: 1px;
+	background: url(../img/ui_kit_updt.png);
+	height: 30px;
+	width: 30px;
+}
+
+.sms-F7selector span[data-role="btnDisalbe"] {
+	vertical-align: top;
+	display: inline-block;
+	background: #ddd;
+	cursor: pointer;
+	position: absolute;
+	top: 1px;
+	right: 1px;
+	background: url(../img/ui_kit_updt.png);
+	height: 30px;
+	width: 30px;
+}
+
+.sms-F7selector span[data-role="btnMap"] {
+	vertical-align: top;
+	display: inline-block;
+	background: #ddd;
+	cursor: pointer;
+	position: absolute;
+	top: 1px;
+	right: 1px;
+	background: url(../img/ui_kit_updt.png);
+	height: 30px;
+	width: 30px;
+}
+
+.options {
+	width: 100%;
+	position: fixed;
+	height: 45px;
+	background-color: #fff;
+}
+
+.options .btn-box {
+	background-color: #f1f2f4;
+	margin: 10px;
+}
+
+.main-content {
+	margin-left: 20px;
+	margin-top:50px;
+}
+
+.main-content .sep-row {
+	height: 40px;
+	line-height: 40px;
+}
+
+.main-content .sep-row .text {
+	margin: 0 5px;
+	font-size: 14px;
+}
+
+.main-content .sep-row .line {
+	background-color: #d0d0d0;
+	display: inline-block;
+	border: 0px;
+	height: 1px;
+	width: auto;
+	min-width: 500px;
+	overflow: hidden;
+	vertical-align: middle;
+}
+
+.main-content .content-box {
+	margin-left: 20px;
+	margin-top: 20px;
+	font-size: 12px;
+}
+
+.main-content .content-box .data-table {
+	display: inline-block;
+}
+
+.main-content .content-box .data-table>tbody>tr {
+	height: 42px;
+	/* width: 50%;
+	 display: inline-block; */
+}
+
+.main-content .content-box .data-table>tbody>tr .col-desc {
+	width: 150px;
+}
+
+.main-content .content-box .data-table>tbody>tr .col-value>input {
+	/*width: 193px;*/
+	height: 20px;
+	padding: 5px 8px;
+	vertical-align: middle;
+	border: 1px solid #dddddd;
+}
+
+.main-content .content-box .data-table>tbody>tr .col-value>img {
+	vertical-align: middle;
+	cursor: pointer;
+}
+
+.main-content .content-box .data-table>tbody>tr .col-value .msg {
+	color: red;
+	margin-left: 10px;
+	display: none;
+	vertical-align: middle;
+}
+
+.main-content .content-box .data-table>tbody>tr .col-value .selector {
+	display: inline-block;
+}
+
+.main-content .content-box .data-table>tbody>tr .col-value .show {
+	display: inline-block;
+}
+
+select:not (:-internal-list-box ) {
+	overflow: visible;
+}
+input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill{
+	background-color:transparent;
+}
+
+table>tbody>tr .col-value {
+	width: 375px;
+}
+
+.inputxare {
+	width: 300px;
+	height: 75px;
+	border-radius: 2px;
+	border: 1px solid #ddd;
+}

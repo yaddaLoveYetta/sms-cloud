@@ -1,0 +1,29 @@
+.title {
+  color: #838383;
+  text-align: right;
+  width: 80px;
+}
+.password {
+  height: 23px;
+  padding: 0 5px;
+  width: 150px;
+  margin-left: 5px;
+  margin-right: 10px;
+  border: 1px solid #ddd;
+  -moz-border-radius: 2px;
+  -webkit-border-radius: 2px;
+  border-radius: 2px;
+}
+.hint {
+  color: red;
+}
+.msg {
+  color: green;
+  margin-left: 85px;
+}
+.error-msg {
+  color: red;
+}
+td {
+  height: 35px;
+}

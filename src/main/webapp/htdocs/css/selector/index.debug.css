@@ -1,0 +1,33 @@
+.sms-selector label {
+  display: inline-block;
+  padding: 0 5px;
+  min-width: 90px;
+  height: 23px;
+  line-height: 23px;
+  border: 1px solid #dddddd;
+  cursor: text;
+}
+.sms-selector input {
+  border: 1px solid #dddddd;
+  height: 23px;
+  width: 80px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+.sms-selector span {
+  cursor: pointer;
+  position: relative;
+  vertical-align: top;
+  display: inline-block;
+  background: #ddd;
+  height: 25px;
+  width: 25px;
+}
+.sms-selector span i {
+  top: 10px;
+  left: 6px;
+  position: absolute;
+  border: solid;
+  border-color: #ffffff transparent transparent transparent;
+  border-width: 6px;
+}

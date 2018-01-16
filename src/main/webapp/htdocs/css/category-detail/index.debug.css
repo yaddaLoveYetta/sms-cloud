@@ -1,0 +1,115 @@
+.options {
+  margin-bottom: 32px;
+  background: #f0f2f3;
+}
+.options .btn-more .sms-btn-item {
+  background: #838383;
+}
+.options .btn-more .bt-dropdown {
+  background: #b3b3b3;
+}
+.details {
+  font-size: 12px;
+}
+.details .item {
+  margin-top: 40px;
+  border-top: 1px solid #84c4df;
+}
+.details .item:after {
+  content: "";
+  display: table;
+  zoom: 1;
+  clear: both;
+}
+.details .item:first-child {
+  margin-top: 0;
+}
+.details .item .title {
+  line-height: 32px;
+  height: 32px;
+  background: #ecedf1;
+  top: -11px;
+  font-size: 14px;
+  padding-left: 12px;
+}
+.details .item .img-panel {
+  margin-top: 32px;
+  text-align: left;
+  width: 50%;
+  float: left;
+}
+.details .item .img-panel .key {
+  color: #838383;
+  padding-left: 80px;
+}
+.details .item .img-panel .img-box {
+  margin-top: 28px;
+  padding-left: 100px;
+  border-left: 1px solid #ebecee;
+}
+.details .item .img-panel .img-box img {
+  height: 170px;
+  width: 170px;
+}
+.details .item .data-panel {
+  margin-top: 32px;
+}
+.details .item .data-panel th,
+.details .item .data-panel td {
+  padding: 0 13px;
+  height: 40px;
+  vertical-align: top;
+}
+.details .item .data-panel textarea {
+  padding: 0 5px;
+}
+.details .item .data-panel input {
+  padding-left: 5px;
+  border: 1px solid #ddd;
+}
+.details .item .data-panel .show {
+  display: initial;
+}
+.details .item .data-panel .edit {
+  display: none;
+}
+.details .item .data-panel .disabled {
+  color: #ccc;
+}
+.details .item .data-panel .on-edit .show {
+  display: none;
+}
+.details .item .data-panel .on-edit .edit {
+  display: initial;
+}
+.details .item .data-panel .pick-input input {
+  height: 23px;
+  border: 1px solid #ddd;
+  padding-left: 5px;
+}
+.details .item .data-panel .pick-input .btn {
+  display: inline-block;
+  height: 25px;
+  width: 25px;
+  background: #ddd;
+  vertical-align: bottom;
+}
+.details .item .data-panel .key {
+  width: 164px;
+  color: #838383;
+  text-align: right;
+}
+.details .item .data-panel .type-btn {
+  height: 25px;
+  padding: 0 20px;
+  background: #ed8244;
+  border: none;
+  color: #fff;
+  -moz-border-radius: 2px;
+  -webkit-border-radius: 2px;
+  border-radius: 2px;
+  margin-right: 8px;
+}
+.details .item .data-panel .error-msg {
+  color: #ea542a;
+}

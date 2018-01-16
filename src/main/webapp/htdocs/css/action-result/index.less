@@ -1,0 +1,66 @@
+﻿@header-bg-color: #C9C9C9;
+@header-height: 42px;
+
+body, button, input, select, textarea {
+    font: 12px/1.5 tahoma,arial,"Hiragino Sans Gb",simsun,sans-serif;
+}
+
+li, ol {
+    display: inline-block;
+}
+
+ol, ul {
+    list-style: none;
+}
+
+
+.div-header {
+    height: @header-height;
+    background: @header-bg-color;
+
+    .left-align {
+        margin-left: 16px;
+        line-height: 42px;
+    }
+}
+
+
+
+.div-body {
+    display: block;
+    height: 160px;
+
+    .option-title {
+        margin: 12px;
+        line-height: 24px;
+    }
+
+    span {
+        display: block;
+    }
+
+    li {
+        min-width: 120px;
+        line-height: 24px;
+        display: block;
+        color: #838383;
+        margin-left: 24px;
+    }
+}
+
+.div-footer {
+    background: #E4E4E4;
+    //height: 42px;
+    text-align: center;
+
+    input {
+        background: #54add3;
+        border: 1px solid #C9C9C9;
+        border-radius: 2px;
+        height: 26px;
+        text-align: center;
+        height: 27px;
+        width: 79px;
+        margin-right: 36px;
+    }
+}

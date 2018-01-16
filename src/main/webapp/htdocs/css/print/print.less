@@ -1,0 +1,313 @@
+﻿@criteria-selected-color:#ee8f66;
+@search-background:#ecedf1;
+@search-cut-off-color:#d1d2d7;
+@font-color:#6d6d6d;
+@title-color:#bcbdbf;
+@sort-selected-color:#5344dd;
+@border-color:#ccc;
+
+html,body,ul,table,thead,tbody,tr,td,ul,li{
+    border:0;
+    margin:0;
+    padding:0;
+    font-size:12px;
+
+}
+body {
+    padding:8px 32px;
+    min-width:800px
+}
+
+.clear {
+    clear: both;
+    content: "";
+    display: block;
+}
+
+.criteria-module{
+    padding:3px 24px;
+    background-color:@search-background;
+
+    >.item{
+        display:block;
+        padding:15px 0;
+        height:12px;
+        line-height:12px;
+        font-size:12px;
+        border-top:1px solid @search-cut-off-color;
+
+        .criteria{
+            border:0;
+
+            >.item.selected{
+                color:@criteria-selected-color;
+            }
+
+            >.item{
+                float:left;
+                display:block;
+                width:90px;
+
+                &:first-child{
+                    width:76px;
+                    color:@title-color;
+                }
+            }
+
+
+            &:after{
+                .clear;
+            }
+        }
+
+        &:first-child{
+            border:0;
+        }
+    }
+
+}
+
+.orders{
+
+    width:100%;
+    margin-top:10px;
+    border-spacing:0;
+
+
+    >thead{
+        height:30px;
+        line-height:30px;
+        background-color:@search-background;
+        
+    }
+
+    >tbody{
+        .sep-row{
+            height:5px;
+        }
+        .title{
+            background-color:@search-background;
+            margin-top:10px;
+
+            >.check{
+                border-left:1px solid @border-color;
+                border-top:1px solid @border-color;
+            }
+
+            >.infos{
+                border-right:1px solid @border-color;
+                border-top:1px solid @border-color;
+            }
+
+             .id-date-shop{
+
+
+                >.info{
+                    display:block;
+                    float:left;
+                    padding-right:10px;
+
+                    &:before{
+                       content:'\\'
+                    }
+
+                    &:first-child{
+                        width:110px;
+                        margin-left:-6px;
+                    }
+
+                    &:first-child:before{
+                        content:'';
+                    }
+
+                }
+
+
+                &:after{
+                    .clear;
+                }
+            }
+           
+        }
+        .content{
+
+            border:1px solid @border-color;
+
+            ul{
+                margin:15px 0 5px;
+
+                >.info{
+
+                    display:block;
+                    margin-bottom:10px;
+                    list-style:none;
+                    
+                }
+            }
+
+            >.check{
+                border-left:1px solid @border-color;
+                border-bottom:1px solid @border-color;
+            }
+
+            >.print-info{
+                border-bottom:1px solid @border-color;
+            }
+
+            >.logistics-info{
+               border-bottom:1px solid @border-color;
+                
+               
+            }
+
+            >.address{
+                border-bottom:1px solid @border-color;
+                
+            }
+            .buyer-message{
+                border-bottom:1px solid @border-color;
+            }
+            .mark-up{
+                border-bottom:1px solid @border-color;
+            }
+            .operation{
+                border-bottom:1px solid @border-color;
+                border-right:1px solid @border-color;
+
+                >.operation-list{
+
+
+                    >.item{
+                        display:block;
+                        list-style:none;
+                    }
+                }
+            }
+        }
+    }
+
+    .check{
+        width:8%;
+    }
+    .print-info{
+        width:20%;
+    }
+    .logistics-info{
+        width:15%;
+    }
+    .address{
+        width:20%;
+    }
+    .buyer-message{
+        width:12%;
+    }
+    .mark-up{
+        width:15%;
+    }
+    .operation{
+        width:10%;
+    }
+
+    .goods-info{
+
+       border:1px solid @border-color;
+       border-top:0;
+
+        .goods{
+        
+            width:100%;
+            height:84px;
+            border-spacing:0;
+
+            tr:first-child{
+                 >.good{
+                     border-top:0;
+                 }
+
+                 >.web-order-id{
+                     border-top:0;
+                 }
+
+                 >.message{
+                     border-top:0;
+                 }
+                
+            }
+
+            .border-style(){
+                
+                border-right:1px solid @border-color;
+                border-top:1px solid @border-color;
+            }
+
+            .good{
+
+                width:55%; 
+                padding:5px;
+                margin:-1px 0;
+                .border-style();
+
+                >.item-img{
+
+                    width:74px;
+                    height:74px;
+                    position:absolute;
+                }
+
+                >.infos{
+
+                    height:74px;
+                    margin-left:84px;
+
+                    .item-common-style(){
+                        float:left;
+                        display:block;
+                    }
+
+                    >.item-name{
+                        width:42%;
+                        .item-common-style()
+                     
+                    }
+
+                    >.item-empty{
+                        width:24%;
+                        height:10px;
+                        .item-common-style()
+                        
+                    }
+
+                    >.item-price{
+                        width:16%;
+                        .item-common-style()
+                     
+                    }
+
+                    >.item-amount{
+                        width:18%;
+                        .item-common-style()
+                        
+                    }
+
+                    &:after{
+                        .clear;
+                    }
+
+                }
+            }
+
+
+            .web-order-id{
+                width:20%;
+                .border-style();
+
+            }
+
+            .message{
+                width:25%;
+                border-top:1px solid @border-color;
+            }
+        }
+    }
+    
+}

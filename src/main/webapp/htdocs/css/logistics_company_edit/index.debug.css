@@ -1,0 +1,191 @@
+.clear {
+  content: "";
+  display: block;
+  zoom: 1;
+  clear: both;
+}
+.buttons {
+  margin-top: 10px;
+  background: #f1f2f4;
+}
+.buttons:after,
+.buttons:before {
+  content: "";
+  display: table;
+  zoom: 1;
+  clear: both;
+}
+.buttons .btn-box .btn {
+  border: none;
+  font-size: 14px;
+  color: #fff;
+  background: #4fb0d1;
+  padding: 5px 20px;
+  cursor: pointer;
+  margin-left: 10px;
+  display: inline-block;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+}
+.buttons .btn-box .btn:first-child {
+  margin-left: 0;
+}
+.buttons .btn-box .btn-multi {
+  display: inline-block;
+  margin-left: 6px;
+}
+.buttons .btn-box .btn-multi .btn {
+  -webkit-border-top-right-radius: 0;
+  border-top-right-radius: 0;
+  -webkit-border-bottom-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+.buttons .btn-box .btn-multi .btn-more {
+  height: 0;
+  overflow: hidden;
+  position: absolute;
+  background: #4fb0d1;
+  z-index: 20;
+  border-radius: 3px;
+}
+.buttons .btn-box .btn-multi .btn-more li {
+  text-align: center;
+  min-width: 78px;
+  background-color: transparent;
+  font-size: 14px;
+}
+.buttons .btn-box .btn-multi .btn-more li:hover {
+  background-color: #3ba7cc;
+}
+.buttons .btn-box .btn-multi .btn-more a {
+  display: inline-block;
+  color: #fff;
+  text-decoration: none;
+  padding: 5px 10px;
+}
+.buttons .btn-box .btn-multi .bt-dropdown {
+  vertical-align: middle;
+  display: inline-block;
+  height: 31px;
+  width: 30px;
+  margin-top: -4px;
+  margin-left: -5px;
+  background: #7bc7e7;
+  position: relative;
+  cursor: pointer;
+  -webkit-border-top-right-radius: 3px;
+  border-top-right-radius: 3px;
+  -webkit-border-bottom-right-radius: 3px;
+  border-bottom-right-radius: 3px;
+}
+.buttons .btn-box .btn-multi .bt-dropdown .icon-dropdown {
+  position: absolute;
+  border: solid;
+  border-color: #ffffff transparent transparent transparent;
+  border-width: 6px;
+  top: 13px;
+  left: 9px;
+}
+.buttons .btn-box .on .btn-more {
+  height: auto;
+}
+.container {
+  margin-top: 20px;
+  position: relative;
+  overflow: hidden;
+}
+.container .navigation {
+  margin-right: 50px;
+  padding-bottom: 100%;
+  margin-bottom: -100%;
+  float: left;
+  color: darkgray;
+}
+.container .navigation li {
+  margin-bottom: 20px;
+}
+.container .navigation .actived {
+  color: black;
+}
+.container .navigation:after {
+  content: "";
+  display: block;
+  zoom: 1;
+  clear: both;
+}
+.container .details {
+  float: left;
+  margin-right: 50px;
+  font-size: 14px;
+  padding-left: 20px;
+}
+.container .details th,
+.container .details td {
+  padding: 5px 13px;
+  height: 25px;
+}
+.container .details .sub-table th {
+  padding: 0 5px;
+  margin: 0;
+  background: darkgray;
+}
+.container .details .sub-table td {
+  padding: 0;
+  margin: 0;
+}
+.container .details input {
+  padding-left: 5px;
+  border: 1px solid #ddd;
+}
+.container .details .show {
+  display: initial;
+}
+.container .details .edit {
+  display: none;
+}
+.container .details .disabled {
+  color: #ccc;
+}
+.container .details .on-edit .show {
+  display: none;
+}
+.container .details .on-edit .edit {
+  display: initial;
+}
+.container .details .pick-input input {
+  height: 23px;
+  border: 1px solid #ddd;
+  padding-left: 5px;
+}
+.container .details .pick-input .btn {
+  display: inline-block;
+  height: 25px;
+  width: 25px;
+  background: #ddd;
+  vertical-align: bottom;
+}
+.container .img {
+  padding: 5%;
+  /*padding-bottom: 100%;
+        margin-bottom: -100%;*/
+  float: left;
+  /*height: 500px;
+        line-height: 500px;*/
+  border-left: 1px solid darkgray;
+  padding-left: 2px;
+  position: relative;
+}
+.container .img span {
+  display: block;
+  margin: 20px;
+}
+.container .img .change-img {
+  position: absolute;
+  z-index: 1000;
+  top: 50%;
+  left: 50%;
+  border: 1px dashed darkgray;
+  color: orange;
+  cursor: pointer;
+}

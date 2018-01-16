@@ -1,0 +1,649 @@
+﻿@import "../../../baseless/base.less";
+
+@row-dark: #f1f2f4;
+@btn-color: #4fb0d1;
+@left-title-width: 150px;
+@left-title-height: 42px;
+@bg-dropdown: #7bc7e7;
+
+.options {
+    //position: fixed;
+    width: 100%;
+    background-color: #fff;
+
+    .btn-box {
+        background-color: @row-dark;
+        margin: 10px;
+
+        li {
+            display: inline-block;
+        }
+
+        .btn {
+            border: 0px;
+            width: 100px;
+            text-align: center;
+            font: 14px 'Microsoft YaHei';
+            color: #fff;
+            background: @btn-color;
+            padding: 7px 0px;
+            cursor: pointer;
+            margin-left: 10px;
+            display: inline-block;
+            -moz-border-radius: 3px;
+            -webkit-border-radius: 3px;
+            border-radius: 3px;
+        }
+    }
+}
+
+.rightmenu {
+    position: fixed;
+    right: 50px;
+    top: 100px;
+    width: 160px;
+
+    .category {
+        .item {
+            text-align: center;
+            display: block;
+            height: 30px;
+            line-height: 30px;
+            padding: 5px 20px;
+            color: #808080;
+            background-color: #f4f4f4;
+            border-bottom: 1px solid #c0c0c0;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .item-selected {
+            color: #000000 !important;
+            background-color: #dddddd !important;
+            border-bottom: 1px solid #505050 !important;
+        }
+    }
+}
+
+.main-content {
+    margin-left: 50px;
+    float: left;
+
+    .sep-row {
+        height: 40px;
+        line-height: 40px;
+
+        .text {
+            margin: 0 5px;
+        }
+
+        .line {
+            background-color: #d0d0d0;
+            display: inline-block;
+            border: 0px;
+            height: 1px;
+            width: 700px;
+            overflow: hidden;
+            vertical-align: middle;
+        }
+    }
+
+    .content-box {
+        font-size: 12px;
+
+        .left-title {
+            display: inline-block;
+            width: @left-title-width;
+            height: @left-title-height;
+        }
+
+        .data-table {
+            display: inline-block;
+
+            >tbody > tr {
+                height: @left-title-height;
+
+                .col-desc {
+                    width: @left-title-width;
+                }
+
+                .col-value {
+                    width: 200px;
+
+                    input {
+                        height: 20px;
+                        padding: 5px 8px;
+                        vertical-align: middle;
+                    }
+
+                    img {
+                        vertical-align: middle;
+                        cursor: pointer;
+                    }
+                }
+            }
+        }
+
+        .goods-img {
+            display: inline-block;
+            vertical-align: top;
+            position: relative;
+            margin-left: 50px;
+            margin-top: 10px;
+
+            img {
+                width: 240px;
+                height: 320px;
+            }
+
+            .change-img {
+                border: 1px dashed #444;
+                position: absolute;
+                z-index: 2;
+                left: 88px;
+                bottom: 20px;
+                color: #fff;
+                background-color: @btn-color;
+                padding: 3px 10px;
+                cursor: pointer;
+                font: 12px 'Microsoft YaHei';
+
+                &:hover {
+                    background-color: darken(@btn-color,15%);
+                }
+            }
+        }
+
+        .assis-enable {
+            .enable {
+                display: inline-block;
+            }
+        }
+
+        .category {
+
+            ul {
+                display: inline;
+
+                li {
+                    display: inline;
+
+                    input {
+                        cursor: pointer;
+                        padding: 6px 15px;
+                        width: 100px;
+                        margin-right: 10px;
+                        color: #fff;
+                        border: none;
+                        font: 12px 'Microsoft YaHei';
+                    }
+
+                    .selected {
+                        background: @btn-color;
+                    }
+
+                    .unselected {
+                        background: #999999;
+                    }
+                }
+            }
+        }
+
+        .assis-prop {
+            margin-top: 20px;
+
+            .setting {
+                display: inline-block;
+                vertical-align: top;
+
+                .hide {
+                    display: none !important;
+                }
+
+                .head {
+                    background: #f1f2f5;
+                    line-height: 40px;
+
+                    >ul > li {
+                        display: inline-block;
+                        margin: 0 10px;
+                    }
+
+                    .h-group {
+                        width: 182px;
+                    }
+
+                    .h-code {
+                        width: 150px;
+                    }
+
+                    .h-color {
+                        width: 50px;
+                    }
+
+                    .h-size {
+                        width: 50px;
+                    }
+
+                    .h-vol {
+                        width: 50px;
+                    }
+
+                    .h-img {
+                        width: 100px;
+                    }
+                }
+
+                .body {
+                    li {
+                        display: inline-block;
+                        vertical-align: middle;
+                        margin: 0 10px;
+                    }
+
+                    .modify-area {
+                        position: absolute;
+                        width: 50px;
+                        height: 50px;
+                        right: 0;
+                        top: 0;
+
+                        .modify-bt-out {
+                            position: absolute;
+                            right: 0;
+                            color: #fff;
+                            cursor: pointer;
+                            display: none;
+
+                            .icon-modify {
+                                background: url(img/icon-order.png) no-repeat 0px -174px;
+                                height: 20px;
+                                padding-left: 20px;
+                                display: block;
+                            }
+                        }
+
+                        .modify-bt-in {
+                            position: absolute;
+                            right: 0;
+                            color: #fff;
+                            line-height: 20px;
+                            background: #ff5050;
+                            padding-left: 5px;
+                            padding-right: 5px;
+                            cursor: pointer;
+                            display: none;
+                        }
+
+                        &:hover {
+                            .modify-bt-in {
+                                display: block;
+                            }
+
+                            .modify-bt-out {
+                                display: none;
+                            }
+                        }
+                    }
+
+                    .item {
+                        border: 1px solid #d4d9e1;
+                        border-bottom-color: transparent;
+
+                        .li-b-group {
+                            border: 1px dashed transparent;
+                            width: 180px;
+                            position: relative;
+
+                            .b-group {
+                                padding: 30px 10px;
+                                vertical-align: middle;
+                            }
+                        }
+
+                        .li-b-code {
+                            width: 150px;
+                        }
+
+                        .li-b-color {
+                            width: 50px;
+                        }
+
+                        .li-b-size {
+                            width: 50px;
+                        }
+
+                        .li-b-vol {
+                            width: 50px;
+                        }
+
+                        .selected {
+                            border: 1px solid #ff5050 !important;
+                            border-bottom-color: #fff !important;
+                            z-index: 1200;
+                        }
+
+                        .li-b-img {
+                            margin-top: 12px;
+                            margin-bottom: 11px;
+                            margin-left: 10px;
+                            margin-right: 10px;
+
+                            .b-img {
+                                position: relative;
+                                height: 80px;
+
+                                img {
+                                    width: 80px;
+                                    height: 80px;
+                                }
+
+                                .btn {
+                                    border: 1px dashed #444;
+                                    position: absolute;
+                                    z-index: 2;
+                                    left: 8px;
+                                    bottom: 7px;
+                                    color: #fff;
+                                    background-color: @btn-color;
+                                    padding: 1px 3px;
+                                    cursor: pointer;
+                                    font: 12px 'Microsoft YaHei';
+
+                                    &:hover {
+                                        background-color: darken(@btn-color,15%);
+                                    }
+                                }
+                            }
+                        }
+
+                        .li-b-delete {
+                            width: 75px;
+
+                            .b-delete {
+                                width: 40px;
+                                text-align: center;
+                                border: 1px dashed #444;
+                                color: #fff;
+                                background-color: #aaa;
+                                padding: 3px 10px;
+                                cursor: pointer;
+                                font: 12px 'Microsoft YaHei';
+                                display: none;
+
+                                &:hover {
+                                    background-color: darken(#aaa,15%);
+                                }
+                            }
+                        }
+
+                        &:hover {
+                            .modify-bt-out {
+                                display: block;
+                            }
+
+                            .b-delete {
+                                display: block;
+                            }
+
+                            .li-b-group {
+                                border-color: #ccc;
+                            }
+                        }
+                    }
+                }
+
+                .bottom {
+                    border: 1px solid #d4d9e1;
+                    height: 40px;
+                    line-height: 40px;
+
+                    .add {
+                        padding: 5px 10px;
+                        margin: 0 10px;
+                        cursor: pointer;
+
+                        &:hover {
+                            background-color: #ff5050;
+                            color: white;
+                        }
+                    }
+                }
+            }
+        }
+
+        .goods-prop-modify {
+            position: absolute;
+            background-color: #fff;
+            z-index: 1000;
+            margin-left: 165px;
+            margin-top: 346px;
+
+            .prop-modify {
+                border: 1px solid #ff5050;
+                //width: 400px;
+                padding-top: 20px;
+                position: relative;
+
+                >div {
+                    padding: 0 20px;
+                    line-height: 30px;
+                }
+
+                .title {
+                    display: inline-block;
+                    float: left;
+                    width: 30px;
+                    margin-right: 10px;
+                }
+
+                .items {
+                    display: inline-block;
+                    //width:320px;
+                    //float:left;
+                    >li {
+                        float: left;
+                        position: relative;
+                        height: 28px;
+                        border: 1px solid #d4d9e1;
+                        border-radius: 2px;
+                        padding-left: 6px;
+                        padding-right: 10px;
+                        margin-bottom: 5px;
+                        margin-right: 5px;
+                        cursor: pointer;
+
+                        &:hover {
+                            border-color: #1491ff;
+                        }
+                    }
+
+                    .selected {
+                        border-color: #1491ff;
+
+                        &:after {
+                            content: "";
+                            background: url(img/icon-order.png) no-repeat 0px -30px;
+                            height: 12px;
+                            padding-left: 16px;
+                            position: absolute;
+                            right: 0;
+                            bottom: 0;
+                            margin-right: -3px;
+                        }
+                    }
+                }
+
+                .btn-box {
+                    height: 40px;
+                    line-height: 40px;
+                    text-align: center;
+                    background: #f1f2f6;
+
+                    >input {
+                        height: 24px;
+                        border: none;
+                        border-radius: 2px;
+                        padding: 3px 30px;
+                        cursor: pointer;
+                    }
+
+                    .ok {
+                        background-color: #06bcb4;
+                        color: #fff;
+                    }
+
+                    .cancel {
+                        background-color: transparent;
+                        color: #0076ff;
+                    }
+                }
+            }
+        }
+
+        .barcode {
+            .head {
+                background: #f1f2f5;
+                line-height: 40px;
+
+                >ul > li {
+                    display: inline-block;
+                    margin: 0 10px;
+                }
+
+                .h-assisprop {
+                    width: 182px;
+                }
+
+                .h-barcode {
+                    width: 150px;
+                }
+            }
+
+            .body {
+                li {
+                    display: inline-block;
+                    vertical-align: middle;
+                    margin: 0 10px;
+                }
+
+                .modify-area {
+                    position: absolute;
+                    width: 50px;
+                    height: 50px;
+                    right: 0;
+                    top: 0;
+
+                    .modify-bt-out {
+                        position: absolute;
+                        right: 0;
+                        color: #fff;
+                        cursor: pointer;
+                        display: none;
+
+                        .icon-modify {
+                            background: url(img/icon-order.png) no-repeat 0px -174px;
+                            height: 20px;
+                            padding-left: 20px;
+                            display: block;
+                        }
+                    }
+
+                    .modify-bt-in {
+                        position: absolute;
+                        right: 0;
+                        color: #fff;
+                        line-height: 20px;
+                        background: #ff5050;
+                        padding-left: 5px;
+                        padding-right: 5px;
+                        cursor: pointer;
+                        display: none;
+                    }
+
+                    &:hover {
+                        .modify-bt-in {
+                            display: block;
+                        }
+
+                        .modify-bt-out {
+                            display: none;
+                        }
+                    }
+                }
+
+                .item {
+                    border: 1px solid #d4d9e1;
+                    border-bottom-color: transparent;
+
+                    .li-b-assisprop {
+                        border: 1px dashed transparent;
+                        width: 180px;
+                        position: relative;
+
+                        .b-assisprop {
+                            padding: 30px 10px;
+                            vertical-align: middle;
+                        }
+                    }
+
+                    .li-b-barcode {
+                        width: 150px;
+                    }
+
+
+                    .li-b-delete {
+                        width: 75px;
+
+                        .b-delete {
+                            width: 40px;
+                            text-align: center;
+                            border: 1px dashed #444;
+                            color: #fff;
+                            background-color: #aaa;
+                            padding: 3px 10px;
+                            cursor: pointer;
+                            font: 12px 'Microsoft YaHei';
+                            display: none;
+
+                            &:hover {
+                                background-color: darken(#aaa,15%);
+                            }
+                        }
+                    }
+
+                    &:hover {
+                        .modify-bt-out {
+                            display: block;
+                        }
+
+                        .b-delete {
+                            display: block;
+                        }
+
+                        .li-b-assisprop {
+                            border-color: #ccc;
+                        }
+                    }
+                }
+            }
+
+            .bottom {
+                border: 1px solid #d4d9e1;
+                height: 40px;
+                line-height: 40px;
+
+                .add {
+                    padding: 5px 10px;
+                    margin: 0 10px;
+                    cursor: pointer;
+
+                    &:hover {
+                        background-color: #ff5050;
+                        color: white;
+                    }
+                }
+            }
+        }
+    }
+}

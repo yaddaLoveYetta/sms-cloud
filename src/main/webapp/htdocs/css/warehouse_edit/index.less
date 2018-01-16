@@ -1,0 +1,88 @@
+﻿//@import "../../../baseless/base.less";
+
+@row-dark: #f1f2f4;
+@btn-color: #4fb0d1;
+@left-title-width: 150px;
+@left-title-height: 42px;
+@bg-dropdown: #7bc7e7;
+
+.options {
+
+    width: 100%;
+    background-color: #fff;
+
+    .btn-box {
+        background-color: @row-dark;
+        margin: 10px;
+    }
+}
+
+.main-content {
+    margin-left: 20px;
+
+    .sep-row {
+        height: 40px;
+        line-height: 40px;
+
+        .text {
+            margin: 0 5px;
+            font-size: 14px;
+        }
+
+        .line {
+            background-color: #d0d0d0;
+            display: inline-block;
+            border: 0px;
+            height: 1px;
+            width: 700px;
+            overflow: hidden;
+            vertical-align: middle;
+        }
+    }
+
+    .content-box {
+        margin-left: 50px;
+        margin-top: 20px;
+        font-size: 12px;
+
+        .data-table {
+            display: inline-block;
+
+            >tbody > tr {
+                height: @left-title-height;
+
+                .col-desc {
+                    width: @left-title-width;
+                }
+
+                .col-value {
+
+                    >input {
+                        height: 20px;
+                        padding: 5px 8px;
+                        vertical-align: middle;
+                    }
+
+                    >img {
+                        vertical-align: middle;
+                        cursor: pointer;
+                    }
+
+                    .msg {
+                        color: red;
+                        margin-left: 10px;
+                        display: none;
+                    }
+
+                    .selector{
+                        display: inline-block;
+                    }
+
+                    .show {
+                        display: inline-block;
+                    }
+                }
+            }
+        }
+    }
+}

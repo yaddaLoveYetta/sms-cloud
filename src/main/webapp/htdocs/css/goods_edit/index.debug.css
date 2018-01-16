@@ -1,0 +1,511 @@
+.options {
+  width: 100%;
+  background-color: #fff;
+}
+.options .btn-box {
+  background-color: #f1f2f4;
+  margin: 10px;
+}
+.options .btn-box li {
+  display: inline-block;
+}
+.options .btn-box .btn {
+  border: 0px;
+  width: 100px;
+  text-align: center;
+  font: 14px 'Microsoft YaHei';
+  color: #fff;
+  background: #4fb0d1;
+  padding: 7px 0px;
+  cursor: pointer;
+  margin-left: 10px;
+  display: inline-block;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+}
+.rightmenu {
+  position: fixed;
+  right: 50px;
+  top: 100px;
+  width: 160px;
+}
+.rightmenu .category .item {
+  text-align: center;
+  display: block;
+  height: 30px;
+  line-height: 30px;
+  padding: 5px 20px;
+  color: #808080;
+  background-color: #f4f4f4;
+  border-bottom: 1px solid #c0c0c0;
+  font-size: 14px;
+  cursor: pointer;
+}
+.rightmenu .category .item-selected {
+  color: #000000 !important;
+  background-color: #dddddd !important;
+  border-bottom: 1px solid #505050 !important;
+}
+.main-content {
+  margin-left: 50px;
+  float: left;
+}
+.main-content .sep-row {
+  height: 40px;
+  line-height: 40px;
+}
+.main-content .sep-row .text {
+  margin: 0 5px;
+}
+.main-content .sep-row .line {
+  background-color: #d0d0d0;
+  display: inline-block;
+  border: 0px;
+  height: 1px;
+  width: 700px;
+  overflow: hidden;
+  vertical-align: middle;
+}
+.main-content .content-box {
+  font-size: 12px;
+}
+.main-content .content-box .left-title {
+  display: inline-block;
+  width: 150px;
+  height: 42px;
+}
+.main-content .content-box .data-table {
+  display: inline-block;
+}
+.main-content .content-box .data-table tbody tr {
+  height: 42px;
+}
+.main-content .content-box .data-table tbody tr .col-desc {
+  width: 150px;
+}
+.main-content .content-box .data-table tbody tr .col-value {
+  width: 200px;
+}
+.main-content .content-box .data-table tbody tr .col-value input {
+  height: 20px;
+  padding: 5px 8px;
+  vertical-align: middle;
+}
+.main-content .content-box .data-table tbody tr .col-value img {
+  vertical-align: middle;
+  cursor: pointer;
+}
+.main-content .content-box .goods-img {
+  display: inline-block;
+  vertical-align: top;
+  position: relative;
+  margin-left: 50px;
+  margin-top: 10px;
+}
+.main-content .content-box .goods-img img {
+  width: 240px;
+  height: 320px;
+}
+.main-content .content-box .goods-img .change-img {
+  border: 1px dashed #444;
+  position: absolute;
+  z-index: 2;
+  left: 88px;
+  bottom: 20px;
+  color: #fff;
+  background-color: #4fb0d1;
+  padding: 3px 10px;
+  cursor: pointer;
+  font: 12px 'Microsoft YaHei';
+}
+.main-content .content-box .goods-img .change-img:hover {
+  background-color: #2c88a8;
+}
+.main-content .content-box .assis-enable .enable {
+  display: inline-block;
+}
+.main-content .content-box .category ul {
+  display: inline;
+}
+.main-content .content-box .category ul li {
+  display: inline;
+}
+.main-content .content-box .category ul li input {
+  cursor: pointer;
+  padding: 6px 15px;
+  width: 100px;
+  margin-right: 10px;
+  color: #fff;
+  border: none;
+  font: 12px 'Microsoft YaHei';
+}
+.main-content .content-box .category ul li .selected {
+  background: #4fb0d1;
+}
+.main-content .content-box .category ul li .unselected {
+  background: #999999;
+}
+.main-content .content-box .assis-prop {
+  margin-top: 20px;
+}
+.main-content .content-box .assis-prop .setting {
+  display: inline-block;
+  vertical-align: top;
+}
+.main-content .content-box .assis-prop .setting .hide {
+  display: none !important;
+}
+.main-content .content-box .assis-prop .setting .head {
+  background: #f1f2f5;
+  line-height: 40px;
+}
+.main-content .content-box .assis-prop .setting .head > ul > li {
+  display: inline-block;
+  margin: 0 10px;
+}
+.main-content .content-box .assis-prop .setting .head .h-group {
+  width: 182px;
+}
+.main-content .content-box .assis-prop .setting .head .h-code {
+  width: 150px;
+}
+.main-content .content-box .assis-prop .setting .head .h-color {
+  width: 50px;
+}
+.main-content .content-box .assis-prop .setting .head .h-size {
+  width: 50px;
+}
+.main-content .content-box .assis-prop .setting .head .h-vol {
+  width: 50px;
+}
+.main-content .content-box .assis-prop .setting .head .h-img {
+  width: 100px;
+}
+.main-content .content-box .assis-prop .setting .body li {
+  display: inline-block;
+  vertical-align: middle;
+  margin: 0 10px;
+}
+.main-content .content-box .assis-prop .setting .body .modify-area {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  right: 0;
+  top: 0;
+}
+.main-content .content-box .assis-prop .setting .body .modify-area .modify-bt-out {
+  position: absolute;
+  right: 0;
+  color: #fff;
+  cursor: pointer;
+  display: none;
+}
+.main-content .content-box .assis-prop .setting .body .modify-area .modify-bt-out .icon-modify {
+  background: url(img/icon-order.png) no-repeat 0px -174px;
+  height: 20px;
+  padding-left: 20px;
+  display: block;
+}
+.main-content .content-box .assis-prop .setting .body .modify-area .modify-bt-in {
+  position: absolute;
+  right: 0;
+  color: #fff;
+  line-height: 20px;
+  background: #ff5050;
+  padding-left: 5px;
+  padding-right: 5px;
+  cursor: pointer;
+  display: none;
+}
+.main-content .content-box .assis-prop .setting .body .modify-area:hover .modify-bt-in {
+  display: block;
+}
+.main-content .content-box .assis-prop .setting .body .modify-area:hover .modify-bt-out {
+  display: none;
+}
+.main-content .content-box .assis-prop .setting .body .item {
+  border: 1px solid #d4d9e1;
+  border-bottom-color: transparent;
+}
+.main-content .content-box .assis-prop .setting .body .item .li-b-group {
+  border: 1px dashed transparent;
+  width: 180px;
+  position: relative;
+}
+.main-content .content-box .assis-prop .setting .body .item .li-b-group .b-group {
+  padding: 30px 10px;
+  vertical-align: middle;
+}
+.main-content .content-box .assis-prop .setting .body .item .li-b-code {
+  width: 150px;
+}
+.main-content .content-box .assis-prop .setting .body .item .li-b-color {
+  width: 50px;
+}
+.main-content .content-box .assis-prop .setting .body .item .li-b-size {
+  width: 50px;
+}
+.main-content .content-box .assis-prop .setting .body .item .li-b-vol {
+  width: 50px;
+}
+.main-content .content-box .assis-prop .setting .body .item .selected {
+  border: 1px solid #ff5050 !important;
+  border-bottom-color: #fff !important;
+  z-index: 1200;
+}
+.main-content .content-box .assis-prop .setting .body .item .li-b-img {
+  margin-top: 12px;
+  margin-bottom: 11px;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+.main-content .content-box .assis-prop .setting .body .item .li-b-img .b-img {
+  position: relative;
+  height: 80px;
+}
+.main-content .content-box .assis-prop .setting .body .item .li-b-img .b-img img {
+  width: 80px;
+  height: 80px;
+}
+.main-content .content-box .assis-prop .setting .body .item .li-b-img .b-img .btn {
+  border: 1px dashed #444;
+  position: absolute;
+  z-index: 2;
+  left: 8px;
+  bottom: 7px;
+  color: #fff;
+  background-color: #4fb0d1;
+  padding: 1px 3px;
+  cursor: pointer;
+  font: 12px 'Microsoft YaHei';
+}
+.main-content .content-box .assis-prop .setting .body .item .li-b-img .b-img .btn:hover {
+  background-color: #2c88a8;
+}
+.main-content .content-box .assis-prop .setting .body .item .li-b-delete {
+  width: 75px;
+}
+.main-content .content-box .assis-prop .setting .body .item .li-b-delete .b-delete {
+  width: 40px;
+  text-align: center;
+  border: 1px dashed #444;
+  color: #fff;
+  background-color: #aaa;
+  padding: 3px 10px;
+  cursor: pointer;
+  font: 12px 'Microsoft YaHei';
+  display: none;
+}
+.main-content .content-box .assis-prop .setting .body .item .li-b-delete .b-delete:hover {
+  background-color: #848484;
+}
+.main-content .content-box .assis-prop .setting .body .item:hover .modify-bt-out {
+  display: block;
+}
+.main-content .content-box .assis-prop .setting .body .item:hover .b-delete {
+  display: block;
+}
+.main-content .content-box .assis-prop .setting .body .item:hover .li-b-group {
+  border-color: #ccc;
+}
+.main-content .content-box .assis-prop .setting .bottom {
+  border: 1px solid #d4d9e1;
+  height: 40px;
+  line-height: 40px;
+}
+.main-content .content-box .assis-prop .setting .bottom .add {
+  padding: 5px 10px;
+  margin: 0 10px;
+  cursor: pointer;
+}
+.main-content .content-box .assis-prop .setting .bottom .add:hover {
+  background-color: #ff5050;
+  color: white;
+}
+.main-content .content-box .goods-prop-modify {
+  position: absolute;
+  background-color: #fff;
+  z-index: 1000;
+  margin-left: 165px;
+  margin-top: 346px;
+}
+.main-content .content-box .goods-prop-modify .prop-modify {
+  border: 1px solid #ff5050;
+  padding-top: 20px;
+  position: relative;
+}
+.main-content .content-box .goods-prop-modify .prop-modify > div {
+  padding: 0 20px;
+  line-height: 30px;
+}
+.main-content .content-box .goods-prop-modify .prop-modify .title {
+  display: inline-block;
+  float: left;
+  width: 30px;
+  margin-right: 10px;
+}
+.main-content .content-box .goods-prop-modify .prop-modify .items {
+  display: inline-block;
+}
+.main-content .content-box .goods-prop-modify .prop-modify .items > li {
+  float: left;
+  position: relative;
+  height: 28px;
+  border: 1px solid #d4d9e1;
+  border-radius: 2px;
+  padding-left: 6px;
+  padding-right: 10px;
+  margin-bottom: 5px;
+  margin-right: 5px;
+  cursor: pointer;
+}
+.main-content .content-box .goods-prop-modify .prop-modify .items > li:hover {
+  border-color: #1491ff;
+}
+.main-content .content-box .goods-prop-modify .prop-modify .items .selected {
+  border-color: #1491ff;
+}
+.main-content .content-box .goods-prop-modify .prop-modify .items .selected:after {
+  content: "";
+  background: url(img/icon-order.png) no-repeat 0px -30px;
+  height: 12px;
+  padding-left: 16px;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  margin-right: -3px;
+}
+.main-content .content-box .goods-prop-modify .prop-modify .btn-box {
+  height: 40px;
+  line-height: 40px;
+  text-align: center;
+  background: #f1f2f6;
+}
+.main-content .content-box .goods-prop-modify .prop-modify .btn-box > input {
+  height: 24px;
+  border: none;
+  border-radius: 2px;
+  padding: 3px 30px;
+  cursor: pointer;
+}
+.main-content .content-box .goods-prop-modify .prop-modify .btn-box .ok {
+  background-color: #06bcb4;
+  color: #fff;
+}
+.main-content .content-box .goods-prop-modify .prop-modify .btn-box .cancel {
+  background-color: transparent;
+  color: #0076ff;
+}
+.main-content .content-box .barcode .head {
+  background: #f1f2f5;
+  line-height: 40px;
+}
+.main-content .content-box .barcode .head > ul > li {
+  display: inline-block;
+  margin: 0 10px;
+}
+.main-content .content-box .barcode .head .h-assisprop {
+  width: 182px;
+}
+.main-content .content-box .barcode .head .h-barcode {
+  width: 150px;
+}
+.main-content .content-box .barcode .body li {
+  display: inline-block;
+  vertical-align: middle;
+  margin: 0 10px;
+}
+.main-content .content-box .barcode .body .modify-area {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  right: 0;
+  top: 0;
+}
+.main-content .content-box .barcode .body .modify-area .modify-bt-out {
+  position: absolute;
+  right: 0;
+  color: #fff;
+  cursor: pointer;
+  display: none;
+}
+.main-content .content-box .barcode .body .modify-area .modify-bt-out .icon-modify {
+  background: url(img/icon-order.png) no-repeat 0px -174px;
+  height: 20px;
+  padding-left: 20px;
+  display: block;
+}
+.main-content .content-box .barcode .body .modify-area .modify-bt-in {
+  position: absolute;
+  right: 0;
+  color: #fff;
+  line-height: 20px;
+  background: #ff5050;
+  padding-left: 5px;
+  padding-right: 5px;
+  cursor: pointer;
+  display: none;
+}
+.main-content .content-box .barcode .body .modify-area:hover .modify-bt-in {
+  display: block;
+}
+.main-content .content-box .barcode .body .modify-area:hover .modify-bt-out {
+  display: none;
+}
+.main-content .content-box .barcode .body .item {
+  border: 1px solid #d4d9e1;
+  border-bottom-color: transparent;
+}
+.main-content .content-box .barcode .body .item .li-b-assisprop {
+  border: 1px dashed transparent;
+  width: 180px;
+  position: relative;
+}
+.main-content .content-box .barcode .body .item .li-b-assisprop .b-assisprop {
+  padding: 30px 10px;
+  vertical-align: middle;
+}
+.main-content .content-box .barcode .body .item .li-b-barcode {
+  width: 150px;
+}
+.main-content .content-box .barcode .body .item .li-b-delete {
+  width: 75px;
+}
+.main-content .content-box .barcode .body .item .li-b-delete .b-delete {
+  width: 40px;
+  text-align: center;
+  border: 1px dashed #444;
+  color: #fff;
+  background-color: #aaa;
+  padding: 3px 10px;
+  cursor: pointer;
+  font: 12px 'Microsoft YaHei';
+  display: none;
+}
+.main-content .content-box .barcode .body .item .li-b-delete .b-delete:hover {
+  background-color: #848484;
+}
+.main-content .content-box .barcode .body .item:hover .modify-bt-out {
+  display: block;
+}
+.main-content .content-box .barcode .body .item:hover .b-delete {
+  display: block;
+}
+.main-content .content-box .barcode .body .item:hover .li-b-assisprop {
+  border-color: #ccc;
+}
+.main-content .content-box .barcode .bottom {
+  border: 1px solid #d4d9e1;
+  height: 40px;
+  line-height: 40px;
+}
+.main-content .content-box .barcode .bottom .add {
+  padding: 5px 10px;
+  margin: 0 10px;
+  cursor: pointer;
+}
+.main-content .content-box .barcode .bottom .add:hover {
+  background-color: #ff5050;
+  color: white;
+}

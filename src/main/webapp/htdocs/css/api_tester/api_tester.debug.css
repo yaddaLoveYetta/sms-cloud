@@ -1,0 +1,39 @@
+.api-tester {
+  font-size: 14px;
+}
+.api-tester h1 {
+  font-size: 25px;
+  text-align: center;
+  font-weight: 100;
+}
+.api-tester p {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+.api-tester p > input {
+  min-width: 500px;
+}
+.api-tester textarea {
+  min-width: 482px;
+  padding: 10px;
+  vertical-align: top;
+  height: 150px;
+}
+.api-tester input[type="radio"] {
+  margin: 3px 3px 0 5px;
+  min-width: 20px;
+}
+.api-tester .bold {
+  font-weight: bold;
+}
+.api-tester .submit {
+  text-align: center;
+  margin-bottom: 0;
+}
+.api-tester .submit > input {
+  min-width: 100px;
+}
+.api-tester .box {
+  height: 500px;
+  overflow: scroll;
+}

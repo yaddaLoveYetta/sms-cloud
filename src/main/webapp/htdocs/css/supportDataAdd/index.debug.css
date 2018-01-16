@@ -1,0 +1,39 @@
+.add-box {
+  font-size: 14px;
+  padding-left: 20px;
+}
+.add-box p {
+  margin: 20px 0;
+}
+.add-box input {
+  font-size: 12px;
+  border: 1px solid #ddd;
+  padding: 5px 10px;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+}
+.add-box select {
+  font-size: 12px;
+  border: 1px solid #ddd;
+  padding: 5px;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+}
+.add-box .warn-text {
+  margin: 0;
+  font-size: 12px;
+  color: #ff0000;
+}
+.add-box .btn-panel {
+  float: right;
+}
+.add-box .btn-panel .btn {
+  margin-left: 10px;
+  color: #fff;
+  padding: 5px 12px;
+  background: #4fb0d1;
+  border: none;
+  cursor: pointer;
+}

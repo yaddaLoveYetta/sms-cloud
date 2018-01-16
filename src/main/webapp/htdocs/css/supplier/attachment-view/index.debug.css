@@ -1,0 +1,32 @@
+.top-fixed {
+    /*position: fixed;*/
+    background: white;
+    width: 100%;
+    height: 25px;
+}
+.container .iframes {
+    padding-top: 5px;
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+.container .iframes iframe{
+    border: none;
+    width: 100%;
+    display: none;
+}
+.container .iframes .actived {
+    display: block;
+}
+.ui-dialog-body{
+    padding: 10px 10px;
+}
+.id-info{
+    height: 20px;
+    line-height: 20px;
+}
+.id-info img{
+    position: fixed;
+    right: 20px;
+    top: 0px;
+    height: 65px;
+}

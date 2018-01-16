@@ -1,0 +1,31 @@
+
+.sms-F7selector span[data-role="btn"] {
+    vertical-align: top;
+    display: inline-block;
+    background: #ddd;
+    cursor: pointer;
+    /*    position: absolute;
+        top: 1px;
+        right: 1px;*/
+    background: url(../../img/ui_kit_updt.png);
+    background-size: 24px 24px;
+    /*    height: 23px;
+        width: 23px;*/
+}
+
+.sms-F7selector input {
+    width: 163px;
+}
+
+.expired{
+    color: #ff0000;
+}
+.soon-expired{
+    color: #cc7b0f;
+}
+.tabs{
+    clear: both;
+    background-color: #f1f2f4;
+    font-size: 14px;
+    padding: 1px;
+}

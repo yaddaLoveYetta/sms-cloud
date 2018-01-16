@@ -1,0 +1,333 @@
+
+{
+    "code": 200,
+    "msg": "",
+    "data": {
+       "items": [
+           {
+               "status": "寰呬笂浼�",
+               "sum": 304
+           },
+           {
+               "status": "寰呭彂璐�",
+               "sum": 40
+           },
+           {
+               "status": "寰呭鏍�",
+               "sum": 22
+           },
+           {
+               "status": "寰呴厤璐�",
+               "sum": 19
+           }
+       ],
+       "count": 4,
+	   "results":
+		   [{
+			   "orderID": 7,
+			   "result": "璁㈠崟涓哄緟閰嶈揣鐘舵�侊紝鏃犳硶瀹℃牳璁㈠崟!"
+		   },
+		   {
+			   "orderID": 8,
+			   "result": "璁㈠崟涓哄緟閰嶈揣鐘舵�侊紝鏃犳硶瀹℃牳璁㈠崟!"
+		   },
+		   {
+			   "orderID": 9,
+			   "result": "璁㈠崟涓哄緟閰嶈揣鐘舵�侊紝鏃犳硶瀹℃牳璁㈠崟!"
+		   },
+		   {
+			   "orderID": 10,
+			   "result": "success"
+		   },
+		   {
+			   "orderID": 11,
+			   "result": "success"
+		   }
+	   ],
+	   "pager": {
+			"page": 1,
+			"size": 20,
+			"order": "",
+			"total": 256
+		},
+		"orders": 
+
+		[
+        {
+            webOrderID: '564515151',
+            payTime: '2014-06-23 09:40',
+            orderStatus: '宸插悎骞�',
+            buyerNick: '榻愬ぉ澶у湥',
+            deliveryState: '骞夸笢鐪�',
+            deliveryCity: '娣卞湷甯�',
+            deliveryDistrict: '鍗楀北鍖�',
+            deliveryAddress: '绉戞妧鍗楀崄浜岃矾',
+            logisticsCompanyName: '椤轰赴',
+            logisticsCompany: 1,
+            buyerMessage: '璇风粰鎴戝瘎鍦嗛�氬揩閫�',
+            outerMemo: '鏀惰揣鍦板潃淇敼涓猴細骞夸笢鐪佹繁鍦冲競鍗楀北鍖虹鎶�鍥鎶�鐢峰崄浜岃矾',
+            goodsItems: [
+                {
+                    picPath: '../../css/order/img/u283.png',
+                    title: '闆呰瘲鍏伴粵闆呰瘲鍏伴粵闆呰瘲鍏伴粵闆呰瘲鍏伴粵闆呰瘲鍏伴粵闆呰瘲鍏伴粵闆呰瘲鍏伴粵闆呰瘲鍏伴粵',
+                    price: 920.00,
+                    amount: 12,
+                    gift: 1,
+                    absence: 1,
+                    refund: 1,
+                    flag: 1,
+                    skuname:
+                        [{
+                            skuTitle: '鍟嗗搧缂栧彿',
+                            skuValue: 'B1251534',
+                            skuType: 0
+                        },
+                        {
+                            skuTitle: '鍑�鍚噺',
+                            skuValue: '50ml ',
+                            skuType: 1,
+                            skuList: [
+                                {
+                                    name: '20ml',
+                                    oValue: 1,
+                                    selected: 0
+                                },
+                                {
+                                    name: '30ml',
+                                    oValue: 2,
+                                    selected: 0
+                                },
+                                {
+                                    name: '40ml',
+                                    oValue: 3,
+                                    selected: 0
+                                },
+                                {
+                                    name: '50ml',
+                                    oValue: 4,
+                                    selected: 1
+                                },
+                                {
+                                    name: '120ml',
+                                    oValue: 5,
+                                    selected: 0
+                                },
+                                {
+                                    name: '1200ml',
+                                    oValue: 6,
+                                    selected: 0
+                                }
+                            ]
+                        },
+                        {
+                            skuTitle: '棰滆壊',
+                            skuValue: '绾㈣壊',
+                            skuType: 1,
+                            skuList: [
+                                {
+                                    name: '鐧借壊',
+                                    oValue: 1,
+                                    selected: 0
+                                },
+                                {
+                                    name: '绾㈣壊',
+                                    oValue: 2,
+                                    selected: 1
+                                },
+                                {
+                                    name: '缁胯壊',
+                                    oValue: 3,
+                                    selected: 0
+                                },
+                                {
+                                    name: '钃濊壊',
+                                    oValue: 4,
+                                    selected: 0
+                                }
+                            ]
+
+                        },
+                        {
+                            skuTitle: '鏁伴噺',
+                            skuValue: '100',
+                            skuType: 2,
+                            skuList: []
+
+                        }
+                    ]
+                },
+                {
+                    picPath: '../../css/order/img/u283.png',
+                    title: '鍝囧搱鍝堝搱鍝�',
+                    price: 920.00,
+                    amount: 12,
+                    gift: 0,
+                    absence: 1,
+                    refund: 1,
+                    flag: 0,
+                    skuname: [
+                        {
+                            skuTitle: '鍟嗗搧缂栧彿',
+                            skuValue: 'B1251534',
+                            skuType: 0
+                        },
+                        {
+                            skuTitle: '鍑�鍚噺',
+                            skuValue: '50ml '
+                        },
+                        {
+                            skuTitle: '棰滆壊',
+                            skuValue: '鑲よ壊'
+                        }
+                    ]
+                },
+                {
+                    picPath: '../../css/order/img/u283.png',
+                    title: '鍝囧搱鍝堝搱鍝�',
+                    price: 920.00,
+                    amount: 12,
+                    gift: 0,
+                    absence: 1,
+                    refund: 1,
+                    flag: 0,
+                    skuname: [
+                        {
+                            skuTitle: '鍟嗗搧缂栧彿',
+                            skuValue: 'B1251534',
+                            skuType: 0
+                        },
+                        {
+                            skuTitle: '鍑�鍚噺',
+                            skuValue: '50ml '
+                        },
+                        {
+                            skuTitle: '棰滆壊',
+                            skuValue: '鑲よ壊'
+                        }
+                    ]
+                }
+            ]
+
+            
+        },
+        {
+            webOrderID: '56451515221',
+            payTime: '2014-06-23 09:40',
+            orderStatus: '宸插悎骞�',
+            buyerNick: '榻愬ぉ澶у湥',
+            deliveryState: '骞夸笢鐪�',
+            deliveryCity: '娣卞湷甯�',
+            deliveryDistrict: '鍗楀北鍖�',
+            deliveryAddress: '绉戞妧鍗楀崄浜岃矾',
+            logisticsCompanyName: '椤轰赴',
+            buyerMessage: '璇风粰鎴戝瘎鍦嗛�氬揩閫�',
+            outerMemo: '鏀惰揣鍦板潃淇敼涓猴細骞夸笢鐪佹繁鍦冲競鍗楀北鍖虹鎶�鍥鎶�鐢峰崄浜岃矾',
+            goodsItems: [
+                {
+                    picPath: '../../css/order/img/u283.png',
+                    title: '闆呰瘲鍏伴粵闆呰瘲鍏伴粵闆呰瘲鍏伴粵闆呰瘲鍏伴粵闆呰瘲鍏伴粵闆呰瘲鍏伴粵闆呰瘲鍏伴粵闆呰瘲鍏伴粵',
+                    price: 920.00,
+                    amount: 12,
+                    gift: 1,
+                    absence: 1,
+                    refund: 1,
+                    flag: 1,
+                    skuname:
+                        [{
+                            skuTitle: '鍟嗗搧缂栧彿',
+                            skuValue: 'B1251534',
+                            skuType: 0
+                        },
+                        {
+                            skuTitle: '鍑�鍚噺',
+                            skuValue: '50ml ',
+                            skuType: 1
+                        },
+                        {
+                            skuTitle: '棰滆壊',
+                            skuValue: '鑲よ壊',
+                            skuType: 2
+                        }
+                        ]
+                }
+            ]
+
+
+        },
+        {
+            webOrderID: '564515151',
+            payTime: '2014-06-23 09:40',
+            orderStatus: '宸插悎骞�',
+            buyerNick: '榻愬ぉ澶у湥',
+            deliveryState: '骞夸笢鐪�',
+            deliveryCity: '娣卞湷甯�',
+            deliveryDistrict: '鍗楀北鍖�',
+            deliveryAddress: '绉戞妧鍗楀崄浜岃矾',
+            logisticsCompanyName: '椤轰赴',
+            buyerMessage: '璇风粰鎴戝瘎鍦嗛�氬揩閫�',
+            outerMemo: '鏀惰揣鍦板潃淇敼涓猴細骞夸笢鐪佹繁鍦冲競鍗楀北鍖虹鎶�鍥鎶�鐢峰崄浜岃矾',
+            goodsItems: [
+                {
+                    picPath: '../../css/order/img/u283.png',
+                    title: '闆呰瘲鍏伴粵闆呰瘲鍏伴粵闆呰瘲鍏伴粵闆呰瘲鍏伴粵闆呰瘲鍏伴粵闆呰瘲鍏伴粵闆呰瘲鍏伴粵闆呰瘲鍏伴粵',
+                    price: 920.00,
+                    amount: 12,
+                    gift: 1,
+                    absence: 1,
+                    refund: 1,
+                    flag: 1,
+                    skuname:
+                        [{
+                            skuTitle: '鍟嗗搧缂栧彿',
+                            skuValue: 'B1251534'
+                        },
+                        {
+                            skuTitle: '鍑�鍚噺',
+                            skuValue: '50ml '
+                        },
+                        {
+                            skuTitle: '棰滆壊',
+                            skuValue: '鑲よ壊'
+                        }
+                        ]
+                },
+                {
+                    picPath: '../../css/order/img/u283.png',
+                    title: '鍝囧搱鍝堝搱鍝�',
+                    price: 920.00,
+                    amount: 12,
+                    gift: 0,
+                    absence: 1,
+                    refund: 1,
+                    flag: 0,
+                    skuname: [
+                        {
+                            skuTitle: '鍟嗗搧缂栧彿',
+                            skuValue: 'B1251534',
+                            skuType: 0
+                        },
+                        {
+                            skuTitle: '鍑�鍚噺',
+                            skuValue: '50ml ',
+                            skuType: 1
+                        },
+                        {
+                            skuTitle: '棰滆壊',
+                            skuValue: '鑲よ壊',
+                            skuType: 2
+                        }
+                    ]
+                }
+            ]
+
+
+        }
+
+    ]
+
+
+
+
+   }
+}
+

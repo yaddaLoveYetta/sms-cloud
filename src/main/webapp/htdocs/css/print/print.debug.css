@@ -1,0 +1,571 @@
+html,
+body,
+ul,
+table,
+thead,
+tbody,
+tr,
+td,
+ul,
+li {
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+body {
+  min-width: 790px!important;
+  padding: 0 1px;
+}
+.clear {
+  clear: both;
+  content: "";
+  display: block;
+}
+.have-data {
+  font-size: 12px;
+}
+.have-data .sort-panel {
+  padding-left: 10px;
+  background: #f1f2f5;
+  border-bottom: 1px solid #d4d9e1;
+  line-height: 40px;
+}
+.have-data .sort-panel .right {
+  margin-top: 8px;
+  margin-right: 10px;
+  float: right;
+}
+.have-data .sort-panel:after {
+  clear: both;
+  content: "";
+  display: block;
+}
+.have-data .bt-panel {
+  padding-left: 10px;
+  background: #f1f2f5;
+  line-height: 40px;
+}
+.have-data .bt-panel .left {
+  float: left;
+}
+.have-data .bt-panel .right {
+  float: right;
+  margin-right: 10px;
+  margin-top: 7px;
+}
+.have-data .bt-panel:after {
+  clear: both;
+  content: "";
+  display: block;
+}
+.check-box {
+  width: 14px;
+  height: 14px;
+  border: 0;
+  border-radius: 2px;
+  display: inline-block;
+  background: #c5cbd3;
+  cursor: pointer;
+}
+.checked {
+  background: #ffa360;
+}
+.order-btn {
+  display: block;
+  width: 54px;
+  height: 12px;
+  line-height: 12px;
+  padding: 5px 0;
+  background: #fff;
+  color: #141414;
+  font-size: 12px;
+  border: 1px solid #dddfe5;
+  text-align: center;
+}
+.order-btn:hover {
+  text-decoration: none;
+}
+.change {
+  padding: 3px 5px;
+  height: 12px;
+  line-height: 12px;
+  background: #ffa360;
+  color: #fff;
+  font-style: normal;
+  font-size: 12px;
+  font-family: 'Microsoft YaHei';
+  position: absolute;
+  top: 0;
+  right: 0;
+  vertical-align: middle;
+}
+.change:hover {
+  text-decoration: none;
+}
+.line {
+  display: block;
+}
+.input-text {
+  border: 1px solid #dddfe5;
+  padding: 2px 5px;
+}
+.orders {
+  padding-left: 4px;
+  font-size: 12px;
+}
+.orders table {
+  width: 100%;
+  margin-top: 10px;
+  border-spacing: 0;
+  color: #141414;
+  border-collapse: separate;
+}
+.orders table > thead {
+  height: 32px;
+  line-height: 32px;
+  background-color: #ffffff;
+  color: #838383;
+  position: relative;
+}
+.orders table > thead td {
+  padding: 0 13px;
+}
+.orders table > tbody .title {
+  background-color: #ecedf1;
+  height: 39px;
+  line-height: 39px;
+}
+.orders table > tbody .title td {
+  padding: 0 13px;
+  /*border:1px solid @search-title-background;*/
+  border-top: 1px solid #dddfe5;
+  /*border-bottom:0;*/
+}
+.orders table > tbody .title .check:before {
+  border-style: solid;
+  border-width: 20px 2px;
+  border-color: #72c5bd;
+  position: absolute;
+  top: -1px;
+  left: -4px;
+  width: 0;
+  height: 0;
+  content: ' ';
+  display: block;
+}
+.orders table > tbody .content td {
+  padding: 24px 13px;
+  vertical-align: top;
+}
+.orders table > tbody .content .print-info > .vertical-info {
+  margin-bottom: 24px;
+}
+.orders table > tbody .content .print-info > .status-icon-list {
+  margin: 12px 0;
+}
+.orders table > tbody .content .print-info > .status-icon-list .status-icon {
+  margin-right: 4px;
+}
+.orders table > tbody .content .address {
+  position: relative;
+}
+.orders table > tbody .content .address .bottom-blank {
+  margin-bottom: 11px;
+}
+.orders table > tbody .content .address .block {
+  margin: -24px -13px -30px;
+  padding: 24px 13px 30px;
+  height: 83px;
+  border: 1px solid #fff;
+}
+.orders table > tbody .content .address .block > .change {
+  display: none;
+}
+.orders table > tbody .content .address .block:hover {
+  border: 1px solid #ffa360;
+}
+.orders table > tbody .content .address .block:hover > .change {
+  display: block;
+}
+.orders table > tbody .content .address .block:hover > .change:after {
+  content: '修改';
+}
+.orders table > tbody .content .address .modifying {
+  border: 1px solid #ffa360;
+  border-bottom: 0;
+  z-index: 1200;
+  position: relative;
+  background: #fff;
+}
+.orders table > tbody .content .address .modifying > .change {
+  display: block;
+}
+.orders table > tbody .content .address .modifying > .change:after {
+  content: '修改';
+}
+.orders table > tbody .content .address .modifying:hover {
+  border-bottom: 0;
+}
+.orders table > tbody .content .logistics-info {
+  position: relative;
+}
+.orders table > tbody .content .logistics-info .btn-icon {
+  margin-left: 77px;
+  margin-bottom: 9px;
+}
+.orders table > tbody .content .logistics-info .block {
+  margin: -24px -13px -30px;
+  padding: 24px 13px 30px;
+  height: 83px;
+  border: 1px solid #fff;
+}
+.orders table > tbody .content .logistics-info .block > .change {
+  display: none;
+}
+.orders table > tbody .content .logistics-info .block:hover {
+  border: 1px solid #ffa360;
+}
+.orders table > tbody .content .logistics-info .block:hover > .change {
+  display: block;
+}
+.orders table > tbody .content .logistics-info .block:hover > .change:after {
+  content: '修改';
+}
+.orders table > tbody .content .logistics-info .modifying {
+  border: 1px solid #ffa360;
+  border-bottom: 0;
+  z-index: 1200;
+  position: relative;
+  background: #fff;
+}
+.orders table > tbody .content .logistics-info .modifying > .change {
+  display: block;
+}
+.orders table > tbody .content .logistics-info .modifying > .change:after {
+  content: '修改';
+}
+.orders table > tbody .content .logistics-info .modifying:hover {
+  border-bottom: 0;
+}
+.orders table > tbody .content .buyer-message > .bottom-blank {
+  margin-bottom: 26px;
+}
+.orders table > tbody .content .mark-up {
+  border-right: 1px solid #dddfe5;
+}
+.orders table > tbody .content .mark-up > .icon-list i {
+  margin-right: 6px;
+}
+.orders table > tbody .content .operation {
+  text-align: center;
+}
+.orders table > tbody .content .operation > .vertical-info {
+  display: inline-block;
+}
+.orders table > tbody .content .vertical-info > .info {
+  display: block;
+  list-style: none;
+}
+.orders table > tbody .content .vertical-info > .top-blank {
+  margin-top: 10px;
+}
+.orders table > tbody .content .vertical-info > .top-blank:first-child {
+  margin-top: 0;
+}
+.orders table > tbody .spread td {
+  padding-bottom: 0px;
+  margin-bottom: -1px;
+}
+.orders table > tbody .spread td .spread-btn {
+  border-bottom: 0;
+  margin-bottom: -1px;
+}
+.orders table > tbody .spread td .block {
+  margin: -24px -13px -4px !important;
+  padding: 24px 13px 4px!important;
+  border: 1px solid #fff;
+}
+.orders table > tbody .spread td .block > .change {
+  display: none;
+}
+.orders table > tbody .spread td .block:hover {
+  border: 1px solid #ffa360;
+}
+.orders table > tbody .spread td .block:hover > .change {
+  display: block;
+}
+.orders table > tbody .spread td .block:hover > .change:after {
+  content: '修改';
+}
+.orders table .modify-body td {
+  position: relative;
+}
+.orders table .modify-body td .buyer-info-modify-container {
+  position: absolute;
+  background: #fff;
+  z-index: 1000;
+  width: 100%;
+  top: -3px;
+}
+.orders table .modify-body td .buyer-info-modify-container .buyer-info-modify {
+  text-align: left;
+  border: 1px solid #ffa360;
+  position: relative;
+  line-height: 24px;
+  left: 0;
+}
+.orders table .modify-body td .buyer-info-modify-container .buyer-info-modify .address-picker {
+  margin-left: 20px;
+  width: 91%;
+}
+.orders table .modify-body td .buyer-info-modify-container .buyer-info-modify .address-details {
+  vertical-align: top;
+  display: block;
+  margin-top: 10px;
+  margin-left: 20px;
+  width: 90%;
+  height: 70px;
+  resize: none;
+  border: 1px solid #d4d9e1;
+  border-radius: 2px;
+}
+.orders table .modify-body td .buyer-info-modify-container .buyer-info-modify .label-title {
+  color: #969696;
+  line-height: 20px;
+  margin-left: 20px;
+  margin-top: 10px;
+  margin-bottom: 8px;
+}
+.orders table .modify-body td .buyer-info-modify-container .buyer-info-modify .line {
+  margin-top: 20px;
+}
+.orders table .modify-body td .buyer-info-modify-container .buyer-info-modify .couriers {
+  margin-left: 20px;
+  width: 91%;
+}
+.orders table .modify-body td .buyer-info-modify-container .buyer-info-modify .couriers .couriers-selected {
+  border: 1px solid #1491ff;
+}
+.orders table .modify-body td .buyer-info-modify-container .buyer-info-modify .couriers .couriers-selected:after {
+  content: "";
+  background: url(img/icon-order.png) no-repeat 0px -30px;
+  height: 12px;
+  padding-left: 16px;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  margin-right: -3px;
+}
+.orders table .modify-body td .buyer-info-modify-container .buyer-info-modify .couriers li {
+  float: left;
+  position: relative;
+  line-height: 28px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #d4d9e1;
+  border-radius: 3px;
+  padding-left: 5px;
+  padding-right: 10px;
+  cursor: pointer;
+}
+.orders table .modify-body td .buyer-info-modify-container .buyer-info-modify .couriers li:hover {
+  border-color: #1491ff;
+}
+.orders table .modify-body td .buyer-info-modify-container .buyer-info-modify .couriers:after {
+  clear: both;
+  content: "";
+  display: block;
+}
+.orders table .modify-body td .buyer-info-modify-container .buyer-info-modify .button-panel {
+  height: 40px;
+  line-height: 40px;
+  text-align: center;
+  background: #f1f2f6;
+  margin-top: 10px;
+}
+.orders table .modify-body td .buyer-info-modify-container .buyer-info-modify .button-panel > input {
+  height: 24px;
+  border: none;
+  border-radius: 3px;
+  padding: 3px 30px;
+  cursor: pointer;
+}
+.orders table .modify-body td .buyer-info-modify-container .buyer-info-modify .button-panel .sub-bt {
+  background-color: #54add3;
+  color: #fff;
+}
+.orders table .modify-body td .buyer-info-modify-container .buyer-info-modify .button-panel .cancel-bt {
+  background-color: transparent;
+  color: #0076ff;
+}
+.orders table .check {
+  width: 5%;
+  text-align: center;
+  position: relative;
+}
+.orders table .print-info {
+  width: 15%;
+  min-width: 138px;
+}
+.orders table .address {
+  width: 20%;
+  min-width: 180px;
+}
+.orders table .logistics-info {
+  width: 22%;
+  min-width: 147px;
+}
+.orders table .buyer-message {
+  width: 18%;
+  min-width: 157px;
+}
+.orders table .mark-up {
+  width: 12%;
+}
+.orders table .operation {
+  width: 8%;
+}
+.orders table .goods-info {
+  padding: 0 14px 0 10px;
+}
+.orders table .goods-info .goods {
+  width: 100%;
+  height: 84px;
+  border-spacing: 0;
+  margin: 0;
+}
+.orders table .goods-info .goods tr:first-child > .good {
+  border-top: 1px solid #dddfe5;
+}
+.orders table .goods-info .goods tr:first-child > .web-order-id {
+  border-top: 1px solid #dddfe5;
+}
+.orders table .goods-info .goods .good {
+  width: 77%;
+  padding: 12px;
+  border: 1px solid #dddfe5;
+  border-top: 0;
+}
+.orders table .goods-info .goods .good > .item-img {
+  width: 88px;
+  height: 88px;
+  border: 1px solid #dddfe5;
+  position: absolute;
+}
+.orders table .goods-info .goods .good > .infos {
+  height: 88px;
+  margin-left: 96px;
+}
+.orders table .goods-info .goods .good > .infos > .item-name {
+  width: 45%;
+  float: left;
+  display: block;
+}
+.orders table .goods-info .goods .good > .infos > .item-name .name-sku-icon {
+  padding: 0 18px;
+}
+.orders table .goods-info .goods .good > .infos > .item-name .name-sku-icon .sku {
+  color: #838383;
+}
+.orders table .goods-info .goods .good > .infos > .item-name .name-sku-icon > .bottom-blank {
+  margin-bottom: 10px;
+}
+.orders table .goods-info .goods .good > .infos > .item-name .name-sku-icon .icon-list i {
+  margin-right: 12px;
+}
+.orders table .goods-info .goods .good > .infos > .item-price {
+  width: 25%;
+  float: left;
+  display: block;
+}
+.orders table .goods-info .goods .good > .infos > .item-price .price-number {
+  padding: 0 13px;
+}
+.orders table .goods-info .goods .good > .infos > .item-warehouse {
+  width: 30%;
+  margin: -12px -22px -14px -23px;
+  padding: 16px 22px 14px 11px;
+  height: 100%;
+  position: relative;
+  float: left;
+  display: block;
+  border: 1px solid #fff;
+}
+.orders table .goods-info .goods .good > .infos > .item-warehouse .shown {
+  display: block;
+}
+.orders table .goods-info .goods .good > .infos > .item-warehouse .edit {
+  display: none;
+}
+.orders table .goods-info .goods .good > .infos > .item-warehouse > .change {
+  display: none;
+}
+.orders table .goods-info .goods .good > .infos > .item-warehouse:hover {
+  border: 1px solid #ffa360;
+}
+.orders table .goods-info .goods .good > .infos > .item-warehouse:hover > .change {
+  display: block;
+}
+.orders table .goods-info .goods .good > .infos > .item-warehouse:hover > .change:after {
+  content: '修改';
+}
+.orders table .goods-info .goods .good > .infos > .item-warehouse:hover {
+  margin: -12px -22px -13px -23px;
+}
+.orders table .goods-info .goods .good > .infos > .modifying {
+  margin: -12px -22px -13px -23px;
+  border: 1px solid #ffa360;
+}
+.orders table .goods-info .goods .good > .infos > .modifying > .change {
+  display: block;
+}
+.orders table .goods-info .goods .good > .infos > .modifying > .change:after {
+  content: '修改';
+}
+.orders table .goods-info .goods .good > .infos > .modifying .shown {
+  display: none;
+}
+.orders table .goods-info .goods .good > .infos > .modifying .edit {
+  display: block;
+}
+.orders table .goods-info .goods .good > .infos > .modifying .edit .line {
+  margin: 10px 0 5px;
+}
+.orders table .goods-info .goods .good > .infos > .modifying .edit .line .span {
+  display: inline-block;
+}
+.orders table .goods-info .goods .good > .infos > .modifying .edit .line input {
+  width: 100px;
+}
+.orders table .goods-info .goods .good > .infos > .modifying .edit .line .status-icon {
+  margin-left: 40px;
+}
+.orders table .goods-info .goods .good > .infos:after {
+  clear: both;
+  content: "";
+  display: block;
+}
+.orders table .goods-info .goods .web-order-id {
+  width: 33%;
+  text-align: center;
+  border-bottom: 1px solid #dddfe5;
+  border-right: 1px solid #dddfe5;
+  vertical-align: top;
+  padding: 12px 0;
+}
+.orders table .goods-info .goods .web-order-id .date-color {
+  color: #141414;
+}
+.page-panel {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  width: 100%;
+}
+.page-panel > ul {
+  float: right;
+}
+.page-panel:after {
+  clear: both;
+  content: "";
+  display: block;
+}

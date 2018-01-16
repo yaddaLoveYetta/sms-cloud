@@ -1,0 +1,338 @@
+.sep-row {
+    height: 40px;
+    line-height: 40px;
+}
+
+.sep-row .text {
+    margin: 0 5px;
+    font-size: 14px;
+}
+
+.sep-row .line {
+    background-color: #d0d0d0;
+    display: inline-block;
+    border: 0px;
+    height: 1px;
+    width: auto;
+    min-width: 830px;
+    overflow: hidden;
+    vertical-align: middle;
+}
+
+html, body, ul, table, thead, tbody, tr, td, ul, li, dl, dt, dd {
+    border: 0;
+    margin: 0;
+    padding: 0;
+}
+
+body, button, input, select, textarea {
+    font: 14px/1.5 'Microsoft YaHei', tahoma, arial, "Hiragino Sans Gb",
+    simsun, sans-serif;
+    color: #181818;
+}
+
+.clear {
+    clear: both;
+    content: "";
+    display: block;
+}
+
+dt {
+    /*border-top: 1px solid #84c4df;*/
+    height: 32px;
+    background: #ecedf1;
+    font-size: 14px;
+    line-height: 32px;
+}
+
+dt b {
+    margin-left: 10px;
+}
+
+.logistics-content {
+    display: flex;
+    -ms-flex-flow: column nowrap;
+    flex-flow: column nowrap;
+}
+
+.logistics-row {
+    display: -moz-flex;
+    display: -webkit-flex;
+    display: -ms-flex;
+    -ms-flex-flow: row nowrap;
+    flex-flow: row nowrap;
+    margin: 10px;
+}
+
+.hidden {
+    display: none;
+}
+
+.container-col {
+    flex: 1;
+    -ms-flex: 1;
+    width: 33%;
+    display: inline-block;
+    margin: 5px 10px;
+    border-bottom: 1px solid #5ec6d8;
+}
+
+.title {
+    /*float: left;*/
+    /*margin-left: 60px;*/
+    width: 140px;
+    text-align: right;
+    color: #838383;
+    margin-right: 3px;
+}
+
+.logistics-middle {
+    margin: 16px 64px;
+    display: block;
+}
+
+.logistics-bottom {
+    margin: 0px 64px 40px 64px;
+    display: block;
+}
+
+a {
+    position: relative;
+    color: #53a4dd;
+    cursor: pointer;
+}
+
+a:after {
+    position: absolute;
+    content: '';
+    top: 7px;
+    left: 55px;
+    border: solid;
+    border-color: #53a4dd transparent transparent transparent;
+    border-width: 5px;
+}
+
+.logistics-trace {
+    margin-left: 48px;
+    margin-top: 8px;
+}
+
+.logistics-trace dd {
+    margin-top: 5px;
+}
+
+.flow {
+    margin-left: 48px;
+    line-height: 150px;
+    display: block;
+    position: relative;
+    color: #fff;
+}
+
+.flow dd {
+    display: inline-block;
+}
+
+.flow .non-active {
+    background: #bfc0c2;
+    border-color: #bfc0c2;
+}
+
+.flow .toggle-triangle {
+    border-color: #fff;
+}
+
+.flow .operate-time {
+    display: none;
+    width: 156px;
+    color: #addeff;
+    background: #636769;
+    text-align: left;
+    border: none;
+    padding: 0px 18px;
+    line-height: 30px;
+    position: absolute;
+    top: 180px;
+    font-size: 12px;
+    left: 20px;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    -ms-border-radius: 2px;
+    z-index: 2000;
+}
+
+.flow .operate-time .title {
+    color: #a2a4a5;
+    font-size: 12px;
+}
+
+.flow .operate-time:before {
+    content: '';
+    position: absolute;
+    top: -20px;
+    border: solid;
+    border-color: transparent transparent #636769 transparent;
+    border-width: 10px;
+}
+
+.flow .icons {
+    position: absolute;
+    top: -90px;
+}
+
+.flow .refund-flow {
+    display: none;
+    position: absolute;
+    top: 120px;
+    left: 280px;
+}
+
+.flow .refund-flow .trangle-top-6 {
+    margin-top: -7px;
+    margin-right: -5px;
+    position: absolute;
+    left: 43px;
+    top: 30px;
+    border: solid;
+    border-color: #cb6e73 transparent transparent transparent;
+    border-width: 5px;
+}
+
+.flow .refund-flow .trangle-top-6-1 {
+    margin-top: -7px;
+    margin-right: -5px;
+    position: absolute;
+    left: 43px;
+    top: 36px;
+    border: solid;
+    border-color: #cb6e73 transparent transparent transparent;
+    border-width: 5px;
+}
+
+.flow .refund-flow .vertical-line-6 {
+    border: 0 solid transparent;
+    width: 3px;
+    height: 78px;
+    background: #cb6e73;
+    line-height: 78px;
+    margin-top: -7px;
+    display: block;
+    position: absolute;
+    top: 50px;
+    left: 47px;
+}
+
+.flow .dot {
+    width: 10px;
+    height: 10px;
+    background: red;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -ms-border-radius: 5px;
+}
+
+.flow .capsule {
+    border: 0 solid transparent;
+    padding: 0px 10px;
+    width: 70px;
+    height: 20px;
+    background: #bfc0c2;
+    -moz-border-radius: 50px;
+    -webkit-border-radius: 50px;
+    -ms-border-radius: 50px;
+    vertical-align: middle;
+    text-align: center;
+    margin-top: -7px;
+    text-indent: 0px;
+    line-height: 20px;
+}
+
+.flow .line {
+    border: 0 solid transparent;
+    width: 24px;
+    height: 3px;
+    background: #bfc0c2;
+    line-height: 10px;
+    vertical-align: middle;
+    margin-top: -7px;
+}
+
+.flow .triangle-left {
+    border: solid;
+    border-color: transparent transparent transparent #bfc0c2;
+    border-width: 5px;
+    vertical-align: middle;
+    margin-top: -7px;
+    margin-right: -5px;
+}
+
+.flow .print {
+    position: relative;
+    /*top: -17px;*/
+}
+
+.flow .parallel-middle {
+    position: absolute;
+    display: block;
+}
+
+.flow .parallel-up-1 {
+    display: block;
+    position: absolute;
+    top: 56px;
+}
+
+.flow .parallel-up-2 {
+    display: block;
+    position: absolute;
+    top: 34px;
+}
+
+.flow .parallel-up-3 {
+    display: block;
+    position: absolute;
+    top: 12px;
+}
+
+.flow .parallel-down-1 {
+    display: block;
+    position: absolute;
+    top: 100px;
+}
+
+.flow .parallel-down-2 {
+    display: block;
+    position: absolute;
+    top: 122px;
+}
+
+.flow .end {
+    font-size: 16px;
+    color: #bfc0c2;
+}
+
+.flow .active-end {
+    color: #629ffc;
+}
+
+.flow .triangle-left-sel {
+    border: solid;
+    border-color: transparent transparent transparent #e66250;
+    border-width: 5px;
+    vertical-align: middle;
+    margin-top: -7px;
+    margin-right: -5px;
+}
+
+.flow .gradient {
+    filter: progid:DXImageTransform.Microsoft.Gradient(startColorStr=#f35c3f,
+    endColorStr=#eb5f48);
+    background: -moz-linear-gradient(left, #f35c3f, #eb5f48);
+    background: -o-linear-gradient(left, #f35c3f, #eb5f48);
+    background: -webkit-gradient(linear, 0% 0%, 100% 0%, from(#f35c3f),
+    to(#eb5f48));
+    background: #EB5D45
+}
+.main{
+    margin-bottom: 20px;
+}

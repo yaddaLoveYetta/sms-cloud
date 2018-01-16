@@ -1,0 +1,231 @@
+﻿@import "../../../baseless/base.less";
+
+@btn-color: #4fb0d1;
+@border-color: #dddfe2;
+@row-dark: #f1f2f4;
+@bg-dropdonw: #7bc7e7;
+
+.clear {
+    content: "";
+    display: block;
+    zoom: 1;
+    clear: both;
+}
+
+.buttons {
+    margin-top: 10px;
+    background: @row-dark;
+
+    &:after, &:before {
+        content: "";
+        display: table;
+        zoom: 1;
+        clear: both;
+    }
+
+    .btn-box {
+
+        .btn {
+            border: none;
+            font-size: 14px;
+            color: #fff;
+            background: @btn-color;
+            padding: 5px 20px;
+            cursor: pointer;
+            margin-left: 10px;
+            display: inline-block;
+            -moz-border-radius: 3px;
+            -webkit-border-radius: 3px;
+            border-radius: 3px;
+
+            &:first-child {
+                margin-left: 0;
+            }
+        }
+
+        .btn-multi {
+            display: inline-block;
+            margin-left: 6px;
+
+            .btn {
+                ._border-right-radius(0);
+            }
+
+            .btn-more {
+                height: 0;
+                overflow: hidden;
+                position: absolute;
+                background: @btn-color;
+                z-index: 20;
+                border-radius: 3px;
+
+                li {
+                    text-align: center;
+                    min-width: 78px;
+                    background-color: transparent;
+                    font-size: 14px;
+
+                    &:hover {
+                        background-color: darken(@btn-color,5%);
+                    }
+                }
+
+                a {
+                    display: inline-block;
+                    color: #fff;
+                    text-decoration: none;
+                    padding: 5px 10px;
+                }
+            }
+
+            .bt-dropdown {
+                vertical-align: middle;
+                display: inline-block;
+                height: 31px;
+                width: 30px;
+                margin-top: -4px;
+                margin-left: -5px;
+                background: @bg-dropdonw;
+                position: relative;
+                cursor: pointer;
+                ._border-right-radius (3px);
+
+                .icon-dropdown {
+                    ._triangle-top(6px, #fff);
+                    top: 13px;
+                    left: 9px;
+                }
+            }
+        }
+
+        .on {
+
+            .btn-more {
+                height: auto;
+            }
+        }
+    }
+}
+
+.container {
+    margin-top: 20px;
+    position: relative;
+    overflow: hidden;
+
+    .navigation {
+        margin-right: 50px;
+        padding-bottom: 100%;
+        margin-bottom: -100%;
+        float: left;
+        color: darkgray;
+
+        li {
+            margin-bottom: 20px;
+        }
+
+        .actived {
+            color: black;
+        }
+
+        &:after {
+            .clear;
+        }
+    }
+
+    .details {
+        float: left;
+        margin-right: 50px;
+        font-size: 14px;
+        padding-left: 20px;
+
+        th, td {
+            padding: 5px 13px;
+            height: 25px;
+        }
+
+        .sub-table {
+            th {
+                padding: 0 5px;
+                margin: 0;
+                background: darkgray;
+            }
+
+            td {
+                padding: 0;
+                margin: 0;
+            }
+        }
+
+        input {
+            padding-left: 5px;
+            border: 1px solid #ddd;
+        }
+
+        .show {
+            display: initial;
+        }
+
+        .edit {
+            display: none;
+        }
+
+        .disabled {
+            color: #ccc;
+        }
+
+        .on-edit {
+            .show {
+                display: none;
+            }
+
+            .edit {
+                display: initial;
+            }
+        }
+
+        .pick-input {
+
+            input {
+                height: 23px;
+                border: 1px solid #ddd;
+                padding-left: 5px;
+            }
+
+            .btn {
+                display: inline-block;
+                height: 25px;
+                width: 25px;
+                background: #ddd;
+                vertical-align: bottom;
+            }
+        }
+    }
+
+    .img {
+        padding: 5%;
+        /*padding-bottom: 100%;
+        margin-bottom: -100%;*/
+        float: left;
+        //vertical-align: middle;
+        /*height: 500px;
+        line-height: 500px;*/
+        border-left: 1px solid darkgray;
+        padding-left: 2px;
+        position: relative;
+
+        span {
+            display: block;
+            margin: 20px;
+        }
+
+        .change-img {
+            position: absolute;
+            z-index: 1000;
+            top: 50%;
+            left: 50%;
+            border: 1px dashed darkgray;
+            color: orange;
+            cursor: pointer;
+        }
+    }
+}

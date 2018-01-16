@@ -1,0 +1,221 @@
+﻿@import "../../../baseless/base.less";
+
+@itemHeight: 30px;
+@btn-color: #4fb0d1;
+@border-color: #dddfe2;
+@row-dark: #f1f2f4;
+@thead-color: #d2d2d2;
+@bg-dropdonw: #7bc5e1;
+
+//public color
+@blue: #53a5dd;
+@red: #ea542a;
+@gray-dark: #838383;
+@gray-light: #b3b3b3;
+@dark: #141414;
+@orange: #ed8244;
+
+ 
+
+
+
+.border() {
+    border: 1px solid @border-color;
+}
+
+
+.topN(@n) when ( @n > -1) {
+    .topN((@n - 1));
+
+    .top@{n}{
+        top: @itemHeight * @n;
+    }
+}
+
+
+.nav-panel {
+    margin-bottom: 10px;
+
+    &:after, &:before {
+        clear: both;
+        content: "";
+        display: table;
+        zoom: 1;
+    }
+
+    .bread-crumbs-box {
+        float: left;
+    }
+
+    .selector-box {
+        position: relative;
+        top: 100%;
+    }
+
+    .search-box {
+        float: right;
+
+        .kerp-icon-search {
+            background: url(img/icon-search.png) center no-repeat;
+            display: inline-block;
+            vertical-align: top;
+            width: 16px;
+            height: 25px;
+        }
+
+        input {
+            vertical-align: top;
+            height: 25px;
+            width: 70px;
+            padding: 0 5px;
+            border: none;
+        }
+
+        .bt-dropdown {
+            height: 20px;
+            width: 23px;
+            display: inline-block;
+            vertical-align: top;
+            border: 1px solid #ddd;
+            position: relative;
+            cursor: pointer;
+            -moz-border-radius: 3px;
+            -webkit-border-radius: 3px;
+            border-radius: 3px;
+
+            .kerp-icon-dropdown {
+                top: 9px;
+                left: 7px;
+                ._triangle-top(5px,#8f8f8f);
+            }
+        }
+    }
+}
+
+
+.options-panel{
+    background: #f1f2f4; 
+
+    &:after, &:before{
+        clear: both;
+        content: "";
+        display: block;
+        zoom: 1;
+    }
+
+    .btn-box{
+        float: left;
+
+        .btn-more{
+            .kerp-btn-item{
+                background: @gray-dark;
+            }
+            .bt-dropdown{
+                background: @gray-light;
+            }
+        }
+    }
+
+    .pager-box{
+        float: right;
+    }
+}
+
+
+.data-table{
+    margin-top: 10px;
+    width: 100%;
+    text-align: left;
+
+    thead tr{
+        border-bottom: 1px solid #dddfe5;
+    }
+
+    tbody tr{
+        border-bottom: 1px solid #dddfe5;
+
+        &:hover{
+            background: #f1f2f4;
+        }
+
+        &:nth-child(even){
+            background-color: #f8f8f9;
+        }
+
+    }
+
+    th,td{
+        padding: 0 5px;
+    }
+
+    th{
+        height: 20px;
+        color: @gray-light;
+        font-weight: normal;
+    }
+
+    td{
+        height: 30px;
+        vertical-align: middle;
+    }
+
+    img{
+        width: 72px;
+        height: 72px;
+    }
+
+    .name{
+        color: @gray-light;
+    }
+
+    .number{
+        color: @blue;
+
+        a{
+            color: @blue;
+        }
+    }
+
+    .checkbox{
+        text-align: center;
+
+        input{
+            width: 14px;
+            height: 14px;
+            vertical-align: middle;
+        }
+    }
+
+    .dropdown-info{
+        cursor: pointer;
+        position: relative;
+        padding-right: 15px;
+        display: inline-block;
+
+        .kerp-icon-dropdown{
+            ._triangle-top(5px, @gray-dark);
+            top: 8px;
+            right: 0;
+        }
+    }
+
+    //覆盖基数行斑马纹背景色优先级
+    .selected{
+        background: #ddd!important;
+        border-bottom: 1px solid #fff;
+
+        &:hover{
+            background: #ddd!important;
+        }
+    }
+
+    .disabled .number{
+        color: @red;
+
+        a{
+            color: @red;
+        }
+    }
+
+
+}

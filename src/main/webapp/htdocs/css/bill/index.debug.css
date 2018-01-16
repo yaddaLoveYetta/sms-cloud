@@ -1,0 +1,161 @@
+
+.clear {
+    clear: both;
+    content: "";
+    display: block;
+}
+
+dt {
+    height: 32px;
+    background: #ecedf1;
+    font-size: 14px;
+    line-height: 32px;
+}
+
+dt b {
+    margin-left: 10px;
+}
+
+.main {
+    margin-bottom: 20px;
+}
+
+/**************************************************************/
+dd {
+    overflow-x: auto;
+}
+
+.logistics-row {
+    display: -webkit-box;
+    display: -moz-flex;
+    display: -webkit-flex;
+    display: -ms-flex;
+    display: flex;
+    flex-direction: row;
+    -ms-flex-flow: row nowrap;
+    -webkit-flex-flow: row nowrap;
+    flex-flow: row nowrap;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    -webkit-justify-content: flex-start;
+    margin: 10px 30px;
+
+}
+
+.logistics-row .item {
+    width: 250px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    margin: 0px 5px;
+}
+
+.logistics-row .item .col-title {
+    display: block;
+    width: 100px;
+    line-height: 24px;
+    text-align: right;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin-right: 5px;
+    color: #2b2d33;
+}
+
+.logistics-row .item .col-value {
+    display: inline-block;
+    /*width: 100px;*/
+}
+
+.logistics-row .item .col-value .edit-input {
+    width: 150px;
+    /*   overflow: scroll;*/
+    text-align: left;
+}
+
+.logistics-row .item .col-value input[type='checkbox'] {
+    width: auto;
+}
+
+/*************************菜单*/
+.options-panel {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    background-color: #f1f2f4;
+}
+
+.options-panel:before {
+    clear: both;
+    content: "";
+    display: block;
+    zoom: 1;
+
+}
+
+.options-panel .btn-box {
+    height: 25px;
+    width: 100%;
+}
+
+.must-mark {
+    font-size: 14px;
+    padding: 0 3px;
+    color: #f00;
+}
+
+.main .logistics-row .col-value .msg {
+    color: red;
+    margin-left: 10px;
+    display: none;
+    vertical-align: middle;
+}
+
+.main .logistics-row .col-value .show {
+    display: inline-block;
+}
+
+.sms-F7selector {
+    position: relative;
+}
+
+.sms-F7selector span[data-role="btn"] {
+    vertical-align: top;
+    display: inline-block;
+    background: #ddd;
+    cursor: pointer;
+    position: absolute;
+    top: 1px;
+    right: 1px;
+    background: url(../img/ui_kit_updt.png);
+    height: 24px;
+    width: 24px;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.sms-F7selector span[data-role="btnDisalbe"] {
+    vertical-align: top;
+    display: inline-block;
+    background: #ddd;
+    cursor: pointer;
+    position: absolute;
+    top: 1px;
+    right: 1px;
+    background: url(../img/ui_kit_updt.png);
+    height: 24px;
+    width: 24px;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.sms-F7selector input {
+    border: 1px solid #dddddd;
+    width: 150px;
+    border-image: initial;
+    height: 24px;
+    line-height: 24px;
+}
+
+.edit-input {
+    padding-right: 5px;
+}

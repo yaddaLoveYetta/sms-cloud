@@ -1,0 +1,73 @@
+@CHARSET "UTF-8";
+.left-panel {
+  width: 65%;
+  height: 100%;
+  border: 1px solid #d9dcdf;
+  padding: 5px;
+  display: inline-block;
+}
+.left-panel .page-panel {
+  float: right;
+  margin-top: 32px;
+  margin-right: 12px;
+}
+.right-panel {
+  width: 25%;
+  padding: 5px;
+  margin-left: 10px;
+  display: inline-block;
+  vertical-align: top;
+  border: 1px solid #d9dcdf;
+     height: 517px;
+ 
+}
+.right-panel .content {
+     height: 465px;
+  overflow: auto;
+}
+.right-panel .title {
+  height: 20px;
+  margin: 0 20px;
+  overflow: hidden;
+}
+.right-panel .content .tree {
+  margin-left: 30px;
+  display: inline-block;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+.right-panel .bottom {
+  text-align: center;
+}
+.options {
+  text-align: center;
+  display: inline-block;    
+  margin: 5px auto;
+    width: 80%;
+}
+
+.dh25 {
+    background: #dddfe5;height: 25px;
+}
+.sms-btn-item {
+  border: none;
+  font-size: 12px;
+  color: #fff;
+  background-color: #54add3;
+  padding: 0 12px;
+  height: 25px;
+  line-height: 25px;
+  cursor: pointer;
+  display: inline-block;
+  text-decoration: none;
+  -moz-border-radius: 2px;
+  -webkit-border-radius: 2px;
+  border-radius: 2px;
+}
+.sms-btn-item:hover {
+  text-decoration: none;
+  background-color: #4bbbdb;
+}
+.data-table .disabled {
+	color: #ea542a;
+}
