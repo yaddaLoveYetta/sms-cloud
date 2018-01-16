@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kingdee.eas.hrp.sms.dao.customize.ReportDaoMapper">
+
+	<!-- 物料证件查询 -->
+	<select id="getItemLicense" parameterType="map" resultType="map">
+
+		SELECT
+		t3.name AS itemName,
+		t3.number AS itemNumber,
+		t3.specification AS itemModel,
+		t4.name AS factory,
+		t1.idNumber,
+		t6.name AS idType,
+		t1.name AS idName,
+		t1.authOrg,
+		t5.name AS
+		agent,
+		t1.supplier AS supplierId,
+		t7.name AS supplier,
+		t1.beginDate,
+		t1.endDate,
+		datediff(DAY, getdate(), t1.endDate) AS effective, /*大于0未过期，小于0已过期*/
+		(datediff(DAY, getdate(),
+		t1.endDate)-#{PromptLeadDay}) AS remainDays
+		FROM
+		t_sms_supplier_item_license t1
+		INNER JOIN
+		t_sms_item t3 ON t1.material =
+		t3.id
+		INNER JOIN t_sms_manufacture t4 ON
+		t1.factory = t4.id
+		LEFT JOIN t_sms_manufacture t5
+		ON t1.agent = t5.id
+		INNER JOIN
+		t_sms_supplier_item_license_type t6 ON
+		t1.type = t6.id
+		INNER JOIN t_sms_supplier t7 ON
+		t1.supplier = t7.id
+		WHERE 1=1
+
+		<if test="itemName !=null and itemName !='' ">
+			AND t3.name LIKE '%${itemName}%'
+		</if>
+		<if test="itemNumber !=null and itemNumber !='' ">
+			AND t3.number LIKE '%${itemNumber}%'
+		</if>
+		<if test="itemModel !=null and itemModel !='' ">
+			AND t3.specification LIKE '%${itemModel}%'
+		</if>
+		<if test="manufacturer !=null and manufacturer !='' ">
+			AND t1.factory = #{manufacturer}
+		</if>
+		<if test="idNumber !=null and idNumber !='' ">
+			AND t1.idNumber LIKE '%${idNumber}%'
+		</if>
+		<if test="idName !=null and idName !='' ">
+			AND t1.name LIKE '%${idName}%'
+		</if>
+
+		<if test="idType !=null and idType !='' ">
+			AND t1.type = #{idType}
+		</if>
+
+		<if test="authOrg !=null and authOrg !='' ">
+			AND t1.authOrg LIKE '%${authOrg}%'
+		</if>
+		<if test="agent !=null and agent !='' ">
+			AND t1.agent = #{agent}
+		</if>
+
+		<if test="supplier !=null and supplier !='' ">
+			AND t1.supplier = #{supplier}
+		</if>
+		<if test="soonExpired !=null and soonExpired !='' ">
+		  <![CDATA[
+		      AND datediff(DAY, getdate(),t1.endDate) >= 0
+		      AND datediff(DAY, getdate(),t1.endDate) <= #{PromptLeadDay}
+		   ]]>
+		</if>
+		<if test="expired !=null and expired !='' ">
+		  <![CDATA[
+			AND datediff(DAY, getdate(),t1.endDate) < 0
+			]]>
+		</if>
+
+	</select>
+
+	<!-- 供应商资质查询 -->
+	<select id="getSupplierLicense" parameterType="String" resultType="map">
+		SELECT
+		t1.idNumber,
+		t6.name AS idType,
+		t1.name AS
+		idName,
+		t1.authOrg,
+		t1.supplier AS supplierId,
+		t7.name AS supplier,
+		t1.beginDate,
+		t1.endDate,
+		datediff(DAY, getdate(),
+		t1.endDate) AS effective,/*大于0未过期，小于0已过期*/
+		(
+		datediff(DAY, getdate(), t1.endDate) - 5
+		) AS remainDays
+		FROM
+		t_sms_supplier_license t1
+		INNER JOIN t_sms_supplier_license_type t6 ON t1.type = t6.id
+		INNER JOIN t_sms_supplier t7 ON
+		t1.supplier = t7.id
+
+		WHERE
+		t1.supplier IN (
+		${value}
+		)
+	</select>
+</mapper>

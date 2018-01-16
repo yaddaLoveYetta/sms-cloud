@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kingdee.eas.hrp.sms.dao.generate.DataFlowTopClassMapper">
+  <resultMap id="BaseResultMap" type="com.kingdee.eas.hrp.sms.model.DataFlowTopClass">
+    <id column="topClassId" jdbcType="INTEGER" property="topClassId" />
+    <result column="topClassName" jdbcType="VARCHAR" property="topClassName" />
+    <result column="index" jdbcType="INTEGER" property="index" />
+    <result column="visible" jdbcType="BIT" property="visible" />
+    <result column="icon" jdbcType="VARCHAR" property="icon" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    topClassId, topClassName, [index], visible, icon
+  </sql>
+  <select id="selectByExample" parameterType="com.kingdee.eas.hrp.sms.model.DataFlowTopClassExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_sms_dataFlowTopClass
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_sms_dataFlowTopClass
+    where topClassId = #{topClassId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_sms_dataFlowTopClass
+    where topClassId = #{topClassId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.kingdee.eas.hrp.sms.model.DataFlowTopClassExample">
+    delete from t_sms_dataFlowTopClass
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.kingdee.eas.hrp.sms.model.DataFlowTopClass">
+    insert into t_sms_dataFlowTopClass (topClassId, topClassName, [index], 
+      visible, icon)
+    values (#{topClassId,jdbcType=INTEGER}, #{topClassName,jdbcType=VARCHAR}, #{index,jdbcType=INTEGER}, 
+      #{visible,jdbcType=BIT}, #{icon,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.kingdee.eas.hrp.sms.model.DataFlowTopClass">
+    insert into t_sms_dataFlowTopClass
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="topClassId != null">
+        topClassId,
+      </if>
+      <if test="topClassName != null">
+        topClassName,
+      </if>
+      <if test="index != null">
+        [index],
+      </if>
+      <if test="visible != null">
+        visible,
+      </if>
+      <if test="icon != null">
+        icon,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="topClassId != null">
+        #{topClassId,jdbcType=INTEGER},
+      </if>
+      <if test="topClassName != null">
+        #{topClassName,jdbcType=VARCHAR},
+      </if>
+      <if test="index != null">
+        #{index,jdbcType=INTEGER},
+      </if>
+      <if test="visible != null">
+        #{visible,jdbcType=BIT},
+      </if>
+      <if test="icon != null">
+        #{icon,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.kingdee.eas.hrp.sms.model.DataFlowTopClassExample" resultType="java.lang.Long">
+    select count(*) from t_sms_dataFlowTopClass
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update t_sms_dataFlowTopClass
+    <set>
+      <if test="record.topClassId != null">
+        topClassId = #{record.topClassId,jdbcType=INTEGER},
+      </if>
+      <if test="record.topClassName != null">
+        topClassName = #{record.topClassName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.index != null">
+        [index] = #{record.index,jdbcType=INTEGER},
+      </if>
+      <if test="record.visible != null">
+        visible = #{record.visible,jdbcType=BIT},
+      </if>
+      <if test="record.icon != null">
+        icon = #{record.icon,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update t_sms_dataFlowTopClass
+    set topClassId = #{record.topClassId,jdbcType=INTEGER},
+      topClassName = #{record.topClassName,jdbcType=VARCHAR},
+      [index] = #{record.index,jdbcType=INTEGER},
+      visible = #{record.visible,jdbcType=BIT},
+      icon = #{record.icon,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.kingdee.eas.hrp.sms.model.DataFlowTopClass">
+    update t_sms_dataFlowTopClass
+    <set>
+      <if test="topClassName != null">
+        topClassName = #{topClassName,jdbcType=VARCHAR},
+      </if>
+      <if test="index != null">
+        [index] = #{index,jdbcType=INTEGER},
+      </if>
+      <if test="visible != null">
+        visible = #{visible,jdbcType=BIT},
+      </if>
+      <if test="icon != null">
+        icon = #{icon,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where topClassId = #{topClassId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.kingdee.eas.hrp.sms.model.DataFlowTopClass">
+    update t_sms_dataFlowTopClass
+    set topClassName = #{topClassName,jdbcType=VARCHAR},
+      [index] = #{index,jdbcType=INTEGER},
+      visible = #{visible,jdbcType=BIT},
+      icon = #{icon,jdbcType=VARCHAR}
+    where topClassId = #{topClassId,jdbcType=INTEGER}
+  </update>
+</mapper>

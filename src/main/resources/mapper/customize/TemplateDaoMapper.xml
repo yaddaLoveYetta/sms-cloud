@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kingdee.eas.hrp.sms.dao.customize.TemplateDaoMapper">
+
+	<!-- 根据模板查询数据 -->
+	<select id="getItems" parameterType="map" resultType="map">
+		${sql}
+	</select>
+
+	<select id="getItems_old" parameterType="map" resultType="map">
+		${select}
+		${from}
+		${where}
+		${orderby}
+	</select>
+
+	<!-- 增加基础资料 -->
+	<insert id="add" parameterType="HashMap">
+		${sql}
+	</insert>
+	<insert id="add_old" parameterType="HashMap">
+		insert into ${tableName} (${
+		fieldStr}) values(${valueStr})
+	</insert>
+
+	<!-- 修改基础资料 -->
+	<update id="edit" parameterType="HashMap">
+		${sql}
+	</update>
+	<update id="edit_old" parameterType="HashMap">
+		update ${tableName} set ${kvStr} where ${primaryKey}=${id}
+	</update>
+	<!--删除基础资料 -->
+	<delete id="del" parameterType="HashMap">
+		delete from ${tableName} where ${primaryKey} in (${items})
+	</delete>
+	<!--审核基础资料 -->
+	<delete id="check" parameterType="HashMap">
+		update ${tableName} set review=1 where ${primaryKey} in ( ${items}
+		)
+	</delete>
+	<!--反审核基础资料 -->
+	<delete id="unCheck" parameterType="HashMap">
+		update ${tableName} set review=0 where ${primaryKey} in ( ${items}
+		)
+	</delete>
+	<!--反审核基础资料时，修改同步状态 -->
+	<delete id="unsyncStatus" parameterType="HashMap">
+		update ${tableName} set syncStatus=0 where ${primaryKey} in ( ${items}
+		)
+	</delete>
+</mapper>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kingdee.eas.hrp.sms.dao.customize.SysDaoMapper">
+
+	<select id="getSysMenu" parameterType="int" resultType="map">
+
+		SELECT
+		t1.topClassId,
+		t1.topClassName,
+		t1.[index],
+		t1.icon,
+		t2.subSysId,
+		t2.name,
+		t2.[index] AS subIndex,
+		t2.url,
+		t2.icon AS
+		subIcon,
+		t3.objectType,
+		t3.objectId,
+		ISNULL(t4.accessMask, 0) AS accessMask
+		FROM
+		t_sms_DataFlowTopClass t1
+		INNER JOIN
+		t_sms_dataFlowSubClass t2 ON t1.topClassId = t2.topClassId
+		INNER JOIN t_sms_objectType t3 ON t2.topClassId =
+		t3.topClassId
+		AND t2.subSysId = t3.subSysId
+		INNER JOIN t_sms_objectAccessType t4 ON t3.objectType = t4.objectType
+		AND
+		t3.objectId = t4.objectId
+		AND t4.[index] = 0 -- 只过滤出菜单
+		WHERE
+		t1.visible = 1
+		
+		<if test="_parameter !=null">
+			AND t2.visible &amp; #{type} = #{type}
+			AND t2.ownerType &amp; #{type} = #{type}
+		</if>
+		ORDER BY
+		t1.[index],
+		t2.[index]
+	</select>
+	<!-- 新增单据时获取记录主键 -->
+	<select id="getId" parameterType="String" resultType="String">
+		SELECT dbo.newbosid(#{bosType})
+	</select>
+</mapper>

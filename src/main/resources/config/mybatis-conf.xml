@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <!-- 配置里面的节点顺序是properties->settings->typeAliases->typeHandlers->objectFactory->objectWrapperFactory->plugins->environments->databaseIdProvider->mappers -->
+
+    <!-- 配置mybatis的缓存，延迟加载等等一系列属性 -->
+    <settings>
+        <!--日志 -->
+        <setting name="logImpl" value="LOG4J2"/>
+        <!-- 全局映射器启用缓存 -->
+        <setting name="cacheEnabled" value="true"/>
+        <!-- 查询时，关闭关联对象即时加载以提高性能 -->
+        <setting name="lazyLoadingEnabled" value="false"/>
+        <!-- 设置关联对象加载的形态，此处为按需加载字段(加载字段由SQL指 定)，不会加载关联表的所有字段，以提高性能 -->
+        <setting name="aggressiveLazyLoading" value="false"/>
+        <!-- 对于未知的SQL查询，允许返回不同的结果集以达到通用的效果 -->
+        <setting name="multipleResultSetsEnabled" value="true"/>
+        <!-- 允许使用列标签代替列名 -->
+        <setting name="useColumnLabel" value="true"/>
+        <!-- 允许使用自定义的主键值(比如由程序生成的UUID 32位编码作为键值)，数据表的PK生成策略将被覆盖 -->
+        <!-- <setting name="useGeneratedKeys" value="true" /> -->
+        <!-- 给予被嵌套的resultMap以字段-属性的映射支持 -->
+        <setting name="autoMappingBehavior" value="FULL"/>
+        <!-- 对于批量更新操作缓存SQL以提高性能-这货会影响自增主键查询语句的执行 -->
+        <!--<setting name="defaultExecutorType" value="BATCH" /> -->
+        <!-- 数据库超过25000秒仍未响应则超时 -->
+        <setting name="defaultStatementTimeout" value="25000"/>
+        <!-- 允许null值列映射 -->
+        <setting name="callSettersOnNulls" value="true"/>
+    </settings>
+    <!-- 全局别名设置，在映射文件中只需写别名，而不必写出整个类路径 -->
+    <typeAliases>
+        <!-- <typeAlias alias="TestBean" type="com.test.TestBean" /> -->
+    </typeAliases>
+
+    <plugins>
+
+        <!-- com.github.pagehelper为PageHelper类所在包名 -->
+        <plugin interceptor="com.github.pagehelper.PageInterceptor">
+
+            <!-- 增加dialect属性，使用时必须指定该属性，可选值为 oracle,mysql,mariadb,sqlite,hsqldb,postgresql,没有默认值，必须指定该 属性 -->
+            <!-- 			<property name="dialect" value="sqlserver" /> -->
+            <property name="helperDialect" value="sqlserver"/>
+            <!-- 该参数默认为false -->
+            <!-- 设置为true时，会将RowBounds第一个参数offset当成pageNum页码使用 -->
+            <!-- 和startPage中的pageNum效果一样 -->
+            <property name="offsetAsPageNum" value="false"/>
+            <!-- 该参数默认为false -->
+            <!-- 设置为true时，使用RowBounds分页会进行count查询 -->
+            <property name="rowBoundsWithCount" value="true"/>
+            <!-- 设置为true时，如果pageSize=0或者RowBounds.limit = 0就会查询出全部的结果 -->
+            <!-- （相当于没有执行分页查询，但是返回结果仍然是Page类型） -->
+            <property name="pageSizeZero" value="true"/>
+            <!-- 3.3.0版本可用 - 分页参数合理化，默认false禁用 -->
+            <!-- 启用合理化时，如果pageNum<1会查询第一页，如果pageNum>pages会查询最后一页 -->
+            <!-- 禁用合理化时，如果pageNum<1或pageNum>pages会返回空数据 -->
+            <property name="reasonable" value="true"/>
+            <property name="supportMethodsArguments" value="false"/>
+            <property name="returnPageInfo" value="none"/>
+        </plugin>
+    </plugins>
+
+
+    <!-- 非注解的sql映射文件配置，如果使用mybatis注解，该mapper无需配置，但是如果mybatis注解中包含@resultMap注解，则mapper必须配置，给resultMap注解使用 -->
+    <mappers>
+
+        <!-- =============================== 生成工具生成Mapper ========================begin=== -->
+
+        <mapper resource="mapper/generate/AccessControlMapper.xml"/>
+        <mapper resource="mapper/generate/DataFlowSubClassMapper.xml"/>
+        <mapper resource="mapper/generate/DataFlowTopClassMapper.xml"/>
+        <mapper resource="mapper/generate/FormClassMapper.xml"/>
+        <mapper resource="mapper/generate/FormEntriesMapper.xml"/>
+        <mapper resource="mapper/generate/FormFieldsMapper.xml"/>
+        <mapper resource="mapper/generate/ObjectTypeMapper.xml"/>
+        <mapper resource="mapper/generate/SysProfileMapper.xml"/>
+        <mapper resource="mapper/generate/SysLogMapper.xml"/>
+        <mapper resource="mapper/generate/RoleMapper.xml"/>
+        <mapper resource="mapper/generate/UserMapper.xml"/>
+        <mapper resource="mapper/generate/CategoryMapper.xml"/>
+        <mapper resource="mapper/generate/CertificateMapper.xml"/>
+        <mapper resource="mapper/generate/CurrencyMapper.xml"/>
+        <mapper resource="mapper/generate/IndustryMapper.xml"/>
+        <mapper resource="mapper/generate/ItemMapper.xml"/>
+        <mapper resource="mapper/generate/PayMapper.xml"/>
+        <mapper resource="mapper/generate/SettlementMapper.xml"/>
+        <mapper resource="mapper/generate/SupplierMapper.xml"/>
+        <mapper resource="mapper/generate/TaxCategoryMapper.xml"/>
+        <mapper resource="mapper/generate/OrderMapper.xml"/>
+
+        <mapper resource="mapper/generate/OrderEntryMapper.xml"/>
+
+        <mapper resource="mapper/generate/PluginsMapper.xml"/>
+        <mapper resource="mapper/generate/MsgLogMapper.xml"/>
+
+
+        <mapper resource="mapper/generate/CountryMapper.xml"/>
+        <mapper resource="mapper/generate/CityMapper.xml"/>
+        <mapper resource="mapper/generate/ProvinceMapper.xml"/>
+        <mapper resource="mapper/generate/CountyMapper.xml"/>
+        <mapper resource="mapper/generate/UnitMapper.xml"/>
+        <mapper resource="mapper/generate/SendcargoMapper.xml"/>
+        <mapper resource="mapper/generate/SupplierLicenseTypeMapper.xml"/>
+        <mapper resource="mapper/generate/PurInWarehsMapper.xml"/>
+        <mapper resource="mapper/generate/PurReceivalMapper.xml"/>
+        <mapper resource="mapper/generate/PurInWarehsEntryMapper.xml"/>
+        <mapper resource="mapper/generate/PurReceivalEntryMapper.xml"/>
+        <mapper resource="mapper/generate/ApprovedSupplierMapper.xml"/>
+        <mapper resource="mapper/generate/SupplierLicenseEntryMapper.xml"/>
+        <mapper resource="mapper/generate/SupplierItemLicenseEntryMapper.xml"/>
+        <mapper resource="mapper/generate/PurReturnsEntryMapper.xml"/>
+        <mapper resource="mapper/generate/PurReturnsMapper.xml"/>
+        <mapper resource="mapper/generate/SerialNumberMapper.xml"/>
+        <mapper resource="mapper/generate/SupplierItemLicenseMapper.xml"/>
+        <mapper resource="mapper/generate/SupplierLicenseMapper.xml"/>
+        <mapper resource="mapper/generate/AppInfoMapper.xml"/>
+        <!-- =============================== 生成工具生成Mapper =====================end==== -->
+
+        <!-- =============================== 复杂Mapper ========================begin=== -->
+        <mapper resource="mapper/customize/Platform_SysDaoMapper.xml"/>
+        <mapper resource="mapper/customize/Platform_RoleDaoMapper.xml"/>
+        <mapper resource="mapper/customize/TemplateDaoMapper.xml"/>
+        <mapper resource="mapper/customize/SendcargoDaoMapper.xml"/>
+
+        <mapper resource="mapper/customize/PurchaseOrderEntryDaoMapper.xml"/>
+
+        <mapper resource="mapper/customize/OrderDaoMapper.xml"/>
+        <mapper resource="mapper/customize/ReportDaoMapper.xml"/>
+
+
+        <!-- =============================== 复杂Mapper =====================end==== -->
+
+    </mappers>
+
+</configuration>

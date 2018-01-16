@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kingdee.eas.hrp.sms.dao.generate.AppInfoMapper">
+  <resultMap id="BaseResultMap" type="com.kingdee.eas.hrp.sms.model.AppInfo">
+    <id column="userId" jdbcType="VARCHAR" property="userId" />
+    <result column="appId" jdbcType="VARCHAR" property="appId" />
+    <result column="appSecret" jdbcType="VARCHAR" property="appSecret" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    userId, appId, appSecret
+  </sql>
+  <select id="selectByExample" parameterType="com.kingdee.eas.hrp.sms.model.AppInfoExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_sms_app_info
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_sms_app_info
+    where userId = #{userId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from t_sms_app_info
+    where userId = #{userId,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.kingdee.eas.hrp.sms.model.AppInfoExample">
+    delete from t_sms_app_info
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.kingdee.eas.hrp.sms.model.AppInfo">
+    insert into t_sms_app_info (userId, appId, appSecret
+      )
+    values (#{userId,jdbcType=VARCHAR}, #{appId,jdbcType=VARCHAR}, #{appSecret,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.kingdee.eas.hrp.sms.model.AppInfo">
+    insert into t_sms_app_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        userId,
+      </if>
+      <if test="appId != null">
+        appId,
+      </if>
+      <if test="appSecret != null">
+        appSecret,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="appId != null">
+        #{appId,jdbcType=VARCHAR},
+      </if>
+      <if test="appSecret != null">
+        #{appSecret,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.kingdee.eas.hrp.sms.model.AppInfoExample" resultType="java.lang.Long">
+    select count(*) from t_sms_app_info
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update t_sms_app_info
+    <set>
+      <if test="record.userId != null">
+        userId = #{record.userId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.appId != null">
+        appId = #{record.appId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.appSecret != null">
+        appSecret = #{record.appSecret,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update t_sms_app_info
+    set userId = #{record.userId,jdbcType=VARCHAR},
+      appId = #{record.appId,jdbcType=VARCHAR},
+      appSecret = #{record.appSecret,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.kingdee.eas.hrp.sms.model.AppInfo">
+    update t_sms_app_info
+    <set>
+      <if test="appId != null">
+        appId = #{appId,jdbcType=VARCHAR},
+      </if>
+      <if test="appSecret != null">
+        appSecret = #{appSecret,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where userId = #{userId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.kingdee.eas.hrp.sms.model.AppInfo">
+    update t_sms_app_info
+    set appId = #{appId,jdbcType=VARCHAR},
+      appSecret = #{appSecret,jdbcType=VARCHAR}
+    where userId = #{userId,jdbcType=VARCHAR}
+  </update>
+</mapper>

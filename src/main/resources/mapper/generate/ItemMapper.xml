@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kingdee.eas.hrp.sms.dao.generate.ItemMapper">
+  <resultMap id="BaseResultMap" type="com.kingdee.eas.hrp.sms.model.Item">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="number" jdbcType="VARCHAR" property="number" />
+    <result column="specification" jdbcType="VARCHAR" property="specification" />
+    <result column="highConsumable" jdbcType="TINYINT" property="highConsumable" />
+    <result column="isLotNumber" jdbcType="TINYINT" property="isLotNumber" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, [name], [number], specification, highConsumable, isLotNumber
+  </sql>
+  <select id="selectByExample" parameterType="com.kingdee.eas.hrp.sms.model.ItemExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_sms_item
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_sms_item
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from t_sms_item
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.kingdee.eas.hrp.sms.model.ItemExample">
+    delete from t_sms_item
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.kingdee.eas.hrp.sms.model.Item">
+    insert into t_sms_item (id, [name], [number], 
+      specification, highConsumable, isLotNumber
+      )
+    values (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{number,jdbcType=VARCHAR}, 
+      #{specification,jdbcType=VARCHAR}, #{highConsumable,jdbcType=TINYINT}, #{isLotNumber,jdbcType=TINYINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.kingdee.eas.hrp.sms.model.Item">
+    insert into t_sms_item
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="name != null">
+        [name],
+      </if>
+      <if test="number != null">
+        [number],
+      </if>
+      <if test="specification != null">
+        specification,
+      </if>
+      <if test="highConsumable != null">
+        highConsumable,
+      </if>
+      <if test="isLotNumber != null">
+        isLotNumber,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="number != null">
+        #{number,jdbcType=VARCHAR},
+      </if>
+      <if test="specification != null">
+        #{specification,jdbcType=VARCHAR},
+      </if>
+      <if test="highConsumable != null">
+        #{highConsumable,jdbcType=TINYINT},
+      </if>
+      <if test="isLotNumber != null">
+        #{isLotNumber,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.kingdee.eas.hrp.sms.model.ItemExample" resultType="java.lang.Long">
+    select count(*) from t_sms_item
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update t_sms_item
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.name != null">
+        [name] = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.number != null">
+        [number] = #{record.number,jdbcType=VARCHAR},
+      </if>
+      <if test="record.specification != null">
+        specification = #{record.specification,jdbcType=VARCHAR},
+      </if>
+      <if test="record.highConsumable != null">
+        highConsumable = #{record.highConsumable,jdbcType=TINYINT},
+      </if>
+      <if test="record.isLotNumber != null">
+        isLotNumber = #{record.isLotNumber,jdbcType=TINYINT},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update t_sms_item
+    set id = #{record.id,jdbcType=VARCHAR},
+      [name] = #{record.name,jdbcType=VARCHAR},
+      [number] = #{record.number,jdbcType=VARCHAR},
+      specification = #{record.specification,jdbcType=VARCHAR},
+      highConsumable = #{record.highConsumable,jdbcType=TINYINT},
+      isLotNumber = #{record.isLotNumber,jdbcType=TINYINT}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.kingdee.eas.hrp.sms.model.Item">
+    update t_sms_item
+    <set>
+      <if test="name != null">
+        [name] = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="number != null">
+        [number] = #{number,jdbcType=VARCHAR},
+      </if>
+      <if test="specification != null">
+        specification = #{specification,jdbcType=VARCHAR},
+      </if>
+      <if test="highConsumable != null">
+        highConsumable = #{highConsumable,jdbcType=TINYINT},
+      </if>
+      <if test="isLotNumber != null">
+        isLotNumber = #{isLotNumber,jdbcType=TINYINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.kingdee.eas.hrp.sms.model.Item">
+    update t_sms_item
+    set [name] = #{name,jdbcType=VARCHAR},
+      [number] = #{number,jdbcType=VARCHAR},
+      specification = #{specification,jdbcType=VARCHAR},
+      highConsumable = #{highConsumable,jdbcType=TINYINT},
+      isLotNumber = #{isLotNumber,jdbcType=TINYINT}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

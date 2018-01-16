@@ -1,0 +1,432 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kingdee.eas.hrp.sms.dao.generate.PurReceivalEntryMapper">
+  <resultMap id="BaseResultMap" type="com.kingdee.eas.hrp.sms.model.PurReceivalEntry">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="parent" jdbcType="VARCHAR" property="parent" />
+    <result column="seq" jdbcType="INTEGER" property="seq" />
+    <result column="orderId" jdbcType="VARCHAR" property="orderId" />
+    <result column="orderSeq" jdbcType="VARCHAR" property="orderSeq" />
+    <result column="material" jdbcType="VARCHAR" property="material" />
+    <result column="lot" jdbcType="VARCHAR" property="lot" />
+    <result column="innercode" jdbcType="VARCHAR" property="innercode" />
+    <result column="unit" jdbcType="VARCHAR" property="unit" />
+    <result column="price" jdbcType="DECIMAL" property="price" />
+    <result column="qty" jdbcType="NUMERIC" property="qty" />
+    <result column="actualQty" jdbcType="NUMERIC" property="actualQty" />
+    <result column="dyProDate" jdbcType="TIMESTAMP" property="dyProDate" />
+    <result column="dyManufacturer" jdbcType="VARCHAR" property="dyManufacturer" />
+    <result column="registrationNo" jdbcType="VARCHAR" property="registrationNo" />
+    <result column="amount" jdbcType="DECIMAL" property="amount" />
+    <result column="effectiveDate" jdbcType="TIMESTAMP" property="effectiveDate" />
+    <result column="qualifiedQty" jdbcType="NUMERIC" property="qualifiedQty" />
+    <result column="unqualifiedQty" jdbcType="NUMERIC" property="unqualifiedQty" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, parent, seq, orderId, orderSeq, material, lot, innercode, unit, price, qty, actualQty, 
+    dyProDate, dyManufacturer, registrationNo, amount, effectiveDate, qualifiedQty, unqualifiedQty
+  </sql>
+  <select id="selectByExample" parameterType="com.kingdee.eas.hrp.sms.model.PurReceivalEntryExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_sms_purreceival_entry
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_sms_purreceival_entry
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from t_sms_purreceival_entry
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.kingdee.eas.hrp.sms.model.PurReceivalEntryExample">
+    delete from t_sms_purreceival_entry
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.kingdee.eas.hrp.sms.model.PurReceivalEntry">
+    insert into t_sms_purreceival_entry (id, parent, seq, 
+      orderId, orderSeq, material, 
+      lot, innercode, unit, 
+      price, qty, actualQty, 
+      dyProDate, dyManufacturer, registrationNo, 
+      amount, effectiveDate, qualifiedQty, 
+      unqualifiedQty)
+    values (#{id,jdbcType=VARCHAR}, #{parent,jdbcType=VARCHAR}, #{seq,jdbcType=INTEGER}, 
+      #{orderId,jdbcType=VARCHAR}, #{orderSeq,jdbcType=VARCHAR}, #{material,jdbcType=VARCHAR}, 
+      #{lot,jdbcType=VARCHAR}, #{innercode,jdbcType=VARCHAR}, #{unit,jdbcType=VARCHAR}, 
+      #{price,jdbcType=DECIMAL}, #{qty,jdbcType=NUMERIC}, #{actualQty,jdbcType=NUMERIC}, 
+      #{dyProDate,jdbcType=TIMESTAMP}, #{dyManufacturer,jdbcType=VARCHAR}, #{registrationNo,jdbcType=VARCHAR}, 
+      #{amount,jdbcType=DECIMAL}, #{effectiveDate,jdbcType=TIMESTAMP}, #{qualifiedQty,jdbcType=NUMERIC}, 
+      #{unqualifiedQty,jdbcType=NUMERIC})
+  </insert>
+  <insert id="insertSelective" parameterType="com.kingdee.eas.hrp.sms.model.PurReceivalEntry">
+    insert into t_sms_purreceival_entry
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="parent != null">
+        parent,
+      </if>
+      <if test="seq != null">
+        seq,
+      </if>
+      <if test="orderId != null">
+        orderId,
+      </if>
+      <if test="orderSeq != null">
+        orderSeq,
+      </if>
+      <if test="material != null">
+        material,
+      </if>
+      <if test="lot != null">
+        lot,
+      </if>
+      <if test="innercode != null">
+        innercode,
+      </if>
+      <if test="unit != null">
+        unit,
+      </if>
+      <if test="price != null">
+        price,
+      </if>
+      <if test="qty != null">
+        qty,
+      </if>
+      <if test="actualQty != null">
+        actualQty,
+      </if>
+      <if test="dyProDate != null">
+        dyProDate,
+      </if>
+      <if test="dyManufacturer != null">
+        dyManufacturer,
+      </if>
+      <if test="registrationNo != null">
+        registrationNo,
+      </if>
+      <if test="amount != null">
+        amount,
+      </if>
+      <if test="effectiveDate != null">
+        effectiveDate,
+      </if>
+      <if test="qualifiedQty != null">
+        qualifiedQty,
+      </if>
+      <if test="unqualifiedQty != null">
+        unqualifiedQty,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="parent != null">
+        #{parent,jdbcType=VARCHAR},
+      </if>
+      <if test="seq != null">
+        #{seq,jdbcType=INTEGER},
+      </if>
+      <if test="orderId != null">
+        #{orderId,jdbcType=VARCHAR},
+      </if>
+      <if test="orderSeq != null">
+        #{orderSeq,jdbcType=VARCHAR},
+      </if>
+      <if test="material != null">
+        #{material,jdbcType=VARCHAR},
+      </if>
+      <if test="lot != null">
+        #{lot,jdbcType=VARCHAR},
+      </if>
+      <if test="innercode != null">
+        #{innercode,jdbcType=VARCHAR},
+      </if>
+      <if test="unit != null">
+        #{unit,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null">
+        #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="qty != null">
+        #{qty,jdbcType=NUMERIC},
+      </if>
+      <if test="actualQty != null">
+        #{actualQty,jdbcType=NUMERIC},
+      </if>
+      <if test="dyProDate != null">
+        #{dyProDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dyManufacturer != null">
+        #{dyManufacturer,jdbcType=VARCHAR},
+      </if>
+      <if test="registrationNo != null">
+        #{registrationNo,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null">
+        #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="effectiveDate != null">
+        #{effectiveDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="qualifiedQty != null">
+        #{qualifiedQty,jdbcType=NUMERIC},
+      </if>
+      <if test="unqualifiedQty != null">
+        #{unqualifiedQty,jdbcType=NUMERIC},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.kingdee.eas.hrp.sms.model.PurReceivalEntryExample" resultType="java.lang.Long">
+    select count(*) from t_sms_purreceival_entry
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update t_sms_purreceival_entry
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.parent != null">
+        parent = #{record.parent,jdbcType=VARCHAR},
+      </if>
+      <if test="record.seq != null">
+        seq = #{record.seq,jdbcType=INTEGER},
+      </if>
+      <if test="record.orderId != null">
+        orderId = #{record.orderId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orderSeq != null">
+        orderSeq = #{record.orderSeq,jdbcType=VARCHAR},
+      </if>
+      <if test="record.material != null">
+        material = #{record.material,jdbcType=VARCHAR},
+      </if>
+      <if test="record.lot != null">
+        lot = #{record.lot,jdbcType=VARCHAR},
+      </if>
+      <if test="record.innercode != null">
+        innercode = #{record.innercode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.unit != null">
+        unit = #{record.unit,jdbcType=VARCHAR},
+      </if>
+      <if test="record.price != null">
+        price = #{record.price,jdbcType=DECIMAL},
+      </if>
+      <if test="record.qty != null">
+        qty = #{record.qty,jdbcType=NUMERIC},
+      </if>
+      <if test="record.actualQty != null">
+        actualQty = #{record.actualQty,jdbcType=NUMERIC},
+      </if>
+      <if test="record.dyProDate != null">
+        dyProDate = #{record.dyProDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.dyManufacturer != null">
+        dyManufacturer = #{record.dyManufacturer,jdbcType=VARCHAR},
+      </if>
+      <if test="record.registrationNo != null">
+        registrationNo = #{record.registrationNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.amount != null">
+        amount = #{record.amount,jdbcType=DECIMAL},
+      </if>
+      <if test="record.effectiveDate != null">
+        effectiveDate = #{record.effectiveDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.qualifiedQty != null">
+        qualifiedQty = #{record.qualifiedQty,jdbcType=NUMERIC},
+      </if>
+      <if test="record.unqualifiedQty != null">
+        unqualifiedQty = #{record.unqualifiedQty,jdbcType=NUMERIC},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update t_sms_purreceival_entry
+    set id = #{record.id,jdbcType=VARCHAR},
+      parent = #{record.parent,jdbcType=VARCHAR},
+      seq = #{record.seq,jdbcType=INTEGER},
+      orderId = #{record.orderId,jdbcType=VARCHAR},
+      orderSeq = #{record.orderSeq,jdbcType=VARCHAR},
+      material = #{record.material,jdbcType=VARCHAR},
+      lot = #{record.lot,jdbcType=VARCHAR},
+      innercode = #{record.innercode,jdbcType=VARCHAR},
+      unit = #{record.unit,jdbcType=VARCHAR},
+      price = #{record.price,jdbcType=DECIMAL},
+      qty = #{record.qty,jdbcType=NUMERIC},
+      actualQty = #{record.actualQty,jdbcType=NUMERIC},
+      dyProDate = #{record.dyProDate,jdbcType=TIMESTAMP},
+      dyManufacturer = #{record.dyManufacturer,jdbcType=VARCHAR},
+      registrationNo = #{record.registrationNo,jdbcType=VARCHAR},
+      amount = #{record.amount,jdbcType=DECIMAL},
+      effectiveDate = #{record.effectiveDate,jdbcType=TIMESTAMP},
+      qualifiedQty = #{record.qualifiedQty,jdbcType=NUMERIC},
+      unqualifiedQty = #{record.unqualifiedQty,jdbcType=NUMERIC}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.kingdee.eas.hrp.sms.model.PurReceivalEntry">
+    update t_sms_purreceival_entry
+    <set>
+      <if test="parent != null">
+        parent = #{parent,jdbcType=VARCHAR},
+      </if>
+      <if test="seq != null">
+        seq = #{seq,jdbcType=INTEGER},
+      </if>
+      <if test="orderId != null">
+        orderId = #{orderId,jdbcType=VARCHAR},
+      </if>
+      <if test="orderSeq != null">
+        orderSeq = #{orderSeq,jdbcType=VARCHAR},
+      </if>
+      <if test="material != null">
+        material = #{material,jdbcType=VARCHAR},
+      </if>
+      <if test="lot != null">
+        lot = #{lot,jdbcType=VARCHAR},
+      </if>
+      <if test="innercode != null">
+        innercode = #{innercode,jdbcType=VARCHAR},
+      </if>
+      <if test="unit != null">
+        unit = #{unit,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null">
+        price = #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="qty != null">
+        qty = #{qty,jdbcType=NUMERIC},
+      </if>
+      <if test="actualQty != null">
+        actualQty = #{actualQty,jdbcType=NUMERIC},
+      </if>
+      <if test="dyProDate != null">
+        dyProDate = #{dyProDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dyManufacturer != null">
+        dyManufacturer = #{dyManufacturer,jdbcType=VARCHAR},
+      </if>
+      <if test="registrationNo != null">
+        registrationNo = #{registrationNo,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null">
+        amount = #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="effectiveDate != null">
+        effectiveDate = #{effectiveDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="qualifiedQty != null">
+        qualifiedQty = #{qualifiedQty,jdbcType=NUMERIC},
+      </if>
+      <if test="unqualifiedQty != null">
+        unqualifiedQty = #{unqualifiedQty,jdbcType=NUMERIC},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.kingdee.eas.hrp.sms.model.PurReceivalEntry">
+    update t_sms_purreceival_entry
+    set parent = #{parent,jdbcType=VARCHAR},
+      seq = #{seq,jdbcType=INTEGER},
+      orderId = #{orderId,jdbcType=VARCHAR},
+      orderSeq = #{orderSeq,jdbcType=VARCHAR},
+      material = #{material,jdbcType=VARCHAR},
+      lot = #{lot,jdbcType=VARCHAR},
+      innercode = #{innercode,jdbcType=VARCHAR},
+      unit = #{unit,jdbcType=VARCHAR},
+      price = #{price,jdbcType=DECIMAL},
+      qty = #{qty,jdbcType=NUMERIC},
+      actualQty = #{actualQty,jdbcType=NUMERIC},
+      dyProDate = #{dyProDate,jdbcType=TIMESTAMP},
+      dyManufacturer = #{dyManufacturer,jdbcType=VARCHAR},
+      registrationNo = #{registrationNo,jdbcType=VARCHAR},
+      amount = #{amount,jdbcType=DECIMAL},
+      effectiveDate = #{effectiveDate,jdbcType=TIMESTAMP},
+      qualifiedQty = #{qualifiedQty,jdbcType=NUMERIC},
+      unqualifiedQty = #{unqualifiedQty,jdbcType=NUMERIC}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

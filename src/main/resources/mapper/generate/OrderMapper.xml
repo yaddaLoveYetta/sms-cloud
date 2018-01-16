@@ -1,0 +1,418 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kingdee.eas.hrp.sms.dao.generate.OrderMapper">
+  <resultMap id="BaseResultMap" type="com.kingdee.eas.hrp.sms.model.Order">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="supplier" jdbcType="VARCHAR" property="supplier" />
+    <result column="bizDate" jdbcType="DATE" property="bizDate" />
+    <result column="purchasePerson" jdbcType="VARCHAR" property="purchasePerson" />
+    <result column="saleProxy" jdbcType="TINYINT" property="saleProxy" />
+    <result column="isInTax" jdbcType="TINYINT" property="isInTax" />
+    <result column="tickDate" jdbcType="TIMESTAMP" property="tickDate" />
+    <result column="confirmTickDate" jdbcType="TIMESTAMP" property="confirmTickDate" />
+    <result column="tickType" jdbcType="TINYINT" property="tickType" />
+    <result column="confirmTick" jdbcType="TINYINT" property="confirmTick" />
+    <result column="number" jdbcType="VARCHAR" property="number" />
+    <result column="isQuicken" jdbcType="TINYINT" property="isQuicken" />
+    <result column="currency" jdbcType="VARCHAR" property="currency" />
+    <result column="totalAmount" jdbcType="DECIMAL" property="totalAmount" />
+    <result column="totalTax" jdbcType="DECIMAL" property="totalTax" />
+    <result column="totalTaxAmount" jdbcType="DECIMAL" property="totalTaxAmount" />
+    <result column="createTime" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="baseStatus" jdbcType="TINYINT" property="baseStatus" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, supplier, bizDate, purchasePerson, saleProxy, isInTax, tickDate, confirmTickDate, 
+    tickType, confirmTick, [number], isQuicken, currency, totalAmount, totalTax, totalTaxAmount, 
+    createTime, baseStatus
+  </sql>
+  <select id="selectByExample" parameterType="com.kingdee.eas.hrp.sms.model.OrderExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_sms_purchase_order
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_sms_purchase_order
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from t_sms_purchase_order
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.kingdee.eas.hrp.sms.model.OrderExample">
+    delete from t_sms_purchase_order
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.kingdee.eas.hrp.sms.model.Order">
+    insert into t_sms_purchase_order (id, supplier, bizDate, 
+      purchasePerson, saleProxy, isInTax, 
+      tickDate, confirmTickDate, tickType, 
+      confirmTick, [number], isQuicken, 
+      currency, totalAmount, totalTax, 
+      totalTaxAmount, createTime, baseStatus
+      )
+    values (#{id,jdbcType=VARCHAR}, #{supplier,jdbcType=VARCHAR}, #{bizDate,jdbcType=DATE}, 
+      #{purchasePerson,jdbcType=VARCHAR}, #{saleProxy,jdbcType=TINYINT}, #{isInTax,jdbcType=TINYINT}, 
+      #{tickDate,jdbcType=TIMESTAMP}, #{confirmTickDate,jdbcType=TIMESTAMP}, #{tickType,jdbcType=TINYINT}, 
+      #{confirmTick,jdbcType=TINYINT}, #{number,jdbcType=VARCHAR}, #{isQuicken,jdbcType=TINYINT}, 
+      #{currency,jdbcType=VARCHAR}, #{totalAmount,jdbcType=DECIMAL}, #{totalTax,jdbcType=DECIMAL}, 
+      #{totalTaxAmount,jdbcType=DECIMAL}, #{createTime,jdbcType=TIMESTAMP}, #{baseStatus,jdbcType=TINYINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.kingdee.eas.hrp.sms.model.Order">
+    insert into t_sms_purchase_order
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="supplier != null">
+        supplier,
+      </if>
+      <if test="bizDate != null">
+        bizDate,
+      </if>
+      <if test="purchasePerson != null">
+        purchasePerson,
+      </if>
+      <if test="saleProxy != null">
+        saleProxy,
+      </if>
+      <if test="isInTax != null">
+        isInTax,
+      </if>
+      <if test="tickDate != null">
+        tickDate,
+      </if>
+      <if test="confirmTickDate != null">
+        confirmTickDate,
+      </if>
+      <if test="tickType != null">
+        tickType,
+      </if>
+      <if test="confirmTick != null">
+        confirmTick,
+      </if>
+      <if test="number != null">
+        [number],
+      </if>
+      <if test="isQuicken != null">
+        isQuicken,
+      </if>
+      <if test="currency != null">
+        currency,
+      </if>
+      <if test="totalAmount != null">
+        totalAmount,
+      </if>
+      <if test="totalTax != null">
+        totalTax,
+      </if>
+      <if test="totalTaxAmount != null">
+        totalTaxAmount,
+      </if>
+      <if test="createTime != null">
+        createTime,
+      </if>
+      <if test="baseStatus != null">
+        baseStatus,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="supplier != null">
+        #{supplier,jdbcType=VARCHAR},
+      </if>
+      <if test="bizDate != null">
+        #{bizDate,jdbcType=DATE},
+      </if>
+      <if test="purchasePerson != null">
+        #{purchasePerson,jdbcType=VARCHAR},
+      </if>
+      <if test="saleProxy != null">
+        #{saleProxy,jdbcType=TINYINT},
+      </if>
+      <if test="isInTax != null">
+        #{isInTax,jdbcType=TINYINT},
+      </if>
+      <if test="tickDate != null">
+        #{tickDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="confirmTickDate != null">
+        #{confirmTickDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="tickType != null">
+        #{tickType,jdbcType=TINYINT},
+      </if>
+      <if test="confirmTick != null">
+        #{confirmTick,jdbcType=TINYINT},
+      </if>
+      <if test="number != null">
+        #{number,jdbcType=VARCHAR},
+      </if>
+      <if test="isQuicken != null">
+        #{isQuicken,jdbcType=TINYINT},
+      </if>
+      <if test="currency != null">
+        #{currency,jdbcType=VARCHAR},
+      </if>
+      <if test="totalAmount != null">
+        #{totalAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="totalTax != null">
+        #{totalTax,jdbcType=DECIMAL},
+      </if>
+      <if test="totalTaxAmount != null">
+        #{totalTaxAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="baseStatus != null">
+        #{baseStatus,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.kingdee.eas.hrp.sms.model.OrderExample" resultType="java.lang.Long">
+    select count(*) from t_sms_purchase_order
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update t_sms_purchase_order
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.supplier != null">
+        supplier = #{record.supplier,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bizDate != null">
+        bizDate = #{record.bizDate,jdbcType=DATE},
+      </if>
+      <if test="record.purchasePerson != null">
+        purchasePerson = #{record.purchasePerson,jdbcType=VARCHAR},
+      </if>
+      <if test="record.saleProxy != null">
+        saleProxy = #{record.saleProxy,jdbcType=TINYINT},
+      </if>
+      <if test="record.isInTax != null">
+        isInTax = #{record.isInTax,jdbcType=TINYINT},
+      </if>
+      <if test="record.tickDate != null">
+        tickDate = #{record.tickDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.confirmTickDate != null">
+        confirmTickDate = #{record.confirmTickDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.tickType != null">
+        tickType = #{record.tickType,jdbcType=TINYINT},
+      </if>
+      <if test="record.confirmTick != null">
+        confirmTick = #{record.confirmTick,jdbcType=TINYINT},
+      </if>
+      <if test="record.number != null">
+        [number] = #{record.number,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isQuicken != null">
+        isQuicken = #{record.isQuicken,jdbcType=TINYINT},
+      </if>
+      <if test="record.currency != null">
+        currency = #{record.currency,jdbcType=VARCHAR},
+      </if>
+      <if test="record.totalAmount != null">
+        totalAmount = #{record.totalAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="record.totalTax != null">
+        totalTax = #{record.totalTax,jdbcType=DECIMAL},
+      </if>
+      <if test="record.totalTaxAmount != null">
+        totalTaxAmount = #{record.totalTaxAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="record.createTime != null">
+        createTime = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.baseStatus != null">
+        baseStatus = #{record.baseStatus,jdbcType=TINYINT},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update t_sms_purchase_order
+    set id = #{record.id,jdbcType=VARCHAR},
+      supplier = #{record.supplier,jdbcType=VARCHAR},
+      bizDate = #{record.bizDate,jdbcType=DATE},
+      purchasePerson = #{record.purchasePerson,jdbcType=VARCHAR},
+      saleProxy = #{record.saleProxy,jdbcType=TINYINT},
+      isInTax = #{record.isInTax,jdbcType=TINYINT},
+      tickDate = #{record.tickDate,jdbcType=TIMESTAMP},
+      confirmTickDate = #{record.confirmTickDate,jdbcType=TIMESTAMP},
+      tickType = #{record.tickType,jdbcType=TINYINT},
+      confirmTick = #{record.confirmTick,jdbcType=TINYINT},
+      [number] = #{record.number,jdbcType=VARCHAR},
+      isQuicken = #{record.isQuicken,jdbcType=TINYINT},
+      currency = #{record.currency,jdbcType=VARCHAR},
+      totalAmount = #{record.totalAmount,jdbcType=DECIMAL},
+      totalTax = #{record.totalTax,jdbcType=DECIMAL},
+      totalTaxAmount = #{record.totalTaxAmount,jdbcType=DECIMAL},
+      createTime = #{record.createTime,jdbcType=TIMESTAMP},
+      baseStatus = #{record.baseStatus,jdbcType=TINYINT}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.kingdee.eas.hrp.sms.model.Order">
+    update t_sms_purchase_order
+    <set>
+      <if test="supplier != null">
+        supplier = #{supplier,jdbcType=VARCHAR},
+      </if>
+      <if test="bizDate != null">
+        bizDate = #{bizDate,jdbcType=DATE},
+      </if>
+      <if test="purchasePerson != null">
+        purchasePerson = #{purchasePerson,jdbcType=VARCHAR},
+      </if>
+      <if test="saleProxy != null">
+        saleProxy = #{saleProxy,jdbcType=TINYINT},
+      </if>
+      <if test="isInTax != null">
+        isInTax = #{isInTax,jdbcType=TINYINT},
+      </if>
+      <if test="tickDate != null">
+        tickDate = #{tickDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="confirmTickDate != null">
+        confirmTickDate = #{confirmTickDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="tickType != null">
+        tickType = #{tickType,jdbcType=TINYINT},
+      </if>
+      <if test="confirmTick != null">
+        confirmTick = #{confirmTick,jdbcType=TINYINT},
+      </if>
+      <if test="number != null">
+        [number] = #{number,jdbcType=VARCHAR},
+      </if>
+      <if test="isQuicken != null">
+        isQuicken = #{isQuicken,jdbcType=TINYINT},
+      </if>
+      <if test="currency != null">
+        currency = #{currency,jdbcType=VARCHAR},
+      </if>
+      <if test="totalAmount != null">
+        totalAmount = #{totalAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="totalTax != null">
+        totalTax = #{totalTax,jdbcType=DECIMAL},
+      </if>
+      <if test="totalTaxAmount != null">
+        totalTaxAmount = #{totalTaxAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="createTime != null">
+        createTime = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="baseStatus != null">
+        baseStatus = #{baseStatus,jdbcType=TINYINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.kingdee.eas.hrp.sms.model.Order">
+    update t_sms_purchase_order
+    set supplier = #{supplier,jdbcType=VARCHAR},
+      bizDate = #{bizDate,jdbcType=DATE},
+      purchasePerson = #{purchasePerson,jdbcType=VARCHAR},
+      saleProxy = #{saleProxy,jdbcType=TINYINT},
+      isInTax = #{isInTax,jdbcType=TINYINT},
+      tickDate = #{tickDate,jdbcType=TIMESTAMP},
+      confirmTickDate = #{confirmTickDate,jdbcType=TIMESTAMP},
+      tickType = #{tickType,jdbcType=TINYINT},
+      confirmTick = #{confirmTick,jdbcType=TINYINT},
+      [number] = #{number,jdbcType=VARCHAR},
+      isQuicken = #{isQuicken,jdbcType=TINYINT},
+      currency = #{currency,jdbcType=VARCHAR},
+      totalAmount = #{totalAmount,jdbcType=DECIMAL},
+      totalTax = #{totalTax,jdbcType=DECIMAL},
+      totalTaxAmount = #{totalTaxAmount,jdbcType=DECIMAL},
+      createTime = #{createTime,jdbcType=TIMESTAMP},
+      baseStatus = #{baseStatus,jdbcType=TINYINT}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

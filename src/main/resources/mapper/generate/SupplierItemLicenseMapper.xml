@@ -1,0 +1,417 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kingdee.eas.hrp.sms.dao.generate.SupplierItemLicenseMapper">
+  <resultMap id="BaseResultMap" type="com.kingdee.eas.hrp.sms.model.SupplierItemLicense">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="supplier" jdbcType="VARCHAR" property="supplier" />
+    <result column="authOrg" jdbcType="VARCHAR" property="authOrg" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="beginDate" jdbcType="TIMESTAMP" property="beginDate" />
+    <result column="endDate" jdbcType="TIMESTAMP" property="endDate" />
+    <result column="syncStatus" jdbcType="TINYINT" property="syncStatus" />
+    <result column="review" jdbcType="TINYINT" property="review" />
+    <result column="material" jdbcType="VARCHAR" property="material" />
+    <result column="isMust" jdbcType="TINYINT" property="isMust" />
+    <result column="isControl" jdbcType="TINYINT" property="isControl" />
+    <result column="prohibited" jdbcType="TINYINT" property="prohibited" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="number" jdbcType="NVARCHAR" property="number" />
+    <result column="factory" jdbcType="VARCHAR" property="factory" />
+    <result column="agent" jdbcType="VARCHAR" property="agent" />
+    <result column="idNumber" jdbcType="VARCHAR" property="idNumber" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, [type], supplier, authOrg, description, beginDate, endDate, syncStatus, review, 
+    material, isMust, isControl, prohibited, [name], [number], factory, agent, idNumber
+  </sql>
+  <select id="selectByExample" parameterType="com.kingdee.eas.hrp.sms.model.SupplierItemLicenseExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_sms_supplier_item_license
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_sms_supplier_item_license
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from t_sms_supplier_item_license
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.kingdee.eas.hrp.sms.model.SupplierItemLicenseExample">
+    delete from t_sms_supplier_item_license
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.kingdee.eas.hrp.sms.model.SupplierItemLicense">
+    insert into t_sms_supplier_item_license (id, [type], supplier, 
+      authOrg, description, beginDate, 
+      endDate, syncStatus, review, 
+      material, isMust, isControl, 
+      prohibited, [name], [number], 
+      factory, agent, idNumber
+      )
+    values (#{id,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, #{supplier,jdbcType=VARCHAR}, 
+      #{authOrg,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{beginDate,jdbcType=TIMESTAMP}, 
+      #{endDate,jdbcType=TIMESTAMP}, #{syncStatus,jdbcType=TINYINT}, #{review,jdbcType=TINYINT}, 
+      #{material,jdbcType=VARCHAR}, #{isMust,jdbcType=TINYINT}, #{isControl,jdbcType=TINYINT}, 
+      #{prohibited,jdbcType=TINYINT}, #{name,jdbcType=VARCHAR}, #{number,jdbcType=NVARCHAR}, 
+      #{factory,jdbcType=VARCHAR}, #{agent,jdbcType=VARCHAR}, #{idNumber,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.kingdee.eas.hrp.sms.model.SupplierItemLicense">
+    insert into t_sms_supplier_item_license
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="type != null">
+        [type],
+      </if>
+      <if test="supplier != null">
+        supplier,
+      </if>
+      <if test="authOrg != null">
+        authOrg,
+      </if>
+      <if test="description != null">
+        description,
+      </if>
+      <if test="beginDate != null">
+        beginDate,
+      </if>
+      <if test="endDate != null">
+        endDate,
+      </if>
+      <if test="syncStatus != null">
+        syncStatus,
+      </if>
+      <if test="review != null">
+        review,
+      </if>
+      <if test="material != null">
+        material,
+      </if>
+      <if test="isMust != null">
+        isMust,
+      </if>
+      <if test="isControl != null">
+        isControl,
+      </if>
+      <if test="prohibited != null">
+        prohibited,
+      </if>
+      <if test="name != null">
+        [name],
+      </if>
+      <if test="number != null">
+        [number],
+      </if>
+      <if test="factory != null">
+        factory,
+      </if>
+      <if test="agent != null">
+        agent,
+      </if>
+      <if test="idNumber != null">
+        idNumber,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="supplier != null">
+        #{supplier,jdbcType=VARCHAR},
+      </if>
+      <if test="authOrg != null">
+        #{authOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="beginDate != null">
+        #{beginDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endDate != null">
+        #{endDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="syncStatus != null">
+        #{syncStatus,jdbcType=TINYINT},
+      </if>
+      <if test="review != null">
+        #{review,jdbcType=TINYINT},
+      </if>
+      <if test="material != null">
+        #{material,jdbcType=VARCHAR},
+      </if>
+      <if test="isMust != null">
+        #{isMust,jdbcType=TINYINT},
+      </if>
+      <if test="isControl != null">
+        #{isControl,jdbcType=TINYINT},
+      </if>
+      <if test="prohibited != null">
+        #{prohibited,jdbcType=TINYINT},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="number != null">
+        #{number,jdbcType=NVARCHAR},
+      </if>
+      <if test="factory != null">
+        #{factory,jdbcType=VARCHAR},
+      </if>
+      <if test="agent != null">
+        #{agent,jdbcType=VARCHAR},
+      </if>
+      <if test="idNumber != null">
+        #{idNumber,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.kingdee.eas.hrp.sms.model.SupplierItemLicenseExample" resultType="java.lang.Long">
+    select count(*) from t_sms_supplier_item_license
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update t_sms_supplier_item_license
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.type != null">
+        [type] = #{record.type,jdbcType=VARCHAR},
+      </if>
+      <if test="record.supplier != null">
+        supplier = #{record.supplier,jdbcType=VARCHAR},
+      </if>
+      <if test="record.authOrg != null">
+        authOrg = #{record.authOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="record.description != null">
+        description = #{record.description,jdbcType=VARCHAR},
+      </if>
+      <if test="record.beginDate != null">
+        beginDate = #{record.beginDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.endDate != null">
+        endDate = #{record.endDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.syncStatus != null">
+        syncStatus = #{record.syncStatus,jdbcType=TINYINT},
+      </if>
+      <if test="record.review != null">
+        review = #{record.review,jdbcType=TINYINT},
+      </if>
+      <if test="record.material != null">
+        material = #{record.material,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isMust != null">
+        isMust = #{record.isMust,jdbcType=TINYINT},
+      </if>
+      <if test="record.isControl != null">
+        isControl = #{record.isControl,jdbcType=TINYINT},
+      </if>
+      <if test="record.prohibited != null">
+        prohibited = #{record.prohibited,jdbcType=TINYINT},
+      </if>
+      <if test="record.name != null">
+        [name] = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.number != null">
+        [number] = #{record.number,jdbcType=NVARCHAR},
+      </if>
+      <if test="record.factory != null">
+        factory = #{record.factory,jdbcType=VARCHAR},
+      </if>
+      <if test="record.agent != null">
+        agent = #{record.agent,jdbcType=VARCHAR},
+      </if>
+      <if test="record.idNumber != null">
+        idNumber = #{record.idNumber,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update t_sms_supplier_item_license
+    set id = #{record.id,jdbcType=VARCHAR},
+      [type] = #{record.type,jdbcType=VARCHAR},
+      supplier = #{record.supplier,jdbcType=VARCHAR},
+      authOrg = #{record.authOrg,jdbcType=VARCHAR},
+      description = #{record.description,jdbcType=VARCHAR},
+      beginDate = #{record.beginDate,jdbcType=TIMESTAMP},
+      endDate = #{record.endDate,jdbcType=TIMESTAMP},
+      syncStatus = #{record.syncStatus,jdbcType=TINYINT},
+      review = #{record.review,jdbcType=TINYINT},
+      material = #{record.material,jdbcType=VARCHAR},
+      isMust = #{record.isMust,jdbcType=TINYINT},
+      isControl = #{record.isControl,jdbcType=TINYINT},
+      prohibited = #{record.prohibited,jdbcType=TINYINT},
+      [name] = #{record.name,jdbcType=VARCHAR},
+      [number] = #{record.number,jdbcType=NVARCHAR},
+      factory = #{record.factory,jdbcType=VARCHAR},
+      agent = #{record.agent,jdbcType=VARCHAR},
+      idNumber = #{record.idNumber,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.kingdee.eas.hrp.sms.model.SupplierItemLicense">
+    update t_sms_supplier_item_license
+    <set>
+      <if test="type != null">
+        [type] = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="supplier != null">
+        supplier = #{supplier,jdbcType=VARCHAR},
+      </if>
+      <if test="authOrg != null">
+        authOrg = #{authOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="beginDate != null">
+        beginDate = #{beginDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endDate != null">
+        endDate = #{endDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="syncStatus != null">
+        syncStatus = #{syncStatus,jdbcType=TINYINT},
+      </if>
+      <if test="review != null">
+        review = #{review,jdbcType=TINYINT},
+      </if>
+      <if test="material != null">
+        material = #{material,jdbcType=VARCHAR},
+      </if>
+      <if test="isMust != null">
+        isMust = #{isMust,jdbcType=TINYINT},
+      </if>
+      <if test="isControl != null">
+        isControl = #{isControl,jdbcType=TINYINT},
+      </if>
+      <if test="prohibited != null">
+        prohibited = #{prohibited,jdbcType=TINYINT},
+      </if>
+      <if test="name != null">
+        [name] = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="number != null">
+        [number] = #{number,jdbcType=NVARCHAR},
+      </if>
+      <if test="factory != null">
+        factory = #{factory,jdbcType=VARCHAR},
+      </if>
+      <if test="agent != null">
+        agent = #{agent,jdbcType=VARCHAR},
+      </if>
+      <if test="idNumber != null">
+        idNumber = #{idNumber,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.kingdee.eas.hrp.sms.model.SupplierItemLicense">
+    update t_sms_supplier_item_license
+    set [type] = #{type,jdbcType=VARCHAR},
+      supplier = #{supplier,jdbcType=VARCHAR},
+      authOrg = #{authOrg,jdbcType=VARCHAR},
+      description = #{description,jdbcType=VARCHAR},
+      beginDate = #{beginDate,jdbcType=TIMESTAMP},
+      endDate = #{endDate,jdbcType=TIMESTAMP},
+      syncStatus = #{syncStatus,jdbcType=TINYINT},
+      review = #{review,jdbcType=TINYINT},
+      material = #{material,jdbcType=VARCHAR},
+      isMust = #{isMust,jdbcType=TINYINT},
+      isControl = #{isControl,jdbcType=TINYINT},
+      prohibited = #{prohibited,jdbcType=TINYINT},
+      [name] = #{name,jdbcType=VARCHAR},
+      [number] = #{number,jdbcType=NVARCHAR},
+      factory = #{factory,jdbcType=VARCHAR},
+      agent = #{agent,jdbcType=VARCHAR},
+      idNumber = #{idNumber,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>
