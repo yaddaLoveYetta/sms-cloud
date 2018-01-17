@@ -1,0 +1,81 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title></title>
+    <link href="../../../css/base.css" rel="stylesheet"/>
+    <link href="../../../css/global.debug.css" rel="stylesheet"/>
+
+    <style type="text/css">
+        p {
+            padding: 5px;
+        }
+
+        p > label:first-child {
+            margin-left: 5px;
+            display: inline-block;
+            width: 20em;
+            text-align: right;
+            cursor: pointer;
+        }
+
+        .edit-input {
+            width: 500px;
+        }
+
+        .select {
+            height: 23px;
+            padding: 0;
+        }
+    </style>
+</head>
+<body class="iframe">
+<div class="main-content">
+    <!--基本资料-->
+    <div id="div-basic" class="sep-row">
+        <img class="img" src="../../../css/base_edit/img/sep.png"> <span class="text">系统参数</span>
+        <div class="line"></div>
+    </div>
+    <div id="div-content" class="content-box">
+    </div>
+</div>
+<div id="div-Templat" class="hide">
+
+    <!-- <temp>
+        #--text.begin--#
+        <p>
+            <label title="{desc}">{name}：</label><input CurrVal='{CurrVal}' {disabled} type="text" CtlType={CtlType} name="{key}" id="{key}" category="{category}" placeholder="{name}" class="edit-input" value="{value}"/>
+        </p>
+        #--text.end--#
+
+        #--select.begin--#
+        <p>
+            <label title="{desc}">{name}：</label><select  CurrVal='{CurrVal}' {disabled} name="{key}" CtlType={CtlType} id="{FKey}" class="select" category="{category}">
+                #--option.begin--#
+                <option value="{value}" {selected}>{name}</option>
+                #--option.end--#
+            </select>
+        </p>
+        #--select.end--#
+
+        #--checkbox.begin--#
+        <p>
+            <label title="{desc}">{name}：</label><input type="checkbox" CurrVal='{CurrVal}' {disabled} {checked} CtlType={CtlType} name="{key}" id="{FKey}" category="{category}" placeholder="{name}"/>
+        </p>
+          #--checkbox.end--#
+    </temp>
+    -->
+
+</div>
+<script src="../../../lib/jquery/jquery-1.11.1.debug.js"></script>
+<script src="../../../lib/miniquery/miniquery.debug.js"></script>
+<script src="../../../lib/sms/sms.debug.js"></script>
+<script src="../../../config.js"></script>
+
+<!-- grunt.js.begin -->
+<script src="modules/SysParameter.js"></script>
+<script src="modules/NumberField.js"></script>
+<script src="index.js"></script>
+<!-- grunt.js.end-->
+</body>
+</html>

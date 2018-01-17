@@ -1,0 +1,171 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title></title>
+    <!-- grunt.css.begin -->
+    <link rel="stylesheet" href="../../css/global.debug.css" />
+    <link rel="stylesheet" href="../../css/support-data/index.debug.css" />
+    <!-- gunrt.css.end -->
+</head>
+<body class="iframe">
+    <div class="options">
+        <ul class="btn-box">
+            <li class="btn" id="btn-add">新增</li>
+            <li class="btn" id="btn-delete">删除</li>
+            <li class="btn" id="btn-refresh">刷新</li>
+            <li class="btn-multi">
+                <button class="btn">打印</button>
+                <ol class="btn-more">
+                    <li>
+                        <a href="#">打印预览</a></li>
+                </ol>
+                <span class="bt-dropdown"><i class="icon-dropdown"></i></span>
+            </li>
+            <li class="btn-multi">
+                <button class="btn">更多</button>
+                <ol class="btn-more">
+                    <li>
+                        <a href="#">复制</a></li>
+                </ol>
+                <span class="bt-dropdown"><i class="icon-dropdown"></i></span>
+            </li>
+        </ul>
+        <div class="search-box">
+            <input type="text" />
+            <span class="search-dropdown"><i class="icon-dropdown"></i></span>
+            <div class="search-setting">高级查询区域</div>
+        </div>
+    </div>
+
+
+    <div class="navigator-panel">
+        <div id="div-cascade-path" class="bread-crumbs-box nav">
+        </div>
+        <div id="div-cascade-menus">
+        </div>
+
+        <div class="pager-box" id="div-pager-simple"></div>
+    </div>
+
+
+    <div class="data-table" id="div-list">
+        <!--
+        <table>
+            <thead>
+                <tr>
+                    <th>
+                        <input type="checkbox" data-check= 'all' /></th>
+                    <th>辅助资料类别</th>
+                    <th>辅助资料代码</th>
+                    <th>辅助资料名称</th>
+                </tr>
+            </thead>
+            <tbody>
+            #--tr.begin--#
+                <tr data-index="{index}">
+                    <td>
+                        <input type="checkbox" data-check = "item" /></td>
+                    <td>{typeName}</td>
+                    <td><a href="#" data-role="edit">{number}</a></td>
+                    <td>{name}</td>
+                </tr>
+            #--tr.end--#
+            </tbody>
+        </table>
+        -->
+    </div>
+
+
+    <!--公共控件用到的各种模板，请不要删除-->
+
+    <!--Samples.SimplePager--!
+        <ul id="{ul-id}" class="page-label">
+            <li class="left-bt {first-disabled-class}" data-button="previous">
+                <i></i>
+            </li>
+            <li>
+                <input value="{current}/{count}" />
+            </li>
+            <li class="right-bt {final-disabled-class}" data-button="next">
+                <i></i>
+            </li>
+        </ul>
+    --Samples.SimplePager-->
+
+    <!--Samples.Pager--!
+        <ul id="{ul-id}" class="pagination footer">
+            <li class="buttons">
+                <ul>
+                    <li class="LR-button {first-disabled-class}" data-button="previous" title="上一页">&lt;</li>
+
+                    #--item.begin--#
+                    <li class="item {active}" {data-no}>{no}</li>
+                    #--item.end--#
+
+                    #--more.begin--#
+                    <li class="item more"></li>
+                    #--more.end--#
+
+                    <li class="LR-button {final-disabled-class}" data-button="next" title="下一页">&gt;</li>
+                </ul>
+            </li>
+            <li class="page-count">
+                共<span>{count}</span>页
+            </li>
+            <li class="page-jump">
+                <span>到第</span>
+                <input id="{txt-id}" type="text" class="page-number" value="{toNo}" {txt-disabled}/><span>页</span>
+                <a href="javascript:" class="jump-button {jump-disabled-class}" data-button="to">确定</a>
+            </li>
+        </ul>
+    --Samples.Pager-->
+
+    <!--Samples.CascadePicker--!
+        <select class="{not-selected}" data-index="{index}">
+            #--item.begin--#
+            <option {selected}>{text}</option>
+            #--item.end--#
+        </select>
+    --Samples.CascadePicker-->
+
+    <!--Samples.Login--!
+        <ul>
+            <li class="input-panel">
+                <span class="icon-user"></span>
+                <input data-field="user" type="text" placeholder="账号/邮箱/用户名" value="{user}"/>
+            </li>
+            <li class="input-panel">
+                <span class="icon-lock"></span>
+                <input data-field="password" type="password" placeholder="密码" />
+            </li>
+            <li class="warm-text">
+                <span data-field="msg" style="display:none;">*账号或密码错误</span>
+            </li>
+        </ul>
+    --Samples.Login-->
+
+    <!--Samples.Loading--!
+        <p>
+            <i class="icon-refresh icon-spin"></i>
+            {text}
+        </p>
+    --Samples.Loading-->
+
+
+    <script src="../../lib/jquery/jquery-1.11.1.debug.js"></script>
+    <script src="../../lib/miniquery/miniquery.debug.js"></script>
+    <script src="../../lib/kerp/kerp.debug.js"></script>
+    <script src="../../config.js"></script>
+
+
+    <!-- grunt.js.begin -->
+    <script src="module/List.js"></script>
+    <script src="module/Pager.js"></script>
+    <script src="module/Operation.js"></script>
+    <script src="module/Nav.js"></script>
+    <script src="index.js"></script>
+    <!-- grunt.js.end-->
+
+</body>
+</html>

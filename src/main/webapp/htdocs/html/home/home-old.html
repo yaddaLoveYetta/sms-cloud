@@ -1,0 +1,137 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>首页</title>
+    <!--grunt.css.begin-->
+    <link href="../../css/home/home.debug.css" rel="stylesheet" />
+    <!--grunt.css.end-->
+</head>
+<body>
+    <!--待办任务-->
+    <div class="div-left">
+        <div id="div-todo" class="todo">
+            <!--
+                <div class="title"><span>待办任务</span></div>
+                <div class="inbox-warpper">
+                    <div data-action="link-order" class="inbox-0">
+                        <a href="../order/order.html?status={value-0}">
+                        <span class="inbox-num">{sum-0}</span>
+                        <span class="inbox-word">{status-0}</span>
+                </a>
+                            </div>
+                            <div data-action="link-order" class="inbox-0">
+                        <a href="../order/order.html?status={value-1}">
+                                <span class="inbox-num">{sum-1}</span>
+                                <span class="inbox-word">{status-1}</span>
+                </a>
+                            </div>
+                        </div>
+                        <div class="inbox-warpper-1">
+                            <div data-action="link-order" class="inbox-0">
+                        <a href="../order/order.html?status={value-2}">
+                                <span class="inbox-num">{sum-2}</span>
+                                <span class="inbox-word">{status-2}</span>
+                </a>
+                            </div>
+                            <div data-action="link-order" class="inbox-0">
+                        <a href="../order/order.html?status={value-3}">
+                                <span class="inbox-num">{sum-3}</span>
+                                <span class="inbox-word">{status-3}</span>
+                </a>
+                            </div>
+                        </div>
+            -->
+        </div>
+    </div>
+    <div class="div-right">
+        <!--任务流-->
+        <div class="task-flows">
+            <div class="title"><span>任务流</span></div>
+            <ul>
+                <li>
+                    <div class="li-content">
+                        <div class="icon-item">
+                            <i></i>
+                        </div>
+                        <div class="text-item">订单下载设置</div>
+                    </div>
+                </li>
+                <li>
+                    <div class="li-content">
+                        <div class="icon-item">
+                            <i></i>
+                        </div>
+                        <div class="text-item">订单处理</div>
+                    </div>
+                </li>
+                <li>
+                    <div class="li-content">
+                        <div class="icon-item">
+                            <i></i>
+                        </div>
+                        <div class="text-item">配货发货</div>
+                    </div>
+                </li>
+                <li>
+                    <div class="li-content">
+                        <div class="icon-item">
+                            <i></i>
+                        </div>
+                        <div class="text-item">退货换货</div>
+                    </div>
+                </li>
+                <li>
+                    <div class="li-content">
+                        <div class="icon-item">
+                            <i></i>
+                        </div>
+                        <div class="text-item">签收</div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <!--快捷查询-->
+        <div class="wrapper-bottom">
+            <div class="wrapper-bottom-left">
+                <div class="quick-query">
+                    <div class="title"><span>快捷查询</span></div>
+                    <ul>
+                        <li>
+                            <span>网店订单跟踪表</span>
+                        </li>
+                        <li>
+                            <span>售后追踪记录表</span>
+                        </li>
+                        <li>
+                            <span>物流费用对账表</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="wrapper-bottom-right">
+                <div class="latest-msg">
+                    <div class="title"><span>最新消息</span></div>
+                    <div class="time"><span>09/18 11:34</span></div>
+                    <div class="message-content">
+                        <p>请各业务员做好双十一备战<br />火拼双十一，胜利在望！</p>
+                    </div>
+                    <div class="more-message">更多消息</div><div class="message-num">6</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="../../lib/jquery/jquery-1.11.1.debug.js"></script>
+    <script src="../../lib/miniquery/miniquery.debug.js"></script>
+    <script src="../../lib/sms/sms.debug.js"></script>
+    <script src="../../config.js"></script>
+
+    <!--grunt.js.begin-->
+    <script src="modules/Todo.js"></script>
+    <script src="home.js"></script>
+    <!--grunt.js.end-->
+
+</body>
+</html>

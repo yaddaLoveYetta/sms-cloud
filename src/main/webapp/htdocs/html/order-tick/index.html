@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>接单</title>
+    <!--grunt.css.begin-->
+    <link href="../../css/base.css" rel="stylesheet"/>
+    <link href="../../css/global.debug.css" rel="stylesheet"/>
+    <!--grunt.css.end-->
+</head>
+<body>
+
+<div class="col-value">
+    <div id="initCombo" class="dn">
+        <input type="text" class="textbox materialAuto" name="material" autocomplete="off">
+        <input type="text" class="textbox unitAuto" name="unit" autocomplete="off">
+    </div>
+    <div class="grid-wrap">
+        <!-- jqGrid table -->
+        <table id="bd-grid"></table>
+        <!-- jqGrid 分页 div -->
+        <div id="bd-grid-pager"></div>
+    </div>
+    <span class="error-msg" id="bd-grid-msg"></span>
+</div>
+
+<script src="../../lib/jquery/jquery-1.11.1.debug.js"></script>
+<script src="../../lib/miniquery/miniquery.debug.js"></script>
+<script src="../../lib/sms/sms.debug.js"></script>
+<script src="../../config.js"></script>
+
+<!--grunt.js.begin-->
+<script src="modules/Bill/API/Template.js"></script>
+<script src="modules/Bill/API/Data.js"></script>
+<script src="modules/Bill/API.js"></script>
+<script src="modules/Bill/Head/Samples.js"></script>
+<script src="modules/Bill/Head.js"></script>
+<script src="modules/Bill/Entry/GridBuilder.js"></script>
+<script src="modules/Bill/Entry.js"></script>
+<script src="modules/Bill.js"></script>
+<script src="index.js"></script>
+<!--grunt.js.end-->
+</body>
+</html>

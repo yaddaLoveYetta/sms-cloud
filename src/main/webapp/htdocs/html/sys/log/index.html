@@ -1,0 +1,100 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>系统日志</title>
+    <!--grunt.css.begin-->
+    <link href="../../../css/global.debug.css" rel="stylesheet"/>
+    <link href="../../../css/base/index.debug.css" rel="stylesheet"/>
+    <link href="../../../css/base.css" rel="stylesheet"/>
+    <!--grunt.css.end-->
+</head>
+<body class="iframe">
+<div class="nav-panel">
+    <div class="personSearch pr clearfix">
+        <div class="clearfix m5">
+            <input type="text" id="user" class="edit-input list-txt_input" placeholder="用户名"/>
+            <input type="text" id="beginTime" data-filter="date"
+                   class="edit-input list-txt_input  time-input" placeholder="开始时间"/>
+            <input type="text" id="endTime" data-filter="date"
+                   class="edit-input list-txt_input time-input" placeholder="结束时间"/>
+            <input type="button" id="jsSearch" class="sms-btn-item searchBtn"
+                   value="搜 索">
+        </div>
+    </div>
+</div>
+
+<div class="options-panel">
+    <div id="div-pager-simple" class="pager-box"></div>
+</div>
+
+
+<div id="div-list" class="table-panel">
+    <!--
+    <table class="data-table">
+        <thead>
+            <tr>
+                #--th.checkbox.begin--#
+                <th style="width: 20px;">
+                    <input type="checkbox" data-check="all" />
+                </th>
+                #--th.checkbox.end--#
+
+                #--th.begin--#
+                <th style="width: {width}px;">
+                    {th}
+                </th>
+                #--th.end--#
+
+            </tr>
+        </thead>
+        <tbody>
+
+            #--tr.begin--#
+            <tr data-index="{index}" class="{disabled-class}">
+
+                #--td.checkbox.begin--#
+                <td>
+                    <input type="checkbox" data-check="item" data-index="{index}"/>
+                </td>
+                #--td.checkbox.end--#
+
+                #--td.begin--#
+                <td data-index="{index}" class="{number-class}">
+                    {td}
+
+                    !--item.a.begin--!
+                    <a href="javascript:" title="{text}">{text}</a>
+                    !--item.a.end--!
+
+                </td>
+                #--td.end--#
+            </tr>
+            #--tr.end--#
+        </tbody>
+    </table>
+    -->
+
+</div>
+<div id="div-pager-normal" class="page-panel"></div>
+
+<script src="../../../lib/jquery/jquery-1.11.1.debug.js"></script>
+<script src="../../../lib/miniquery/miniquery.debug.js"></script>
+<script src="../../../lib/sms/sms.debug.js"></script>
+<script src="../../../config.js"></script>
+
+<!--grunt.js.begin-->
+<script src="modules/List.js"></script>
+<script src="modules/DatetimePicker.js"></script>
+<script src="modules/List/Samples.js"></script>
+<script src="modules/List/API/Head.js"></script>
+<script src="modules/List/API/Body.js"></script>
+<script src="modules/List/API.js"></script>
+<script src="modules/List.js"></script>
+<script src="modules/Pager.js"></script>
+<script src="index.js"></script>
+<!--grunt.js.end-->
+
+
+</body>
+</html>

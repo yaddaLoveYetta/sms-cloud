@@ -1,0 +1,333 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>KIS电商ERP</title>
+
+    <link href="../../css/global.debug.css" rel="stylesheet" />
+    <link href="../../css/global_iframe.debug.css" rel="stylesheet" />
+    <link href="../../lib/datetimepicker/css/datetimepicker.mod.debug.css" rel="stylesheet" />
+    <link href="../../css/filter.debug.css" rel="stylesheet" />
+    <link href="../../css/sorting.debug.css" rel="stylesheet" />
+
+    <link href="../../css/print/print.debug.css" rel="stylesheet" />
+</head>
+<body>
+    <div id="filter-panel"></div>
+
+    <div class="have-data" style="display: block;">
+
+        <div id="sort-panel" class="sort-panel">
+
+        </div>
+
+
+        <!-- 通过bt-panel-fixed类实现bt-panel固定顶部 .end-->
+        <div class="bt-panel">
+            <div id="div-button-list" class="left"></div>
+            <div id="div-pager-simple" class="right" style="display: inline-block;">
+
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="orders">
+        <table id="order-list">
+            <!--
+
+            #--thead.begin--#
+
+                <thead>
+                    <tr>
+                        <td class="check">
+                            <a id="check-all" href="javascript:" class="check-box"></a>
+                        </td>
+                        <td class="print-info">
+                            打印信息
+                        </td>
+                        <td class="address">
+                            收货地址
+                        </td>
+                        <td class="logistics-info">
+                            物流信息
+                        </td>
+                        <td class="buyer-message">
+                            买家留言
+                        </td>
+                        <td class="mark-up">
+                            标记
+                        </td>
+                        <td class="operation">
+                            操作
+                        </td>
+                    </tr>
+                </thead>
+            #--thead.end--#
+
+            #--gift.begin--#
+                <i class="gift status-icon"></i>
+            #--gift.end--#
+
+            #--absence.begin--#
+                <i class="absence status-icon"></i>
+            #--absence.end--#
+
+            #--refund.begin--#
+                <i class="refund status-icon"></i>
+            #--refund.end--#
+
+            #--not-arrive.begin--#
+                <i class="not-arrive status-icon"></i>
+            #--not-arrive.end--#
+
+            #--overweight.begin--#
+                <i class="overweight status-icon"></i>
+            #--overweight.end--#
+
+            #--join.begin--#
+                <i class="join status-icon"></i>
+            #--join.end--#
+
+                <tbody>
+                    <tr class="title">
+                        <td class="check">
+                            <a id="check-one-{index}" href="javascript:" class="check-box"></a>
+                        </td>
+                        <td class="print-info">
+                            唯一码：{unique-code}
+                        </td>
+                        <td class="address">
+                            订单日期：{create-date-time}
+                        </td>
+                        <td class="logistics-info">
+                            所属网店：{shop-name}
+                        </td>
+                        <td colspan="3">
+                            {buyer-nick}
+                        </td>
+                    </tr>
+                    <tr id="order-content-{index}" class="content">
+                        <td id="check-one-{index}" data-index="{index}" class="check"></td>
+                        <td class="print-info">
+                            <ul class="vertical-info">
+                                <li class="info">
+                                    打印批号：{print-batch-number}
+                                </li>
+                                <li class="info">
+                                    打印序号：{print-serial-number}
+                                </li>
+                            </ul>
+                            <div class="status-icon">
+                                <i class="logistics status-icon {logistics-nerver-class}"></i>
+                                <i class="distribution status-icon {distribution-nerver-class}"></i>
+                                <i class="deliver status-icon {deliver-nerver-class}"></i>
+                            </div>
+                        </td>
+                        <td class="address">
+                            <div id="address-block-{index}" class="block">
+                                <span class="line bottom-blank">收货地址：{delivery-address}</span>
+                                <span class="line">收件人：{receiver}</span>
+                                <span class="line">电话：{receiver-mobile}</span>
+                                <a id="modify-address-{index}" data-index="{index}" href="javascript:" class="change"></a>
+                            </div>
+
+                        </td>
+                        <td class="logistics-info">
+                            <div id="logistics-block-{index}" class="block">
+                                <span class="line">{logistics-company-name}</span>
+                                <span class="line">物流单号：{logistics-bill-no}</span>
+                                <div class="btn-icon">
+                                    <a href="javascript:" title="批录下述所选" class="batch-input status-icon">批录</a>
+                                </div>
+                                <div id="logistics-status-icon-list-{index}" class="icon-list">
+                                    {logistics-status-icon-list}
+                                </div>
+                                <a id="modify-logistics-info-{index}" data-index="{index}" href="javascript:" class="change"></a>
+
+
+                            </div>
+                        </td>
+
+                        <td class="buyer-message">
+                            <span class="line bottom-blank">
+                                买家留言：{buyer-message}
+                            </span>
+                            <span class="line">
+                                卖家备注：{vendor-remark}
+                            </span>
+                        </td>
+                        <td class="mark-up">
+                            <div id="order-status-icon-list-{index}" class="icon-list">
+                                {order-status-icon-list}
+                            </div>
+
+                        </td>
+                        <td class="operation">
+                            <ul class="vertical-info">
+                                <li class="info top-blank">
+                                    <a id="split-btn-{index}" data-index="{index}" href="javascript:" class="order-btn">拆分</a>
+                                </li>
+                                <li class="info top-blank">
+                                    <a id="detail-btn-{index}" data-index="{index}" href="javascript:" class="order-btn">详情</a>
+                                </li>
+                                <li class="info top-blank spread-btn">
+                                    <a id="spread-btn-{index}" data-index="{index}" href="javascript:" class="order-btn spread-btn">展开</a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                    <tr class="modify-body">
+                        <td colspan="2"></td>
+                        <td colspan="2">
+                            <div id="address-info-{index}" class="buyer-info-modify-container hidden">
+                                <div class="buyer-info-modify">
+                                    <div class="label-title">地址：</div>
+                                    <div id="address-picker-{index}" data-index="{index}">
+
+                                    </div>
+                                    <textarea id="address-detail-{index}" class="address-details"></textarea>
+                                    <div class="button-panel">
+                                        <input id="address-info-cinfirm-{index}" data-index="{index}" type="button" value="确定" class="sub-bt" />
+                                        <input id="address-info-cancel-{index}" type="button" value="取消" class="cancel-bt" />
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td colspan="3"></td>
+                    </tr>
+                    <tr class="modify-body">
+                        <td colspan="3"></td>
+                        <td colspan="2">
+                            <div id="loginstics-info-{index}" class="buyer-info-modify-container hidden">
+                                <div class="buyer-info-modify">
+                                    <div class="line">
+                                        <span class="label-title">物流单号：</span>
+                                        <input id="logistics-number-{index}" type="text" class="input-text" />
+                                    </div>
+                                    <div class="label-title">物流公司：</div>
+                                    <ul class="couriers">
+
+                                        <li class="couriers-selected">顺丰快递</li>
+                                        <li>圆通快递</li>
+                                        <li>中通快递</li>
+                                        <li>韵达快递</li>
+                                        <li>世纪汇通</li>
+                                        <li>中通快递</li>
+                                        <li>韵达快递</li>
+                                        <li>世纪汇通</li>
+                                    </ul>
+                                    <div class="button-panel">
+                                        <input id="loginstics-info-cinfirm-{index}" data-index="{index}" type="button" value="确定" class="sub-bt" />
+                                        <input id="loginstics-info-cancel-{index}" type="button" value="取消" class="cancel-bt" />
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td colspan="2"></td>
+                    </tr>
+                    <tr id="order-detail-{index}" data-index="{index}">
+                    #--order-detail.begin--#
+                        <td class="check"></td>
+                        <td colspan="6" class="goods-info">
+                            <table class="goods">
+                                <tbody>
+                                #--order-info.begin--#
+                                    <tr>
+                                        <td class="good">
+                                            <img src="{img-path}" class="item-img" />
+
+                                            <ul class="infos">
+
+                                                <li class="item-name">
+                                                    <div class="name-sku-icon">
+                                                        <span class="line bottom-blank">
+                                                            {title}
+                                                        </span>
+                                                        <span class="line sku bottom-blank">商品编码:{item-number};{sku-list}</span>
+                                                        <div class="icon-list">
+                                                            {status-icon-list}
+                                                        </div>
+                                                    </div>
+
+                                                </li>
+                                                <li class="item-price">
+                                                    <div class="price-number">
+                                                        {price} x {amount}
+                                                    </div>
+
+                                                </li>
+                                                <li id="warehouse-area-{order-index}_{group-index}_{index}" class="item-warehouse">
+                                                    <div class="shown">
+                                                        <span class="line">仓库：{stock-name}</span>
+                                                        <span class="line">货位：{stock-position}</span>
+                                                    </div>
+                                                    <div class="edit">
+                                                        <div class="line">
+                                                            <span>仓库：</span>
+                                                            <input id="stock-name-{order-index}_{group-index}_{index}" type="text" class="input-text" value="{stock-name}" />
+                                                        </div>
+                                                        <div class="line">
+                                                            <span>货位：</span>
+                                                            <input id="stock-position-{order-index}_{group-index}_{index}" type="text" class="input-text" value="{stock-position}" />
+                                                        </div>
+                                                        <div class="line">
+                                                            <a id="stock-confirm-{order-index}_{group-index}_{index}" data-order="{order-index}" data-group="{group-index}" data-index="{index}" href="javascript:" class="confirm-btn status-icon">确定</a>
+                                                        </div>
+                                                    </div>
+                                                    <a id="stock-changed-{order-index}_{group-index}_{index}" data-group-index="{order-index}_{group-index}_{index}" href="javascript:" class="change"></a>
+                                                </li>
+                                            </ul>
+                                        </td>
+                                    #--order-number.begin--#
+                                        <td class="web-order-id" rowspan="{number}">
+                                            <span class="line">订单号：{tid}</span>
+                                            <span class="line date-color">{create-time}</span>
+
+                                        </td>
+                                    #--order-number.end--#
+                                    </tr>
+                                #--order-info.end--#
+                                </tbody>
+                            </table>
+                        </td>
+                    #--order-detail.end--#
+                    </tr>
+                </tbody>
+            -->
+        </table>
+    </div>
+
+
+    <div id="div-pager-normal" class="page-panel">
+
+    </div>
+
+    <script src="../../lib/jquery/jquery-1.11.1.debug.js"></script>
+    <script src="../../lib/miniquery/miniquery.debug.js"></script>
+    <script src="../../lib/sms/sms.debug.js"></script>
+
+    <script src="../../lib/datetimepicker/js/datetimepicker.mod.debug.js"></script>
+
+    <script src="../../config.js"></script>
+
+    <!--grunt.js.begin-->
+
+    <script src="modules/API.js"></script>
+    <script src="../controls/modules/OrderPagination.js"></script>
+
+    <script src="modules/FilterData.js"></script>
+    <script src="../controls/modules/Filter.js"></script>
+
+    <script src="modules/OrderListData.js"></script>
+    <script src="modules/OrderList.js"></script>
+    <script src="modules/GoodsInfo.js"></script>
+    <script src="../controls/modules/Sorting.js"></script>
+    <script src="modules/ButtonList.js"></script>
+
+    <script src="print.js"></script>
+
+    <!--grunt.js.end-->
+</body>
+</html>

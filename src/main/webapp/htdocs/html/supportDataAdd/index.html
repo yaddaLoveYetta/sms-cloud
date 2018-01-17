@@ -1,0 +1,47 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title></title>
+    <link rel="stylesheet" href="../../css/global.debug.css" />
+    <link rel="stylesheet" href="../../css/supportDataAdd/index.debug.css" />
+</head>
+<body class="iframe">
+    <div class="add-box">
+        <p id="p-types">
+            <!--
+            <label>类别：</label>
+            <select id="select-types">
+                <option>请选择</option>
+                #--options.begin--#
+                <option value="{typeID}">{typeName}</option>
+                #--options.end--#
+            </select>
+            -->
+        </p>
+        <p>
+            <label>代码：</label>
+            <input type="text" id="add-number" />
+        </p>
+        <p>
+            <label>名称：</label>
+            <input type="text" id="add-name" />
+        </p>
+        <p class="warn-text" id="p-warn"></p>
+        <p class="btn-panel">
+            <input type="button" class="btn" value="取消" id="btn-cancel" />
+            <input type="button" class="btn" value="确认" id="btn-submit" />
+        </p>
+    </div>
+    <script src="../../lib/jquery/jquery-1.11.1.debug.js"></script>
+    <script src="../../lib/miniquery/miniquery.debug.js"></script>
+    <script src="../../lib/kerp/kerp.debug.js"></script>
+    <script src="../../config.js"></script>
+
+    <!-- grunt.js.begin -->
+    <script src="module/Operation.js"></script>
+    <script src="module/Type.js"></script>
+    <script src="index.js"></script>
+    <!-- grunt.js.end -->
+</body>
+</html>

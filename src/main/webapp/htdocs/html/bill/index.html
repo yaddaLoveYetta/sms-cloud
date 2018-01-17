@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>发货单</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <!--grunt.css.begin-->
+    <link href="../../css/base.css" rel="stylesheet"/>
+    <link href="../../css/global.debug.css" rel="stylesheet"/>
+    <link href="../../css/bill/index.debug.css" rel="stylesheet">
+    <!--grunt.css.end-->
+</head>
+<body class="iframe">
+
+<div class="options-panel">
+    <div id="div-button-list" class="btn-box">
+
+    </div>
+</div>
+
+<div class="panel main">
+
+    <dl>
+        <dt>
+            <b>主信息</b>
+        </dt>
+        <dd id="dd-head">
+
+            <!--
+            <div class="logistics-row">
+
+                #--row.items.begin--#
+
+                       #--row.mustInput.begin--#
+                            <span class="must-mark">*</span>
+                       #--row.mustInput.end--#
+
+                       #--row.text.begin--#
+                       <div class="item">
+                            <span class="col-title" title="{name}">{mustInput}{name}:</span>
+                            <div class="col-value">
+                                <input id="{key}" type="text" class="edit-input" value=""/>
+                                <span id="{key}-msg" class="msg"></span>
+                            </div>
+                       </div>
+                       #--row.text.end--#
+
+                       #--row.datatime.begin--#
+                       <div class="item">
+                            <span class="col-title" title="{name}">{mustInput}{name}:</span>
+                            <div class="col-value">
+                                <input id="{key}" type="text" class="edit-input time-input" value=""/>
+                                <span id="{key}-msg" class="msg"></span>
+                            </div>
+                       </div>
+                       #--row.datatime.end--#
+
+                       #--row.password.begin--#
+                       <div class="item">
+                            <span class="col-title" title="{name}">{mustInput}{name}:</span>
+                            <div class="col-value">
+                                <input id="{key}" type="password" class="edit-input" value=""/>
+                                <span id="{key}-msg" class="msg"></span>
+                            </div>
+                       </div>
+                       #--row.password.end--#
+                       #--row.textarea.begin--#
+                       <div class="item">
+                            <span class="col-title" title="{name}">{mustInput}{name}:</span>
+                            <div class="col-value">
+                                <textarea id="{key}" class="edit-input" value="" style="width:205px; height:50px;"></textarea>
+                                <span id="{key}-msg" class="msg"></span>
+                            </div>
+                       </div>
+                        #--row.textarea.end--#
+
+                       #--row.checkbox.begin--#
+                       <div class="item">
+                            <span class="col-title" title="{name}">{mustInput}{name}:</span>
+                            <div class="col-value">
+                                <input id="{key}" type="checkbox" class="edit-input" value=""/>
+                                <span id="{key}-msg" class="msg"></span>
+                            </div>
+                       </div>
+                      #--row.checkbox.end--#
+
+                       #--row.f7.begin--#
+                       <div class="item">
+                            <span class="col-title" title="{name}">{mustInput}{name}:</span>
+                            <div class="col-value">
+                                <div class="F7-box" id="{key}"></div>
+                                <span id="{key}-msg" class="msg"></span>
+                            </div>
+                       </div>
+                       #--row.f7.end--#
+
+                #--row.items.end--#
+
+            </div>
+            -->
+        </dd>
+    </dl>
+</div>
+
+<div class="panel detail">
+
+    <dl>
+        <dt>
+            <b>物料信息</b>
+        </dt>
+
+        <dd>
+
+            <div class="col-value">
+                <div id="initCombo" class="dn">
+                    <input type="text" class="textbox materialAuto" name="material" autocomplete="off">
+                    <input type="text" class="textbox unitAuto" name="unit" autocomplete="off">
+                    <input type="text" class="textbox dyManufacturerAuto" name="dyManufacturer" autocomplete="off">
+                </div>
+                <div class="grid-wrap">
+                    <!-- jqGrid table -->
+                    <table id="bd-grid"></table>
+                    <!-- jqGrid 分页 div -->
+                    <div id="bd-grid-pager"></div>
+                </div>
+                <span class="error-msg" id="bd-grid-msg"></span>
+            </div>
+
+        </dd>
+    </dl>
+</div>
+
+
+<script src="../../lib/jquery/jquery-1.11.1.debug.js"></script>
+<script src="../../lib/miniquery/miniquery.debug.js"></script>
+<script src="../../lib/sms/sms.debug.js"></script>
+<script src="../../config.js"></script>
+
+<!--grunt.js.begin-->
+<script src="../selector/module/DataSelector.js"></script>
+<script src="modules/API/Template.js"></script>
+<script src="modules/API/Data.js"></script>
+<script src="modules/API.js"></script>
+<script src="modules/Head/Samples.js"></script>
+<script src="modules/Head.js"></script>
+<script src="modules/Head/Samples.js"></script>
+<script src="modules/Entry/GridBuilder.js"></script>
+<script src="modules/Entry.js"></script>
+<script src="modules/ButtonList.js"></script>
+<script src="modules/ButtonListOption.js"></script>
+<script src="index.js"></script>
+<!--grunt.js.end-->
+
+</body>
+</html>

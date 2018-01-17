@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>订单统计</title>
+
+    <!--grunt.css.begin-->
+    <link href="../../../css/global.debug.css" rel="stylesheet"/>
+    <link href="../../../css/base/index.debug.css" rel="stylesheet"/>
+    <link href="../../../css/base.css" rel="stylesheet"/>
+    <link href="../../../css/report/order-count/index.debug.css" rel="stylesheet">
+
+
+    <!--grunt.css.end-->
+
+</head>
+
+<body class="iframe">
+
+<div class="nav-panel">
+    <div class="personSearch pr clearfix">
+        <div class="clearfix m5">
+            <div class="col-value fl mr5" data-filter="material">
+                <div class="F7-box" id="bd-material"></div>
+            </div>
+            <div class="col-value fl mr5" data-filter="supplier">
+                <div class="F7-box" id="bd-supplier"></div>
+            </div>
+            <input type="text" id="beginDate" data-filter="date"
+                   class="edit-input list-txt_input  time-input" placeholder="开始日期"/>
+            <input type="text" id="endDate" data-filter="date"
+                   class="edit-input list-txt_input time-input" placeholder="结束日期"/>
+            <input type="button" id="search" class="sms-btn-item searchBtn"
+                   value="查 询">
+        </div>
+
+    </div>
+</div>
+
+<div class="options-panel">
+    <div id="div-pager-simple" class="pager-box"></div>
+</div>
+
+<div id="div-list" class="table-panel">
+    <!--
+    <table class="data-table">
+        <thead>
+        <tr>
+            <th style="width: 5%;">行号</th>
+            <th style="width: 15%;">物料编码</th>
+            <th style="width: 15%;">物料名称</th>
+            <th style="width: 15%;">规格型号</th>
+            <th style="width: 10%;">单位</th>
+            <th style="width: 8%;">订单数量</th>
+            <th style="width: 8%;">发货数量</th>
+            <th style="width: 8%;">退货数量</th>
+            <th style="width: 8%;">入库数量</th>
+        </tr>
+        </thead>
+        <tbody>
+        #--tr.begin--#
+        <tr data-index="{index}" class="">
+            #--td.begin--#
+            <td >{index}</td>
+            <td>{materialNumber}</td>
+            <td>{materialName}</td>
+            <td>{model}</td>
+            <td>{unit}</td>
+            <td>{orderQty}</td>
+            <td>{outStockQty}</td>
+            <td>{returnQty}</td>
+            <td>{stockQty}</td>
+            #--td.end--#
+        </tr>
+        #--tr.end--#
+        </tbody>
+    </table>
+    -->
+</div>
+<div id="div-pager-normal" class="page-panel"></div>
+
+<script src="../../../lib/jquery/jquery-1.11.1.debug.js"></script>
+<script src="../../../lib/miniquery/miniquery.debug.js"></script>
+<script src="../../../lib/sms/sms.debug.js"></script>
+<script src="../../../config.js"></script>
+
+<!--grunt.js.begin-->
+<script src="../../selector/module/DataSelector.js"></script>
+<script src="modules/DatetimePicker.js"></script>
+<script src="modules/List.js"></script>
+<script src="modules/Pager.js"></script>
+<script src="modules/SelectorList.js"></script>
+<script src="index.js"></script>
+<!--grunt.js.end-->
+
+
+</body>
+</html>

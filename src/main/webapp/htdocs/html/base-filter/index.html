@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link href="../../css/base.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../../css/global.debug.css" />
+		<link rel="stylesheet" href="../../css/base.css" />
+		<link rel="stylesheet" href="../../css/base/index.debug.css">
+		<style type="text/css">
+			input,
+			select {
+				min-width: 100%;
+				max-width: 100%;
+				padding: 5px 0;
+				border: 1px solid #dddddd;
+			}
+			
+			.data-table tbody tr:hover {
+				background: none;
+			}
+		</style>
+	</head>
+
+	<body>
+		<!--<option value=""></option>-->
+		<table class="data-table itemFildes" id="myFilterTable">
+			<thead>
+				<tr>
+					<th>过滤字段</th>
+					<th>比较符号</th>
+					<th>比较值</th>
+					<th>连接关系</th>
+				</tr>
+			</thead>
+			<tbody id="myFilterBody">
+				<!--<tr index='{index}'>
+					<td>
+						<select name="filterKeys">
+							<option value=""></option>
+							 #--filterKeys.begin--#
+							<option keyIndex='{keyIndex}' value="{value}" ctrlType='{ctrlType}' dataType='{dataType}'>{name}</option>
+							 #--filterKeys.end--#
+						</select>
+					</td>
+					<td>
+						<select name="compareKeys">
+							<option value=""></option>
+						</select>
+					</td>
+					<td>
+						<input name="compareValue" type="text" />
+					</td>
+					<td>
+						<select name="joinType">
+							<option value="AND">并且</option>
+							<option value="OR">或者</option>
+						</select>
+					</td>
+				</tr>-->
+			</tbody>
+		</table>
+
+		<script src="../../lib/jquery/jquery-1.11.1.debug.js"></script>
+		<script src="../../lib/miniquery/miniquery.debug.js"></script>
+		<script src="../../lib/sms/sms.debug.js"></script>
+		<script src="../../config.js"></script>
+
+		<!--grunt.js.begin-->
+		<script src="modules/Filter.js" type="text/javascript" charset="utf-8"></script>
+		<script src="modules/CompareKey.js" type="text/javascript" charset="utf-8"></script>
+		<script src="index.js" type="text/javascript" charset="utf-8"></script>
+		<!--grunt.js.end-->
+	</body>
+
+</html>

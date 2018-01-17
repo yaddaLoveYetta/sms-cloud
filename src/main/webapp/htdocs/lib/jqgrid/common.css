@@ -1,0 +1,59 @@
+@charset "utf-8";
+
+.pr { position:relative;}
+.dn { display: none;}
+.operating .ui-icon {
+            margin: 0;
+            display: inline-block;
+            cursor: pointer;
+        }
+/*grid中的操作图标样式 */
+/* Icons from jquery.ui.core
+----------------------------------*/
+
+/* states and images */
+.ui-icon {
+	display: block;
+	text-indent: -99999px;
+	overflow: hidden;
+	background-repeat: no-repeat;
+}
+
+/* Icons 
+ * create by guoliang_zou 
+ * lastUpdate by guoliang_zou 2014-03-07
+----------------------------------*/
+
+/* states and images */
+.ui-icon {
+	width: 16px;
+	height: 16px;
+}
+.ui-icon,
+.ui-widget-content .ui-icon {
+	background-image: url(img/ui-icons.png)/*{iconsContent}*/;
+}
+
+.ui-jqgrid-bdiv .ui-state-highlight {
+    background: none;
+}
+
+.ui-icon-plus { background-position: -80px 0; }
+.ui-icon-trash { background-position: -64px 0; }
+/* positioning normal*/
+/*.ui-icon-trash { background-position:-64px -16px; }
+.ui-icon-plus { background-position:-80px -16px; }*/
+.ui-icon-triangle-1-s { background-position:-160px -16px; }
+/* positioning default*/
+.ui-state-default .ui-icon-trash { background-position:-64px 0; }
+.ui-state-default .ui-icon-plus { background-position:-80px 0; }
+.ui-state-default .ui-icon-triangle-1-s { background-position:-160px 0; }
+/* positioning hover*/
+.ui-state-hover .ui-icon-trash { background-position:-64px -16px; }
+.ui-state-hover .ui-icon-plus { background-position:-80px -16px; }
+.ui-state-hover .ui-icon-triangle-1-s { background-position:-160px -16px; }
+
+.ui-jqdialog .ui-jqdialog-titlebar-close .ui-icon-closethick{ 
+    background-image: url(img/tab_close.png);
+    background-position: 4px -8px;
+}

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>订单追踪</title>
+
+    <!--grunt.css.begin-->
+    <link href="../../../css/global.debug.css" rel="stylesheet"/>
+    <link href="../../../css/base/index.debug.css" rel="stylesheet"/>
+    <link href="../../../css/base.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="../../../css/report/order-track/index.debug.css">
+
+    <!--grunt.css.end-->
+
+</head>
+
+<body class="iframe">
+
+<div class="nav-panel">
+
+    <div class="personSearch pr clearfix">
+        <div class="clearfix m5">
+            <div class="col-value fl mr5" data-filter="order">
+                <div class="F7-box" id="bd-order"></div>
+            </div>
+            <div class="col-value fl mr5" data-filter="supplier">
+                <div class="F7-box" id="bd-supplier"></div>
+            </div>
+            <input type="text" id="beginDate" data-filter="date"
+                   class="edit-input list-txt_input  time-input" placeholder="开始日期"/>
+            <input type="text" id="endDate" data-filter="date"
+                   class="edit-input list-txt_input time-input" placeholder="结束日期"/>
+            <input type="button" id="search" class="sms-btn-item searchBtn"
+                   value="查 询">
+        </div>
+
+    </div>
+</div>
+
+<div id="tab-container" class='tab-container'>
+    <ul class='etabs'>
+        <li class='tab' id="2020"><a href="#div-list">发货信息</a></li>
+        <li class='tab' id="2021"><a href="#div-list">收货信息</a></li>
+        <li class='tab' id="2022"><a href="#div-list">入库信息</a></li>
+        <li class='tab' id="2023"><a href="#div-list">退货信息</a></li>
+    </ul>
+    <div class='panel-container'>
+
+        <div id="div-list" class="table-panel">
+            <!--
+            <table class="data-table">
+                <thead>
+                <tr>
+                    #--th.begin--#
+                    <th style="width: {width};">{th}</th>
+                    #--th.end--#
+                </tr>
+                </thead>
+                <tbody>
+                #--tr.begin--#
+                <tr data-index="{index}" class="">
+                    #--td.begin--#
+                    <td >{td}</td>
+                    #--td.end--#
+                </tr>
+                #--tr.end--#
+                </tbody>
+            </table>
+            -->
+        </div>
+
+        <div id="div-pager-normal" class="page-panel"></div>
+
+    </div>
+</div>
+
+<script src="../../../lib/jquery/jquery-1.11.1.debug.js"></script>
+<script src="../../../lib/miniquery/miniquery.debug.js"></script>
+<script src="../../../lib/sms/sms.debug.js"></script>
+<script src="../../../config.js"></script>
+
+<!--<script src="../../../lib/jspkg-archive/vendor/jquery.hashchange.mini.js" type="text/javascript"></script>-->
+<script src="../../../lib/jspkg-archive/lib/jquery.easytabs.min.js" type="text/javascript"></script>
+
+
+<!--grunt.js.begin-->
+<script src="../../selector/module/DataSelector.js"></script>
+<script src="modules/DatetimePicker.js"></script>
+<script src="modules/List.js"></script>
+<script src="modules/Pager.js"></script>
+<script src="modules/SelectorList.js"></script>
+<script src="modules/Tabs.js"></script>
+<script src="index.js"></script>
+<!--grunt.js.end-->
+
+</body>
+</html>

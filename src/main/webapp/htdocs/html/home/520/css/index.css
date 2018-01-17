@@ -1,0 +1,33 @@
+body {
+    background-color: black;
+    overflow: hidden;
+}
+
+.lunbo {
+    position: absolute;
+    top: 200px;
+    left: 100px;
+    height: 300px;
+    width: 500px;
+    background-color: black;
+    overflow: hidden;
+}
+
+.lunbo img{
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.marquee marquee {
+    position: absolute;
+    top: 200px;
+    left: 750px;
+    height: 300px;
+    width: 300px;
+    background-color: black;
+    color:darkseagreen;
+    line-height: 40px;
+    text-align: center;
+}

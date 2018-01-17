@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>上传附件</title>
+    <!--grunt.css.begin-->
+    <link href="../../../css/base.css" rel="stylesheet"/>
+    <link href="../../../css/global.debug.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="../../../css/supplier/upload/index.debug.css">
+    <!--grunt.css.end-->
+    <link rel="stylesheet" href="../../../lib/uploadify/uploadify.css"/>
+</head>
+<body>
+
+<div class="container">
+    
+    <input class="sms-btn-item" type="button" value="上传" id="upload">
+    <input class="btn" type="button" id="sel">
+</div>
+<div class="tips"><p>请选择附件再执行上传操作</p></div>
+
+<!--用来作为文件队列区域-->
+<div id="fileQueue" class="fileQueue"></div>
+
+<script src="../../../lib/jquery/jquery-1.11.1.debug.js"></script>
+<script src="../../../lib/miniquery/miniquery.debug.js"></script>
+<script src="../../../lib/sms/sms.debug.js"></script>
+<script src="../../../config.js"></script>
+
+<script src="../../../lib/uploadify/jquery.uploadify.min.js"></script>
+
+<!--grunt.js.begin-->
+
+<script src="modules/Upload.js"></script>
+
+<script src="index.js"></script>
+<!--grunt.js.end-->
+</body>
+</html>

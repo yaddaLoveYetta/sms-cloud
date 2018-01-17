@@ -1,0 +1,104 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title></title>
+    <link rel="stylesheet" href="../../css/global.debug.css" />
+    <link href="../../css/api_tester/api_tester.debug.css" rel="stylesheet" />
+    <link href="../../lib/highlight/highlight.debug.css" rel="stylesheet" />
+    <style>
+        #txt-data{
+            height: 90px;
+        }
+
+        #txt-json {
+            height: 100%;
+        }
+    </style>
+</head>
+<body class="iframe">
+
+
+    <div class="demo api-tester" style="width: 50%; float: left;">
+        <ul class="items" style="border: none;">
+            <li>
+                <ul class="tabs">
+                    <li class="tab on">请求</li>
+                </ul>
+                <ul>
+                    <li class="content box">
+                        <p>
+                            <label>接口名称：</label><input id="txt-name" class="bold" type="text" value="template/getItemById" />
+                        </p>
+                        
+                        <p>
+                            <label>提交方式：</label>
+                            <label>get</label><input id="rd-get" type="radio" name="method" checked="checked" />
+                            <label>post</label><input id="rd-post" type="radio" name="method" />
+                        </p>
+                        <p id="p-query" style="display: none;">
+                            <label>查询参数：</label><input id="txt-query" class="bold" type="text" value="" />
+                        </p>
+                        <p>
+                            <label id="lbl-data">表单参数：</label><textarea id="txt-data">
+classId: '1005',
+id: '/47b3B98QeSerElWwBWYMzfGffw=',
+
+                                                              </textarea>
+                        </p>
+                        <p class="submit">
+                            <input id="btn-submit" type="button" value="提交" class="sms-btn-item" />
+                        </p>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+    <div class="demo api-tester" style="width: 49.9%; float: left;">
+        <ul class="items" style="border: none;">
+            <li>
+                <ul class="tabs">
+                    <li class="tab">响应</li>
+                </ul>
+                <ul>
+                    <li class="content box">
+                        <ul id="ul-lines" class="row-panel">
+                            <!--
+                            <li>{text}</li>
+                            -->
+                        </ul>
+                        <pre style="display: block;"><code id="code-json" class="hljs"></code></pre>
+
+                        <!-- 编辑状态（编辑状态含bt-panel，为操作按钮区） -->
+                        <div class="bt-panel">
+                            <input id="btn-switch" type="button" value="切换格式" />
+                        </div>
+                        <textarea id="txt-json" class="editor" style="display: none;"> </textarea>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+
+    </div>
+    <script src="../../lib/jquery/jquery-1.11.1.debug.js"></script>
+    <script src="../../lib/miniquery/miniquery.debug.js"></script>
+    <script src="../../lib/sms/sms.debug.js"></script>
+    <script src="../../lib/highlight/highlight.debug.js"></script>
+    <script src="../../config.js"></script>
+
+    <!--grunt.js.begin-->
+    <script src="modules/Request/API.js"></script>
+    <script src="modules/Request.js"></script>
+
+
+    <script src="modules/Response/Lines.js"></script>
+    <script src="modules/Response/Code.js"></script>
+    <script src="modules/Response/Source.js"></script>
+    <script src="modules/Response.js"></script>
+
+    <!--<script src="modules/API.js"></script>-->
+    <script src="index.js"></script>
+    <!--grunt.js.end-->
+</body>
+</html>

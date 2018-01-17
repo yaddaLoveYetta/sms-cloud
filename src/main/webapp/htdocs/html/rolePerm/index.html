@@ -1,0 +1,91 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>角色权限</title>
+    <!--grunt.css.begin-->
+    <link href="../../css/global.debug.css" rel="stylesheet" />
+    <link href="../../css/base/index.debug.css" rel="stylesheet" />
+    <link rel="stylesheet" href="../../css/rolePermission/rolePermission.css" />
+    <link rel="stylesheet" href="../../lib/ztree/css/zTreeStyle/zTreeStyle.css" />
+    <!--grunt.css.end-->
+</head>
+<body class="iframe">
+    <div class="left-panel">
+        <div class="nav-panel">
+            <div id="div-cascade-path" class="bread-crumbs-box">
+            </div>
+            <div id="div-cascade-menus">
+            </div>
+            <div class="search-box">
+                <i class="sms-icon-search"></i>
+                <input id="txt-simple-search" type="text" placeholder="代码/名称" />
+                <span class="bt-dropdown"><i class="sms-icon-dropdown"></i></span>
+            </div>
+        </div>
+        <div class="options-panel">
+            <div id="div-pager-simple" class="pager-box">
+            </div>
+        </div>
+        <div id="div-list">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th style="display:none;">id</th>
+                        <th>代码</th>
+                        <th>名称</th>
+                        <th>类别</th>
+                        <th>是否禁用</th>
+                    </tr>
+                </thead>
+                <tbody id="tbody">
+                    <!--
+                    <tr data-index="{index}" class="item" data-check="item">
+                        #--td.begin--#
+                        <td style="display:none;"><input type="hidden" class="fid" value="{td-roleId}"/></td>
+                        <td data-index="{index}" class="{disabled-class}">{td-number}</td>
+                        <td data-index="{index}"><a href="javascript:void(0);">{td-name}</a></td>
+                        <td data-index="{index}">{td-type}</td>
+                        <td data-index="{index}">{td-visible}</td>
+                            #--td.end--#
+                        </tr>
+                        -->
+
+                </tbody>
+            </table>
+        </div>
+        <div class="page-panel" id="div-pager-normal"></div>
+
+    </div>
+    <div class="right-panel">
+        <div class="title">
+            <div class="text">权限列表</div>
+        </div>
+        <div class="content">
+            <div class="tree">
+                <div id="permitTree" class="ztree">
+                </div>
+            </div>
+        </div>
+        <div class="options">
+            <input id="optSave" class="sms-btn-item" type="button" value="保存">
+            <input id="optCancel" class="sms-btn-item" type="button" value="取消保存">
+        </div>
+    </div>
+    <script src="../../lib/jquery/jquery-1.11.1.debug.js"></script>
+    <script src="../../lib/miniquery/miniquery.debug.js"></script>
+    <script src="../../lib/sms/sms.debug.js"></script>
+    <script src="../../config.js"></script>
+    <script src="../../lib/ztree/js/jquery.ztree.all-3.5.js"></script>
+
+    <!--grunt.js.begin-->
+    <script src="modules/Container.js"></script>
+    <script src="modules/List.js"></script>
+    <script src="modules/Pager.js"></script>
+    <script src="modules/Serach.js"></script>
+    <script src="modules/Tree.js"></script>
+
+    <script src="index.js?v=121"></script>
+    <!--grunt.js.end-->
+</body>
+</html>

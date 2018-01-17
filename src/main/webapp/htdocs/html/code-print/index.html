@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="zh_CN">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title></title>
+    <!--grunt.css.begin-->
+    <link rel="stylesheet" href="../../css/global.debug.css"/>
+    <link rel="stylesheet" href="../../css/base.css"/>
+    <link rel="stylesheet" href="../../css/code-print/index.debug.css">
+    <!--grunt.css.end-->
+</head>
+
+<body class="iframe">
+<!--按钮区-->
+<div class="options">
+    <div id="div-button-list" class="btn-box"></div>
+
+    <div id="div-code-style" class="code-style">
+        <div id="div-code-style-type" class="code-style-box">
+            <select id="codeType">
+                <!--
+                <option value="{value}">"{text}"</option>
+                -->
+            </select>
+        </div>
+        <div id="div-code-style-width" class="code-style-box">
+            <select id="codeWidth">
+                <!--
+                <option value="{value}">"{text}"</option>
+                -->
+            </select>
+        </div>
+        <div id="div-code-style-height" class="code-style-box">
+            <select id="codeHeight">
+                <!--
+                <option value="{value}">"{text}"</option>
+                -->
+            </select>
+        </div>
+    </div>
+</div>
+<!--主显示区-->
+<div class="main-content">
+
+    <div id="div-content" class="content-box">
+
+        <div id="code">
+
+            <!--
+            <div class="item" data-index="{index}">
+                <span class="title">广州红十字会高值管理条码</span>
+
+                <div class='bc-target' data-index="{index}"></div>
+
+                <div class="footer">物料名称：{name}</div>
+                <div class="footer">规格型号：{model}</div>
+                <div class="footer">有效期：{effective}</div>
+                <div class="footer">批号：{batch}</div>
+            </div>
+            <div style="page-break-after:always;"></div>
+            -->
+
+        </div>
+
+    </div>
+
+
+</div>
+
+<script src="../../lib/jquery/jquery-1.11.1.debug.js"></script>
+<script src="../../lib/miniquery/miniquery.debug.js"></script>
+<script src="../../lib/sms/sms.debug.js"></script>
+<script src="../../config.js"></script>
+
+<!--<script src="../../lib/jquery-barcode-2.0.3/jquery/jquery-barcode.min.js"></script>-->
+<script src="../../lib/jquery.jqprint/jquery.jqprint-0.3.js"></script>
+<script src="../../lib/jquery.jqprint/jquery-migrate-1.2.1.min.js"></script>
+<!--grunt.js.begin-->
+<script src="modules/ButtonList.js"></script>
+<script src="modules/BarCode.js"></script>
+<script src="modules/Samples.js"></script>
+<script src="index.js"></script>
+<!--grunt.js.end-->
+</body>
+
+</html>

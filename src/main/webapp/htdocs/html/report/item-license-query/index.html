@@ -1,0 +1,170 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title> 物料证件查询</title>
+    <!--grunt.css.begin-->
+    <link href="../../../css/global.debug.css" rel="stylesheet"/>
+    <link href="../../../css/base/index.debug.css" rel="stylesheet"/>
+    <link href="../../../css/base.css" rel="stylesheet"/>
+    <link href="../../../css/report/item-license-query/index.debug.css" rel="stylesheet">
+    <!--grunt.css.end-->
+</head>
+<body class="iframe">
+
+<div class="nav-panel">
+    <div class="personSearch pr clearfix">
+
+        <div class="clearfix m5">
+            <input type="text" id="itemNumber" class="edit-input txt_input" placeholder="物料编码"/>
+            <input type="text" id="itemName" class="edit-input txt_input" placeholder="物料名称"/>
+            <input type="text" id="itemModel" class="edit-input txt_input" placeholder="规格型号"/>
+
+            <div class="col-value dline" data-filter="manufacturer">
+                <div class="F7-box" id="manufacturer"></div>
+            </div>
+        </div>
+        <div class="clearfix m5">
+
+            <input type="text" id="idNumber" class="edit-input txt_input" placeholder="证书编号"/>
+            <input type="text" id="idName" class="edit-input txt_input" placeholder="注册证名称"/>
+            <div class="col-value dline" data-filter="idType">
+                <div class="F7-box" id="idType"></div>
+            </div>
+            <!--<input type="text" id="idType" class="edit-input txt_input" placeholder="证书类别"/>-->
+            <input type="text" id="authOrg" class="edit-input txt_input" placeholder="发证机关"/>
+
+        </div>
+        <div class="clearfix m5">
+
+            <!--<input type="text" id="supplier" class="edit-input txt_input" placeholder="供应商"/>-->
+            <div class="col-value dline" data-filter="supplier">
+                <div class="F7-box" id="supplier"></div>
+            </div>
+
+            <!-- <input type="text" id="agent" class="edit-input txt_input" placeholder="代理商"/>-->
+            <div class="col-value dline" data-filter="agent">
+                <div class="F7-box" id="agent"></div>
+            </div>
+
+            <input type="checkbox" id="soonExpired" value="1"/>即将过期
+            <input type="checkbox" id="expired" value="1"/>已过期
+            <input type="button" id="jsSearch" class="sms-btn-item searchBtn"
+                   value="查  询">
+        </div>
+        <div class="clearfix m5">
+
+        </div>
+    </div>
+</div>
+
+<!--<div class="options-panel">
+    <div id="div-pager-simple" class="pager-box"></div>
+</div>-->
+
+<div class="tabs mt5"><h2>物料证件</h2></div>
+
+<div id="div-list" class="table-panel">
+    <!--
+    <table class="data-table">
+        <thead>
+        <tr>
+            <th style="width: 10%;">物料编码</th>
+            <th style="width: 10%;">物料名称</th>
+            <th style="width: 10%;">规格型号</th>
+            <th style="width: 10%;">生产厂家</th>
+            <th style="width: 10%;">证件编码</th>
+            <th style="width: 10%;"> 注册证名称</th>
+            <th style="width: 10%;">证书类别</th>
+            <th style="width: 10%;">发证机关</th>
+            <th style="width: 10%;">代理商</th>
+            <th style="width: 10%;">供应商</th>
+            <th style="width: 10%;">起始时间</th>
+            <th style="width: 10%;">结束时间</th>
+            <th style="width: 10%;">有效天数</th>
+            <th style="width: 10%;">附件</th>
+        </tr>
+        </thead>
+        <tbody>
+        #--tr.begin--#
+        <tr data-index="{index}" class="{expired}">
+            #--td.begin--#
+            <td data-index="{index}">{itemNumber}</td>
+            <td data-index="{index}">{itemName}</td>
+            <td data-index="{index}"{itemModel}</td>
+            <td data-index="{index}">{factory}</td>
+            <td data-index="{index}">{idNumber}</td>
+            <td data-index="{index}">{idName}</td>
+            <td data-index="{index}">{idType}</td>
+            <td data-index="{index}">{authOrg}</td>
+            <td data-index="{index}">{agent}</td>
+            <td data-index="{index}">{supplier}</td>
+            <td data-index="{index}">{beginDate}</td>
+            <td data-index="{index}">{endDate}</td>
+            <td data-index="{index}">{effective}</td>
+            #--td.end--#
+        </tr>
+        #--tr.end--#
+        </tbody>
+    </table>
+    -->
+</div>
+<div>
+    <div id="div-pager-normal" class="page-panel"></div>
+</div>
+
+<div class="tabs mt5"><h2>供应商资质</h2></div>
+<div id="div-list-supplier-license" class="table-panel">
+    <!--
+    <table class="data-table">
+        <thead>
+        <tr>
+            <th style="width: 10%;">证件编码</th>
+            <th style="width: 10%;"> 名称</th>
+            <th style="width: 10%;">证书类别</th>
+            <th style="width: 10%;">发证机关</th>
+            <th style="width: 10%;">供应商</th>
+            <th style="width: 10%;">起始时间</th>
+            <th style="width: 10%;">结束时间</th>
+            <th style="width: 10%;">有效天数</th>
+            <th style="width: 10%;">附件</th>
+        </tr>
+        </thead>
+        <tbody>
+        #--tr.begin--#
+        <tr data-index="{index}" class="{expired}">
+            #--td.begin--#
+            <td data-index="{index}">{idNumber}</td>
+            <td data-index="{index}">{idName}</td>
+            <td data-index="{index}">{idType}</td>
+            <td data-index="{index}">{authOrg}</td>
+            <td data-index="{index}">{supplier}</td>
+            <td data-index="{index}">{beginDate}</td>
+            <td data-index="{index}">{endDate}</td>
+            <td data-index="{index}">{effective}</td>
+            #--td.end--#
+        </tr>
+        #--tr.end--#
+        </tbody>
+    </table>
+    -->
+</div>
+
+
+<script src="../../../lib/jquery/jquery-1.11.1.debug.js"></script>
+<script src="../../../lib/miniquery/miniquery.debug.js"></script>
+<script src="../../../lib/sms/sms.debug.js"></script>
+<script src="../../../config.js"></script>
+
+<!--grunt.js.begin-->
+<script src="../../selector/module/DataSelector.js"></script>
+<script src="modules/List.js"></script>
+<script src="modules/SelectorList.js"></script>
+<script src="modules/List.js"></script>
+<script src="modules/Pager.js"></script>
+<script src="index.js"></script>
+<!--grunt.js.end-->
+
+
+</body>
+</html>
