@@ -17,7 +17,7 @@
 
 
     <!-- 指定自动扫描路径 -->
-    <context:component-scan base-package="com.kingdee.eas.hrp.sms.controller" use-default-filters="false">
+    <context:component-scan base-package="com.kingdee.hrp.sms" use-default-filters="false">
         <!-- 值扫描@Controller注解 -->
         <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
     </context:component-scan>
@@ -41,42 +41,6 @@
     </bean>
 
     <!-- 测试接口先不开拦截 -->
-    <mvc:interceptors>
-        <mvc:interceptor>
-            <!-- 匹配的是url路径， 如果不配置或/**,将拦截所有的Controller -->
-            <mvc:mapping path="/**"/>
-            <bean class="com.kingdee.eas.hrp.sms.filter.SecurityInterceptor">
-                <property name="allowUrls">
-                    <map key-type="java.lang.String">
-                        <!-- 如果请求中包含以下路径，则不进行拦截 -->
-                        <entry value-type="java.lang.String" key="/user/login" value="/user/login"/>
-                        <entry value-type="java.lang.String" key="/user/createToken" value="/user/createToken"/>
-
-                        <entry value-type="java.lang.String" key="/codefile/upload" value="/codefile/upload"/>
-                        <entry value-type="java.lang.String" key="/codefile/download" value="/codefile/download"/>
-                        <entry value-type="java.lang.String" key="/file/download" value="/file/download"/>
-                    </map>
-                </property>
-                <property name="clientUrls">
-                    <map key-type="java.lang.String">
-                        <!-- 如果请求中包含以下路径，验证token -->
-                        <entry value-type="java.lang.String" key="/template/delItemByHRP"
-                               value="/template/delItemByHRP"/>
-                        <entry value-type="java.lang.String" key="/sync/sync" value="/sync/sync"/>
-                        <entry value-type="java.lang.String" key="/order/acquisitionOrder"
-                               value="/order/acquisitionOrder"/>
-                        <entry value-type="java.lang.String" key="/order/updateTickType" value="/order/updateTickType"/>
-                        <entry value-type="java.lang.String" key="/purreceival/purReceival"
-                               value="/purreceival/purReceival"/>
-                        <entry value-type="java.lang.String" key="/purinwarehs/purInWarehs"
-                               value="/purinwarehs/purInWarehs"/>
-                        <entry value-type="java.lang.String" key="/purreturns/purReturns"
-                               value="/purreturns/purReturns"/>
-                    </map>
-                </property>
-            </bean>
-        </mvc:interceptor>
-    </mvc:interceptors>
 
     <!-- 定义跳转的文件的前后缀 -->
     <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">

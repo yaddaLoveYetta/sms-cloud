@@ -59,8 +59,6 @@ define('Sidebar', function (require, module, exports) {
 
     function fill() {
 
-
-
         SMS.Template.fill(ul, list, function (item, index) {
 
             return {
@@ -70,8 +68,6 @@ define('Sidebar', function (require, module, exports) {
             };
 
         });
-
-
 
     }
 

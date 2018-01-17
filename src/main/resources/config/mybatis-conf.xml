@@ -67,67 +67,6 @@
 
         <!-- =============================== 生成工具生成Mapper ========================begin=== -->
 
-        <mapper resource="mapper/generate/AccessControlMapper.xml"/>
-        <mapper resource="mapper/generate/DataFlowSubClassMapper.xml"/>
-        <mapper resource="mapper/generate/DataFlowTopClassMapper.xml"/>
-        <mapper resource="mapper/generate/FormClassMapper.xml"/>
-        <mapper resource="mapper/generate/FormEntriesMapper.xml"/>
-        <mapper resource="mapper/generate/FormFieldsMapper.xml"/>
-        <mapper resource="mapper/generate/ObjectTypeMapper.xml"/>
-        <mapper resource="mapper/generate/SysProfileMapper.xml"/>
-        <mapper resource="mapper/generate/SysLogMapper.xml"/>
-        <mapper resource="mapper/generate/RoleMapper.xml"/>
-        <mapper resource="mapper/generate/UserMapper.xml"/>
-        <mapper resource="mapper/generate/CategoryMapper.xml"/>
-        <mapper resource="mapper/generate/CertificateMapper.xml"/>
-        <mapper resource="mapper/generate/CurrencyMapper.xml"/>
-        <mapper resource="mapper/generate/IndustryMapper.xml"/>
-        <mapper resource="mapper/generate/ItemMapper.xml"/>
-        <mapper resource="mapper/generate/PayMapper.xml"/>
-        <mapper resource="mapper/generate/SettlementMapper.xml"/>
-        <mapper resource="mapper/generate/SupplierMapper.xml"/>
-        <mapper resource="mapper/generate/TaxCategoryMapper.xml"/>
-        <mapper resource="mapper/generate/OrderMapper.xml"/>
-
-        <mapper resource="mapper/generate/OrderEntryMapper.xml"/>
-
-        <mapper resource="mapper/generate/PluginsMapper.xml"/>
-        <mapper resource="mapper/generate/MsgLogMapper.xml"/>
-
-
-        <mapper resource="mapper/generate/CountryMapper.xml"/>
-        <mapper resource="mapper/generate/CityMapper.xml"/>
-        <mapper resource="mapper/generate/ProvinceMapper.xml"/>
-        <mapper resource="mapper/generate/CountyMapper.xml"/>
-        <mapper resource="mapper/generate/UnitMapper.xml"/>
-        <mapper resource="mapper/generate/SendcargoMapper.xml"/>
-        <mapper resource="mapper/generate/SupplierLicenseTypeMapper.xml"/>
-        <mapper resource="mapper/generate/PurInWarehsMapper.xml"/>
-        <mapper resource="mapper/generate/PurReceivalMapper.xml"/>
-        <mapper resource="mapper/generate/PurInWarehsEntryMapper.xml"/>
-        <mapper resource="mapper/generate/PurReceivalEntryMapper.xml"/>
-        <mapper resource="mapper/generate/ApprovedSupplierMapper.xml"/>
-        <mapper resource="mapper/generate/SupplierLicenseEntryMapper.xml"/>
-        <mapper resource="mapper/generate/SupplierItemLicenseEntryMapper.xml"/>
-        <mapper resource="mapper/generate/PurReturnsEntryMapper.xml"/>
-        <mapper resource="mapper/generate/PurReturnsMapper.xml"/>
-        <mapper resource="mapper/generate/SerialNumberMapper.xml"/>
-        <mapper resource="mapper/generate/SupplierItemLicenseMapper.xml"/>
-        <mapper resource="mapper/generate/SupplierLicenseMapper.xml"/>
-        <mapper resource="mapper/generate/AppInfoMapper.xml"/>
-        <!-- =============================== 生成工具生成Mapper =====================end==== -->
-
-        <!-- =============================== 复杂Mapper ========================begin=== -->
-        <mapper resource="mapper/customize/Platform_SysDaoMapper.xml"/>
-        <mapper resource="mapper/customize/Platform_RoleDaoMapper.xml"/>
-        <mapper resource="mapper/customize/TemplateDaoMapper.xml"/>
-        <mapper resource="mapper/customize/SendcargoDaoMapper.xml"/>
-
-        <mapper resource="mapper/customize/PurchaseOrderEntryDaoMapper.xml"/>
-
-        <mapper resource="mapper/customize/OrderDaoMapper.xml"/>
-        <mapper resource="mapper/customize/ReportDaoMapper.xml"/>
-
 
         <!-- =============================== 复杂Mapper =====================end==== -->
 

@@ -1,0 +1,149 @@
+* {
+    font-family: 'Microsoft YaHei';
+}
+
+body {
+    overflow-y: scroll;
+}
+
+.side-bar {
+    position: fixed;
+    height: 100%;
+    width: 150px;
+    background-color: #00a69b;
+}
+
+.side-bar .banner {
+    background: #093738;
+    color: #fff;
+    text-align: center;
+    line-height: 55px;
+    height: 55px;
+    font-size: 16px;
+}
+
+.side-bar .banner .title {
+    font-size: 22px;
+}
+
+.side-bar .menus {
+    text-align: left;
+    font-size: 14px;
+    color: #c6ced6;
+}
+.side-bar .menus .hover {
+    background: #506072 !important;
+}
+
+.side-bar .menus li {
+    line-height: 45px;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.side-bar .menus li:nth-child(odd) {
+    background: #19222b;
+}
+
+.side-bar .menus li div li{
+    line-height: 40px;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+/*.side-bar .menus li ul li:nth-child(odd){
+    background: #19222b;
+}*/
+
+.side-bar .iconfont{
+    margin-left: 15px;
+    margin-right: 10px;
+}
+
+.content {
+    position: fixed;
+    margin-left: 150px;
+    height: 100%;
+    background-color: #00CCFF;
+}
+
+.container {
+    width: 1024px;
+}
+
+.top-fixed {
+    width: 1024px;
+    line-height: 55px;
+    height: 55px;
+    background-color: blue;
+}
+
+@media (min-width: 1024px) {
+    .container {
+        width: 890px;
+    }
+
+    .top-fixed {
+        width: 890px;
+    }
+}
+
+@media (min-width: 1160px) {
+    .container {
+        width: 1030px;
+    }
+
+    .top-fixed {
+        width: 1030px;
+    }
+}
+
+@media (min-width: 1145px) {
+    .container {
+        width: 1015px;
+    }
+
+    .top-fixed {
+        width: 1015px;
+    }
+}
+
+@media (min-width: 1352px) {
+    .container {
+        width: 1222px;
+    }
+
+    .top-fixed {
+        width: 1222px;
+    }
+}
+
+@media (min-width: 1366px) {
+    .container {
+        width: 1236px;
+    }
+
+    .top-fixed {
+        width: 1236px;
+    }
+}
+
+@media (min-width: 1390px) {
+    .container {
+        width: 1260px;
+    }
+
+    .top-fixed {
+        width: 1260px;
+    }
+}
+
+@media (min-width: 1440px) {
+    .container {
+        width: 1310px;
+    }
+
+    .top-fixed {
+        width: 1310px;
+    }
+}
