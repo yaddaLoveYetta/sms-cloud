@@ -64,12 +64,11 @@
             <param-name>contextConfigLocation</param-name>
             <param-value>classpath:/config/spring-mvc.xml</param-value>
         </init-param>
-        <load-on-startup>2</load-on-startup>
         <async-supported>true</async-supported>
     </servlet>
     <servlet-mapping>
         <servlet-name>spring</servlet-name>
-        <url-pattern>/sms-cloud/manager/*</url-pattern>
+        <url-pattern>/manager/*</url-pattern>
     </servlet-mapping>
 
     <!--第三方系统对接api -->
@@ -79,7 +78,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>openApi</servlet-name>
-        <url-pattern>/sms-cloud/api/*</url-pattern>
+        <url-pattern>/api/*</url-pattern>
     </servlet-mapping>
 
     <!-- Druid监控 -->
