@@ -10,18 +10,18 @@
 
         // Web 站点的根地址
         Url: {
-            'default': $('script[src*="config.js"]').get(0).src.split('config.js')[0],
-            'uploadFileUrlRoot': 'http://127.0.0.1:8080/sms/uploadFile', //上传文件存储地址
+            'default': $('script[src*="config.js"]').get(0).src.split('config.js')[0]
         },
 
         //后台接口
         API: {
             //后台接口的基础地址
-            //url: 'http://10.0.0.180:8080/sms/',  //内网
             url: 'http://127.0.0.1:8080/sms/',  //内网
             //url: 'http://172.20.131.250:8080/sms/',    //外网
             codes: {
+                // 成功返回码-跟后端定义一致
                 success: 200,
+                // session失效返回码
                 sessionLost: 10000,
             },
         },
@@ -44,9 +44,6 @@
 
             ],
 
-            //'user/getSidebar':'api/master/sidebar.js',
-            //'report/orderCount':'api/report/orderCount.js',
-            // 'report/traceQuery':'api/report/traceQuery.js',
         },
 
         //简易分页器
