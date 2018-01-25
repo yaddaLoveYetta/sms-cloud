@@ -152,22 +152,22 @@
 
         <!-- 第三方的软件日志级别 additivity="false" root不起作用-->
 
-        <AsyncLogger name="org.springframework.core" level="info" additivity="false">
+        <AsyncLogger name="org.springframework.core" level="debug" additivity="false">
             <AppenderRef ref="console_appender"/>
         </AsyncLogger>
-        <AsyncLogger name="org.springframework.beans" level="info" additivity="false">
+        <AsyncLogger name="org.springframework.beans" level="debug" additivity="false">
             <AppenderRef ref="console_appender"/>
         </AsyncLogger>
-        <AsyncLogger name="org.springframework.context" level="info" additivity="false">
+        <AsyncLogger name="org.springframework.context" level="debug" additivity="false">
             <AppenderRef ref="console_appender"/>
         </AsyncLogger>
-        <AsyncLogger name="org.springframework.web" level="info" additivity="false">
+        <AsyncLogger name="org.springframework.web" level="debug" additivity="false">
             <AppenderRef ref="console_appender"/>
         </AsyncLogger>
-        <AsyncLogger name="org.apache.ibatis" level="info" additivity="false">
+        <AsyncLogger name="org.apache.ibatis" level="debug" additivity="false">
             <AppenderRef ref="console_appender"/>
         </AsyncLogger>
-        <AsyncLogger name="org.springframework.transaction" level="info" additivity="false">
+        <AsyncLogger name="org.springframework.transaction" level="debug" additivity="false">
             <AppenderRef ref="console_appender"/>
         </AsyncLogger>
         <!-- 应用的日志级别 -->

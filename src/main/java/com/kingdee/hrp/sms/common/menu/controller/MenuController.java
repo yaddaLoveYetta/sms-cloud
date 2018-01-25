@@ -12,7 +12,7 @@ import java.util.*;
  * @since 2018/1/16
  */
 @Controller
-@RequestMapping(value = "/manager/menu/")
+@RequestMapping(value = "/menu/")
 public class MenuController {
 
     @RequestMapping(value = "getMenu")
