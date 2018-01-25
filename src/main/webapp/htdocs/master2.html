@@ -20,70 +20,21 @@
 
     <ul id="ul-sidebar" class="menus">
 
-        <li data-index="0" draggable="true">
-            <i class="iconfont icon-fenxiang"></i>
-            订单管理
-            <div data-id=2></div>
-        </li>
-
-        <li data-index="1" draggable="true">
-            <i class="iconfont icon-fenxiang"></i>
-            发货管理
-        </li>
-
-        <li data-index="2" draggable="true" class="">
-            <i class="iconfont icon-fenxiang"></i>
-            证件管理
-            <div data-id=2>
-                <ul id="ul-sidebar-menus">
-                    <li data-index="0">
-                        <i class="iconfont icon-fenxiang"></i>
-                        供应商资质维护
-                    </li>
-
-                    <li data-index="1">
-                        <i class="iconfont icon-fenxiang"></i>
-                        物料证件维护
-                    </li>
-
-                    <li data-index="2">
-                        <i class="iconfont icon-fenxiang"></i>
-                        供应商物料查询
-                    </li>
-
-                    <li data-index="3">
-                        <i class="iconfont icon-fenxiang"></i>
-                        物料证件查询
-                    </li>
-
-                    <li data-index="4">
-                        <i class="iconfont icon-fenxiang"></i>
-                        供应商证件类别
-                    </li>
-
-                    <li data-index="5">
-                        <i class="iconfont icon-fenxiang"></i>
-                        物料证件类别
-                    </li>
+        <!--
+        #--top.begin--#
+        <li data-index="{index}" data-id="{id}" draggable="true" class="">
+            <i class="iconfont {icon}"></i>
+            {name}
+            <div data-id="{id}">
+                #--more.begin--#
+                <ul class="ul-sidebar-menus">
+                    {top}
                 </ul>
+                 #--more.end--#
             </div>
         </li>
-
-        <li data-index="3" draggable="true" class="">
-            <i class="iconfont icon-fenxiang"></i>
-            统计查询
-        </li>
-
-        <li data-index="4" draggable="true" class="">
-            <i class="iconfont icon-fenxiang"></i>
-            基础资料
-        </li>
-
-        <li data-index="5" draggable="true" class="">
-            <i class="iconfont icon-fenxiang"></i>
-            系统管理
-        </li>
-
+        #--top.end--#
+        -->
     </ul>
 
 </div>
@@ -100,9 +51,75 @@
 <script src="config.js"></script>
 
 <!--grunt.js.begin-->
-
+<script src="modules2/Sidebar.js"></script>
 <script src="master2.js"></script>
 
 <!--grunt.js.end-->
+
+<!--
+       <li data-index="0" draggable="true">
+           <i class="iconfont icon-fenxiang"></i>
+           订单管理
+           <div data-id=2></div>
+       </li>
+
+       <li data-index="1" draggable="true">
+           <i class="iconfont icon-fenxiang"></i>
+           发货管理
+           <div data-id=2></div>
+       </li>
+
+       <li data-index="2" draggable="true" class="">
+           <i class="iconfont icon-fenxiang"></i>
+           证件管理
+           <div data-id=2>
+               <ul id="ul-sidebar-menus">
+                   <li data-index="0">
+                       <i class="iconfont icon-fenxiang"></i>
+                       供应商资质维护
+                   </li>
+
+                   <li data-index="1">
+                       <i class="iconfont icon-fenxiang"></i>
+                       物料证件维护
+                   </li>
+
+                   <li data-index="2">
+                       <i class="iconfont icon-fenxiang"></i>
+                       供应商物料查询
+                   </li>
+
+                   <li data-index="3">
+                       <i class="iconfont icon-fenxiang"></i>
+                       物料证件查询
+                   </li>
+
+                   <li data-index="4">
+                       <i class="iconfont icon-fenxiang"></i>
+                       供应商证件类别
+                   </li>
+
+                   <li data-index="5">
+                       <i class="iconfont icon-fenxiang"></i>
+                       物料证件类别
+                   </li>
+               </ul>
+           </div>
+       </li>
+
+       <li data-index="3" draggable="true" class="">
+           <i class="iconfont icon-fenxiang"></i>
+           统计查询
+       </li>
+
+       <li data-index="4" draggable="true" class="">
+           <i class="iconfont icon-fenxiang"></i>
+           基础资料
+       </li>
+
+       <li data-index="5" draggable="true" class="">
+           <i class="iconfont icon-fenxiang"></i>
+           系统管理
+       </li>-->
 </body>
 </html>

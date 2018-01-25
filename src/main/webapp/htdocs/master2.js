@@ -10,7 +10,9 @@
     var MiniQuery = require('MiniQuery');
     var SMS = require('SMS');
 
-    var MenuData = require('MenuData');
     var Sidebar = require('Sidebar');
+
+    // 加载顶级菜单
+    Sidebar.render(0);
 
 })();
