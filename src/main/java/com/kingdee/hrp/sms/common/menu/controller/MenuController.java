@@ -1,10 +1,11 @@
 package com.kingdee.hrp.sms.common.menu.controller;
 
-import com.kingdee.hrp.sms.common.menu.model.Menu;
+import com.kingdee.hrp.sms.common.exception.BusinessLogicRunTimeException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
 /**
@@ -36,10 +37,45 @@ public class MenuController {
             item.put("parentId", i > 0 ? 1 : 0);
             item.put("desc", "证件管理xxx");
             item.put("visible", 1);
+            item.put("xxx", null);
 
             menus.add(item);
         }
 
         return menus;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "a")
+    public void a() {
+        return;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "b")
+    public String b() {
+        return new String("hello word");
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "c")
+    public Map c() {
+        return null;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "d")
+    public String d(HttpServletRequest request) {
+
+        System.out.println(request.getParameter("parentId"));
+
+        return "parentId=" + request.getParameter("parentId");
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "e")
+    public String e(HttpServletRequest request) {
+
+        throw new BusinessLogicRunTimeException("业务处理异常");
     }
 }

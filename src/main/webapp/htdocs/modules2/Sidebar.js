@@ -18,12 +18,12 @@ define('Sidebar', function (require, module, exports) {
     var menus = {};
     var ul = document.getElementById('ul-sidebar');
 
-    var samples = require("/Samples")(ul);
+    var samples = require("Samples")(ul);
 
 
     function loadMenuData(parentId, fn) {
 
-        if (menus[id]) {
+        if (menus[parentId]) {
             // 缓存中拿
             return menus[id];
         }
@@ -39,7 +39,7 @@ define('Sidebar', function (require, module, exports) {
                 //成功
                 var list = data;
                 // 缓存起来
-                menus[id] = list;
+                menus[parentId] = list;
 
                 fn(list);
 

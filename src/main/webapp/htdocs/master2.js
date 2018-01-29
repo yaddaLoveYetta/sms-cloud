@@ -3,7 +3,7 @@
 
 ;(function () {
 
-    alert('hello word!');
+    //alert('hello word!');
 
 
     var $ = require('$');
