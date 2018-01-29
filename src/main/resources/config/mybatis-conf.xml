@@ -59,6 +59,7 @@
             <property name="supportMethodsArguments" value="false"/>
             <property name="returnPageInfo" value="none"/>
         </plugin>
+
     </plugins>
 
 
@@ -66,7 +67,6 @@
     <mappers>
 
         <!-- =============================== 生成工具生成Mapper ========================begin=== -->
-
 
         <!-- =============================== 复杂Mapper =====================end==== -->
 
