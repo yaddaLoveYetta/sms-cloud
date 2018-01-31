@@ -5315,6 +5315,8 @@
 
             if (eventName) {
                 $(container).delegate(selector, eventName, function (event) {
+                    // 阻止事件冒泡
+                    event.stopPropagation();
 
                     var item = this;
                     var index;

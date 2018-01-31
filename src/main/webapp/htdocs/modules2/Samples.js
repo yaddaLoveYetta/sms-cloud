@@ -21,14 +21,19 @@ define('Samples', function (require, module, exports) {
                 //fn: trim,
             },
             {
-                name: 'menu.top',
+                name: 'top',
                 begin: '#--top.begin--#',
                 end: '#--top.end--#',
                 outer: '{top}',
                 //fn: trim,
+            }, {
+                name: 'top.item',
+                begin: '#--top.item.begin--#',
+                end: '#--top.item.end--#',
+                outer: '{item}'
             },
             {
-                name: 'menu.more',
+                name: 'more',
                 begin: '#--more.begin--#',
                 end: '#--more.end--#',
                 outer: '{more}',

@@ -1,7 +1,7 @@
 package com.kingdee.hrp.sms.common.exception;
 
 
-import com.kingdee.hrp.sms.common.model.StatusCode;
+import com.kingdee.hrp.sms.common.domain.StatusCode;
 
 /**
  * 业务错误
