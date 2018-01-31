@@ -96,9 +96,6 @@ define('Sidebar', function (require, module, exports) {
             });
         } else {
 
-            // 先隐藏起来-后面缓慢显示
-            // $("div[data-id=" + parentId + "]").css('display', 'none');
-
             $("div[data-id=" + parentId + "]")[0].innerHTML = $.String.format(samples["more"], {
                 'top': $.Array.keep(menuList, function (menuItem, index) {
                     return $.String.format(samples["top.item"], {
@@ -109,14 +106,6 @@ define('Sidebar', function (require, module, exports) {
                     });
                 }).join("")
             });
-            // $("div[data-id=" + parentId + "] >ul").css('display', 'none');
-            $("div[data-id=" + parentId + "] >ul").fadeOut(1);
-            // 会使列表折叠
-            //$("div[data-id=" + parentId + "]").trigger("click");
-            // 会使列表打开
-            $("div[data-id=" + parentId + "]").trigger("click");
-
-            //$("div[data-id=" + parentId + "]").fadeIn('slow');
         }
 
         bindEvents();
@@ -164,8 +153,8 @@ define('Sidebar', function (require, module, exports) {
 
             console.log(menus[id]);
 
-            if (menus[id] && Boolean(trim(menus['url']))) {
-                console.log(trim(menus['url']));
+            if (menus[id] && Boolean(trim(menus[id]['url']))) {
+                console.log(trim(menus[id]['url']));
             }
 
             if (Boolean(trim($div.html()))) {
