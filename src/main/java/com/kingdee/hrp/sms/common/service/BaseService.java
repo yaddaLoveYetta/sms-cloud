@@ -1,11 +1,15 @@
 package com.kingdee.hrp.sms.common.service;
 
+import com.kingdee.hrp.sms.util.SnowFlake;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.UUID;
 
+/**
+ * @author yadda
+ */
 @Service
 public class BaseService {
 
@@ -13,24 +17,14 @@ public class BaseService {
     protected SqlSession sqlSession;
 
     /**
-     * 新增单据时获取单据主键</br>
+     * 新增记录主键生成策略
      * <p>
-     * 该方法不可重复调用，即任何情况下两次调用的结果都不一致
-     * <p>
-     * <P>
-     * 参考EAS单据内码产生规则
-     * </p>
+     * SnowFlake算法，会产生一个long类型不重复数字
      *
-     * @param bosType formClass中定义的bostype 长度必须为4或8,建议统一用8位，否则返回空
-     * @return String 32位唯一字符串
-     * @Title getId
-     * @date 2017-05-06 14:42:39 星期六
+     * @return
      */
-    protected String getId(String bosType) {
-
-
-        return UUID.randomUUID().toString();
-
+    protected Long getId() {
+        return SnowFlake.getId(0, 0);
     }
 
 }
