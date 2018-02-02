@@ -12,6 +12,11 @@
 
     var Sidebar = require('Sidebar');
 
+    Sidebar.on({
+        'menu.click': function (item) {
+            console.log(item);
+        }
+    });
     // 加载顶级菜单
     Sidebar.render(0);
 

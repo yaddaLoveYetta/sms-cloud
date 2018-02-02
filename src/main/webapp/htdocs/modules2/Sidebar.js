@@ -137,7 +137,7 @@ define('Sidebar', function (require, module, exports) {
             activedClass: 'hover',
             change: function (index, item) {
                 //这里的，如果当前项是高亮，再次进入时不会触发
-                console.log(index);
+                //console.log(index);
             }
         });
 
@@ -151,10 +151,9 @@ define('Sidebar', function (require, module, exports) {
 
             var $div = $(item).find('> div');
 
-            console.log(menus[id]);
-
             if (menus[id] && Boolean(trim(menus[id]['url']))) {
-                console.log(trim(menus[id]['url']));
+                // 有url的菜单，抛出点击事件
+                emitter.fire('menu.click', [menus[id]]);
             }
 
             if (Boolean(trim($div.html()))) {
