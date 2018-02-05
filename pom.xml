@@ -177,13 +177,6 @@
             <version>${log4j2.version}</version>
         </dependency>
 
-        <dependency>
-            <groupId>com.yadda</groupId>
-            <artifactId>webapi-core</artifactId>
-            <version>1.0.0</version>
-
-        </dependency>
-
     </dependencies>
 
     <build>
@@ -221,6 +214,9 @@
                     <target>1.8</target>
                     <encoding>UTF-8</encoding>
                     <skip>true</skip>
+                    <compilerArguments>
+                        <extdirs>${basedir}\src\main\webapp\WEB-INF\lib</extdirs>
+                    </compilerArguments>
                 </configuration>
             </plugin>
             <plugin>

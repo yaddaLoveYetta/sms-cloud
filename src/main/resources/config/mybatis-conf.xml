@@ -41,7 +41,7 @@
 
             <!-- 增加dialect属性，使用时必须指定该属性，可选值为 oracle,mysql,mariadb,sqlite,hsqldb,postgresql,没有默认值，必须指定该 属性 -->
             <!-- 			<property name="dialect" value="sqlserver" /> -->
-            <property name="helperDialect" value="sqlserver"/>
+            <property name="helperDialect" value="mysql"/>
             <!-- 该参数默认为false -->
             <!-- 设置为true时，会将RowBounds第一个参数offset当成pageNum页码使用 -->
             <!-- 和startPage中的pageNum效果一样 -->
@@ -67,8 +67,12 @@
     <mappers>
 
         <!-- =============================== 生成工具生成Mapper ========================begin=== -->
+        <mapper resource="mapper/generate/MenuMapper.xml"/>
 
-        <!-- =============================== 复杂Mapper =====================end==== -->
+        <!-- =============================== 生成工具生成Mapper ========================end==== -->
+
+        <!-- =============================== 复杂Mapper =====================begin============= -->
+        <!-- =============================== 复杂Mapper =====================end=============== -->
 
     </mappers>
 

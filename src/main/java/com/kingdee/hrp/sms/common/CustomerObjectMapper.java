@@ -10,6 +10,8 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 import java.io.IOException;
 
 /**
+ * jackson参数配置类
+ *
  * @author yadda<silenceisok@163.com>
  * @since 2018/1/29
  */

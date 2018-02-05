@@ -1,8 +1,8 @@
 package com.kingdee.hrp.sms.common;
 
 import com.kingdee.hrp.sms.common.exception.BaseRuntimeException;
-import com.kingdee.hrp.sms.common.model.NoJsonWarp;
-import com.kingdee.hrp.sms.common.model.ResultWarp;
+import com.kingdee.hrp.sms.common.domain.NoJsonWarp;
+import com.kingdee.hrp.sms.common.domain.ResultWarp;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.AfterThrowing;

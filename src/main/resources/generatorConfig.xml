@@ -5,7 +5,7 @@
 
 <generatorConfiguration>
 
-	<classPathEntry location="D:\java\maven-repo\com\microsoft\sqlserver\mssql-jdbc\6.1.0.jre8\mssql-jdbc-6.1.0.jre8.jar" />
+	<classPathEntry location="D:\java\maven-repo\mysql\mysql-connector-java\5.1.44\mysql-connector-java-5.1.44.jar" />
 
 	<context id="MSSQL_Tables2Java" targetRuntime="MyBatis3">
 
@@ -16,18 +16,18 @@
 		<property name="javaFormatter" value="org.mybatis.generator.api.dom.DefaultJavaFormatter" />
 		<property name="xmlFormatter" value="org.mybatis.generator.api.dom.DefaultXmlFormatter" />
 		<property name="autoDelimitKeywords" value="true" />
-		<property name="beginningDelimiter" value="[" />
-		<property name="endingDelimiter" value="]" />
+		<property name="beginningDelimiter" value="`" />
+		<property name="endingDelimiter" value="`" />
 
 		<!-- <plugin type="org.mybatis.generator.plugins.RowBoundsPlugin"></plugin> -->
 
 		<commentGenerator>
 			<property name="suppressDate" value="false" />
-			<property name="suppressAllComments" value="true" />
+			<property name="suppressAllComments" value="false" />
 		</commentGenerator>
 
-		<jdbcConnection driverClass="com.microsoft.sqlserver.jdbc.SQLServerDriver" connectionURL="jdbc:sqlserver://127.0.0.1:52663;database=hrp-sms-gd"
-			userId="sa" password="yadda0925">
+		<jdbcConnection driverClass="com.mysql.jdbc.Driver" connectionURL="jdbc:mysql://127.0.0.1:3306/sms-cloud"
+			userId="root" password="root">
 		</jdbcConnection>
 		<!-- <jdbcConnection driverClass="com.microsoft.sqlserver.jdbc.SQLServerDriver" connectionURL="jdbc:sqlserver://127.0.0.1:52663;database=hrp-sms" -->
 		<!-- userId="sa" password="yadda0925"> -->
@@ -39,7 +39,7 @@
 
 		</javaTypeResolver>
 
-		<javaModelGenerator targetPackage="com.kingdee.eas.hrp.sms.model" targetProject="src/main/java">
+		<javaModelGenerator targetPackage="com.kingdee.hrp.sms.common.model" targetProject="src/main/java">
 
 			<property name="constructorBased" value="false" />
 
@@ -57,14 +57,14 @@
 
 		</sqlMapGenerator>
 
-		<javaClientGenerator type="XMLMAPPER" targetPackage="com.kingdee.eas.hrp.sms.dao.generate"
+		<javaClientGenerator type="XMLMAPPER" targetPackage="com.kingdee.hrp.sms.common.dao.generate"
 			targetProject="src/main/java">
 
 			<property name="enableSubPackages" value="true" />
 
 		</javaClientGenerator>
 
-		<table tableName="t_sms_accessControl" domainObjectName="AccessControl">
+		<table tableName="t_menu" domainObjectName="Menu">
 
 			<property name="useActualColumnNames" value="true" />
 

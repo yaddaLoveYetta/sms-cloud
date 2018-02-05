@@ -15,7 +15,13 @@ define('Sidebar', function (require, module, exports) {
     var emitter = MiniQuery.Event.create();
 
     var tabs = null;
+    // 缓存菜单结构数据
+    var menusTree = {};
+    // 缓存菜单数据
     var menus = {};
+    // 标识事件绑定
+    var hasBind = false;
+
     var ul = document.getElementById('ul-sidebar');
 
     var samples = require("Samples")(ul);
@@ -23,9 +29,9 @@ define('Sidebar', function (require, module, exports) {
 
     function loadMenuData(parentId, fn) {
 
-        if (menus[parentId]) {
+        if (menusTree[parentId]) {
             // 缓存中拿
-            return menus[id];
+            fn(parentId, menusTree[parentId]);
         }
 
         var api = new API('menu/getMenu');
@@ -38,10 +44,19 @@ define('Sidebar', function (require, module, exports) {
             'success': function (data, json) {
                 //成功
                 var list = data;
-                // 缓存起来
-                menus[parentId] = list;
 
-                fn(list);
+                // 菜单结构缓存起来
+                menusTree[parentId] = list;
+
+                var menuItems = $.Array.toObject(list, function (item, index) {
+                    return [item.id, item];
+                });
+                // 不要length
+                delete menuItems.length;
+                // 菜单项缓存起来
+                $.Object.extend(menus, menuItems);
+
+                fn(parentId, list);
 
             },
             'fail': function (code, msg, json) {
@@ -69,9 +84,9 @@ define('Sidebar', function (require, module, exports) {
         var isTop = (parentId === 0);
 
         if (isTop) {
-            ul.innerHTML = $.String.format(samples["menus"], {
-                'top': $.Array.keep(menuList, function (menuItem, index) {
-                    return $.String.format(samples["menu.top"], {
+            ul.innerHTML = $.String.format(samples["top"], {
+                'item': $.Array.keep(menuList, function (menuItem, index) {
+                    return $.String.format(samples["top.item"], {
                         index: index || 0,
                         id: menuItem.id,
                         icon: menuItem.icon,
@@ -80,9 +95,10 @@ define('Sidebar', function (require, module, exports) {
                 }).join("")
             });
         } else {
-            $("div[data-id=" + parentId + "]")[0].innerHTML = $.String.format(samples["more.begin"], {
+
+            $("div[data-id=" + parentId + "]")[0].innerHTML = $.String.format(samples["more"], {
                 'top': $.Array.keep(menuList, function (menuItem, index) {
-                    return $.String.format(samples["menu.top"], {
+                    return $.String.format(samples["top.item"], {
                         index: index,
                         id: menuItem.id,
                         icon: menuItem.icon,
@@ -103,39 +119,50 @@ define('Sidebar', function (require, module, exports) {
      * 绑定事件
      */
     function bindEvents() {
+
+        if (hasBind) {
+            return;
+        }
+        /*        if (tabs) {
+                    tabs.destroy();
+                }*/
+
         tabs = SMS.Tabs.create({
 
             container: ul,
             selector: 'li',
-            indexKey: 'data-index',
+            //indexKey: 'data-index',
             current: null,
-            event: 'mouseover',
+            event: 'click',  //mouseover
             activedClass: 'hover',
             change: function (index, item) {
                 //这里的，如果当前项是高亮，再次进入时不会触发
-                console.log(index);
+                //console.log(index);
             }
         });
 
         var tid = null;
 
-
         //每次都会触发，不管当前项是否高亮
         tabs.on('event', function (index, item) {
 
-            clearTimeout(tid);
+            // 菜单id
+            var id = $(item).data('id');
 
-            tid = setTimeout(function () {
+            var $div = $(item).find('> div');
 
-                var item = list[index];
+            if (menus[id] && Boolean(trim(menus[id]['url']))) {
+                // 有url的菜单，抛出点击事件
+                emitter.fire('menu.click', [menus[id]]);
+            }
 
-                emitter.fire('item.mouseover', [{
-                    index: index,
-                    data: item.items,
-                    reversed: index > 0
-                }]);
+            if (Boolean(trim($div.html()))) {
+                // 已经加载了子菜单--切换显示关闭
+                $(item).find("ul:first").slideToggle();
+                return;
+            }
 
-            }, 200);
+            render(id);
         });
 
 
@@ -145,12 +172,16 @@ define('Sidebar', function (require, module, exports) {
             emitter.fire('mouseout');
         });
 
-        $(hiden).on('click', function () {
-            $(div).toggleClass('side-bar-hiden');
-            emitter.fire('hiden');
-        })
+        /*        $(hiden).on('click', function () {
+                    $(div).toggleClass('side-bar-hiden');
+                    emitter.fire('hiden');
+                })*/
+        hasBind = true;
     }
 
+    function trim(s) {
+        return s.replace(/\n/g, '').replace(/\s{2,}/g, ' ');
+    }
 
     return {
         render: render,

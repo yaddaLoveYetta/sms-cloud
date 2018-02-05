@@ -1,7 +1,7 @@
 package com.kingdee.hrp.sms.common.exception;
 
 
-import com.kingdee.hrp.sms.common.model.StatusCode;
+import com.kingdee.hrp.sms.common.domain.StatusCode;
 
 /**
  * 插件逻辑阻止业务继续运行错误类

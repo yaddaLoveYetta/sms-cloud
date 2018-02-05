@@ -1,4 +1,4 @@
-package com.kingdee.hrp.sms.common.model;
+package com.kingdee.hrp.sms.common.domain;
 
 import java.io.Serializable;
 
