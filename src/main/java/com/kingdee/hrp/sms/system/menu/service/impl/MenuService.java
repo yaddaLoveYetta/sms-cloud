@@ -1,14 +1,13 @@
-package com.kingdee.hrp.sms.common.menu.service.impl;
+package com.kingdee.hrp.sms.system.menu.service.impl;
 
 import com.kingdee.hrp.sms.common.dao.generate.MenuMapper;
-import com.kingdee.hrp.sms.common.menu.service.IMenuService;
+import com.kingdee.hrp.sms.system.menu.service.IMenuService;
 import com.kingdee.hrp.sms.common.model.Menu;
 import com.kingdee.hrp.sms.common.model.MenuExample;
 import com.kingdee.hrp.sms.common.service.BaseService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author yadda<silenceisok@163.com>

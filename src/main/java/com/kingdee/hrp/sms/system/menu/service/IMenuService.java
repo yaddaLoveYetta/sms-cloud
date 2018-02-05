@@ -1,9 +1,8 @@
-package com.kingdee.hrp.sms.common.menu.service;
+package com.kingdee.hrp.sms.system.menu.service;
 
 import com.kingdee.hrp.sms.common.model.Menu;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author yadda<silenceisok@163.com>

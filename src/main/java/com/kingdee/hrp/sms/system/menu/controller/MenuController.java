@@ -1,7 +1,7 @@
-package com.kingdee.hrp.sms.common.menu.controller;
+package com.kingdee.hrp.sms.system.menu.controller;
 
 import com.kingdee.hrp.sms.common.exception.BusinessLogicRunTimeException;
-import com.kingdee.hrp.sms.common.menu.service.IMenuService;
+import com.kingdee.hrp.sms.system.menu.service.IMenuService;
 import com.kingdee.hrp.sms.common.model.Menu;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
