@@ -1,74 +1,85 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE generatorConfiguration
-         PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
-         "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
 
 <generatorConfiguration>
 
-	<classPathEntry location="D:\java\maven-repo\mysql\mysql-connector-java\5.1.44\mysql-connector-java-5.1.44.jar" />
+    <classPathEntry location="D:\java\maven-repo\mysql\mysql-connector-java\5.1.44\mysql-connector-java-5.1.44.jar"/>
 
-	<context id="MSSQL_Tables2Java" targetRuntime="MyBatis3">
+    <context id="MSSQL_Tables2Java" targetRuntime="MyBatis3">
 
-		<!-- context 的内容必须匹配 "(property*,plugin*,commentGenerator?,(connectionFactory|jdbcConnection),javaTypeResolver?,javaModelGenerator,sqlMapGenerator?,javaClientGenerator?,table+)"。 
-			必须按顺序配置 -->
+        <!-- context 的内容必须匹配 "(property*,plugin*,commentGenerator?,(connectionFactory|jdbcConnection),javaTypeResolver?,javaModelGenerator,sqlMapGenerator?,javaClientGenerator?,table+)"。
+            必须按顺序配置 -->
 
-		<property name="javaFileEncoding" value="UTF-8" />
-		<property name="javaFormatter" value="org.mybatis.generator.api.dom.DefaultJavaFormatter" />
-		<property name="xmlFormatter" value="org.mybatis.generator.api.dom.DefaultXmlFormatter" />
-		<property name="autoDelimitKeywords" value="true" />
-		<property name="beginningDelimiter" value="`" />
-		<property name="endingDelimiter" value="`" />
+        <property name="javaFileEncoding" value="UTF-8"/>
+        <property name="javaFormatter" value="org.mybatis.generator.api.dom.DefaultJavaFormatter"/>
+        <property name="xmlFormatter" value="org.mybatis.generator.api.dom.DefaultXmlFormatter"/>
+        <property name="autoDelimitKeywords" value="true"/>
+        <property name="beginningDelimiter" value="`"/>
+        <property name="endingDelimiter" value="`"/>
 
-		<!-- <plugin type="org.mybatis.generator.plugins.RowBoundsPlugin"></plugin> -->
+        <!-- <plugin type="org.mybatis.generator.plugins.RowBoundsPlugin"></plugin> -->
 
-		<commentGenerator>
-			<property name="suppressDate" value="false" />
-			<property name="suppressAllComments" value="false" />
-		</commentGenerator>
+        <commentGenerator>
+            <property name="suppressDate" value="false"/>
+            <property name="suppressAllComments" value="false"/>
+        </commentGenerator>
 
-		<jdbcConnection driverClass="com.mysql.jdbc.Driver" connectionURL="jdbc:mysql://127.0.0.1:3306/sms-cloud"
-			userId="root" password="root">
-		</jdbcConnection>
-		<!-- <jdbcConnection driverClass="com.microsoft.sqlserver.jdbc.SQLServerDriver" connectionURL="jdbc:sqlserver://127.0.0.1:52663;database=hrp-sms" -->
-		<!-- userId="sa" password="yadda0925"> -->
-		<!-- </jdbcConnection> -->
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver" connectionURL="jdbc:mysql://127.0.0.1:3306/sms-cloud"
+                        userId="root" password="root">
+        </jdbcConnection>
+        <!-- <jdbcConnection driverClass="com.microsoft.sqlserver.jdbc.SQLServerDriver" connectionURL="jdbc:sqlserver://127.0.0.1:52663;database=hrp-sms" -->
+        <!-- userId="sa" password="yadda0925"> -->
+        <!-- </jdbcConnection> -->
 
-		<javaTypeResolver type="org.mybatis.generator.internal.types.JavaTypeResolverDefaultImpl">
+        <javaTypeResolver type="org.mybatis.generator.internal.types.JavaTypeResolverDefaultImpl">
 
-			<property name="forceBigDecimals" value="false" />
+            <property name="forceBigDecimals" value="false"/>
 
-		</javaTypeResolver>
+        </javaTypeResolver>
 
-		<javaModelGenerator targetPackage="com.kingdee.hrp.sms.common.model" targetProject="src/main/java">
+        <javaModelGenerator targetPackage="com.kingdee.hrp.sms.common.model" targetProject="src/main/java">
 
-			<property name="constructorBased" value="false" />
+            <property name="constructorBased" value="false"/>
 
-			<property name="enableSubPackages" value="true" />
+            <property name="enableSubPackages" value="true"/>
 
-			<property name="immutable" value="false" />
+            <property name="immutable" value="false"/>
 
-			<property name="trimStrings" value="true" />
+            <property name="trimStrings" value="true"/>
 
-		</javaModelGenerator>
+        </javaModelGenerator>
 
-		<sqlMapGenerator targetPackage="mapper.generate" targetProject="src/main/resources">
+        <sqlMapGenerator targetPackage="mapper.generate" targetProject="src/main/resources">
 
-			<property name="enableSubPackages" value="true" />
+            <property name="enableSubPackages" value="true"/>
 
-		</sqlMapGenerator>
+        </sqlMapGenerator>
 
-		<javaClientGenerator type="XMLMAPPER" targetPackage="com.kingdee.hrp.sms.common.dao.generate"
-			targetProject="src/main/java">
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.kingdee.hrp.sms.common.dao.generate"
+                             targetProject="src/main/java">
 
-			<property name="enableSubPackages" value="true" />
+            <property name="enableSubPackages" value="true"/>
 
-		</javaClientGenerator>
+        </javaClientGenerator>
 
-		<table tableName="t_menu" domainObjectName="Menu">
+        <table tableName="t_menu" domainObjectName="Menu">
 
-			<property name="useActualColumnNames" value="true" />
+            <property name="useActualColumnNames" value="false"/>
+            <!--Dao 继承接口-->
+           <!-- <property name="rootInterface" value="java.io.Serializable"/>-->
+            <!--java Model继承类-->
+            <property name="rootClass" value="com.kingdee.hrp.sms.common.RootModel"/>
 
-		</table>
+        </table>
 
-	</context>
+        <table tableName="t_user" domainObjectName="User">
+
+            <property name="useActualColumnNames" value="false"/>
+            <property name="rootClass" value="com.kingdee.hrp.sms.common.RootModel"/>
+
+        </table>
+
+    </context>
 </generatorConfiguration> 

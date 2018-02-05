@@ -31,7 +31,7 @@ public class MenuService extends BaseService implements IMenuService {
         MenuExample example = new MenuExample();
         MenuExample.Criteria criteria = example.createCriteria();
 
-        criteria.andParentIdEqualTo(parentId);
+        criteria.andParentidEqualTo(parentId);
 
         return  menuMapper.selectByExample(example);
 

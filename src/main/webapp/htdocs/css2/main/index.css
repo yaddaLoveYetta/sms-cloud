@@ -26,39 +26,59 @@ body {
     font-size: 22px;
 }
 
+.side-bar-hiden {
+    left: -110px;
+}
+
 .side-bar .menus {
     text-align: left;
-    font-size: 14px;
+    font-size: 16px;
     color: #c6ced6;
 }
-.side-bar .menus .hover {
-    background: #506072 !important;
+
+.side-bar .iconfont {
+    margin-left: 15px;
+    margin-right: 10px;
 }
+
+/*.side-bar .menus .hover {
+    background: #506072 !important;
+}*/
 
 .side-bar .menus li {
     line-height: 45px;
+    font-size: 16px;
     cursor: pointer;
     white-space: nowrap;
 }
 
-.side-bar .menus li:nth-child(odd) {
-    background: #19222b;
+.side-bar .menus li .iconfont {
+    font-size: 16px;
 }
 
-.side-bar .menus li div li{
+/*.side-bar .menus > li:nth-child(odd) {
+    background: #19222b;
+}*/
+
+.side-bar .menus li div li {
     line-height: 40px;
     cursor: pointer;
     white-space: nowrap;
 }
 
+.side-bar .menus .ul-sidebar-menus-more li {
+    line-height: 40px;
+    font-size: 14px !important;
+    margin-left: 10px;
+}
+
+.side-bar .menus .ul-sidebar-menus-more li .iconfont {
+    font-size: 14px !important;;
+}
+
 /*.side-bar .menus li ul li:nth-child(odd){
     background: #19222b;
 }*/
-
-.side-bar .iconfont{
-    margin-left: 15px;
-    margin-right: 10px;
-}
 
 .content {
     position: fixed;
