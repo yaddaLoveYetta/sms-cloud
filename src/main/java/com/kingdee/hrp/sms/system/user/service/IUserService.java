@@ -1,4 +1,4 @@
-package com.kingdee.hrp.sms.system.user;
+package com.kingdee.hrp.sms.system.user.service;
 
 import java.io.Serializable;
 
