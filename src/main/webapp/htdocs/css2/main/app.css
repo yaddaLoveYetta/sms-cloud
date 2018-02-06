@@ -5101,3 +5101,27 @@ a.text-#000000:hover {
     background-color: #7266ba;
   }
 }
+
+.navbar .tab-panel{
+  height:30px !important;
+  float: none;
+}
+.tab-panel .container{
+  width:100%;
+  height: 30px;
+  background-color: #f0f2f3;
+}
+.tab-panel .container .tabs {
+  float: left;
+  line-height: 30px;
+  height: 30px;
+  overflow-y: hidden;
+  width: 96%;
+}
+.tab-panel .container  .tab-more {
+  float: right;
+}
+/*
+.navbar-collapse.collapse{
+  height: 30px !important;
+}*/
