@@ -143,41 +143,6 @@
                 </li>
             </ul>
             <!-- / navbar right -->
-
-            <!-- tab-panel-->
-            <div class="nav tab-panel navbar-static-top ">
-                <div class="container">
-                    <ol id="ul-page-tabs" class="tabs">
-                        <!--
-                         #--home.begin--#
-                         <li class="home {actived-class}" data-index="{index}" {draggable}>
-                             <i class="icon-home"></i>
-                         </li>
-                         #--home.end--#
-
-                         #--item.begin--#
-                         <li class="{actived-class}" data-index="{index}" {draggable} >
-                             {name}<i class="icon-close" title="关闭本页签" ></i>
-                         </li>
-                         #--item.end--#
-                 -->
-                    </ol>
-                    <div id="div-page-list" class="tab-more">
-                        <i class="tab-dropdown" title="所有页签列表"></i>
-                        <ul id="ul-page-list" class="tab-more-content"
-                            style="display: none;">
-                            <!--
-                                <li data-index="{index}" style="{item-display}" class="{on}"{draggable} >
-                                    {name}<i class="icon-close" title="{title}" style="{icon-display}"></i>
-                                </li>
-                            -->
-
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <!-- /tab-panel-->
-
         </div>
         <!-- / navbar collapse -->
 
@@ -233,6 +198,41 @@
 
     <!-- content -->
     <div class="app-content">
+
+        <!-- tab-panel-->
+        <div class="tab-panel">
+            <div class="container">
+                <ol id="ul-page-tabs" class="tabs">
+                    <!--
+                     #--home.begin--#
+                     <li class="home {actived-class}" data-index="{index}" {draggable}>
+                         <i class="icon-home"></i>
+                     </li>
+                     #--home.end--#
+
+                     #--item.begin--#
+                     <li class="{actived-class}" data-index="{index}" {draggable} >
+                         {name}<i class="icon-close" title="关闭本页签" ></i>
+                     </li>
+                     #--item.end--#
+             -->
+                </ol>
+                <div id="div-page-list" class="tab-more">
+                    <i class="tab-dropdown" data-toggle="dropdown" title="所有页签列表"></i>
+                    <ul id="ul-page-list" class="tab-more-content"
+                        style="display: none;">
+                        <!--
+                            <li data-index="{index}" style="{item-display}" class="{on}"{draggable} >
+                                {name}<i class="icon-close" title="{title}" style="{icon-display}"></i>
+                            </li>
+                        -->
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- /tab-panel-->
+
         <div ui-butterbar></div>
         <a href class="off-screen-toggle hide" data-toggle="class:off-screen" data-target=".app-aside"></a>
         <div class="app-content-body fade-in-up">
