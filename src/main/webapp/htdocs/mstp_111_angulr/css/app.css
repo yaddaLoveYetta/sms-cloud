@@ -1195,13 +1195,14 @@ html {
 }
 
 .navi ul.nav li li a {
-  padding-left: 55px;
+  /*padding-left: 55px;*/
+  padding-left: 30px;
 }
 
 .navi ul.nav li a {
   position: relative;
   display: block;
-  padding: 10px 20px;
+  padding: 10px 15px;
   font-weight: normal;
   text-transform: none;
   -webkit-transition: background-color 0.2s ease-in-out 0s;

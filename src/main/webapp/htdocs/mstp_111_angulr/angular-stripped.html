@@ -8,9 +8,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
     <link rel="stylesheet" href="css/bootstrap.css" type="text/css"/>
     <link rel="stylesheet" href="css/animate.css" type="text/css"/>
-    <link rel="stylesheet" href="css/font-awesome.min.css" type="text/css"/>
-    <link rel="stylesheet" href="css/simple-line-icons.css" type="text/css"/>
-    <link rel="stylesheet" href="css/font.css" type="text/css"/>
+    <link rel="stylesheet" href="../css2/iconfont/iconfont.css">
+
+    <!--<link rel="stylesheet" href="css/font.css" type="text/css"/>-->
     <link rel="stylesheet" href="css/app.css" type="text/css"/>
 </head>
 <body>
@@ -29,7 +29,7 @@
             <!-- brand -->
             <a href="#/" class="navbar-brand text-lt">
                 <i class="fa fa-btc"></i>
-                <img src="img/logo.png" alt="." class="hide">
+
                 <span class="hidden-folded m-l-xs">易供应</span>
             </a>
             <!-- / brand -->
@@ -167,23 +167,20 @@
                                 <i class="fa fa-fw fa-angle-right text"></i>
                                 <i class="fa fa-fw fa-angle-down text-active"></i>
                               </span>
-                                <i class="glyphicon glyphicon-stats icon text-primary-dker"></i>
+                                <i class="iconfont icon-fenxiang icon text-primary-dker"></i>
                                 <span class="font-bold" translate="aside.nav.DASHBOARD">Dashboard</span>
                             </a>
                             <ul class="nav nav-sub dk">
-                                <li class="nav-sub-header">
-                                    <a href>
-                                        <span translate="aside.nav.DASHBOARD">Dashboard</span>
-                                    </a>
-                                </li>
                                 <li ui-sref-active="active">
                                     <a ui-sref="app.dashboard-v1">
+                                        <i class="iconfont icon-fenxiang icon text-primary-dker"></i>
                                         <span>Dashboard v1</span>
                                     </a>
                                 </li>
                                 <li ui-sref-active="active">
                                     <a ui-sref="app.dashboard-v2">
                                         <b class="label bg-info pull-right">N</b>
+                                        <i class="iconfont icon-fenxiang icon text-primary-dker"></i>
                                         <span>Dashboard v2</span>
                                     </a>
                                 </li>
@@ -528,27 +525,6 @@
                     </ul>
                 </nav>
                 <!-- nav -->
-
-                <!-- aside footer -->
-                <div class="wrapper m-t">
-                    <div class="text-center-folded">
-                        <span class="pull-right pull-none-folded">60%</span>
-                        <span class="hidden-folded" translate="aside.MILESTONE">Milestone</span>
-                    </div>
-                    <div class="progress progress-xxs m-t-sm dk">
-                        <div class="progress-bar progress-bar-info" style="width: 60%;">
-                        </div>
-                    </div>
-                    <div class="text-center-folded">
-                        <span class="pull-right pull-none-folded">35%</span>
-                        <span class="hidden-folded" translate="aside.RELEASE">Release</span>
-                    </div>
-                    <div class="progress progress-xxs m-t-sm dk">
-                        <div class="progress-bar progress-bar-primary" style="width: 35%;">
-                        </div>
-                    </div>
-                </div>
-                <!-- / aside footer -->
             </div>
         </div>
     </div>
