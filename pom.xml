@@ -243,7 +243,18 @@
                     <verbose>true</verbose>
                     <overwrite>true</overwrite>
                     <configurationFile>${basedir}/src/main/resources/generatorConfig.xml</configurationFile>
+                    <jdbcDriver>com.mysql.jdbc.Driver</jdbcDriver>
+                    <jdbcURL>jdbc:mysql://127.0.0.1:3306/sms-cloud</jdbcURL>
+                    <jdbcUserId>root</jdbcUserId>
+                    <jdbcPassword>root</jdbcPassword>
                 </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>mysql</groupId>
+                        <artifactId>mysql-connector-java</artifactId>
+                        <version>${mysql.version}</version>
+                    </dependency>
+                </dependencies>
             </plugin>
         </plugins>
     </build>
