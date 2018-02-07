@@ -57,7 +57,7 @@ public class UserService extends BaseService implements IUserService {
 
         if (bool) {
             //用户数据插入数据库需要设置主键ID
-            user.setId(getId().intValue());
+            user.setId(getId());
             String md5Password = Common.MD5(user.getPassword());
             user.setPassword(md5Password);
             userMapper.insertSelective(user);
