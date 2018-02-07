@@ -1,0 +1,85 @@
+package com.kingdee.hrp.sms.system.user.service.impl;
+
+import com.kingdee.hrp.sms.common.dao.generate.UserMapper;
+import com.kingdee.hrp.sms.common.exception.BusinessLogicRunTimeException;
+import com.kingdee.hrp.sms.common.model.User;
+import com.kingdee.hrp.sms.common.model.UserExample;
+import com.kingdee.hrp.sms.system.user.service.IUserService;
+import com.kingdee.hrp.sms.util.Common;
+import org.apache.commons.lang.StringUtils;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+import java.util.List;
+
+/**
+ * Date: 2018/2/6 0006
+ * Author: H.Yang
+ * Desc:
+ */
+@Service
+public class UserService implements IUserService {
+
+    @Resource
+    private UserMapper userMapper;
+
+    /**
+     * 用户注册时候校验用户名是否已存在
+     *
+     * @param user
+     * @return
+     */
+    public Boolean check(User user) {
+        long count;
+        UserExample userExample = new UserExample();
+        UserExample.Criteria criteria = userExample.createCriteria();
+        if (StringUtils.isNotBlank(user.getUsername()) && user.getUsername().length() > 0) {
+            criteria.andUsernameEqualTo(user.getUsername());
+            count = userMapper.countByExample(userExample);
+        } else {
+            throw new BusinessLogicRunTimeException("用户名不能为空，请输入用户名");
+        }
+        return count == 0;
+    }
+
+    /**
+     * 用户注册
+     *
+     * @param user 用户pojo
+     */
+    @Override
+    public void register(User user) {
+        Boolean bool = this.check(user);
+        if (bool) {
+            String md5Password = Common.MD5(user.getPassword());
+            user.setPassword(md5Password);
+            userMapper.insertSelective(user);
+        }
+    }
+
+    /**
+     * 用户登录
+     * @param username 用户账号
+     * @param password 用户密码 (MD5)
+     * @return
+     */
+    @Override
+    public User login(String username, String password) {
+        User user = new User();
+        String md5Password = Common.MD5(password);
+        UserExample userExample = new UserExample();
+        UserExample.Criteria criteria = userExample.createCriteria();
+        criteria.andUsernameEqualTo(username);
+        criteria.andPasswordEqualTo(md5Password);
+        List<User> list = userMapper.selectByExample(userExample);
+        if (list != null && list.size() > 0) {
+            user = list.get(0);
+        }
+        return user;
+    }
+
+//    @Override
+//    public Boolean loginOut(String userName) {
+//        return null;
+//    }
+}
