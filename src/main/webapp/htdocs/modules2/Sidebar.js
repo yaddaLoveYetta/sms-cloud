@@ -28,6 +28,14 @@ define('Sidebar', function (require, module, exports) {
 
     var samples = require("Samples")(ul);
 
+    var homeItem = {
+        name: '首页',
+        isHome: true,
+        id: $.String.random(5),
+        //url: 'html/home/index.html',
+        //url: 'html/home/index-hrp.html',
+        url: 'html/home/520/index.html'
+    };
 
     function loadMenuData(fn) {
 
@@ -101,6 +109,8 @@ define('Sidebar', function (require, module, exports) {
 
 
         bindEvents();
+
+        emitter.fire('renderOver', []);
     }
 
     function render() {
@@ -179,12 +189,36 @@ define('Sidebar', function (require, module, exports) {
         return tree;
     }
 
+    //找出设置了 autoOpen: true 的项
+    function getAutoOpens(data) {
+
+        return [];
+        data = data || list;
+
+        var a = $.Array.map(list, function (group, no) {
+
+            var items = group.items;
+
+            return $.Array.grep(items, function (item, index) {
+                return item.autoOpen;
+            });
+        });
+
+        return $.Array.reduceDimension(a);
+    }
+
+    function getHomeItem() {
+        return homeItem;
+    }
+
     function trim(s) {
         return s.replace(/\n/g, '').replace(/\s{2,}/g, ' ');
     }
 
     return {
         render: render,
+        getHomeItem: getHomeItem,
+        getAutoOpens: getAutoOpens,
         on: emitter.on.bind(emitter),
     }
 
