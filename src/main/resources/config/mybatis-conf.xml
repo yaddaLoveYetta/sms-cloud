@@ -68,6 +68,7 @@
 
         <!-- =============================== 生成工具生成Mapper ========================begin=== -->
         <mapper resource="mapper/generate/MenuMapper.xml"/>
+        <mapper resource="mapper/generate/UserMapper.xml"/>
 
         <!-- =============================== 生成工具生成Mapper ========================end==== -->
 
