@@ -1,5 +1,5 @@
 ﻿/**
- * List/Samples 模块
+ * Samples 模块
  *
  */
 define('Samples', function (require, module, exports) {
@@ -21,23 +21,34 @@ define('Samples', function (require, module, exports) {
                 //fn: trim,
             },
             {
+                name: 'item',
+                begin: '#--menu.item.begin--#',
+                end: '#--menu.item.end--#',
+                outer: '{item}',
+            },
+/*            {
                 name: 'top',
-                begin: '#--top.begin--#',
-                end: '#--top.end--#',
+                begin: '#--menu.top.begin--#',
+                end: '#--menu.top.end--#',
                 outer: '{top}',
-                //fn: trim,
-            }, {
-                name: 'top.item',
-                begin: '#--top.item.begin--#',
-                end: '#--top.item.end--#',
-                outer: '{item}'
+            },*/
+            {
+                name: 'sub',
+                begin: '#--menu.sub.begin--#',
+                end: '#--menu.sub.end--#',
+                outer: '{sub}',
             },
             {
-                name: 'more',
-                begin: '#--more.begin--#',
-                end: '#--more.end--#',
-                outer: '{more}',
-                //fn: trim,
+                name: 'subItem',
+                begin: '#--menu.sub.item.begin--#',
+                end: '#--menu.sub.item.end--#',
+                outer: '{subItem}',
+            },
+            {
+                name: 'line',
+                begin: '#--menu.item.line.begin--#',
+                end: '#--menu.item.line.end--#',
+                outer: '{line}',
             }
         ]);
 

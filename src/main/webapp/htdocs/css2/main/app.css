@@ -5222,6 +5222,10 @@ a.text-#000000:hover {
     right: 0px;
 }
 
+.fixed-left {
+    left: 60px;
+}
+
 .tab-panel .container {
     width: 100%;
     height: 30px;

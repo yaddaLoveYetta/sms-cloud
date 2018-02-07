@@ -24,6 +24,13 @@
     <div class="app-header navbar">
         <!-- navbar header -->
         <div class="navbar-header bg-dark">
+            <button class="pull-right visible-xs dk" data-toggle="class:show" data-target=".navbar-collapse">
+                <i class="glyphicon glyphicon-cog"></i>
+            </button>
+            <button class="pull-right visible-xs" data-toggle="class:off-screen" data-target=".app-aside"
+                    ui-scroll="app">
+                <i class="glyphicon glyphicon-align-justify"></i>
+            </button>
             <!-- brand -->
             <a href="#/" class="navbar-brand text-lt">
                 <i class="fa fa-btc"></i>
@@ -155,40 +162,47 @@
             <div class="navi-wrap">
                 <!-- nav -->
                 <nav ui-nav class="navi">
-                    <ul class="nav">
+
+                    <ul class="nav" id="ul-sidebar">
+                        <!--
                         <li class="hidden-folded padder m-t m-b-sm text-muted text-xs">
                             <span translate="aside.nav.HEADER">云端上的供应链管理平台</span>
                         </li>
-                        <li>
+
+                        #--menu.item.begin--#
+                        <li data-index="{index}" data-id="{id}" draggable="true">
+
                             <a href class="auto">
                               <span class="pull-right text-muted">
                                 <i class="fa fa-fw fa-angle-right text"></i>
                                 <i class="fa fa-fw fa-angle-down text-active"></i>
                               </span>
-                                <i class="iconfont icon-fenxiang icon text-primary-dker"></i>
-                                <span class="font-bold" translate="aside.nav.DASHBOARD">Dashboard</span>
+                                <i class="iconfont {icon} icon text-primary-dker"></i>
+                                <span class="font-bold" translate="aside.nav.DASHBOARD">{name}</span>
                             </a>
+
+                           #--menu.sub.begin--#
                             <ul class="nav nav-sub dk">
-                                <li ui-sref-active="active">
+                                #--menu.sub.item.begin--#
+                                <li ui-sref-active="active" data-index="{index}" data-id="{id}" draggable="true">
                                     <a ui-sref="app.dashboard-v1">
-                                        <i class="iconfont icon-fenxiang icon text-primary-dker"></i>
-                                        <span>Dashboard v1</span>
+                                        <i class="iconfont {icon} icon text-primary-dker"></i>
+                                        <span>{name}</span>
                                     </a>
                                 </li>
-                                <li ui-sref-active="active">
-                                    <a ui-sref="app.dashboard-v2">
-                                        <b class="label bg-info pull-right">N</b>
-                                        <i class="iconfont icon-fenxiang icon text-primary-dker"></i>
-                                        <span>Dashboard v2</span>
-                                    </a>
-                                </li>
+                                 #--menu.sub.item.end--#
                             </ul>
+                            #--menu.sub.end--#
                         </li>
+                        #--menu.item.end--#
 
-
+                        #--menu.item.line.begin--#
                         <li class="line dk"></li>
+                        #--menu.item.line.end--#
 
+                       -->
                     </ul>
+
                 </nav>
                 <!-- nav -->
             </div>
@@ -446,57 +460,15 @@
 <script src="lib/jquery/jquery-1.11.1.debug.js"></script>
 <script src="lib/miniquery/miniquery.debug.js"></script>
 <script src="lib/sms/sms.debug.js"></script>
+<script src="config.js"></script>
 <script src="lib/bootstrap/bootstrap.js"></script>
-<script type="text/javascript">
-    +function ($) {
-        $(function () {
-            // class
-            $(document).on('click', '[data-toggle^="class"]', function (e) {
-                e && e.preventDefault();
-                console.log('abc');
-                var $this = $(e.target), $class, $target, $tmp, $classes, $targets;
-                !$this.data('toggle') && ($this = $this.closest('[data-toggle^="class"]'));
-                $class = $this.data()['toggle'];
-                $target = $this.data('target') || $this.attr('href');
-                $class && ($tmp = $class.split(':')[1]) && ($classes = $tmp.split(','));
-                $target && ($targets = $target.split(','));
-                $classes && $classes.length && $.each($targets, function (index, value) {
-                    if ($classes[index].indexOf('*') !== -1) {
-                        var patt = new RegExp('\\s' +
-                            $classes[index].replace(/\*/g, '[A-Za-z0-9-_]+').split(' ').join('\\s|\\s') +
-                            '\\s', 'g');
-                        $($this).each(function (i, it) {
-                            var cn = ' ' + it.className + ' ';
-                            while (patt.test(cn)) {
-                                cn = cn.replace(patt, ' ');
-                            }
-                            it.className = $.trim(cn);
-                        });
-                    }
-                    ($targets[index] != '#') && $($targets[index]).toggleClass($classes[index]) || $this.toggleClass($classes[index]);
-                });
-                $this.toggleClass('active');
-            });
 
-            // collapse nav
-            $(document).on('click', 'nav a', function (e) {
-                var $this = $(e.target), $active;
-                $this.is('a') || ($this = $this.closest('a'));
+<!--grunt.js.begin-->
+<script src="modules2/Sidebar.js"></script>
+<script src="modules2/Samples.js"></script>
+<script src="master2.js"></script>
 
-                $active = $this.parent().siblings(".active");
-                $active && $active.toggleClass('active').find('> ul:visible').slideUp(200);
+<!--grunt.js.end-->
 
-                ($this.parent().hasClass('active') && $this.next().slideUp(200)) || $this.next().slideDown(200);
-                $this.parent().toggleClass('active');
-
-                $this.next().is('ul') && e.preventDefault();
-
-                setTimeout(function () {
-                    $(document).trigger('updateNav');
-                }, 300);
-            });
-        });
-    }(jQuery);
-</script>
 </body>
 </html>

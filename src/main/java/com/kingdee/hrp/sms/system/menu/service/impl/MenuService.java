@@ -29,11 +29,13 @@ public class MenuService extends BaseService implements IMenuService {
         MenuMapper menuMapper = sqlSession.getMapper(MenuMapper.class);
 
         MenuExample example = new MenuExample();
-        MenuExample.Criteria criteria = example.createCriteria();
 
-        criteria.andParentidEqualTo(parentId);
+        if (parentId > 0) {
+            MenuExample.Criteria criteria = example.createCriteria();
+            criteria.andParentIdEqualTo(parentId);
+        }
 
-        return  menuMapper.selectByExample(example);
+        return menuMapper.selectByExample(example);
 
     }
 }

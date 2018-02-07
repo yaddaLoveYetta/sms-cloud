@@ -4,6 +4,7 @@ import com.kingdee.hrp.sms.common.dao.generate.UserMapper;
 import com.kingdee.hrp.sms.common.exception.BusinessLogicRunTimeException;
 import com.kingdee.hrp.sms.common.model.User;
 import com.kingdee.hrp.sms.common.model.UserExample;
+import com.kingdee.hrp.sms.common.service.BaseService;
 import com.kingdee.hrp.sms.system.user.service.IUserService;
 import com.kingdee.hrp.sms.util.Common;
 import org.apache.commons.lang.StringUtils;
@@ -18,10 +19,8 @@ import java.util.List;
  * Desc:
  */
 @Service
-public class UserService implements IUserService {
+public class UserService extends BaseService implements IUserService {
 
-    @Resource
-    private UserMapper userMapper;
 
     /**
      * 用户注册时候校验用户名是否已存在
@@ -30,11 +29,13 @@ public class UserService implements IUserService {
      * @return
      */
     public Boolean check(User user) {
+
+        UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
         long count;
         UserExample userExample = new UserExample();
         UserExample.Criteria criteria = userExample.createCriteria();
-        if (StringUtils.isNotBlank(user.getUsername()) && user.getUsername().length() > 0) {
-            criteria.andUsernameEqualTo(user.getUsername());
+        if (StringUtils.isNotBlank(user.getUserName()) && user.getUserName().length() > 0) {
+            criteria.andUserNameEqualTo(user.getUserName());
             count = userMapper.countByExample(userExample);
         } else {
             throw new BusinessLogicRunTimeException("用户名不能为空，请输入用户名");
@@ -49,7 +50,11 @@ public class UserService implements IUserService {
      */
     @Override
     public void register(User user) {
+
+        UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+
         Boolean bool = this.check(user);
+
         if (bool) {
             String md5Password = Common.MD5(user.getPassword());
             user.setPassword(md5Password);
@@ -59,17 +64,21 @@ public class UserService implements IUserService {
 
     /**
      * 用户登录
+     *
      * @param username 用户账号
      * @param password 用户密码 (MD5)
      * @return
      */
     @Override
     public User login(String username, String password) {
+
+        UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+
         User user = new User();
         String md5Password = Common.MD5(password);
         UserExample userExample = new UserExample();
         UserExample.Criteria criteria = userExample.createCriteria();
-        criteria.andUsernameEqualTo(username);
+        criteria.andUserNameEqualTo(username);
         criteria.andPasswordEqualTo(md5Password);
         List<User> list = userMapper.selectByExample(userExample);
         if (list != null && list.size() > 0) {

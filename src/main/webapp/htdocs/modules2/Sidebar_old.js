@@ -14,11 +14,11 @@ define('Sidebar', function (require, module, exports) {
 
     var emitter = MiniQuery.Event.create();
 
-    // 菜单树
-    var list;
-
-    var tabs;
-
+    var tabs = null;
+    // 缓存菜单结构数据
+    var menusTree = {};
+    // 缓存菜单数据
+    var menus = {};
     // 标识事件绑定
     var hasBind = false;
 
@@ -27,26 +27,36 @@ define('Sidebar', function (require, module, exports) {
     var samples = require("Samples")(ul);
 
 
-    function loadMenuData(fn) {
+    function loadMenuData(parentId, fn) {
 
-        if (list) {
+        if (menusTree[parentId]) {
             // 缓存中拿
-            fn(list);
+            fn(parentId, menusTree[parentId]);
         }
 
         var api = new API('menu/getMenu');
 
         api.get({
-            'parentId': -1,
+            'parentId': parentId,
         });
 
         api.on({
             'success': function (data, json) {
                 //成功
-                // 构造菜单树并缓存起来
-                list = toTree(data, 0);
+                var list = data;
 
-                fn(list);
+                // 菜单结构缓存起来
+                menusTree[parentId] = list;
+
+                var menuItems = $.Array.toObject(list, function (item, index) {
+                    return [item.id, item];
+                });
+                // 不要length
+                delete menuItems.length;
+                // 菜单项缓存起来
+                $.Object.extend(menus, menuItems);
+
+                fn(parentId, list);
 
             },
             'fail': function (code, msg, json) {
@@ -63,41 +73,46 @@ define('Sidebar', function (require, module, exports) {
     /**
      *
      * @param id 菜单parentId
+     * @param menuList  菜单列表
      */
-    function fill() {
+    function fill(parentId, menuList) {
 
-        if (list && list.length === 0) {
+        if (menuList && menuList.length === 0) {
             return;
         }
+        // 是不是一级菜单
+        var isTop = (parentId === 0);
 
+        if (isTop) {
+            ul.innerHTML = $.String.format(samples["top"], {
+                'item': $.Array.keep(menuList, function (menuItem, index) {
+                    return $.String.format(samples["top.item"], {
+                        index: index || 0,
+                        id: menuItem.id,
+                        icon: menuItem.icon,
+                        name: menuItem.name
+                    });
+                }).join("")
+            });
+        } else {
 
-        ul.innerHTML = $.String.format(samples["menus"], {
-            'item': $.Array.keep(list, function (topItem, topIndex) {
-                return $.String.format(samples["item"], {
-                    index: topIndex,
-                    id: topItem.id,
-                    icon: topItem.icon,
-                    name: topItem.name,
-                    sub: $.String.format(samples["sub"], {
-                        subItem: $.Array.keep(list.items, function (subItem, subIndex) {
-                            return $.String.format(samples["subItem"], {
-                                index: topIndex + '-' + subIndex,
-                                id: subItem.id,
-                                icon: subItem.icon,
-                                name: subItem.name,
-                            });
-                        }).join("")
-                    })
-                });
-            }).join("")
-        });
-
+            $("div[data-id=" + parentId + "]")[0].innerHTML = $.String.format(samples["more"], {
+                'top': $.Array.keep(menuList, function (menuItem, index) {
+                    return $.String.format(samples["top.item"], {
+                        index: index,
+                        id: menuItem.id,
+                        icon: menuItem.icon,
+                        name: menuItem.name
+                    });
+                }).join("")
+            });
+        }
 
         bindEvents();
     }
 
-    function render() {
-        loadMenuData(fill);
+    function render(parentId) {
+        loadMenuData(parentId, fill);
     }
 
     /**
@@ -108,15 +123,18 @@ define('Sidebar', function (require, module, exports) {
         if (hasBind) {
             return;
         }
+        /*        if (tabs) {
+                    tabs.destroy();
+                }*/
 
         tabs = SMS.Tabs.create({
 
             container: ul,
-            selector: 'li[data-id]',
+            selector: 'li',
             //indexKey: 'data-index',
             current: null,
             event: 'click',  //mouseover
-            activedClass: '',//'hover'
+            activedClass: 'hover',
             change: function (index, item) {
                 //这里的，如果当前项是高亮，再次进入时不会触发
                 //console.log(index);
@@ -154,29 +172,11 @@ define('Sidebar', function (require, module, exports) {
             emitter.fire('mouseout');
         });
 
+        $('#hiden').on('click', function () {
+            $('#side-bar').toggleClass('side-bar-hiden');
+            emitter.fire('hiden');
+        })
         hasBind = true;
-    }
-
-    /**
-     * 线性数据转化为树。
-     * @param list
-     * @param parentId
-     * @returns {Array}
-     */
-    function toTree(list, parentId) {
-        var tree = [];
-        var temp;
-        for (var i = 0; i < list.length; i++) {
-            if (list[i].parentId == parentId) {
-                var obj = list[i];
-                temp = toTree(list, list[i].id);
-                if (temp.length > 0) {
-                    obj.items = temp;
-                }
-                tree.push(obj);
-            }
-        }
-        return tree;
     }
 
     function trim(s) {

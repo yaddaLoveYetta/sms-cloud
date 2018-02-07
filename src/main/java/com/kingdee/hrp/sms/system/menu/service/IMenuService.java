@@ -13,7 +13,7 @@ public interface IMenuService {
     /**
      * 根据parentId获取所有子菜单
      *
-     * @param parentId 父菜单id
+     * @param parentId 父菜单id ,如果parentId<0 则查询所有菜单
      * @return
      */
     List<Menu> getMenusByParentId(Integer parentId);

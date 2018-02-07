@@ -18,6 +18,6 @@
         }
     });
     // 加载顶级菜单
-    Sidebar.render(0);
+    Sidebar.render();
 
 })();
