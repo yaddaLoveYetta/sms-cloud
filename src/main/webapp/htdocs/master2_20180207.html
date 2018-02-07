@@ -110,36 +110,43 @@
                     </div>
                     <!-- / dropdown -->
                 </li>
-
-                <li id="li-user-infos" class="dropdown">
-                    <!--
+                <li class="dropdown">
                     <a href="#" data-toggle="dropdown" class="dropdown-toggle clear">
                           <span class="thumb-sm avatar pull-right m-t-n-sm m-b-n-sm m-l-sm">
-                            <img src="{img}" alt="...">
+                            <img src="css2/img/a0.jpg" alt="...">
                             <i class="on md b-white bottom"></i>
                           </span>
-                        <span class="hidden-sm hidden-md">{name}</span> <b class="caret"></b>
+                        <span class="hidden-sm hidden-md">John.Smith</span> <b class="caret"></b>
                     </a>
-
+                    <!-- dropdown -->
                     <ul class="dropdown-menu animated fadeInRight w">
-
-                        <li id="btn-change-password">
+                        <li class="wrapper b-b m-b-sm bg-light m-t-n-xs">
+                            <div>
+                                <p>300mb of 500mb used</p>
+                            </div>
+                            <progressbar value="60" class="progress-xs m-b-none bg-white"></progressbar>
+                        </li>
+                        <li>
                             <a href>
                                 <span class="badge bg-danger pull-right">30%</span>
-                                <span>修改密码</span>
+                                <span>Settings</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a ui-sref="app.page.profile">Profile</a>
+                        </li>
+                        <li>
+                            <a ui-sref="app.docs">
+                                <span class="label bg-info pull-right">new</span>
+                                Help
                             </a>
                         </li>
                         <li class="divider"></li>
-                        <li id="btn-logout">
-                            <a ui-sref="app.docs">
-                                <span class="label bg-info pull-right">new</span>
-                                退出
-                            </a>
+                        <li>
+                            <a ui-sref="access.signin">Logout</a>
                         </li>
-
-
                     </ul>
-                    -->
+                    <!-- / dropdown -->
                 </li>
             </ul>
             <!-- / navbar right -->
@@ -155,50 +162,40 @@
             <div class="navi-wrap">
                 <!-- nav -->
                 <nav ui-nav class="navi">
-
-                    <ul class="nav" id="ul-sidebar">
-                        <!--
+                    <ul class="nav">
                         <li class="hidden-folded padder m-t m-b-sm text-muted text-xs">
                             <span translate="aside.nav.HEADER">云端上的供应链管理平台</span>
                         </li>
-
-                        #--menu.item.begin--#
-                        <li data-index="{index}" data-id="{id}" draggable="true">
-
+                        <li>
                             <a href class="auto">
                               <span class="pull-right text-muted">
                                 <i class="fa fa-fw fa-angle-right text"></i>
                                 <i class="fa fa-fw fa-angle-down text-active"></i>
                               </span>
-                                <i class="iconfont {icon} icon text-primary-dker"></i>
-                                <span class="font-bold" translate="aside.nav.DASHBOARD">{name}</span>
+                                <i class="iconfont icon-fenxiang icon text-primary-dker"></i>
+                                <span class="font-bold" translate="aside.nav.DASHBOARD">Dashboard</span>
                             </a>
-
-                           #--menu.sub.begin--#
                             <ul class="nav nav-sub dk">
-                                #--menu.sub.item.begin--#
-                                <li ui-sref-active="active" data-index="{index}" data-id="{id}" draggable="true">
+                                <li ui-sref-active="active">
                                     <a ui-sref="app.dashboard-v1">
-                                        <i class="iconfont {icon} icon text-primary-dker"></i>
-                                        <span>{name}</span>
+                                        <i class="iconfont icon-fenxiang icon text-primary-dker"></i>
+                                        <span>Dashboard v1</span>
                                     </a>
                                 </li>
-                                 #--menu.sub.item.end--#
+                                <li ui-sref-active="active">
+                                    <a ui-sref="app.dashboard-v2">
+                                        <b class="label bg-info pull-right">N</b>
+                                        <i class="iconfont icon-fenxiang icon text-primary-dker"></i>
+                                        <span>Dashboard v2</span>
+                                    </a>
+                                </li>
                             </ul>
-                            #--menu.sub.end--#
                         </li>
 
-                         #--menu.item.line.begin--#
+
                         <li class="line dk"></li>
-                        #--menu.item.line.end--#
 
-                        #--menu.item.end--#
-
-
-
-                       -->
                     </ul>
-
                 </nav>
                 <!-- nav -->
             </div>
@@ -456,17 +453,77 @@
 <script src="lib/jquery/jquery-1.11.1.debug.js"></script>
 <script src="lib/miniquery/miniquery.debug.js"></script>
 <script src="lib/sms/sms.debug.js"></script>
-<script src="config.js"></script>
 <script src="lib/bootstrap/bootstrap.js"></script>
 
 <!--grunt.js.begin-->
-<script src="modules2/Sidebar.js"></script>
+<script src="modules2/Sidebar.Sidebar.js"></script>
 <script src="modules2/Samples.js"></script>
-<script src="modules2/NavBar.js"></script>
-<script src="modules2/UserInfos.js"></script>
 <script src="master2.js"></script>
 
 <!--grunt.js.end-->
 
+<script type="text/javascript">
+    +function ($) {
+        $(function () {
+            // class
+            $(document).on('click', '[data-toggle^="class"]', function (e) {
+                e && e.preventDefault();
+                console.log('abc');
+                var $this = $(e.target), $class, $target, $tmp, $classes, $targets;
+                !$this.data('toggle') && ($this = $this.closest('[data-toggle^="class"]'));
+                $class = $this.data()['toggle'];
+                $target = $this.data('target') || $this.attr('href');
+                $class && ($tmp = $class.split(':')[1]) && ($classes = $tmp.split(','));
+                $target && ($targets = $target.split(','));
+                $classes && $classes.length && $.each($targets, function (index, value) {
+                    if ($classes[index].indexOf('*') !== -1) {
+                        var patt = new RegExp('\\s' +
+                            $classes[index].replace(/\*/g, '[A-Za-z0-9-_]+').split(' ').join('\\s|\\s') +
+                            '\\s', 'g');
+                        $($this).each(function (i, it) {
+                            var cn = ' ' + it.className + ' ';
+                            while (patt.test(cn)) {
+                                cn = cn.replace(patt, ' ');
+                            }
+                            it.className = $.trim(cn);
+                        });
+                    }
+                    ($targets[index] != '#') && $($targets[index]).toggleClass($classes[index]) || $this.toggleClass($classes[index]);
+
+                    if ($targets[index] === '.app' ) {
+
+                        // 菜单栏缩样式变化，tabs（fixed）位置调整
+                        $('.tab-panel').toggleClass('fixed-left');
+
+                        if ($($targets[index]).hasClass("app-aside-folded")) {
+
+                        } else {
+
+                        }
+                    }
+                });
+                $this.toggleClass('active');
+            });
+
+            // collapse nav
+            $(document).on('click', 'nav a', function (e) {
+                var $this = $(e.target), $active;
+                $this.is('a') || ($this = $this.closest('a'));
+
+                $active = $this.parent().siblings(".active");
+                $active && $active.toggleClass('active').find('> ul:visible').slideUp(200);
+
+                ($this.parent().hasClass('active') && $this.next().slideUp(200)) || $this.next().slideDown(200);
+                $this.parent().toggleClass('active');
+
+                $this.next().is('ul') && e.preventDefault();
+
+                setTimeout(function () {
+                    $(document).trigger('updateNav');
+                }, 300);
+            });
+        });
+    }(jQuery);
+</script>
 </body>
 </html>

@@ -16,6 +16,8 @@ define('Sidebar', function (require, module, exports) {
 
     // 菜单树
     var list;
+    // 原始菜单数据Map
+    var menus = {};
 
     var tabs;
 
@@ -42,9 +44,12 @@ define('Sidebar', function (require, module, exports) {
 
         api.on({
             'success': function (data, json) {
-                //成功
                 // 构造菜单树并缓存起来
                 list = toTree(data, 0);
+                // 原始菜单数据保存起来
+                menus = $.Array.toObject(data, function (item, index) {
+                    return [item.id, item];
+                });
 
                 fn(list);
 
@@ -79,7 +84,7 @@ define('Sidebar', function (require, module, exports) {
                     icon: topItem.icon,
                     name: topItem.name,
                     sub: $.String.format(samples["sub"], {
-                        subItem: $.Array.keep(list.items, function (subItem, subIndex) {
+                        subItem: $.Array.keep(topItem.items, function (subItem, subIndex) {
                             return $.String.format(samples["subItem"], {
                                 index: topIndex + '-' + subIndex,
                                 id: subItem.id,
@@ -87,9 +92,11 @@ define('Sidebar', function (require, module, exports) {
                                 name: subItem.name,
                             });
                         }).join("")
-                    })
+                    }),
+                    line: (topIndex + 1) % 3 === 0 ? $.String.format(samples["line"], {}) : ''
                 });
             }).join("")
+
         });
 
 
@@ -112,14 +119,14 @@ define('Sidebar', function (require, module, exports) {
         tabs = SMS.Tabs.create({
 
             container: ul,
-            selector: 'li[data-id]',
+            selector: '>li li[data-id]',
             //indexKey: 'data-index',
             current: null,
             event: 'click',  //mouseover
             activedClass: '',//'hover'
             change: function (index, item) {
                 //这里的，如果当前项是高亮，再次进入时不会触发
-                //console.log(index);
+                // console.log(index);
             }
         });
 
@@ -131,20 +138,13 @@ define('Sidebar', function (require, module, exports) {
             // 菜单id
             var id = $(item).data('id');
 
-            var $div = $(item).find('> div');
+            //console.log(menus[id]);
 
             if (menus[id] && Boolean(trim(menus[id]['url']))) {
                 // 有url的菜单，抛出点击事件
                 emitter.fire('menu.click', [menus[id]]);
             }
 
-            if (Boolean(trim($div.html()))) {
-                // 已经加载了子菜单--切换显示关闭
-                $(item).find("ul:first").slideToggle();
-                return;
-            }
-
-            render(id);
         });
 
 
