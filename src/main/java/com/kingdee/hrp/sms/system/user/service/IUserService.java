@@ -1,5 +1,7 @@
 package com.kingdee.hrp.sms.system.user.service;
 
+import com.kingdee.hrp.sms.common.model.User;
+
 import java.io.Serializable;
 
 /**
@@ -9,13 +11,19 @@ import java.io.Serializable;
 public interface IUserService extends Serializable {
 
     /**
+     * 用户注册
+     * @param user 用户pojo
+     */
+    void register(User user);
+
+    /**
      * 用户登录
      *
      * @param userName 用户名
      * @param password 密码 (MD5)
      * @return
      */
-    Boolean login(String userName, String password);
+    User login(String userName, String password);
 
     /**
      * 登出
@@ -23,5 +31,5 @@ public interface IUserService extends Serializable {
      * @param userName 用户名
      * @return
      */
-    Boolean loginOut(String userName);
+//    Boolean loginOut(String userName);
 }
