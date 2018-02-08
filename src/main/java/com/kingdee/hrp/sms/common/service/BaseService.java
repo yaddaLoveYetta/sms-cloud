@@ -27,4 +27,5 @@ public class BaseService {
         return SnowFlake.getId(0, 0);
     }
 
+
 }

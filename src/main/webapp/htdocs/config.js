@@ -229,7 +229,7 @@
 
         Login: {
             apiLogin: 'user/login',
-            apiLoginout: 'user/loginout',
+            apiLoginout: 'user/logout',
             actions: {
                 login: 'login',
                 logout: 'logout',

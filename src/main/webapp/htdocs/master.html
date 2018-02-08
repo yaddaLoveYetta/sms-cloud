@@ -1,338 +1,311 @@
-﻿<!DOCTYPE html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>HRP-供应商平台</title>
-<!--grunt.css.begin-->
-<link href="css/global.debug.css" rel="stylesheet" />
-<link href="css/base.css" rel="stylesheet" />
-<link href="css/main/index.debug.css" rel="stylesheet" />
-<!--grunt.css.end-->
+    <meta charset="utf-8"/>
+    <title>易供应-云端上的供应链平台</title>
+    <meta name="description"
+          content="app, web app, responsive, responsive layout, admin, admin panel, admin dashboard, flat, flat ui, ui kit, AngularJS, ui route, charts, widgets, components"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+    <link rel="stylesheet" href="css2/bootstrap.css" type="text/css"/>
+    <link rel="stylesheet" href="css2/animate.css" type="text/css"/>
+    <link rel="stylesheet" href="css2/iconfont/iconfont.css">
+
+    <link rel="stylesheet" href="css2/font-awesome.min.css" type="text/css"/>
+    <link rel="stylesheet" href="css2/simple-line-icons.css" type="text/css"/>
+
+    <!--grunt.css.begin-->
+    <link rel="stylesheet" href="css2/main/app.css" type="text/css"/>
+    <!--grunt.css.end-->
 </head>
 <body>
-	<div class="side-bar">
-		<div class="banner">
-			<span class="title">HRP</span> 供应商平台
-		</div>
-		<div class="menu-group"></div>
-		<ul id="ul-sidebar" class="menus">
-			<!--
-    <li data-index="{index}" draggable="true">
-        <i class="icons" style="background-image: url(css/main/img/{icon});background-size: 20px,20px;"></i>
-        {name}
-    </li>
-    -->
-		</ul>
-		<div class="menus-more" style="display: none;">
-			<ul id="ul-sidebar-menus">
-				<!--
-        <li data-index="{index}">
-        <i class="icons" style="background-image: url(css/main/img/{icon});background-size: 20px,20px;"></i>
-        {name}</li>
-        -->
-			</ul>
-		</div>
-		<!--<span id="hiden">隐藏菜单</span>-->
-	</div>
+<div class="app app-header-fixed" id="app">
+    <!-- navbar -->
+    <div class="app-header navbar">
+        <!-- navbar header -->
+        <div class="navbar-header bg-dark">
+            <button class="pull-right visible-xs dk" data-toggle="class:show" data-target=".navbar-collapse">
+                <i class="glyphicon glyphicon-cog"></i>
+            </button>
+            <button class="pull-right visible-xs" data-toggle="class:off-screen" data-target=".app-aside"
+                    ui-scroll="app">
+                <i class="glyphicon glyphicon-align-justify"></i>
+            </button>
+            <!-- brand -->
+            <a href="#/" class="navbar-brand text-lt">
+                <i class="fa fa-btc"></i>
 
+                <span class="hidden-folded m-l-xs">易供应</span>
+            </a>
+            <!-- / brand -->
+        </div>
+        <!-- / navbar header -->
 
-	<div class="content">
-		<div class="top-fixed">
-			<div class="header container">
-				<ul class="user-info">
-					<li id="li-user-infos" class="user-setting"><span
-						id="span-user-name"> <!--
-                        {name}
-                        -->
-					</span> <i class="icon-dropdown"></i>
-						<div id="div-user-list" class="setting-more"
-							style="display: none;">
-							<div class="box">
-								<ul>
-									<li id='btn-change-password'>修改密码</li>
-								</ul>
-								<ul>
-									<li id='btn-logout'>注销</li>
-								</ul>
-							</div>
-						</div></li>
-					<!--<li>-->
-					<!--<i class="icon-msg"></i>-->
-					<!--<span id="span-message-count" class="msg">-->
-					<!--&lt;!&ndash;-->
-					<!--{value}-->
-					<!--&ndash;&gt;-->
-					<!--</span>-->
-					<!--</li>-->
-				</ul>
-			</div>
-			<div class="tab-panel">
-				<div class="container">
-					<ol id="ul-page-tabs" class="tabs">
-						<!--
-                 #--home.begin--#
-                 <li class="home {actived-class}" data-index="{index}" {draggable}>
-                     <i class="icon-home"></i>
-                 </li>
-                 #--home.end--#
+        <!-- navbar collapse -->
+        <div class="collapse pos-rlt navbar-collapse box-shadow bg-white-only">
+            <!-- buttons -->
+            <div class="nav navbar-nav hidden-xs">
+                <a href="#" class="btn no-shadow navbar-btn" data-toggle="class:app-aside-folded" data-target=".app">
+                    <i class="fa fa-dedent fa-fw text"></i>
+                    <i class="fa fa-indent fa-fw text-active"></i>
+                </a>
+            </div>
+            <!-- / buttons -->
 
-                 #--item.begin--#
-                 <li class="{actived-class}" data-index="{index}" {draggable} >
-                     {name}<i class="icon-close" title="关闭本页签" ></i>
-                 </li>
-                 #--item.end--#
-                 -->
-					</ol>
-					<div id="div-page-list" class="tab-more">
-						<i class="tab-dropdown" title="所有页签列表"></i>
-						<ul id="ul-page-list" class="tab-more-content"
-							style="display: none;">
-							<!--
-                    <li data-index="{index}" style="{item-display}" class="{on}"{draggable} >
-                        {name}<i class="icon-close" title="{title}" style="{icon-display}"></i>
-                    </li>
-                    -->
-
-						</ul>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="container pt85">
-			<div id="div-tips" class="msg-box" style="display: none;">
-				<!--
-                <div id="div-tips-content" class="msg-content {type}" >
-                    <div class="floatingBarsG">
-                        #--rotate.begin--#
-                        <div class="blockG rotateG_{order}"></div>
-                        #--rotate.end--#
+            <!-- search form -->
+            <form class="navbar-form navbar-form-sm navbar-left shift" ui-shift="prependTo"
+                  data-target=".navbar-collapse" role="search" ng-controller="TypeaheadDemoCtrl">
+                <div class="form-group">
+                    <div class="input-group">
+                        <input type="text" ng-model="selected"
+                               typeahead="state for state in states | filter:$viewValue | limitTo:8"
+                               class="form-control input-sm bg-light no-border rounded padder"
+                               placeholder="Search projects...">
+                        <span class="input-group-btn">
+                            <button type="submit" class="btn btn-sm bg-light rounded"><i
+                                    class="fa fa-search"></i></button>
+                        </span>
                     </div>
-                    <span title="{text}">{text}</span>
-                    <i class="icon-close"></i>
                 </div>
-                -->
-			</div>
-			<div id="div-iframes" class="iframes">
-				<!--
-        <iframe id="{id}" data-sn="{sn}" data-index="{index}" data-type="page" frameborder="0">
-        </iframe>
-        -->
-			</div>
+            </form>
+            <!-- / search form -->
 
-		</div>
-	</div>
-
-
-	<div style="display: none; clear: both;">
-		<!--公共控件用到的各种模板，请不要删除-->
-
-		<!--Samples.SimplePager--!
-    <ul id="{ul-id}" class="page-label">
-        <li class="left-btn {first-disabled-class}" data-button="previous">
-            <a href="javascript:"><i></i></a>
-        </li>
-        <li>
-            <input id="{txt-id}" value="{current}/{count}" />
-        </li>
-        <li class="right-btn {final-disabled-class}" data-button="next" >
-            <a href="javascript:"><i></i></a>
-        </li>
-    </ul>
---Samples.SimplePager-->
-
-		<!--Samples.Pager--!
-    <ul id="{ul-id}" class="pagination footer">
-        <li class="buttons">
-            <ul>
-                <li class="LR-button {first-disabled-class}" data-button="previous" title="上一页">
-                    <i class="left-btn"></i>
+            <!-- nabar right -->
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown">
+                    <a href="#" data-toggle="dropdown" class="dropdown-toggle">
+                        <i class="icon-bell fa-fw"></i>
+                        <span class="visible-xs-inline">Notifications</span>
+                        <span class="badge badge-sm up bg-danger pull-right-xs">2</span>
+                    </a>
+                    <!-- dropdown -->
+                    <div class="dropdown-menu w-xl animated fadeInUp">
+                        <div class="panel bg-white">
+                            <div class="panel-heading b-light bg-light">
+                                <strong>You have <span>2</span> notifications</strong>
+                            </div>
+                            <div class="list-group">
+                                <a href class="media list-group-item">
+                                    <span class="pull-left thumb-sm">
+                                      <img src="css2/img/a0.jpg" alt="..." class="img-circle">
+                                    </span>
+                                    <span class="media-body block m-b-none">
+                                          Use awesome animate.css<br>
+                                          <small class="text-muted">10 minutes ago</small>
+                                    </span>
+                                </a>
+                                <a href class="media list-group-item">
+                                    <span class="media-body block m-b-none">
+                                      1.0 initial released<br>
+                                      <small class="text-muted">1 hour ago</small>
+                                    </span>
+                                </a>
+                            </div>
+                            <div class="panel-footer text-sm">
+                                <a href class="pull-right"><i class="fa fa-cog"></i></a>
+                                <a href="#notes" data-toggle="class:show animated fadeInRight">See all the
+                                    notifications</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- / dropdown -->
                 </li>
 
-                #--item.begin--#
-                <li class="item {active}" {data-no}>{no}</li>
-                #--item.end--#
+                <li id="li-user-infos" class="dropdown">
+                    <!--
+                    <a href="#" data-toggle="dropdown" class="dropdown-toggle clear">
+                          <span class="thumb-sm avatar pull-right m-t-n-sm m-b-n-sm m-l-sm">
+                            <img src="{img}" alt="...">
+                            <i class="on md b-white bottom"></i>
+                          </span>
+                        <span class="hidden-sm hidden-md">{name}</span> <b class="caret"></b>
+                    </a>
 
-                #--more.begin--#
-                <li class="item more"></li>
-                #--more.end--#
+                    <ul class="dropdown-menu animated fadeInRight w">
 
-                <li class="LR-button {final-disabled-class}"  data-button="next" title="下一页">
-                    <i class="right-btn"></i>
+                        <li id="btn-edit-profile">
+                            <a href>
+                                <span class="badge bg-danger pull-right">set</span>
+                                <span>公司信息</span>
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                        <li id="btn-change-password">
+                            <a href>
+                                <span class="badge bg-danger pull-right">edit</span>
+                                <span>修改密码</span>
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                        <li id="btn-logout">
+                            <a ui-sref="app.docs">
+                                <span class="label bg-info pull-right">new</span>
+                                退出
+                            </a>
+                        </li>
+
+                    </ul>
+                    -->
                 </li>
             </ul>
-        </li>
-        <li class="page-count">
-            共<span>{count}</span>页
-        </li>
-        <li class="page-count">
-            共有<span>{total}</span>条记录
-        </li>
-        <li class="page-jump">
-            <span>到第</span>
-            <input id="{txt-id}" type="text" class="page-number" value="{toNo}" {txt-disabled}/><span>页</span>
-            <a href="javascript:" class="jump-button {jump-disabled-class}" data-button="to">跳转</a>
-        </li>
-    </ul>
---Samples.Pager-->
-
-		<!--Samples.CascadePicker--!
-    <select class="{not-selected}" data-index="{index}">
-        #--item.begin--#
-        <option {selected}>{text}</option>
-        #--item.end--#
-    </select>
---Samples.CascadePicker-->
-
-		<!--Samples.Login--!
-    <ul>
-        <li class="input-panel">
-            <span class="icon-user"></span>
-            <input data-field="user" type="text" placeholder="账号/邮箱/用户名" value="{user}"/>
-        </li>
-        <li class="input-panel">
-            <span class="icon-lock"></span>
-            <input data-field="password" type="password" placeholder="密码" />
-        </li>
-        <li class="warm-text">
-            <span data-field="msg" style="display:none;">*账号或密码错误</span>
-        </li>
-    </ul>
---Samples.Login-->
-
-		<!--Samples.Loading--!
-    <p>
-        <i class="icon-refresh icon-spin"></i>
-        {text}
-    </p>
---Samples.Loading-->
-
-		<!--Samples.CascadePath--!
-
-    #--ol.begin--#
-    <ol id="{ol-id}" class="bread-crumbs">
-        #--item.begin--#
-        <li data-index="{index}">
-            <a href="javascript:">{name}</a>
-            <span>
-                <i class="icon-dropdown"></i>
-            </span>
-        </li>
-        #--item.end--#
-
-        #--leaf.begin--#
-        <li data-index="{index}" class="last">
-            <a href="javascript:">{name}</a>
-        </li>
-        #--leaf.end--#
-    </ol>
-    #--ol.end--#
-
---Samples.CascadePath-->
-
-		<!--Samples.CascadeMenus--!
-    #--div.begin--#
-    <div id="{div-id}" class="selector-panel" style="left:{left}px; top:{top}px; display:none;">
-        #--group.begin--#
-        <ol class="top{topN}" data-index="{index}" >
-            #--item.begin--#
-            <li class="{actived}" data-index="{index}">
-                {name}<i class="branch-item"></i>
-            </li>
-            #--item.end--#
-            #--leaf.begin--#
-            <li class="{actived}" data-index="{index}">
-                {name}
-            </li>
-            #--leaf.end--#
-        </ol>
-        #--group.end--#
-    </div>
-    #--div.end--#
---Samples.CascadeMenus-->
-
-		<!--Samples.DataSelector--!
-    #--selector.begin--#
-        <div class="sms-F7selector">
-            <input type="text" data-role="label"  /><span data-role="btn"><i></i></span>
+            <!-- / navbar right -->
         </div>
-    #--selector.end--#
---Samples.DataSelector-->
+        <!-- / navbar collapse -->
+
+    </div>
+    <!-- / navbar -->
+
+    <!-- menu -->
+    <div class="app-aside hidden-xs bg-dark">
+        <div class="aside-wrap">
+            <div class="navi-wrap">
+                <!-- nav -->
+                <nav ui-nav class="navi">
+
+                    <ul class="nav" id="ul-sidebar">
+                        <!--
+                        <li class="hidden-folded padder m-t m-b-sm text-muted text-xs">
+                            <span translate="aside.nav.HEADER">云端上的供应链管理平台</span>
+                        </li>
+
+                        #--menu.item.begin--#
+                        <li data-index="{index}" data-id="{id}" draggable="true">
+
+                            <a href class="auto">
+                              <span class="pull-right text-muted">
+                                <i class="fa fa-fw fa-angle-right text"></i>
+                                <i class="fa fa-fw fa-angle-down text-active"></i>
+                              </span>
+                                <i class="iconfont {icon} icon text-primary-dker"></i>
+                                <span class="font-bold" translate="aside.nav.DASHBOARD">{name}</span>
+                            </a>
+
+                           #--menu.sub.begin--#
+                            <ul class="nav nav-sub dk">
+                                #--menu.sub.item.begin--#
+                                <li ui-sref-active="active" data-index="{index}" data-id="{id}" draggable="true">
+                                    <a ui-sref="app.dashboard-v1">
+                                        <i class="iconfont {icon} icon text-primary-dker"></i>
+                                        <span>{name}</span>
+                                    </a>
+                                </li>
+                                 #--menu.sub.item.end--#
+                            </ul>
+                            #--menu.sub.end--#
+                        </li>
+
+                         #--menu.item.line.begin--#
+                        <li class="line dk"></li>
+                        #--menu.item.line.end--#
+
+                        #--menu.item.end--#
 
 
-		<!--Samples.ButtonMenus--!
-    #--li.begin--#
-    <li class="btn-multi">
-        <button class="btn">{text}</button>
-        <ol class="btn-more">
-            #--item.begin--#
-            <li><a href="javascript:">{text}</a></li>
-            #--item.end--#
-        </ol>
-        <span class="bt-dropdown"><i class="icon-dropdown"></i></span>
-    </li>
-    #--li.end--#
---Samples.ButtonMenus-->
 
-		<!--Samples.ButtonList--!
-    #--ul.begin--#
-    <ul class=sms-btn-menu">
+                       -->
+                    </ul>
 
-        #--item.begin--#
-        <li data-index="{index}" class=sms-btn-item>
-        <i class="icons" style="background-image: url({icon});"></i>
-        {text}</li>
-        #--item.end--#
+                </nav>
+                <!-- nav -->
+            </div>
+        </div>
+    </div>
+    <!-- / menu -->
 
-        #--group.begin--#
-        <li data-index="{index}" class=sms-btn-menu {css-class}">
-            <button class=sms-btn-item>
-            <i class="icons" style="background-image: url({icon});"></i>
-            {text}</button>
-            <ol id="{ol-id}{index}" class="btn-more" style="display:none;">
-                #--group.item.begin--#
-                <li data-index="{index}" data-no="{no}">
-                    <a href="javascript:">
-                    <i class="icons" style="background-image: url({icon});"></i>
-                    {text}</a>
-                </li>
-                #--group.item.end--#
-            </ol>
-            <span id="{span-id}{index}" class="bt-dropdown"><i class="icon-dropdown"></i></span>
-        </li>
-        #--group.end--#
+    <!-- content -->
+    <div class="app-content">
 
-    </ul>
-    #--ul.end--#
---Samples.ButtonList-->
+        <!-- tab-panel-->
+        <div class="tab-panel">
+            <div class="container">
+                <ol id="ul-page-tabs" class="tabs">
+                    <!--
+                     #--home.begin--#
+                     <li class="home {actived-class}" data-index="{index}" {draggable}>
+                         <i class="icon-home"></i>
+                     </li>
+                     #--home.end--#
+
+                     #--item.begin--#
+                     <li class="{actived-class}" data-index="{index}" {draggable} >
+                         {name}<i class="icon-close" title="关闭本页签" ></i>
+                     </li>
+                     #--item.end--#
+             -->
+                </ol>
+                <div id="div-page-list" class="tab-more">
+                    <i class="tab-dropdown" data-toggle="dropdown" title="所有页签列表"></i>
+                    <ul id="ul-page-list" class="tab-more-content"
+                        style="display: none;">
+                        <!--
+                            <li data-index="{index}" style="{item-display}" class="{on}"{draggable} >
+                                {name}<i class="icon-close" title="{title}" style="{icon-display}"></i>
+                            </li>
+                        -->
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- /tab-panel-->
+
+        <!-- tips-panel-->
+        <div id="div-tips" class="msg-box" style="display: none;">
+            <!--
+            <div id="div-tips-content" class="msg-content {type}" >
+                <div class="floatingBarsG">
+                    #--rotate.begin--#
+                    <div class="blockG rotateG_{order}"></div>
+                    #--rotate.end--#
+                </div>
+                <span title="{text}">{text}</span>
+                <i class="icon-close"></i>
+            </div>
+            -->
+        </div>
+        <!-- /tips-panel-->
+
+        <!-- iframes-panel-->
+        <div id="div-iframes" class="iframes">
+            <!--
+            <iframe id="{id}" data-sn="{sn}" data-index="{index}" data-type="page" frameborder="0">
+            </iframe>
+            -->
+        </div>
+        <!-- /iframes-panel-->
+    </div>
+    <!-- /content -->
 
 
-	</div>
+    <!-- footer -->
+    <div class="app-footer wrapper bg-dark ">
+        <span class="pull-right">1.0.0 </span>
+        <span class="pull-right m-r">
+        &copy; 2017   <a href="http://www.kingdee.com/" target="_blank" title="模板之家">金蝶国际软件集团有限公司</a> -
+        粤ICP备05041751号-2</span>
+    </div>
+    <!-- / footer -->
+</div>
 
-	<script src="lib/jquery/jquery-1.11.1.debug.js"></script>
-	<script src="lib/miniquery/miniquery.debug.js"></script>
-	<script src="lib/sms/sms.debug.js"></script>
-	<!--<script src="lib/seajs/seajs.mod.debug.js"></script>-->
-	<script src="config.js"></script>
+<script src="lib/jquery/jquery-1.11.1.debug.js"></script>
+<script src="lib/miniquery/miniquery.debug.js"></script>
+<script src="lib/sms/sms.debug.js"></script>
+<script src="lib/bootstrap/bootstrap.js"></script>
+<script src="config.js"></script>
 
-	<!--grunt.js.begin-->
 
-	<script src="modules/main/MenuData.js"></script>
-	<script src="modules/main/Sidebar.js"></script>
-	<script src="modules/main/Menus.js"></script>
-	<script src="modules/main/PageTabs.js"></script>
-	<script src="modules/main/PageList.js"></script>
-	<script src="modules/main/Iframes.js"></script>
-	<script src="modules/main/Tips.js"></script>
-	<script src="modules/main/UserInfos.js"></script>
+<!--grunt.js.begin-->
+<script src="modules/main/Sidebar.js"></script>
+<script src="modules/main/Samples.js"></script>
+<script src="modules/main/NavBar.js"></script>
+<script src="modules/main/UserInfos.js"></script>
+<script src="modules/main/Tips.js"></script>
+<script src="modules/main/PageTabs.js"></script>
+<script src="modules/main/PageList.js"></script>
+<script src="modules/main/Iframes.js"></script>
+<script src="master.js"></script>
 
-	<!--
-
-<script src="modules/main/Fixer.js"></script>
--->
-	<script src="master.js"></script>
-
-	<!--grunt.js.end-->
-
+<!--grunt.js.end-->
 
 </body>
 </html>

@@ -1,142 +1,70 @@
-﻿//控制器。
+//主控台控制器。
 //注意：所有模块均对控制器可见。
+
 ;(function () {
+
+    //alert('hello word!');
 
 
     var $ = require('$');
     var MiniQuery = require('MiniQuery');
     var SMS = require('SMS');
 
-    var Iframe = SMS.require('Iframe');
 
-    var MenuData = require('MenuData');
-    var Sidebar = require('Sidebar');
-    var Menus = require('Menus');
+    var Iframe = SMS.require('Iframe');
+    var Iframes = require('Iframes');
     var PageTabs = require('PageTabs');
     var PageList = require('PageList');
-    var Iframes = require('Iframes');
     var Tips = require('Tips');
+
     var UserInfos = require('UserInfos');
+    var Sidebar = require('Sidebar');
+    var NavBar = require('NavBar');
+
 
     //检查登录
     if (!SMS.Login.check(true)) {
         return;
     }
-    //重写
+
+    //重写Tips
     $.Object.overwrite(SMS.require('Tips'), Tips);
 
-
-    //侧边栏
     Sidebar.on({
-        //鼠标移进 Sidebar.item 时
-        'item.mouseover': function (config) {
-            Menus.render(config);
-        },
-        //鼠标移进 Sidebar 时
-        'mouseover': function () {
-            Menus.cancelHide(); //取消隐藏(即保持显示) Menus
-        },
-        //鼠标移出 Sidebar 时
-        'mouseout': function () {
-            Menus.hideAfter(200); //延迟隐藏 Menus
-            Sidebar.activeAfter(200);
-        },
-        'hiden':function () {
-        	// 简单处理
-            $('.content').toggleClass('content-hiden');
-            $('.content .top-fixed').toggleClass('toggle-width');
-            $('.side-bar .menus-more').toggleClass('toggle-menus-more');
-        }
-    });
+        'menu.click': function (item) {
+            console.log(item);
 
-
-    //弹出层菜单
-    Menus.on({
-        //鼠标移进 Menus 时
-        'mouseover': function () {
-            Menus.cancelHide(); //取消隐藏(即保持显示) Menus
-            Sidebar.cancelActive();
-        },
-        //鼠标移出 Menus 时
-        'mouseout': function () {
-            Menus.hideAfter(200); //隐藏 Menus
-            Sidebar.active();
-
-        },
-        //单击 Menus.item 时
-        'item.click': function (item) {
             PageTabs.add(item); //安静模式，不触发事件
             PageList.add(item); //安静模式，不触发事件
             Iframes.add(item);  //会触发 active 事件
+
+        },
+        'renderOver': function () {
+
+            //要自动打开的页面，请给菜单项设置 autoOpen: true 即可
+            var home = Sidebar.getHomeItem();
+            var items = Sidebar.getAutoOpens();
+
+            items = [home].concat(items);
+
+            $.Array.each(items, function (item, index) {
+                // 打开需要自动打开的页面
+                PageTabs.add(item);
+                PageList.add(item);
+                Iframes.add(item);
+
+            });
         }
     });
-
-
-    //页签标签
-    PageTabs.on({
-        'active': function (item) {
-            Iframes.active(item);   //会触发 active 事件
-            PageList.active(item);  //安静模式，不触发事件
-            Menus.active(item);     //安静模式，不触发事件
-        },
-        'remove': function (item) {
-            Iframes.remove(item);  //会触发 remove 事件
-            PageList.remove(item); //安静模式，不触发 remove 事件，但会触发 active 事件
-        },
-        'dragdrop': function (srcIndex, destIndex) {
-            PageList.dragdrop(srcIndex, destIndex);
-        },
-        'before-close': function (item) {
-            return Iframe.fire('before-close', item);
-        },
-        'cancel-close': function (item) {
-            return Iframe.fire('cancel-close', item);
-        },
-        'close': function (item) {
-            return Iframe.fire('close', item);
-        },
-
-    });
-
-    //页签列表
-    PageList.on({
-        'active': function (item) {
-            Iframes.active(item);   //会触发 active 事件
-            PageTabs.active(item);  //安静模式，不触发事件
-            Menus.active(item);     //安静模式，不触发事件
-
-        },
-        'remove': function (item) { //如果移除的是当前的激活项，则会触发 active 事件
-            Iframes.remove(item);
-            PageTabs.remove(item); //安静模式，不触发事件
-
-        },
-        'clear': function () {
-            Iframes.clear();
-            PageTabs.clear();
-        },
-        'dragdrop': function (srcIndex, destIndex) {
-            PageTabs.dragdrop(srcIndex, destIndex);
-        },
-        'before-close': function (item) {
-            return Iframe.fire('before-close', item);
-        },
-        'cancel-close': function (item) {
-            return Iframe.fire('cancel-close', item);
-        },
-        'close': function (item) {
-            return Iframe.fire('close', item);
-        },
-    });
-
 
     //iframe 页面
     Iframes.on({
         'active': function (item) {
-            Sidebar.active(item);
+/*            Sidebar.active(item);
+            Tips.active(item);
+            Iframe.fire(item.id, 'active', [item]);*/
             Tips.active(item);
             Iframe.fire(item.id, 'active', [item]);
-
         },
 
         'non-active': function (item) {
@@ -147,32 +75,6 @@
 
         },
     });
-
-
-    //加载菜单数据
-    MenuData.load(function (data) {
-
-        //debugger;
-
-        Sidebar.render(data);
-
-        //要自动打开的页面，请给菜单项设置 autoOpen: true 即可
-        var home = MenuData.getHomeItem();
-        var items = MenuData.getAutoOpens(data);
-
-        items = [home].concat(items);
-
-        $.Array.each(items, function (item, index) {
-
-            PageTabs.add(item);
-            PageList.add(item);
-            Iframes.add(item);
-
-        });
-
-
-    });
-
 
     Iframe.on('open', function (group, index, data) {
 
@@ -228,32 +130,16 @@
         }
     });
 
-    Iframe.on({
-
-        'addSuccess': function (sn, text) {
-            // 基础资料新增-保存成功后会抛出此事件
-            var name = PageTabs.getTabName(sn);
-            text = name.replace('新增', '修改');
-            PageTabs.changeTitle(sn, text);
-            PageList.changeTitle(sn, text);
-        },
-        'editSuccess': function (sn, data) {
-
-        },
-        'addNew':function (sn, data) {
-            // 基础资料新增页面点击新增会抛出此事件
-            var name = PageTabs.getTabName(sn);
-            text = name.replace('修改', '新增');
-            PageTabs.changeTitle(sn, text);
-            PageList.changeTitle(sn, text);
-        }
-    });
-
+    // 加载顶级菜单
+    Sidebar.render();
+    // 导航栏按钮
+    NavBar.render();
+    // 用户信息
+    UserInfos.render();
 
     PageTabs.render();
     PageList.render();
     Iframes.render();
-    UserInfos.render();
 
 
 })();

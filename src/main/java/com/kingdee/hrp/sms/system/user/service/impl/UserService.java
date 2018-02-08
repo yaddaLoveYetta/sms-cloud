@@ -9,6 +9,7 @@ import com.kingdee.hrp.sms.system.user.service.IUserService;
 import com.kingdee.hrp.sms.util.Common;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -28,19 +29,20 @@ public class UserService extends BaseService implements IUserService {
      * @param user
      * @return
      */
-    public Boolean check(User user) {
+    private Boolean check(User user) {
+
+        if (!StringUtils.isNotBlank(user.getUserName())) {
+            throw new BusinessLogicRunTimeException("用户名不能为空!");
+        }
 
         UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
-        long count;
+
         UserExample userExample = new UserExample();
         UserExample.Criteria criteria = userExample.createCriteria();
-        if (StringUtils.isNotBlank(user.getUserName()) && user.getUserName().length() > 0) {
-            criteria.andUserNameEqualTo(user.getUserName());
-            count = userMapper.countByExample(userExample);
-        } else {
-            throw new BusinessLogicRunTimeException("用户名不能为空，请输入用户名");
-        }
-        return count == 0;
+
+        criteria.andUserNameEqualTo(user.getUserName());
+        return userMapper.countByExample(userExample) == 0;
+
     }
 
     /**
@@ -49,6 +51,7 @@ public class UserService extends BaseService implements IUserService {
      * @param user 用户pojo
      */
     @Override
+    @Transactional(rollbackFor = {RuntimeException.class})
     public void register(User user) {
 
         UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
@@ -58,10 +61,11 @@ public class UserService extends BaseService implements IUserService {
         if (bool) {
             //用户数据插入数据库需要设置主键ID
             user.setId(getId());
-            String md5Password = Common.MD5(user.getPassword());
-            user.setPassword(md5Password);
             userMapper.insertSelective(user);
+        } else {
+            throw new BusinessLogicRunTimeException("用户已存在!");
         }
+
     }
 
     /**

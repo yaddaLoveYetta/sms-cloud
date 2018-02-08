@@ -1,79 +1,81 @@
-﻿<!DOCTYPE html>
-<html>
+<!DOCTYPE html>
+
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>登录</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Login</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="css2/bootstrap.css">
+    <link rel="stylesheet" href="css2/animate.css">
 
     <!--grunt.css.begin-->
-    <link rel="stylesheet" href="css/login.debug.css" />
+    <link rel="stylesheet" href="css2/login/index.css">
     <!--grunt.css.end-->
-
 </head>
 <body>
-    <div class="login-box">
-        <div class="title"></div>
-        <div class="content">
-            <div class="login-panel">
-                <ul>
-                    <li id="li-tabs" class="tabs">
 
-                        <div class="right select-tab">
-                            <div class="tab">
-                                   系统用户登录
-                                <div class="selected-back">
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="user-label first">
-                        <input id="txt-user" type="text" placeholder="账号" />
-                    </li>
-                    <li class="user-label">
-                        <input id="txt-password" type="password" placeholder="密码" />
-                    </li>
-                    <li>
-                        <div id="btn-login" class="login-bt">立即登录</div>
-                    </li>
-                    <li>
-                        <div class="get-pas" style="display: none">
-                            <a class="pass-tip" href="javascript:">忘记密码</a>
-                        </div>
-                    </li>
-                    <li class="hidden">
-                        <div id="div-warn" class="warm-box">
-                            <!--
-                            {content}
-                            -->
-                        </div>
-                    </li>
-                </ul>
-                
+<div class="container">
+
+    <div class="row">
+        <div class="col-md-4 col-md-push-8">
+
+            <div class="login-box animate-box" data-animate-effect="fadeInRight">
+                <h2>登录</h2>
+                <div class="form-group">
+                    <label for="txt-user" class="sr-only">用户名</label>
+                    <input type="text" class="form-control" id="txt-user" placeholder="用户名" autocomplete="off">
+                </div>
+                <div class="form-group">
+                    <label for="txt-password" class="sr-only">密码</label>
+                    <input type="password" class="form-control" id="txt-password" placeholder="密码" autocomplete="off">
+                </div>
+                <div class="form-group">
+                    <label for="remember"><input type="checkbox" id="remember"> 记住我</label>
+                </div>
+                <div class="form-group">
+                    <p>还没有账号? <a href="#">注册</a> | <a href="#">忘记密码?</a>
+                    </p>
+                </div>
+                <div class="form-group">
+                    <input id="btn-login" type="button" value="立即登录" class="btn btn-primary">
+                </div>
+                <div class="hidden">
+                    <div id="div-warn" class="warm-box">
+                        <!--
+                        {content}
+                        -->
+                    </div>
+                </div>
             </div>
-        </div>
-        <div class="footer">
-            <ul>
-                <li><a href="http://yiliao.kingdee.com/" target="_blank">(C)版权所有 金蝶医疗软件科技有限公司</a></li>
-                <li><a href="http://yiliao.kingdee.com/contents.php?id=1&types=1" target="_blank">解决方案</a></li>
-                <li><a href="http://yiliao.kingdee.com/contents.php?id=70&types=6" target="_blank">关于我们</a></li>
-                <li><a href="http://www.yunzhijia.com/home/" target="_blank">云之家</a></li>
-                <li><a href="http://www.kingdee.com/" target="_blank">金蝶集团</a></li>
-            </ul>
+
+
+            <!--            <div class="form-group">
+                            <p>还没有账号? <a href="sign-up.html">注册</a> | <a href="forgot.html">忘记密码?</a>
+                            </p>
+                        </div>-->
+
+
         </div>
     </div>
 
+</div>
 
-    <script src="lib/jquery/jquery-1.11.1.debug.js"></script>
-    <script src="lib/miniquery/miniquery.debug.js"></script>
-    <script src="lib/sms/sms.debug.js"></script>
-    <script src="config.js"></script>
+<!-- jQuery -->
 
-    <!--grunt.js.begin-->
-    <script src="modules/login/Tabs.js"></script>
-    <script src="modules/login/WarnTip.js"></script>
-    <script src="modules/login/Login.js"></script>
-    <script src="login.js"></script>
-    <!--grunt.js.end-->
+<script src="lib/jquery/jquery-1.11.1.debug.js"></script>
+<script src="lib/miniquery/miniquery.debug.js"></script>
+<script src="lib/sms/sms.debug.js"></script>
+<script src="config.js"></script>
 
+<script src="modules/login/jquery.waypoints.min.js"></script>
+
+<!--grunt.js.begin-->
+<script src="modules/login/Login.js"></script>
+<script src="modules/login/WarnTip.js"></script>
+<script src="login.js"></script>
+<!--grunt.js.end-->
 
 </body>
 </html>
+

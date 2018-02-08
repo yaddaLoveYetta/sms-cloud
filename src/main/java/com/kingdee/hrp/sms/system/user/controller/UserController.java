@@ -37,17 +37,12 @@ public class UserController {
      * @param user
      */
     @RequestMapping("/register")
-    public ResultWarp register(@RequestParam(value = "user") User user) {
-        ResultWarp resultWarp = new ResultWarp();
-        try {
-            userService.register(user);
-            resultWarp.setCode(StatusCode.SUCCESS);
-            resultWarp.setMsg("注册成功！");
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new BusinessLogicRunTimeException("注册失败，请重新注册");
-        }
-        return resultWarp;
+    @ResponseBody
+    public Boolean register(@RequestParam(value = "user") User user) {
+
+        userService.register(user);
+        return true;
+
     }
 
 
@@ -82,10 +77,10 @@ public class UserController {
      * @return
      */
     @RequestMapping("/logout")
-    public String logout(HttpServletRequest request) {
+    @ResponseBody
+    public Boolean logout(HttpServletRequest request) {
         request.getSession().removeAttribute("user");
         logger.info("注销成功");
-
-        return "redirect:/index.jsp";
+        return true;
     }
 }

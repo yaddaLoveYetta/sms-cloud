@@ -7,8 +7,6 @@ define('PageTabs', function (require, module, exports) {
     var MiniQuery = require('MiniQuery');
     var SMS = require('SMS');
 
-
-    var home = document.getElementById('div-tab-home');
     var ul = document.getElementById('ul-page-tabs');
 
     var samples = $.String.getTemplates(ul.innerHTML, [

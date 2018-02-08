@@ -1,61 +1,61 @@
-﻿//控制器
+
+//控制器
 ;
-(function($, MiniQuery, sms) {
+(function ($, MiniQuery, sms) {
 
-	var Tabs = require('Tabs');
-	var Login = require('Login');
-	var WarnTip = require('WarnTip');
+    var Login = require('Login');
+    var WarnTip = require('WarnTip');
 
-	Tabs.init(0);
-	Login.init();
+    Login.init();
 
-	$(document).on({
-		'click' : function() {
-			WarnTip.hide();
-		},
-		// 'B3sMo22ZLkWApjO/oEeDOxACEAI=' 业务用户 'QpXq24FxxE6c3lvHMPyYCxACEAI='
-		// 系统用户
-		'keydown' : function(event) {
+    $(document).on({
+        'click': function () {
+            WarnTip.hide();
+        },
+        'keydown': function (event) {
 
-			if (event.keyCode == 13) {
+            if (event.keyCode == 13) {
+                Login.login();
+            }
+        }
+    });
 
-				var filename = location.href;
+    var contentWayPoint = function() {
+        var i = 0;
+        $('.animate-box').waypoint( function( direction ) {
 
-				filename = filename.substr(filename.lastIndexOf('/') + 1);
+            if( direction === 'down' && !$(this.element).hasClass('animated-fast') ) {
 
-				if (filename === 'login.html') {
-					// 系统用户登录
-					Login.login('QpXq24FxxE6c3lvHMPyYCxACEAI=');
-				} else if (filename === 'login_supplier.html') {
-					// 供应商登录
-					Login.login('B3sMo22ZLkWApjO/oEeDOxACEAI=');
-				}
+                i++;
 
-			}
-		}
-	});
+                $(this.element).addClass('item-animate');
+                setTimeout(function(){
 
-	Login.on({
-		'login' : function() {
+                    $('body .animate-box.item-animate').each(function(k){
+                        var el = $(this);
+                        setTimeout( function () {
+                            var effect = el.data('animate-effect');
+                            if ( effect === 'fadeIn') {
+                                el.addClass('fadeIn animated-fast');
+                            } else if ( effect === 'fadeInLeft') {
+                                el.addClass('fadeInLeft animated-fast');
+                            } else if ( effect === 'fadeInRight') {
+                                el.addClass('fadeInRight animated-fast');
+                            } else {
+                                el.addClass('fadeInUp animated-fast');
+                            }
 
-			var filename = location.href;
+                            el.removeClass('item-animate');
+                        },  k * 200, 'easeInOutExpo' );
+                    });
 
-			filename = filename.substr(filename.lastIndexOf('/') + 1);
+                }, 100);
 
-			if (filename === 'login.html') {
-				// 系统用户登录
-				Login.login('QpXq24FxxE6c3lvHMPyYCxACEAI=');
-			} else if (filename === 'login_supplier.html') {
-				// 供应商登录
-				Login.login('B3sMo22ZLkWApjO/oEeDOxACEAI=');
-			}
-		}
-	});
+            }
 
-	Tabs.on({
-		'change' : function(index) {
-			console.log(index);
-		}
-	});
+        } , { offset: '85%' } );
+    };
+
+    contentWayPoint();
 
 })(jQuery, MiniQuery, SMS);
