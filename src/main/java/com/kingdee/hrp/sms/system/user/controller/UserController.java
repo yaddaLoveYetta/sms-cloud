@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -32,7 +33,8 @@ public class UserController {
 
     /**
      * 用户注册
-     *@param user
+     *
+     * @param user
      */
     @RequestMapping("/register")
     public ResultWarp register(@RequestParam(value = "user") User user) {
@@ -52,35 +54,35 @@ public class UserController {
     /**
      * 用户登录
      *
-     * @param username
+     * @param userName
      * @param password
      */
     @RequestMapping("/login")
-    public ResultWarp login(String username, String password, HttpServletRequest request) {
-        ResultWarp resultWarp = new ResultWarp();
-        if ("".equals(username) || "".equals(password)) {
+    @ResponseBody
+    public User login(String userName, String password, HttpServletRequest request) {
+
+
+        if ("".equals(userName) || "".equals(password)) {
             throw new BusinessLogicRunTimeException("用户名或密码不能为空!");
         }
-        try {
-            User user = userService.login(username, password);
-            if(null != user){
-                request.getSession().setAttribute("user",user);
-                resultWarp.setCode(StatusCode.SUCCESS);
-                resultWarp.setMsg("登陆成功！");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new BusinessLogicRunTimeException("登录失败，请联系管理员!");
+
+        User user = userService.login(userName, password);
+
+        if (null != user) {
+            request.getSession().setAttribute("user", user);
+            return user;
         }
-        return resultWarp;
+
+        throw new BusinessLogicRunTimeException("登录失败!");
     }
 
     /**
      * 用户注销
+     *
      * @return
      */
     @RequestMapping("/logout")
-    public String logout(HttpServletRequest request){
+    public String logout(HttpServletRequest request) {
         request.getSession().removeAttribute("user");
         logger.info("注销成功");
 

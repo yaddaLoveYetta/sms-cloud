@@ -16,6 +16,8 @@ define('Sidebar', function (require, module, exports) {
 
     // 菜单树
     var list;
+    // 原始菜单数据Map
+    var menus = {};
 
     var tabs;
 
@@ -26,6 +28,14 @@ define('Sidebar', function (require, module, exports) {
 
     var samples = require("Samples")(ul);
 
+    var homeItem = {
+        name: '首页',
+        isHome: true,
+        id: $.String.random(5),
+        //url: 'html/home/index.html',
+        //url: 'html/home/index-hrp.html',
+        url: 'html/home/520/index.html'
+    };
 
     function loadMenuData(fn) {
 
@@ -42,9 +52,12 @@ define('Sidebar', function (require, module, exports) {
 
         api.on({
             'success': function (data, json) {
-                //成功
                 // 构造菜单树并缓存起来
                 list = toTree(data, 0);
+                // 原始菜单数据保存起来
+                menus = $.Array.toObject(data, function (item, index) {
+                    return [item.id, item];
+                });
 
                 fn(list);
 
@@ -79,7 +92,7 @@ define('Sidebar', function (require, module, exports) {
                     icon: topItem.icon,
                     name: topItem.name,
                     sub: $.String.format(samples["sub"], {
-                        subItem: $.Array.keep(list.items, function (subItem, subIndex) {
+                        subItem: $.Array.keep(topItem.items, function (subItem, subIndex) {
                             return $.String.format(samples["subItem"], {
                                 index: topIndex + '-' + subIndex,
                                 id: subItem.id,
@@ -87,13 +100,17 @@ define('Sidebar', function (require, module, exports) {
                                 name: subItem.name,
                             });
                         }).join("")
-                    })
+                    }),
+                    line: (topIndex + 1) % 3 === 0 ? $.String.format(samples["line"], {}) : ''
                 });
             }).join("")
+
         });
 
 
         bindEvents();
+
+        emitter.fire('renderOver', []);
     }
 
     function render() {
@@ -112,14 +129,14 @@ define('Sidebar', function (require, module, exports) {
         tabs = SMS.Tabs.create({
 
             container: ul,
-            selector: 'li[data-id]',
+            selector: '>li li[data-id]',
             //indexKey: 'data-index',
             current: null,
             event: 'click',  //mouseover
             activedClass: '',//'hover'
             change: function (index, item) {
                 //这里的，如果当前项是高亮，再次进入时不会触发
-                //console.log(index);
+                // console.log(index);
             }
         });
 
@@ -131,20 +148,13 @@ define('Sidebar', function (require, module, exports) {
             // 菜单id
             var id = $(item).data('id');
 
-            var $div = $(item).find('> div');
+            //console.log(menus[id]);
 
             if (menus[id] && Boolean(trim(menus[id]['url']))) {
                 // 有url的菜单，抛出点击事件
                 emitter.fire('menu.click', [menus[id]]);
             }
 
-            if (Boolean(trim($div.html()))) {
-                // 已经加载了子菜单--切换显示关闭
-                $(item).find("ul:first").slideToggle();
-                return;
-            }
-
-            render(id);
         });
 
 
@@ -179,12 +189,36 @@ define('Sidebar', function (require, module, exports) {
         return tree;
     }
 
+    //找出设置了 autoOpen: true 的项
+    function getAutoOpens(data) {
+
+        return [];
+        data = data || list;
+
+        var a = $.Array.map(list, function (group, no) {
+
+            var items = group.items;
+
+            return $.Array.grep(items, function (item, index) {
+                return item.autoOpen;
+            });
+        });
+
+        return $.Array.reduceDimension(a);
+    }
+
+    function getHomeItem() {
+        return homeItem;
+    }
+
     function trim(s) {
         return s.replace(/\n/g, '').replace(/\s{2,}/g, ' ');
     }
 
     return {
         render: render,
+        getHomeItem: getHomeItem,
+        getAutoOpens: getAutoOpens,
         on: emitter.on.bind(emitter),
     }
 

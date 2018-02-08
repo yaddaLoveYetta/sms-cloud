@@ -76,17 +76,17 @@ public class UserService extends BaseService implements IUserService {
 
         UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
 
-        User user = new User();
-        String md5Password = Common.MD5(password);
         UserExample userExample = new UserExample();
         UserExample.Criteria criteria = userExample.createCriteria();
+
         criteria.andUserNameEqualTo(username);
-        criteria.andPasswordEqualTo(md5Password);
+        criteria.andPasswordEqualTo(password);
+
         List<User> list = userMapper.selectByExample(userExample);
         if (list != null && list.size() > 0) {
-            user = list.get(0);
+            return list.get(0);
         }
-        return user;
+        throw new BusinessLogicRunTimeException("用户名或密码错误!");
     }
 
 //    @Override

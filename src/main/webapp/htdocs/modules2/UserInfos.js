@@ -13,27 +13,19 @@ define('UserInfos', function (require, module, exports) {
 
     var panel = document.getElementById('li-user-infos');
     var user = SMS.Login.get();
-
+    user = {'name': 'yadda'};
 
     function render() {
 
 
         //批量填充
         SMS.Template.fill({
-            '#span-user-name': {
+            '#li-user-infos': {
+                img: user.img || 'css2/img/a0.jpg',
                 name: user.name
-            },
-            // '#span-message-count': {
-            //     value: user.messageCount
-            // },
+            }
         });
 
-
-        $(panel).hover(function () {
-            show();
-        }, function () {
-            hide();
-        });
 
         $('#btn-change-password').on('click', function () {
             openChangePwd();
@@ -153,24 +145,6 @@ define('UserInfos', function (require, module, exports) {
     function reset() {
         $('#btn-logout').removeClass('disabled').html('注销');
     }
-
-    function show() {
-
-        if ($(panel).hasClass('hover')) { //避免上次的隐藏动画还没结束又开始显示动画
-            return;
-        }
-
-        $(panel).addClass('hover');
-        $('#div-user-list').fadeIn();
-    }
-
-    function hide() {
-
-        $('#div-user-list').fadeOut(function () {
-            $(panel).removeClass('hover');
-        });
-    }
-
 
     return {
         render: render
