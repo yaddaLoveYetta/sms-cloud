@@ -2,9 +2,6 @@ package com.kingdee.hrp.sms.common.model;
 
 import com.kingdee.hrp.sms.common.RootModel;
 
-/**
- * @author yadda
- */
 public class Menu extends RootModel {
     private Integer id;
 
