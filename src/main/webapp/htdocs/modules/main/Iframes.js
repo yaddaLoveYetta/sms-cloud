@@ -56,8 +56,8 @@ define('Iframes', function (require, module, exports) {
     function getIframeId(item) {
 
         //加上目录名，是为了在控制台选择目录页面时更清晰。
-        //因为页面文件名都统一成 index.html 了，所以目录名就比较好区分。
-        var dir = $.String.between(item.url, 'html/', '/index.html');
+        //因为页面文件名都统一成 login.html 了，所以目录名就比较好区分。
+        var dir = $.String.between(item.url, 'html/', '/login.html');
         dir = $.String.replaceAll(dir, '/', '-');
         var id = prefix + item.id + '-' + dir;
         return id;

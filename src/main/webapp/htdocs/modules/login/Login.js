@@ -15,7 +15,7 @@ define('Login', function (require, module, exports) {
     var txtPassword = document.getElementById('txt-password');
 
 
-    function login(loginType) {
+    function login() {
 
         if ($(btn).hasClass('disabled')) {
             return;
@@ -30,14 +30,17 @@ define('Login', function (require, module, exports) {
 
         var password = txtPassword.value;
 
+        if (!password) {
+            WarnTip.show('请输入密码');
+            return false;
+        }
 
-        $(btn).addClass('disabled').html('登录中...');
+        $(btn).addClass('disabled').html('正在登录...');
 
 
         SMS.Login.login({
-            user: user,
-            password: password,
-            type: loginType,
+            userName: user,
+            password: password
         }, function (user, data, json) { //成功
 
             location.href = 'master.html';
@@ -58,7 +61,7 @@ define('Login', function (require, module, exports) {
 
     function reset() {
         $(btn).removeClass('disabled')
-            .html('立即登录');
+            .html('登录');
     }
 
     function init() {
@@ -75,14 +78,8 @@ define('Login', function (require, module, exports) {
         }
 
         $(btn).on('click', function (event) {
-
             event.stopPropagation();
-            emitter.fire('login');
-
-            // var isOK = login();
-            // if (isOK === false) {
-            //     event.stopPropagation();
-            // }
+            login();
         });
     }
 

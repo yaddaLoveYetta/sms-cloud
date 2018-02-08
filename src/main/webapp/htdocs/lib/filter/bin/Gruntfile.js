@@ -5,7 +5,7 @@ module.exports = function(grunt) {
         concat: {
             dist: {
                 src: [ '../html/js/DatetimePicker.js', '../html/js/FilterData.js', '../html/js/FilterOptions.js',
-                    '../html/js/TimeZone.js', '../html/js/Path.js', '../html/js/Filter.js', '../html/js/Notification.js', '../html/index.js'],
+                    '../html/js/TimeZone.js', '../html/js/Path.js', '../html/js/Filter.js', '../html/js/Notification.js', '../html/login.js'],
                 dest: '../html/Filter.js'
             }
         },
@@ -113,7 +113,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-html2js');
     grunt.loadNpmTasks('grunt-replace');
 
-    //1.½«html×ª³É×Ö·û´® 2.È¥µô×Ö·û´®µÄÍ·ºÍÎ² 3.ºÏ²¢ËùÓÐjsÄ£¿é 4.°Ñ¿Ø¼þÄ£°åµÄhtml×Ö·û´®¡¢ºÏ²¢µÄÄ£¿éjsÌæ»»ÉÏ 5.·Å¿ªÅ×³öÊÂ¼þµÄ×¢ÊÍ
+    //1.ï¿½ï¿½html×ªï¿½ï¿½ï¿½Ö·ï¿½ï¿½ï¿½ 2.È¥ï¿½ï¿½ï¿½Ö·ï¿½ï¿½ï¿½ï¿½ï¿½Í·ï¿½ï¿½Î² 3.ï¿½Ï²ï¿½ï¿½ï¿½ï¿½ï¿½jsÄ£ï¿½ï¿½ 4.ï¿½Ñ¿Ø¼ï¿½Ä£ï¿½ï¿½ï¿½htmlï¿½Ö·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï²ï¿½ï¿½ï¿½Ä£ï¿½ï¿½jsï¿½æ»»ï¿½ï¿½ 5.ï¿½Å¿ï¿½ï¿½×³ï¿½ï¿½Â¼ï¿½ï¿½ï¿½×¢ï¿½ï¿½
     grunt.registerTask('default', ['html2js', 'replace:html', 'concat', 'replace:htmlandmodule', 'replace:filterEvents']);
 
 }

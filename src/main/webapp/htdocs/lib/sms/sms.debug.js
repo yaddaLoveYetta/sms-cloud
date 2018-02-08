@@ -4161,7 +4161,7 @@
         function check(jump) {
 
             var user = get();
-            var valid = !!(user && user.userId);
+            var valid = !!(user && user.id);
 
             if (!valid && jump) {
 
@@ -6467,7 +6467,7 @@
             }
 
             var formClassID = field.lookUpClassID;
-            var url = $.Url.setQueryString('./html/base/index.html', 'classId', formClassID);
+            var url = $.Url.setQueryString('./html/base/login.html', 'classId', formClassID);
 
             var condition = cfg.config.getConditions && cfg.config.getConditions(rowNumb, colNumb, colModels) || {};
 
