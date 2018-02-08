@@ -1,5 +1,24 @@
 
-;(function () {
+//控制器
+;
+(function ($, MiniQuery, sms) {
+
+    var Login = require('Login');
+    var WarnTip = require('WarnTip');
+
+    Login.init();
+
+    $(document).on({
+        'click': function () {
+            WarnTip.hide();
+        },
+        'keydown': function (event) {
+
+            if (event.keyCode == 13) {
+                Login.login();
+            }
+        }
+    });
 
     var contentWayPoint = function() {
         var i = 0;
@@ -39,4 +58,4 @@
 
     contentWayPoint();
 
-})();
+})(jQuery, MiniQuery, SMS);

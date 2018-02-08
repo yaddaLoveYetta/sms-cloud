@@ -4315,9 +4315,12 @@
             var api = new API(defaults.apiLogin);
 
             api.get({
-                'user': data.user,
-                'pwd': MD5.encrypt(data.password),
-                'type': data.type,
+                userName: data.userName,
+                password: MD5.encrypt(data.password)
+
+                /*                'user': data.user,
+                                'pwd': MD5.encrypt(data.password),
+                                'type': data.type,*/
             });
 
             api.on('success', function (data, json) { // 成功
@@ -6466,7 +6469,7 @@
             var formClassID = field.lookUpClassID;
             var url = $.Url.setQueryString('./html/base/index.html', 'classId', formClassID);
 
-            var condition = cfg.config.getConditions && cfg.config.getConditions(rowNumb, colNumb,colModels)||{};
+            var condition = cfg.config.getConditions && cfg.config.getConditions(rowNumb, colNumb, colModels) || {};
 
             var title = field.name || '';
 
