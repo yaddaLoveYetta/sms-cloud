@@ -34,7 +34,7 @@
                 <i class="iconfont icon-icon-bars icon-color-green"></i>
             </button>
             <!-- brand -->
-            <a href="#/" class="navbar-brand text-lt">
+            <a href="#/" class="navbar-brand text-lt" title="云端上的供应链管理平台">
                 <i class="fa fa-btc"></i>
 
                 <span class="hidden-folded m-l-xs">易供应</span>
@@ -169,9 +169,9 @@
                         <li class="hidden-folded padder m-t m-b-sm text-muted text-xs">
                             <span translate="aside.nav.HEADER">云端上的供应链管理平台</span>
                         </li>
-
+                        <li class="line dk"></li>
                         #--menu.item.begin--#
-                        <li data-index="{index}" data-id="{id}" draggable="true">
+                        <li data-index="{index}" data-id="{id}" draggable="true" title="{title}">
 
                             <a href class="auto">
                               <span class="pull-right text-muted">
@@ -185,7 +185,7 @@
                            #--menu.sub.begin--#
                             <ul class="nav nav-sub dk">
                                 #--menu.sub.item.begin--#
-                                <li ui-sref-active="active" data-index="{index}" data-id="{id}" draggable="true">
+                                <li ui-sref-active="active" data-index="{index}" data-id="{id}" draggable="true" title="{title}">
                                     <a ui-sref="app.dashboard-v1">
                                         <i class="iconfont {icon} icon"></i>
                                         <span>{name}</span>

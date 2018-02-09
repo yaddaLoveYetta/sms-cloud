@@ -69,11 +69,13 @@ define('NavBar', function (require, module, exports) {
             ($this.parent().hasClass('active') && $this.next().slideUp(200)) || $this.next().slideDown(200);
             $this.parent().toggleClass('active');
 
-            $this.next().is('ul') && e.preventDefault();
+            e.preventDefault();
 
-            setTimeout(function () {
-                $(document).trigger('updateNav');
-            }, 300);
+            /*            $this.next().is('ul') && e.preventDefault();
+
+                        setTimeout(function () {
+                            $(document).trigger('updateNav');
+                        }, 300);*/
         });
 
         hasBind = true;
