@@ -15,6 +15,8 @@ public class User extends RootModel {
 
     private String type;
 
+    private Boolean isAdmin;
+
     public Long getId() {
         return id;
     }
@@ -61,5 +63,13 @@ public class User extends RootModel {
 
     public void setType(String type) {
         this.type = type == null ? null : type.trim();
+    }
+
+    public Boolean getIsAdmin() {
+        return isAdmin;
+    }
+
+    public void setIsAdmin(Boolean isAdmin) {
+        this.isAdmin = isAdmin;
     }
 }

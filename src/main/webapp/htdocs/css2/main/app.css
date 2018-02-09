@@ -3078,6 +3078,11 @@ fieldset[disabled] .i-checks input + i:before {
     background-color: #2e3344;
 }
 
+.bg-dark.w {
+    background-color : #ffffff;
+    color : #2e3344;
+}
+
 .bg-dark .open > a,
 .bg-dark .open > a:hover,
 .bg-dark .open > a:focus {
@@ -5288,7 +5293,7 @@ a.text-#000000:hover {
     display: block;
     padding-top: 15px;
     width: 15px;
-    margin: 9px 5px 5px 5px;
+    margin: 8px 5px 5px 5px;
 }
 
 .tab-panel .tab-more .tab-dropdown {
@@ -5347,15 +5352,50 @@ a.text-#000000:hover {
     right: 10px;
 }
 
+.tab-panel .tab-more .tab-more-content .on {
+    background: #3297c2;
+    color: #ffffff;
+}
+
 /*
 .navbar-collapse.collapse{
   height: 30px !important;
 }*/
 
 .iframes {
+    padding: 5px 5px 0 5px;
+    overflow-x: auto;
+    overflow-y: hidden;
     margin-top: 30px !important;
 }
 
 .iframes iframe {
+    border: none;
     width: 100%;
+    display: none;
 }
+
+.iframes .actived {
+    display: block;
+}
+
+.icon-color-green {
+    color: #0cb36f;
+}
+
+.icon-color-cyan {
+    color: #03a9f4;
+}
+
+.icon-color-red {
+    color: #f44336;
+}
+
+.icon-color-light-blue {
+    color: #8bc34a;
+}
+
+.icon-color-blue {
+    color: #0da5ef;
+}
+
