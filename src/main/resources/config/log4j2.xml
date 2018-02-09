@@ -171,13 +171,13 @@
             <AppenderRef ref="console_appender"/>
         </AsyncLogger>
         <!-- 应用的日志级别 -->
-        <AsyncLogger name="com.kingdee.eas.hrp.sms" level="debug" includeLocation="true" additivity="false">
+        <AsyncLogger name="com.kingdee.hrp.sms" level="debug" includeLocation="true" additivity="false">
             <appender-ref ref="console_appender"/>
         </AsyncLogger>
 
         <!-- 剩余其他的日志级别 -->
         <asyncRoot level="error" includeLocation="true">
-            <appender-ref ref="error_appender"/>
+            <!--<appender-ref ref="error_appender"/>-->
             <appender-ref ref="console_appender"/>
         </asyncRoot>
     </Loggers>

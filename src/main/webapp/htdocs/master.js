@@ -57,6 +57,60 @@
         }
     });
 
+    //页签标签
+    PageTabs.on({
+        'active': function (item) {
+            Iframes.active(item);   //会触发 active 事件
+            PageList.active(item);  //安静模式，不触发事件
+            //Sidebar.active(item);     //安静模式，不触发事件
+        },
+        'remove': function (item) {
+            Iframes.remove(item);  //会触发 remove 事件
+            PageList.remove(item); //安静模式，不触发 remove 事件，但会触发 active 事件
+        },
+        'dragdrop': function (srcIndex, destIndex) {
+            PageList.dragdrop(srcIndex, destIndex);
+        },
+        'before-close': function (item) {
+            return Iframe.fire('before-close', item);
+        },
+        'cancel-close': function (item) {
+            return Iframe.fire('cancel-close', item);
+        },
+        'close': function (item) {
+            return Iframe.fire('close', item);
+        }
+    });
+
+    //页签列表
+    PageList.on({
+        'active': function (item) {
+            Iframes.active(item);   //会触发 active 事件
+            PageTabs.active(item);  //安静模式，不触发事件
+            //Menus.active(item);     //安静模式，不触发事件
+        },
+        'remove': function (item) { //如果移除的是当前的激活项，则会触发 active 事件
+            Iframes.remove(item);
+            PageTabs.remove(item); //安静模式，不触发事件
+        },
+        'clear': function () {
+            Iframes.clear();
+            PageTabs.clear();
+        },
+        'dragdrop': function (srcIndex, destIndex) {
+            PageTabs.dragdrop(srcIndex, destIndex);
+        },
+        'before-close': function (item) {
+            return Iframe.fire('before-close', item);
+        },
+        'cancel-close': function (item) {
+            return Iframe.fire('cancel-close', item);
+        },
+        'close': function (item) {
+            return Iframe.fire('close', item);
+        },
+    });
+
     //iframe 页面
     Iframes.on({
         'active': function (item) {
@@ -79,7 +133,7 @@
     Iframe.on('open', function (group, index, data) {
 
         // 已有菜单打开方式
-        MenuData.getItem(group, index, function (item) {
+/*        MenuData.getItem(group, index, function (item) {
 
             if (!item) {
                 return;
@@ -97,7 +151,7 @@
             PageTabs.add(item); //安静模式，不触发事件
             PageList.add(item); //安静模式，不触发事件
             Iframes.add(item, true); //强制刷新
-        });
+        });*/
 
         //重载以对象传入的方式
         if (typeof group == 'object') {

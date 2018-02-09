@@ -1117,7 +1117,7 @@ body {
 }
 
 html {
-   /* background: url('../img/bg.jpg');*/
+    /* background: url('../img/bg.jpg');*/
     background-attachment: fixed;
     background-size: cover;
 }
@@ -5229,7 +5229,7 @@ a.text-#000000:hover {
 .tab-panel .container {
     width: 100%;
     height: 30px;
-    background-color: #3a3f51;
+    background-color: #68696d;
     padding-right: 0px;
     padding-left: 0px;
 }
@@ -5249,6 +5249,102 @@ a.text-#000000:hover {
 
 .tab-panel .container .tab-more {
     float: right;
+
+    /*    background-color: red;
+        height: 30px;
+        width: 4%;*/
+}
+
+.tab-panel .tabs .home {
+    width: 45px; /*30px*/
+    min-width: 0;
+    padding-right: 0;
+    padding-left: 15px;
+    margin-left: 0px;
+}
+
+.tab-panel .tabs li {
+    height: 30px;
+    font-size: 12px;
+    float: left;
+    padding-left: 10px;
+    margin-left: 2px;
+    color: #f5f5f5;
+    background-color: #38383f;
+    cursor: pointer;
+}
+
+.tab-panel .tabs .hover {
+    background: #3297c2;
+    color: #fff;
+}
+
+.tab-panel .tabs li:hover .icon-close {
+    background: url(../img/icon_close.png);
+}
+
+.tab-panel .tabs li .icon-close {
+    float: right;
+    display: block;
+    padding-top: 15px;
+    width: 15px;
+    margin: 9px 5px 5px 5px;
+}
+
+.tab-panel .tab-more .tab-dropdown {
+    position: absolute;
+    right: 32px;
+    top: 10px;
+    height: 11px;
+    padding-left: 14px;
+    background: url(../img/icons.png) no-repeat 0px 0px;
+    cursor: pointer;
+    -moz-transition: transform 0.5s;
+    -o-transition: transform 0.5s;
+    -webkit-transition: transform 0.5s;
+    transition: transform 0.5s;
+}
+
+.tab-panel .tab-more .tab-more-content {
+    -moz-transition: transform 0.5s;
+    -o-transition: transform 0.5s;
+    -webkit-transition: transform 0.5s;
+    transition: transform 0.5s;
+    position: absolute;
+    right: 32px;
+    top: 30px;
+    background: #2e4454;
+    border: 1px solid #d9dcdf;
+    font-size: 14px;
+    display: none;
+}
+
+.tab-panel .tab-more .tab-more-content li:first-child {
+    border-top: none;
+}
+
+.tab-panel .tab-more .tab-more-content li {
+    line-height: 35px;
+    color: #929da7;
+    padding-left: 15px;
+    padding-right: 25px;
+    min-width: 180px;
+    cursor: pointer;
+    position: relative;
+    border-top: 1px solid #ddd;
+}
+
+.icon-close:before {
+    content: "";
+}
+
+.tab-panel .tab-more .tab-more-content li .icon-close {
+    background: url(../img/icon_close.png);
+    position: absolute;
+    width: 15px;
+    padding-top: 15px;
+    top: 10px;
+    right: 10px;
 }
 
 /*
@@ -5259,6 +5355,7 @@ a.text-#000000:hover {
 .iframes {
     margin-top: 30px !important;
 }
-.iframes iframe{
+
+.iframes iframe {
     width: 100%;
 }
