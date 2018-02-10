@@ -118,7 +118,7 @@
         },
         'before-logout':function () {
             // 注销前置事件
-            return Iframe.fire('before-logout', []);
+            return Iframe.fire('before-logout');
         },
         'cancel-logout':function () {
             // 取消注销事件

@@ -38,49 +38,6 @@ define('UserInfos', function (require, module, exports) {
     }
 
 
-    function openChangePwd() {
-
-        var width = 400;
-        var height = 130;
-        SMS.use('Dialog', function (Dialog) {
-            var dialog = new Dialog({
-                id: 'changePassword',
-                title: '修改密码',
-                url: './change-password.html', // ./ 表示相对于网站根目录
-                width: width,
-                height: height,
-                button: [{
-                    value: '修改密码',
-                    className: 'sms-submit-btn',
-                    callback: function () {
-                        dialog.__dispatchEvent('get');
-                        var data = dialog.getData();
-                        if (data.oldPwd.valid && data.newPwd.valid && data.confirmPwd.valid) {
-                            var oldPwd = data.oldPwd.value;
-                            var newPwd = data.newPwd.value;
-
-                            dialog.find('[data-id="修改密码"]').attr('disabled', true);
-                            changePwd({
-                                oldPwd: oldPwd,
-                                newPwd: newPwd,
-                                userId: user.userId
-                            }, function (data) {
-                                dialog.find('[data-id="修改密码"]').attr('disabled', false);
-                                dialog.setData(data);
-                                dialog.__dispatchEvent('serverBack');
-                            });
-                        }
-                        return false;
-                    }
-                }, {
-                    value: '关闭',
-                    className: 'sms-cancel-btn'
-                }],
-            });
-
-            dialog.showModal();
-        });
-    };
 
     function bindEvents() {
 
@@ -97,14 +54,14 @@ define('UserInfos', function (require, module, exports) {
                 return;
             }
 
-            console.log(user);
+            editProfile();
 
             emitter.fire('edit-profile', []);
         })
         // 修改面
         $('#btn-change-password').on('click', function (e) {
             e.preventDefault();
-            openChangePwd();
+            changePwd();
             emitter.fire('change-password-over', []);
         });
 
@@ -148,7 +105,77 @@ define('UserInfos', function (require, module, exports) {
         hasBind = true;
     }
 
-    function changePwd(config, fn) {
+    function editProfile() {
+
+        var width = 1400;
+        var height = 600;
+        SMS.use('Dialog', function (Dialog) {
+            var dialog = new Dialog({
+                id: 'editProfile',
+                title: 'Test',
+                url: './html/home/520/index.html', // ./ 表示相对于网站根目录
+                width: width,
+                height: height,
+                button: [{
+                    value: '确定',
+                    className: 'sms-submit-btn',
+                    callback: function () {
+                    }
+                }, {
+                    value: '关闭',
+                    className: 'sms-cancel-btn'
+                }],
+            });
+
+            dialog.showModal();
+        });
+    };
+
+    function changePwd() {
+
+        var width = 400;
+        var height = 130;
+        SMS.use('Dialog', function (Dialog) {
+            var dialog = new Dialog({
+                id: 'changePassword',
+                title: '修改密码',
+                url: './change-password.html', // ./ 表示相对于网站根目录
+                width: width,
+                height: height,
+                button: [{
+                    value: '修改密码',
+                    className: 'sms-submit-btn',
+                    callback: function () {
+                        dialog.__dispatchEvent('get');
+                        var data = dialog.getData();
+                        if (data.oldPwd.valid && data.newPwd.valid && data.confirmPwd.valid) {
+                            var oldPwd = data.oldPwd.value;
+                            var newPwd = data.newPwd.value;
+
+                            dialog.find('[data-id="修改密码"]').attr('disabled', true);
+                            doChangePwd({
+                                oldPwd: oldPwd,
+                                newPwd: newPwd,
+                                userId: user.userId
+                            }, function (data) {
+                                dialog.find('[data-id="修改密码"]').attr('disabled', false);
+                                dialog.setData(data);
+                                dialog.__dispatchEvent('serverBack');
+                            });
+                        }
+                        return false;
+                    }
+                }, {
+                    value: '关闭',
+                    className: 'sms-cancel-btn'
+                }],
+            });
+
+            dialog.showModal();
+        });
+    };
+
+    function doChangePwd(config, fn) {
 
         var api = new API('user/editPwd');
 
