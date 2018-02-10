@@ -114,9 +114,6 @@
     //iframe 页面
     Iframes.on({
         'active': function (item) {
-/*            Sidebar.active(item);
-            Tips.active(item);
-            Iframe.fire(item.id, 'active', [item]);*/
             Tips.active(item);
             Iframe.fire(item.id, 'active', [item]);
         },

@@ -180,7 +180,7 @@ define('PageTabs', function (require, module, exports) {
 
             var item = list[index];
 
-            //事件处理程序最后一个返回值为 false 时
+            //事件处理程序最后一个返回值为 false 时(iframe中业务可能有关闭前动作)
             var values = emitter.fire('before-close', [item]);
             if (values && values[values.length - 1] === false) {
                 emitter.fire('cancel-close', [item]); //触发事件

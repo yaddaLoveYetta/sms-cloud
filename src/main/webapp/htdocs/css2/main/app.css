@@ -3079,8 +3079,8 @@ fieldset[disabled] .i-checks input + i:before {
 }
 
 .bg-dark.w {
-    background-color : #ffffff;
-    color : #2e3344;
+    background-color: #ffffff;
+    color: #2e3344;
 }
 
 .bg-dark .open > a,
@@ -5223,7 +5223,7 @@ a.text-#000000:hover {
     /*    width: 100%;*/
     z-index: 100;
     left: 200px;
-    top: 50px;
+    top: 52px;
     right: 0px;
 }
 
@@ -5310,6 +5310,14 @@ a.text-#000000:hover {
     transition: transform 0.5s;
 }
 
+.tab-panel .tab-more-show .tab-dropdown {
+    -moz-transform: rotate(180deg);
+    -ms-transform: rotate(180deg);
+    -o-transform: rotate(180deg);
+    -webkit-transform: rotate(180deg);
+    transform: rotate(180deg);
+}
+
 .tab-panel .tab-more .tab-more-content {
     -moz-transition: transform 0.5s;
     -o-transition: transform 0.5s;
@@ -5366,7 +5374,7 @@ a.text-#000000:hover {
     padding: 5px 5px 0 5px;
     overflow-x: auto;
     overflow-y: hidden;
-    margin-top: 30px !important;
+    margin-top: 32px !important;
 }
 
 .iframes iframe {
@@ -5398,6 +5406,7 @@ a.text-#000000:hover {
 .icon-color-blue {
     color: #0da5ef;
 }
+
 .icon-color-purple {
     color: #bf06de;
 }
