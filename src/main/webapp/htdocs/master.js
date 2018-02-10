@@ -21,7 +21,6 @@
     var Sidebar = require('Sidebar');
     var NavBar = require('NavBar');
 
-
     //检查登录
     if (!SMS.Login.check(true)) {
         return;
@@ -111,6 +110,22 @@
         },
     });
 
+    UserInfos.on({
+        'edit-profile': function () {
+            // 修改个人信息
+            var user = SMS.Login.get();
+            console.log(user);
+        },
+        'before-logout':function () {
+            // 注销前置事件
+            return Iframe.fire('before-logout', []);
+        },
+        'cancel-logout':function () {
+            // 取消注销事件
+            Iframe.fire('before-logout', []);
+        }
+    });
+
     //iframe 页面
     Iframes.on({
         'active': function (item) {
@@ -130,25 +145,25 @@
     Iframe.on('open', function (group, index, data) {
 
         // 已有菜单打开方式
-/*        MenuData.getItem(group, index, function (item) {
+        /*        MenuData.getItem(group, index, function (item) {
 
-            if (!item) {
-                return;
-            }
+                    if (!item) {
+                        return;
+                    }
 
-            var query = data.query;
-            if (query) {
-                //item.url = $.Url.addQueryString(item.url, query);
-                //不能直接修改原对象的 url，否则可能会影响到原来的 url
-                item = $.Object.extend({}, item, {
-                    url: $.Url.addQueryString(item.url, query)
-                });
-            }
+                    var query = data.query;
+                    if (query) {
+                        //item.url = $.Url.addQueryString(item.url, query);
+                        //不能直接修改原对象的 url，否则可能会影响到原来的 url
+                        item = $.Object.extend({}, item, {
+                            url: $.Url.addQueryString(item.url, query)
+                        });
+                    }
 
-            PageTabs.add(item); //安静模式，不触发事件
-            PageList.add(item); //安静模式，不触发事件
-            Iframes.add(item, true); //强制刷新
-        });*/
+                    PageTabs.add(item); //安静模式，不触发事件
+                    PageList.add(item); //安静模式，不触发事件
+                    Iframes.add(item, true); //强制刷新
+                });*/
 
         //重载以对象传入的方式
         if (typeof group == 'object') {

@@ -6,6 +6,7 @@ define('UserInfos', function (require, module, exports) {
     var $ = require('$');
     var MiniQuery = require('MiniQuery');
     var SMS = require('SMS');
+    var emitter = MiniQuery.Event.create();
 
     var MD5 = SMS.require('MD5');
     var API = SMS.require('API');
@@ -14,8 +15,15 @@ define('UserInfos', function (require, module, exports) {
     var panel = document.getElementById('li-user-infos');
     var user = SMS.Login.get();
 
-    function render() {
+    // 标识事件绑定
+    var hasBind = false;
 
+    //检查登录
+    if (!SMS.Login.check(true)) {
+        return;
+    }
+
+    function render() {
 
         //批量填充
         SMS.Template.fill({
@@ -25,39 +33,7 @@ define('UserInfos', function (require, module, exports) {
             }
         });
 
-
-        $('#btn-change-password').on('click', function () {
-            openChangePwd();
-        });
-
-        $('#btn-logout').on('click', function () {
-
-            var btn = this;
-
-            MessageBox.confirm('确定退出系统?', function (result) {
-                if (result) {
-
-                    btn.innerHTML = '注销中...';
-                    $(btn).addClass('disabled');
-
-                    SMS.Login.logout(function (user, data, json) { //成功
-
-                        location.href = 'login.html';
-
-                    }, function (code, msg, json) { //失败
-
-                        reset();
-                        alert(msg);
-
-                    }, function () { //错误
-                        reset();
-                        alert('网络错误，注销失败，请稍候再试');
-                    });
-
-                }
-            });
-
-        });
+        bindEvents();
 
     }
 
@@ -106,6 +82,72 @@ define('UserInfos', function (require, module, exports) {
         });
     };
 
+    function bindEvents() {
+
+        if (hasBind) {
+            return;
+        }
+
+        $('#btn-edit-profile').on('click', function (e) {
+
+            e.preventDefault();
+
+            if (!user.isAdmin) {
+                MessageBox.show('您不是管理员，只有管理员能维护该信息', '金蝶提示', true);
+                return;
+            }
+
+            console.log(user);
+
+            emitter.fire('edit-profile', []);
+        })
+        // 修改面
+        $('#btn-change-password').on('click', function (e) {
+            e.preventDefault();
+            openChangePwd();
+            emitter.fire('change-password-over', []);
+        });
+
+        $('#btn-logout').on('click', function (e) {
+
+            e.preventDefault();
+
+            var btn = this;
+
+            MessageBox.confirm('确定退出系统?', function (result) {
+                if (result) {
+
+                    var values = emitter.fire('before-logout', []);
+                    if (values && values[values.length - 1] === false) {
+                        emitter.fire('cancel-logout', [item]); //触发事件
+                        return; //取消注销
+                    }
+
+                    btn.innerHTML = '注销中...';
+                    $(btn).addClass('disabled');
+
+                    SMS.Login.logout(function (user, data, json) { //成功
+
+                        location.href = 'login.html';
+
+                    }, function (code, msg, json) { //失败
+
+                        reset();
+                        alert(msg);
+
+                    }, function () { //错误
+                        reset();
+                        alert('网络错误，注销失败，请稍候再试');
+                    });
+
+                }
+            });
+
+        });
+
+        hasBind = true;
+    }
+
     function changePwd(config, fn) {
 
         var api = new API('user/editPwd');
@@ -145,8 +187,9 @@ define('UserInfos', function (require, module, exports) {
     }
 
     return {
-        render: render
-    };
+        render: render,
+        on: emitter.on.bind(emitter)
+    }
 
 });
 
