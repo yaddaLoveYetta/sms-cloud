@@ -141,12 +141,12 @@
         //弹出对话框默认配置 (artDialog)
         Dialog: {
             cssUri: '{~}lib/art-dialog/dialog.all.{@}.css#',
-            backdropOpacity: 0.2,       //遮罩层不透明度(越小越透明)
+            backdropOpacity: 0.5,       //遮罩层不透明度(越小越透明)
             backdropBackground: '#000', //遮罩层背景色
             quickClose: false,          //是否支持快捷关闭(点击遮罩层自动关闭)
             fixed: true,                //是否固定定位
             draggable: true,            //是否可拖动 (by micty)
-            zIndex: 1024,               // 对话框叠加高度值(重要：此值不能超过浏览器最大限制)
+            zIndex: 150              // 对话框叠加高度值(重要：此值不能超过浏览器最大限制)
         },
 
         //数值型输入框

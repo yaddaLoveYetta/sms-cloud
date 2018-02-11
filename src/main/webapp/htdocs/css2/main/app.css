@@ -695,7 +695,7 @@ body {
 }
 
 .app-header {
-    z-index: 1025;
+    z-index: 2;
     border-radius: 0;
 }
 
@@ -776,7 +776,7 @@ body {
     right: 0;
     bottom: 0;
     left: 0;
-    z-index: 1005;
+    z-index: 2;
 }
 
 .app-footer.app-footer-fixed {
@@ -1408,7 +1408,7 @@ html {
         right: 0;
         bottom: 0;
         left: 0;
-        z-index: 1015;
+        z-index: 1;
         width: 100%;
         padding-top: 50px;
         overflow: hidden;
@@ -5220,8 +5220,7 @@ a.text-#000000:hover {
 .tab-panel {
     height: 30px !important;
     position: fixed;
-    /*    width: 100%;*/
-    z-index: 100;
+    /*z-index: 100;*/
     left: 200px;
     top: 52px;
     right: 0px;

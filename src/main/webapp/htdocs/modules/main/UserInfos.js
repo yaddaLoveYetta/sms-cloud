@@ -107,7 +107,7 @@ define('UserInfos', function (require, module, exports) {
 
     function editProfile() {
 
-        var width = 1400;
+        var width = 1000;
         var height = 600;
         SMS.use('Dialog', function (Dialog) {
             var dialog = new Dialog({
