@@ -115,6 +115,17 @@
             // 修改个人信息
             var user = SMS.Login.get();
             console.log(user);
+
+            Iframe.open({
+                id: Math.random(),
+                name: '用户信息',
+                url: './html/user/supplier/index.html',
+                query: {
+                    'type': user.type,
+                    'user': user.id
+                }
+            });
+
         },
         'before-logout':function () {
             // 注销前置事件

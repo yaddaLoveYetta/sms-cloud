@@ -55,7 +55,6 @@ define('UserInfos', function (require, module, exports) {
 
             editProfile();
 
-            emitter.fire('edit-profile', []);
         })
         // 修改面
         $('#btn-change-password').on('click', function (e) {
@@ -106,28 +105,30 @@ define('UserInfos', function (require, module, exports) {
 
     function editProfile() {
 
-        var width = 1024;
-        var height = 600;
-        SMS.use('Dialog', function (Dialog) {
-            var dialog = new Dialog({
-                id: 'editProfile',
-                title: 'Test',
-                url: './html/home/520/index.html', // ./ 表示相对于网站根目录
-                width: width,
-                height: height,
-                button: [{
-                    value: '确定',
-                    className: 'sms-submit-btn',
-                    callback: function () {
-                    }
-                }, {
-                    value: '关闭',
-                    className: 'sms-cancel-btn'
-                }],
-            });
+        /*        var width = 1024;
+                var height = 600;
+                SMS.use('Dialog', function (Dialog) {
+                    var dialog = new Dialog({
+                        id: 'editProfile',
+                        title: 'Test',
+                        url: './html/home/520/index.html', // ./ 表示相对于网站根目录
+                        width: width,
+                        height: height,
+                        button: [{
+                            value: '确定',
+                            className: 'sms-submit-btn',
+                            callback: function () {
+                            }
+                        }, {
+                            value: '关闭',
+                            className: 'sms-cancel-btn'
+                        }],
+                    });
 
-            dialog.showModal();
-        });
+                    dialog.showModal();
+                });*/
+
+        emitter.fire('edit-profile', []);
     };
 
     function changePwd() {
