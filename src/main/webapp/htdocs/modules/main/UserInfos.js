@@ -38,7 +38,6 @@ define('UserInfos', function (require, module, exports) {
     }
 
 
-
     function bindEvents() {
 
         if (hasBind) {
@@ -107,7 +106,7 @@ define('UserInfos', function (require, module, exports) {
 
     function editProfile() {
 
-        var width = 1000;
+        var width = 1024;
         var height = 600;
         SMS.use('Dialog', function (Dialog) {
             var dialog = new Dialog({
