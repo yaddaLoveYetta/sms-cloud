@@ -28,7 +28,7 @@ define('UserInfos', function (require, module, exports) {
         //批量填充
         SMS.Template.fill({
             '#li-user-infos': {
-                img: user.img || 'css2/img/a0.jpg',
+                img: user.img || 'css/img/a0.jpg',
                 name: user.name
             }
         });
