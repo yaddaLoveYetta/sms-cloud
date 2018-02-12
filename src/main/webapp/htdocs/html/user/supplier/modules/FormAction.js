@@ -58,7 +58,14 @@ define('FormAction', function (require, module, exports) {
 
             actions = actions || [];
 
-            __default__.items = actions;
+            __default__.items = $.Array.map(actions, function (item, index) {
+
+                return {
+                    text: item.name,
+                    name: item.text,
+                    icon: item.icon
+                };
+            });
 
             var bl = new ButtonList(__default__);
 

@@ -17,6 +17,8 @@ public class User extends RootModel {
 
     private Boolean isAdmin;
 
+    private Long org;
+
     public Long getId() {
         return id;
     }
@@ -71,5 +73,13 @@ public class User extends RootModel {
 
     public void setIsAdmin(Boolean isAdmin) {
         this.isAdmin = isAdmin;
+    }
+
+    public Long getOrg() {
+        return org;
+    }
+
+    public void setOrg(Long org) {
+        this.org = org;
     }
 }

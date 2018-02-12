@@ -5,7 +5,8 @@
 
 <generatorConfiguration>
 
-    <classPathEntry location="D:\java\maven-repo\mysql\mysql-connector-java\5.1.44\mysql-connector-java-5.1.44.jar"/>
+    <classPathEntry
+            location="D:\StudyRoom\java\jar\maven_repo\mysql\mysql-connector-java\5.1.44\mysql-connector-java-5.1.44.jar"/>
 
     <context id="MSSQL_Tables2Java" targetRuntime="MyBatis3">
 
@@ -26,7 +27,7 @@
             <property name="suppressAllComments" value="true"/>
         </commentGenerator>
 
-        <jdbcConnection driverClass="com.mysql.jdbc.Driver" connectionURL="jdbc:mysql://10.0.0.180:3306/hrp-sms"
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver" connectionURL="jdbc:mysql://127.0.0.1:3306/hrp-sms"
                         userId="root" password="root">
         </jdbcConnection>
         <!-- <jdbcConnection driverClass="com.microsoft.sqlserver.jdbc.SQLServerDriver" connectionURL="jdbc:sqlserver://127.0.0.1:52663;database=hrp-sms" -->
@@ -68,18 +69,53 @@
 
             <property name="useActualColumnNames" value="false"/>
             <!--Dao 继承接口-->
-           <!-- <property name="rootInterface" value="java.io.Serializable"/>-->
+            <!-- <property name="rootInterface" value="java.io.Serializable"/>-->
             <!--java Model继承类-->
             <property name="rootClass" value="com.kingdee.hrp.sms.common.RootModel"/>
 
         </table>
 
         <table tableName="t_user" domainObjectName="User">
+            <property name="useActualColumnNames" value="false"/>
+            <property name="rootClass" value="com.kingdee.hrp.sms.common.RootModel"/>
+        </table>
 
+        <table tableName="t_role" domainObjectName="Role">
+            <property name="useActualColumnNames" value="false"/>
+            <property name="rootClass" value="com.kingdee.hrp.sms.common.RootModel"/>
+        </table>
+
+        <table tableName="t_role_type" domainObjectName="RoleType">
+            <property name="useActualColumnNames" value="false"/>
+            <property name="rootClass" value="com.kingdee.hrp.sms.common.RootModel"/>
+        </table>
+
+        <table tableName="t_form_class" domainObjectName="FormClass">
+            <property name="useActualColumnNames" value="false"/>
+            <property name="rootClass" value="com.kingdee.hrp.sms.common.RootModel"/>
+        </table>
+
+        <table tableName="t_form_fields" domainObjectName="FormFields">
+            <property name="useActualColumnNames" value="false"/>
+            <property name="rootClass" value="com.kingdee.hrp.sms.common.RootModel"/>
+        </table>
+
+        <table tableName="t_form_action" domainObjectName="FormAction">
+            <property name="useActualColumnNames" value="false"/>
+            <property name="rootClass" value="com.kingdee.hrp.sms.common.RootModel"/>
+        </table>
+
+        <table tableName="t_hospital" domainObjectName="Hospital">
             <property name="useActualColumnNames" value="false"/>
             <property name="rootClass" value="com.kingdee.hrp.sms.common.RootModel"/>
 
         </table>
+
+        <table tableName="t_supplier" domainObjectName="Supplier">
+            <property name="useActualColumnNames" value="false"/>
+            <property name="rootClass" value="com.kingdee.hrp.sms.common.RootModel"/>
+        </table>
+
 
     </context>
 </generatorConfiguration> 

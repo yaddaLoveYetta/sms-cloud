@@ -1,45 +1,25 @@
-package com.kingdee.hrp.sms.common.controller;
+package com.kingdee.hrp.sms.common.service.impl;
 
-import com.kingdee.hrp.sms.common.domain.StatusCode;
-import com.kingdee.hrp.sms.common.exception.BusinessLogicRunTimeException;
+import com.kingdee.hrp.sms.common.dao.generate.FormActionMapper;
+import com.kingdee.hrp.sms.common.model.FormAction;
+import com.kingdee.hrp.sms.common.model.FormActionExample;
+import com.kingdee.hrp.sms.common.service.BaseService;
 import com.kingdee.hrp.sms.common.service.ITemplateService;
-import com.sun.tools.corba.se.idl.constExpr.BooleanAnd;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
-/**
- * 单据模板操作
- *
- * @author yadda
- */
-@Controller
-@RequestMapping(value = "/template/")
-public class TemplateController {
-
-    @Resource
-    private ITemplateService templateService;
-
+@Service
+public class TemplateService extends BaseService implements ITemplateService {
     /**
      * 查询基础资料/单据模板数据
+     *
+     * @param classId
      */
-    @RequestMapping(value = "getFormTemplate")
+    @Override
     public Map<String, Object> getFormTemplate(Integer classId) {
-
-        if (classId < 0) {
-            throw new BusinessLogicRunTimeException("参数错误：必须提交classId");
-        }
-
         return null;
-
     }
 
     /**
@@ -48,11 +28,22 @@ public class TemplateController {
      * @param classId 业务类型
      * @return 功能操作列表
      */
-
-    @RequestMapping(value = "getFormAction")
-    @ResponseBody
+    @Override
     public List getFormAction(Integer classId) {
-        return templateService.getFormAction(classId);
+
+        FormActionMapper formActionMapper = sqlSession.getMapper(FormActionMapper.class);
+
+        FormActionExample formActionExample = new FormActionExample();
+
+        FormActionExample.Criteria criteria = formActionExample.createCriteria();
+
+        criteria.andClassIdEqualTo(classId);
+        // 功能按钮按照index排序
+        formActionExample.setOrderByClause("`index`  ,`name` ");
+
+        List<FormAction> formActions = formActionMapper.selectByExample(formActionExample);
+
+        return formActions;
     }
 
     /**
@@ -64,18 +55,9 @@ public class TemplateController {
      * @param pageSize  分页大小
      * @param pageNo    当前页码
      */
-
-
-    @RequestMapping(value = "getItems")
+    @Override
     public Map<String, Object> getItems(Integer classId, String condition, String orderBy, Integer pageSize, Integer pageNo) {
-
-
-        if (classId < 0) {
-            throw new BusinessLogicRunTimeException("参数错误：必须提交classId");
-        }
-
         return null;
-
     }
 
     /**
@@ -85,14 +67,9 @@ public class TemplateController {
      * @param id      单据内码
      * @param orderBy 排序结构(json 结构化数据) 查询单据时，单据分录需要排序
      */
-
-
-    @RequestMapping(value = "getItemById")
+    @Override
     public Map<String, Object> getItemById(Integer classId, Long id, String orderBy) {
-
-
         return null;
-
     }
 
     /**
@@ -102,14 +79,10 @@ public class TemplateController {
      * @param data    数据（严格按照单据模板匹配的数据）
      * @return 新增资料的id
      */
-
-
-    @RequestMapping(value = "addItem")
+    @Override
     public Long addItem(Integer classId, String data) {
-
         return null;
     }
-
 
     /**
      * 修改业务数据
@@ -119,11 +92,8 @@ public class TemplateController {
      * @param data    修改数据内容（严格按照单据模板匹配的数据）
      * @return 是否成功
      */
-
-
-    @RequestMapping(value = "editItem")
+    @Override
     public Boolean editItem(Integer classId, Long id, String data) {
-
         return null;
     }
 
@@ -134,11 +104,8 @@ public class TemplateController {
      * @param ids     删除的内码集合
      * @return 是否成功
      */
-
-
-    @RequestMapping(value = "delItem")
+    @Override
     public Boolean delItem(Integer classId, List<Long> ids) {
-
         return null;
     }
 
@@ -149,9 +116,7 @@ public class TemplateController {
      * @param ids     内码集合
      * @return 是否成功
      */
-
-
-    @RequestMapping(value = "checkItem")
+    @Override
     public Boolean checkItem(Integer classId, List<Long> ids) {
         return null;
     }
@@ -163,10 +128,8 @@ public class TemplateController {
      * @param ids     内码集合
      * @return 是否成功
      */
-    @RequestMapping(value = "unCheckItem")
+    @Override
     public Boolean unCheckItem(Integer classId, List<Long> ids) {
         return null;
     }
-
-
 }

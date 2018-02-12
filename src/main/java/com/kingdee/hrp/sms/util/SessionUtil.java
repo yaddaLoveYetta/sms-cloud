@@ -1,6 +1,10 @@
 package com.kingdee.hrp.sms.util;
 
 
+import com.kingdee.hrp.sms.common.exception.SessionLostRuntimeException;
+import com.kingdee.hrp.sms.common.model.Role;
+import com.kingdee.hrp.sms.common.model.User;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -9,7 +13,6 @@ import java.util.Map;
  */
 public final class SessionUtil {
 
-    //private static ThreadLocal<Map<String, Object>> LOCAL = new ThreadLocal<Map<String, Object>>();
     /**
      * InheritableThreadLocal,多线程时子线程可访问主线程ThreadLocal
      */
@@ -95,7 +98,7 @@ public final class SessionUtil {
      * @Title getUser
      * @date 2017-05-30 01:04:05 星期二
      */
-   /* public static User getUser() {
+    public static User getUser() {
 
         Object object = get("user");
 
@@ -107,56 +110,83 @@ public final class SessionUtil {
 
     }
 
-    *//**
-     * 获取当前线程用户类别
+    /**
+     * 获取当前线程用户角色
      *
-     * @return String
-     * @Title getUserType
+     * @return Long
+     * @Title getUserRole
      * @date 2017-05-30 01:04:05 星期二
-     *//*
-    public static String getUserType() {
+     */
+    public static Role getUserRole() {
 
-        return getUser().getType();
+        Object object = get("role");
+
+        if (null == object) {
+            throw new SessionLostRuntimeException("用户未登录，请重新登录！");
+        }
+
+        return (Role) object;
 
     }
 
-    *//**
+    /**
      * 获取用户关联的供应商
+     * <p>
+     * 如果该用户所述角色不是供应商角色，返回-1
      *
      * @return String
      * @Title getUserLinkSupplier
      * @date 2017-06-02 17:37:44 星期五
-     *//*
-    public static String getUserLinkSupplier() {
-
-        return getUser().getSupplier();
-
+     */
+    public static Long getUserLinkSupplier() {
+        // 1: 系统角色 2: 医院角色 3: 供应商角色
+        if (getUserRole().getType() != 3) {
+            return -1L;
+        }
+        return getUserRole().getOrg();
     }
 
-    *//**
+    /**
+     * 获取用户关联的医院内码
+     * <p>
+     * 如果该用户所述角色不是供应商角色，返回-1
+     *
+     * @return String
+     * @Title getUserLinkSupplier
+     * @date 2017-06-02 17:37:44 星期五
+     */
+    public static Long getUserLinkHospital() {
+        // 1: 系统角色 2: 医院角色 3: 供应商角色
+        if (getUserRole().getType() != 2) {
+            return -1L;
+        }
+        return getUserRole().getOrg();
+    }
+
+    /**
      * 获取当前线程用户名
      *
      * @return String
      * @Title getUserName
      * @date 2017-05-30 01:05:11 星期二
-     *//*
+     */
     public static String getUserName() {
 
         return getUser().getName();
 
     }
 
-    *//**
+    /**
      * 获取当前线程用户id
      *
-     * @return String
+     * @return Long
      * @Title getUserId
      * @date 2017-05-30 01:05:24 星期二
-     *//*
-    public static String getUserId() {
+     */
+    public static Long getUserId() {
 
-        return getUser().getUserId();
+        return getUser().getId();
 
-    }*/
+    }
 
 }

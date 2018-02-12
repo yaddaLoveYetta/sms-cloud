@@ -3,6 +3,7 @@ package com.kingdee.hrp.sms.system.user.controller;
 import com.kingdee.hrp.sms.common.domain.ResultWarp;
 import com.kingdee.hrp.sms.common.domain.StatusCode;
 import com.kingdee.hrp.sms.common.exception.BusinessLogicRunTimeException;
+import com.kingdee.hrp.sms.common.model.Role;
 import com.kingdee.hrp.sms.common.model.User;
 import com.kingdee.hrp.sms.system.user.service.IUserService;
 import org.slf4j.Logger;
@@ -64,7 +65,11 @@ public class UserController {
         User user = userService.login(userName, password);
 
         if (null != user) {
+
+            Role role = userService.getUserRole(user.getId());
+            // 将用户及用户角色信息放到session中
             request.getSession().setAttribute("user", user);
+            request.getSession().setAttribute("role", role);
             return user;
         }
 

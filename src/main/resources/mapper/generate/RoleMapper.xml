@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.kingdee.hrp.sms.common.dao.generate.UserMapper">
-  <resultMap id="BaseResultMap" type="com.kingdee.hrp.sms.common.model.User">
+<mapper namespace="com.kingdee.hrp.sms.common.dao.generate.RoleMapper">
+  <resultMap id="BaseResultMap" type="com.kingdee.hrp.sms.common.model.Role">
     <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="number" jdbcType="VARCHAR" property="number" />
     <result column="name" jdbcType="VARCHAR" property="name" />
-    <result column="user_name" jdbcType="VARCHAR" property="userName" />
-    <result column="password" jdbcType="VARCHAR" property="password" />
-    <result column="mobile" jdbcType="VARCHAR" property="mobile" />
-    <result column="role" jdbcType="BIGINT" property="role" />
-    <result column="is_admin" jdbcType="BIT" property="isAdmin" />
+    <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="user_define" jdbcType="BIT" property="userDefine" />
     <result column="org" jdbcType="BIGINT" property="org" />
   </resultMap>
   <sql id="Example_Where_Clause">
@@ -70,15 +68,15 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, `name`, user_name, `password`, mobile, `role`, is_admin, org
+    id, `number`, `name`, `type`, user_define, org
   </sql>
-  <select id="selectByExample" parameterType="com.kingdee.hrp.sms.common.model.UserExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="com.kingdee.hrp.sms.common.model.RoleExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from t_user
+    from t_role
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -89,50 +87,42 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from t_user
+    from t_role
     where id = #{id,jdbcType=BIGINT}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    delete from t_user
+    delete from t_role
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <delete id="deleteByExample" parameterType="com.kingdee.hrp.sms.common.model.UserExample">
-    delete from t_user
+  <delete id="deleteByExample" parameterType="com.kingdee.hrp.sms.common.model.RoleExample">
+    delete from t_role
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.kingdee.hrp.sms.common.model.User">
-    insert into t_user (id, `name`, user_name, 
-      `password`, mobile, `role`, 
-      is_admin, org)
-    values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, 
-      #{password,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, #{role,jdbcType=BIGINT}, 
-      #{isAdmin,jdbcType=BIT}, #{org,jdbcType=BIGINT})
+  <insert id="insert" parameterType="com.kingdee.hrp.sms.common.model.Role">
+    insert into t_role (id, `number`, `name`, 
+      `type`, user_define, org)
+    values (#{id,jdbcType=BIGINT}, #{number,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{type,jdbcType=INTEGER}, #{userDefine,jdbcType=BIT}, #{org,jdbcType=BIGINT})
   </insert>
-  <insert id="insertSelective" parameterType="com.kingdee.hrp.sms.common.model.User">
-    insert into t_user
+  <insert id="insertSelective" parameterType="com.kingdee.hrp.sms.common.model.Role">
+    insert into t_role
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         id,
       </if>
+      <if test="number != null">
+        `number`,
+      </if>
       <if test="name != null">
         `name`,
       </if>
-      <if test="userName != null">
-        user_name,
+      <if test="type != null">
+        `type`,
       </if>
-      <if test="password != null">
-        `password`,
-      </if>
-      <if test="mobile != null">
-        mobile,
-      </if>
-      <if test="role != null">
-        `role`,
-      </if>
-      <if test="isAdmin != null">
-        is_admin,
+      <if test="userDefine != null">
+        user_define,
       </if>
       <if test="org != null">
         org,
@@ -142,58 +132,46 @@
       <if test="id != null">
         #{id,jdbcType=BIGINT},
       </if>
+      <if test="number != null">
+        #{number,jdbcType=VARCHAR},
+      </if>
       <if test="name != null">
         #{name,jdbcType=VARCHAR},
       </if>
-      <if test="userName != null">
-        #{userName,jdbcType=VARCHAR},
+      <if test="type != null">
+        #{type,jdbcType=INTEGER},
       </if>
-      <if test="password != null">
-        #{password,jdbcType=VARCHAR},
-      </if>
-      <if test="mobile != null">
-        #{mobile,jdbcType=VARCHAR},
-      </if>
-      <if test="role != null">
-        #{role,jdbcType=BIGINT},
-      </if>
-      <if test="isAdmin != null">
-        #{isAdmin,jdbcType=BIT},
+      <if test="userDefine != null">
+        #{userDefine,jdbcType=BIT},
       </if>
       <if test="org != null">
         #{org,jdbcType=BIGINT},
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.kingdee.hrp.sms.common.model.UserExample" resultType="java.lang.Long">
-    select count(*) from t_user
+  <select id="countByExample" parameterType="com.kingdee.hrp.sms.common.model.RoleExample" resultType="java.lang.Long">
+    select count(*) from t_role
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
-    update t_user
+    update t_role
     <set>
       <if test="record.id != null">
         id = #{record.id,jdbcType=BIGINT},
       </if>
+      <if test="record.number != null">
+        `number` = #{record.number,jdbcType=VARCHAR},
+      </if>
       <if test="record.name != null">
         `name` = #{record.name,jdbcType=VARCHAR},
       </if>
-      <if test="record.userName != null">
-        user_name = #{record.userName,jdbcType=VARCHAR},
+      <if test="record.type != null">
+        `type` = #{record.type,jdbcType=INTEGER},
       </if>
-      <if test="record.password != null">
-        `password` = #{record.password,jdbcType=VARCHAR},
-      </if>
-      <if test="record.mobile != null">
-        mobile = #{record.mobile,jdbcType=VARCHAR},
-      </if>
-      <if test="record.role != null">
-        `role` = #{record.role,jdbcType=BIGINT},
-      </if>
-      <if test="record.isAdmin != null">
-        is_admin = #{record.isAdmin,jdbcType=BIT},
+      <if test="record.userDefine != null">
+        user_define = #{record.userDefine,jdbcType=BIT},
       </if>
       <if test="record.org != null">
         org = #{record.org,jdbcType=BIGINT},
@@ -204,39 +182,31 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map">
-    update t_user
+    update t_role
     set id = #{record.id,jdbcType=BIGINT},
+      `number` = #{record.number,jdbcType=VARCHAR},
       `name` = #{record.name,jdbcType=VARCHAR},
-      user_name = #{record.userName,jdbcType=VARCHAR},
-      `password` = #{record.password,jdbcType=VARCHAR},
-      mobile = #{record.mobile,jdbcType=VARCHAR},
-      `role` = #{record.role,jdbcType=BIGINT},
-      is_admin = #{record.isAdmin,jdbcType=BIT},
+      `type` = #{record.type,jdbcType=INTEGER},
+      user_define = #{record.userDefine,jdbcType=BIT},
       org = #{record.org,jdbcType=BIGINT}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.kingdee.hrp.sms.common.model.User">
-    update t_user
+  <update id="updateByPrimaryKeySelective" parameterType="com.kingdee.hrp.sms.common.model.Role">
+    update t_role
     <set>
+      <if test="number != null">
+        `number` = #{number,jdbcType=VARCHAR},
+      </if>
       <if test="name != null">
         `name` = #{name,jdbcType=VARCHAR},
       </if>
-      <if test="userName != null">
-        user_name = #{userName,jdbcType=VARCHAR},
+      <if test="type != null">
+        `type` = #{type,jdbcType=INTEGER},
       </if>
-      <if test="password != null">
-        `password` = #{password,jdbcType=VARCHAR},
-      </if>
-      <if test="mobile != null">
-        mobile = #{mobile,jdbcType=VARCHAR},
-      </if>
-      <if test="role != null">
-        `role` = #{role,jdbcType=BIGINT},
-      </if>
-      <if test="isAdmin != null">
-        is_admin = #{isAdmin,jdbcType=BIT},
+      <if test="userDefine != null">
+        user_define = #{userDefine,jdbcType=BIT},
       </if>
       <if test="org != null">
         org = #{org,jdbcType=BIGINT},
@@ -244,14 +214,12 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.kingdee.hrp.sms.common.model.User">
-    update t_user
-    set `name` = #{name,jdbcType=VARCHAR},
-      user_name = #{userName,jdbcType=VARCHAR},
-      `password` = #{password,jdbcType=VARCHAR},
-      mobile = #{mobile,jdbcType=VARCHAR},
-      `role` = #{role,jdbcType=BIGINT},
-      is_admin = #{isAdmin,jdbcType=BIT},
+  <update id="updateByPrimaryKey" parameterType="com.kingdee.hrp.sms.common.model.Role">
+    update t_role
+    set `number` = #{number,jdbcType=VARCHAR},
+      `name` = #{name,jdbcType=VARCHAR},
+      `type` = #{type,jdbcType=INTEGER},
+      user_define = #{userDefine,jdbcType=BIT},
       org = #{org,jdbcType=BIGINT}
     where id = #{id,jdbcType=BIGINT}
   </update>

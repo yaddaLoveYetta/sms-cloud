@@ -1,7 +1,10 @@
 package com.kingdee.hrp.sms.system.user.service.impl;
 
+import com.kingdee.hrp.sms.common.dao.generate.RoleMapper;
 import com.kingdee.hrp.sms.common.dao.generate.UserMapper;
 import com.kingdee.hrp.sms.common.exception.BusinessLogicRunTimeException;
+import com.kingdee.hrp.sms.common.model.Role;
+import com.kingdee.hrp.sms.common.model.RoleExample;
 import com.kingdee.hrp.sms.common.model.User;
 import com.kingdee.hrp.sms.common.model.UserExample;
 import com.kingdee.hrp.sms.common.service.BaseService;
@@ -93,8 +96,18 @@ public class UserService extends BaseService implements IUserService {
         throw new BusinessLogicRunTimeException("用户名或密码错误!");
     }
 
-//    @Override
-//    public Boolean loginOut(String userName) {
-//        return null;
-//    }
+    /**
+     * 获取用户的角色
+     *
+     * @param userId
+     * @return
+     */
+    @Override
+    public Role getUserRole(Long userId) {
+
+        RoleMapper roleMapper = sqlSession.getMapper(RoleMapper.class);
+
+        return roleMapper.selectByPrimaryKey(userId);
+    }
+    
 }

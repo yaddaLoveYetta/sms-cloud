@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : mysql-180
-Source Server Version : 50617
-Source Host           : 10.0.0.180:3306
+Source Server         : localhost
+Source Server Version : 50718
+Source Host           : localhost:3306
 Source Database       : hrp-sms
 
 Target Server Type    : MYSQL
-Target Server Version : 50617
+Target Server Version : 50718
 File Encoding         : 65001
 
-Date: 2018-02-12 17:50:40
+Date: 2018-02-12 21:54:27
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -167,7 +167,7 @@ INSERT INTO `t_menu` VALUES ('84', '供应商用户资料', '1', 'icon-yonghutou
 -- ----------------------------
 DROP TABLE IF EXISTS `t_role`;
 CREATE TABLE `t_role` (
-  `id` int(11) NOT NULL COMMENT '内码',
+  `id` bigint(64) NOT NULL COMMENT '内码',
   `number` varchar(20) NOT NULL DEFAULT '' COMMENT '代码',
   `name` varchar(50) NOT NULL DEFAULT '' COMMENT '名称',
   `type` int(11) NOT NULL DEFAULT '0' COMMENT '角色类别(关联t_role_type表id)',
@@ -192,7 +192,7 @@ CREATE TABLE `t_role_type` (
   `number` varchar(20) NOT NULL COMMENT '代码',
   `name` varchar(50) NOT NULL COMMENT '名称',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='角色类别表(该表数据不可修改)\r\n\r\n系统用户的角色分三个类别，目前一个用户只支持对应一个角色\r\n\r\n1：系统管理员用的角色\r\n2：医院角色\r\n3：供应商角色';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='角色类别表(该表数据有系统内置且不可修改)\r\n\r\n系统用户的角色分三个类别，目前一个用户只支持对应一个角色\r\n\r\n1：系统管理员用的角色\r\n2：医院角色\r\n3：供应商角色';
 
 -- ----------------------------
 -- Records of t_role_type
@@ -231,10 +231,11 @@ CREATE TABLE `t_user` (
   `mobile` varchar(11) NOT NULL COMMENT '手机号码',
   `role` bigint(64) NOT NULL COMMENT '角色(关联t_role表id)',
   `is_admin` bit(1) NOT NULL DEFAULT b'0' COMMENT '是否为管理员',
+  `org` bigint(64) NOT NULL COMMENT '关联组织\r\n对于供应商用户此字段记录t_supplier供应商资料id\r\n对于医院用户此字段记录t_hospital医院资料id\r\n对于系统用户改字段为0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_user
 -- ----------------------------
-INSERT INTO `t_user` VALUES ('11', 'yadda', '111', 'bcbe3365e6ac95ea2c0343a2395834dd', '15212345678', '1', '');
+INSERT INTO `t_user` VALUES ('11', 'yadda', '111', 'bcbe3365e6ac95ea2c0343a2395834dd', '15212345678', '1', '', '0');

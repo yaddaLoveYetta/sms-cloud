@@ -119,7 +119,7 @@
             Iframe.open({
                 id: Math.random(),
                 name: '用户信息',
-                url: './html/user/supplier/index.html',
+                url: './html/user/supplier/index.html?classId=1001',
                 query: {
                     'type': user.type,
                     'user': user.id
