@@ -289,6 +289,191 @@
     <!-- / footer -->
 </div>
 
+<div style="display: none;">
+    <!--公共控件用到的各种模板，请不要删除-->
+
+    <!--Samples.SimplePager--!
+<ul id="{ul-id}" class="page-label">
+    <li class="left-btn {first-disabled-class}" data-button="previous">
+        <a href="javascript:"><i></i></a>
+    </li>
+    <li>
+        <input id="{txt-id}" value="{current}/{count}" />
+    </li>
+    <li class="right-btn {final-disabled-class}" data-button="next" >
+        <a href="javascript:"><i></i></a>
+    </li>
+</ul>
+--Samples.SimplePager-->
+
+    <!--Samples.Pager--!
+<ul id="{ul-id}" class="pagination footer">
+    <li class="buttons">
+        <ul>
+            <li class="LR-button {first-disabled-class}" data-button="previous" title="上一页">
+                <i class="left-btn"></i>
+            </li>
+
+            #--item.begin--#
+            <li class="item {active}" {data-no}>{no}</li>
+            #--item.end--#
+
+            #--more.begin--#
+            <li class="item more"></li>
+            #--more.end--#
+
+            <li class="LR-button {final-disabled-class}"  data-button="next" title="下一页">
+                <i class="right-btn"></i>
+            </li>
+        </ul>
+    </li>
+    <li class="page-count">
+        共<span>{count}</span>页
+    </li>
+    <li class="page-count">
+        共有<span>{total}</span>条记录
+    </li>
+    <li class="page-jump">
+        <span>到第</span>
+        <input id="{txt-id}" type="text" class="page-number" value="{toNo}" {txt-disabled}/><span>页</span>
+        <a href="javascript:" class="jump-button {jump-disabled-class}" data-button="to">跳转</a>
+    </li>
+</ul>
+--Samples.Pager-->
+
+    <!--Samples.CascadePicker--!
+<select class="{not-selected}" data-index="{index}">
+    #--item.begin--#
+    <option {selected}>{text}</option>
+    #--item.end--#
+</select>
+--Samples.CascadePicker-->
+
+    <!--Samples.Login--!
+<ul>
+    <li class="input-panel">
+        <span class="icon-user"></span>
+        <input data-field="user" type="text" placeholder="账号/邮箱/用户名" value="{user}"/>
+    </li>
+    <li class="input-panel">
+        <span class="icon-lock"></span>
+        <input data-field="password" type="password" placeholder="密码" />
+    </li>
+    <li class="warm-text">
+        <span data-field="msg" style="display:none;">*账号或密码错误</span>
+    </li>
+</ul>
+--Samples.Login-->
+
+    <!--Samples.Loading--!
+<p>
+    <i class="icon-refresh icon-spin"></i>
+    {text}
+</p>
+--Samples.Loading-->
+
+    <!--Samples.CascadePath--!
+
+#--ol.begin--#
+<ol id="{ol-id}" class="bread-crumbs">
+    #--item.begin--#
+    <li data-index="{index}">
+        <a href="javascript:">{name}</a>
+        <span>
+            <i class="icon-dropdown"></i>
+        </span>
+    </li>
+    #--item.end--#
+
+    #--leaf.begin--#
+    <li data-index="{index}" class="last">
+        <a href="javascript:">{name}</a>
+    </li>
+    #--leaf.end--#
+</ol>
+#--ol.end--#
+
+--Samples.CascadePath-->
+
+    <!--Samples.CascadeMenus--!
+#--div.begin--#
+<div id="{div-id}" class="selector-panel" style="left:{left}px; top:{top}px; display:none;">
+    #--group.begin--#
+    <ol class="top{topN}" data-index="{index}" >
+        #--item.begin--#
+        <li class="{actived}" data-index="{index}">
+            {name}<i class="branch-item"></i>
+        </li>
+        #--item.end--#
+        #--leaf.begin--#
+        <li class="{actived}" data-index="{index}">
+            {name}
+        </li>
+        #--leaf.end--#
+    </ol>
+    #--group.end--#
+</div>
+#--div.end--#
+--Samples.CascadeMenus-->
+
+    <!--Samples.DataSelector--!
+#--selector.begin--#
+    <div class="sms-F7selector">
+        <input type="text" data-role="label"  /><span data-role="btn"><i></i></span>
+    </div>
+#--selector.end--#
+--Samples.DataSelector-->
+
+
+    <!--Samples.ButtonMenus--!
+#--li.begin--#
+<li class="btn-multi">
+    <button class="btn">{text}</button>
+    <ol class="btn-more">
+        #--item.begin--#
+        <li><a href="javascript:">{text}</a></li>
+        #--item.end--#
+    </ol>
+    <span class="bt-dropdown"><i class="icon-dropdown"></i></span>
+</li>
+#--li.end--#
+--Samples.ButtonMenus-->
+
+    <!--Samples.ButtonList--!
+#--ul.begin--#
+<ul class=sms-btn-menu">
+
+    #--item.begin--#
+    <li data-index="{index}" class=sms-btn-item>
+    <i class="icons" style="background-image: url({icon});"></i>
+    {text}</li>
+    #--item.end--#
+
+    #--group.begin--#
+    <li data-index="{index}" class=sms-btn-menu {css-class}">
+        <button class=sms-btn-item>
+        <i class="icons" style="background-image: url({icon});"></i>
+        {text}</button>
+        <ol id="{ol-id}{index}" class="btn-more" style="display:none;">
+            #--group.item.begin--#
+            <li data-index="{index}" data-no="{no}">
+                <a href="javascript:">
+                <i class="icons" style="background-image: url({icon});"></i>
+                {text}</a>
+            </li>
+            #--group.item.end--#
+        </ol>
+        <span id="{span-id}{index}" class="bt-dropdown"><i class="icon-dropdown"></i></span>
+    </li>
+    #--group.end--#
+
+</ul>
+#--ul.end--#
+--Samples.ButtonList-->
+
+
+</div>
+
 <script src="lib/jquery/jquery-1.11.1.debug.js"></script>
 <script src="lib/miniquery/miniquery.debug.js"></script>
 <script src="lib/sms/sms.debug.js"></script>

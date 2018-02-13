@@ -9,6 +9,7 @@
     <result column="index" jdbcType="INTEGER" property="index" />
     <result column="access_use" jdbcType="INTEGER" property="accessUse" />
     <result column="owner_type" jdbcType="INTEGER" property="ownerType" />
+    <result column="group" jdbcType="INTEGER" property="group" />
     <result column="icon" jdbcType="VARCHAR" property="icon" />
     <result column="desc" jdbcType="VARCHAR" property="desc" />
   </resultMap>
@@ -71,7 +72,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    class_id, access_mask, `name`, `text`, `index`, access_use, owner_type, icon, `desc`
+    class_id, access_mask, `name`, `text`, `index`, access_use, owner_type, `group`, 
+    icon, `desc`
   </sql>
   <select id="selectByExample" parameterType="com.kingdee.hrp.sms.common.model.FormActionExample" resultMap="BaseResultMap">
     select
@@ -108,12 +110,12 @@
   <insert id="insert" parameterType="com.kingdee.hrp.sms.common.model.FormAction">
     insert into t_form_action (class_id, access_mask, `name`, 
       `text`, `index`, access_use, 
-      owner_type, icon, `desc`
-      )
+      owner_type, `group`, icon, 
+      `desc`)
     values (#{classId,jdbcType=INTEGER}, #{accessMask,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, 
       #{text,jdbcType=VARCHAR}, #{index,jdbcType=INTEGER}, #{accessUse,jdbcType=INTEGER}, 
-      #{ownerType,jdbcType=INTEGER}, #{icon,jdbcType=VARCHAR}, #{desc,jdbcType=VARCHAR}
-      )
+      #{ownerType,jdbcType=INTEGER}, #{group,jdbcType=INTEGER}, #{icon,jdbcType=VARCHAR}, 
+      #{desc,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.kingdee.hrp.sms.common.model.FormAction">
     insert into t_form_action
@@ -138,6 +140,9 @@
       </if>
       <if test="ownerType != null">
         owner_type,
+      </if>
+      <if test="group != null">
+        `group`,
       </if>
       <if test="icon != null">
         icon,
@@ -167,6 +172,9 @@
       </if>
       <if test="ownerType != null">
         #{ownerType,jdbcType=INTEGER},
+      </if>
+      <if test="group != null">
+        #{group,jdbcType=INTEGER},
       </if>
       <if test="icon != null">
         #{icon,jdbcType=VARCHAR},
@@ -206,6 +214,9 @@
       <if test="record.ownerType != null">
         owner_type = #{record.ownerType,jdbcType=INTEGER},
       </if>
+      <if test="record.group != null">
+        `group` = #{record.group,jdbcType=INTEGER},
+      </if>
       <if test="record.icon != null">
         icon = #{record.icon,jdbcType=VARCHAR},
       </if>
@@ -226,6 +237,7 @@
       `index` = #{record.index,jdbcType=INTEGER},
       access_use = #{record.accessUse,jdbcType=INTEGER},
       owner_type = #{record.ownerType,jdbcType=INTEGER},
+      `group` = #{record.group,jdbcType=INTEGER},
       icon = #{record.icon,jdbcType=VARCHAR},
       `desc` = #{record.desc,jdbcType=VARCHAR}
     <if test="_parameter != null">
@@ -250,6 +262,9 @@
       <if test="ownerType != null">
         owner_type = #{ownerType,jdbcType=INTEGER},
       </if>
+      <if test="group != null">
+        `group` = #{group,jdbcType=INTEGER},
+      </if>
       <if test="icon != null">
         icon = #{icon,jdbcType=VARCHAR},
       </if>
@@ -267,6 +282,7 @@
       `index` = #{index,jdbcType=INTEGER},
       access_use = #{accessUse,jdbcType=INTEGER},
       owner_type = #{ownerType,jdbcType=INTEGER},
+      `group` = #{group,jdbcType=INTEGER},
       icon = #{icon,jdbcType=VARCHAR},
       `desc` = #{desc,jdbcType=VARCHAR}
     where class_id = #{classId,jdbcType=INTEGER}

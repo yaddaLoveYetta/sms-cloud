@@ -544,6 +544,66 @@ public class FormActionExample {
             return (Criteria) this;
         }
 
+        public Criteria andGroupIsNull() {
+            addCriterion("`group` is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupIsNotNull() {
+            addCriterion("`group` is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupEqualTo(Integer value) {
+            addCriterion("`group` =", value, "group");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupNotEqualTo(Integer value) {
+            addCriterion("`group` <>", value, "group");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupGreaterThan(Integer value) {
+            addCriterion("`group` >", value, "group");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupGreaterThanOrEqualTo(Integer value) {
+            addCriterion("`group` >=", value, "group");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupLessThan(Integer value) {
+            addCriterion("`group` <", value, "group");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupLessThanOrEqualTo(Integer value) {
+            addCriterion("`group` <=", value, "group");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupIn(List<Integer> values) {
+            addCriterion("`group` in", values, "group");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupNotIn(List<Integer> values) {
+            addCriterion("`group` not in", values, "group");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupBetween(Integer value1, Integer value2) {
+            addCriterion("`group` between", value1, value2, "group");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupNotBetween(Integer value1, Integer value2) {
+            addCriterion("`group` not between", value1, value2, "group");
+            return (Criteria) this;
+        }
+
         public Criteria andIconIsNull() {
             addCriterion("icon is null");
             return (Criteria) this;

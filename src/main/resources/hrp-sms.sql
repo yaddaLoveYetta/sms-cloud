@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : localhost
-Source Server Version : 50718
-Source Host           : localhost:3306
+Source Server         : mysql-180
+Source Server Version : 50617
+Source Host           : 10.0.0.180:3306
 Source Database       : hrp-sms
 
 Target Server Type    : MYSQL
-Target Server Version : 50718
+Target Server Version : 50617
 File Encoding         : 65001
 
-Date: 2018-02-12 21:54:27
+Date: 2018-02-13 15:01:52
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -27,6 +27,7 @@ CREATE TABLE `t_form_action` (
   `access_mask` int(11) NOT NULL COMMENT '权限掩码(每一个权限掩码代表了一个功能)',
   `access_use` int(11) NOT NULL DEFAULT '0' COMMENT '关联权限掩码总和。\r\n如有删除权限则一定具备查看及修改权限，\r\n所以删除权限的access_use应配置成查看及修改权限的\r\naccess_mask之和',
   `owner_type` int(11) DEFAULT '7' COMMENT '权限所有角色类别，\r\n可指定该权限只能由哪些类别的角色可用\r\n采用三位二进制描述\r\n001（1）:系统类别角色可用\r\n010（2）:医院类别角色可用\r\n100（4）:供应商类别角色可用\r\n还可以有其他组合设置如\r\n011（3）: 系统类别角色与医院类别角色可用\r\n111（7）:三类角色类别都可用\r\n\r\n默认三类角色都可用',
+  `group` int(11) DEFAULT '0' COMMENT '按钮分组，前端渲染菜单使用\r\n\r\n将功能按钮的group值设置为一样，表名这些功能按钮创建一个按钮组\r\n如将 审核与反审核功能按钮 的group都设置为1，则前端会将这两个按钮创建到一组，下拉方式打开组内按钮。\r\n\r\n当业务单据上的菜单项（按钮组为1项）超过五项后，其他的按钮会统一放在一个按钮组\r\n',
   `icon` varchar(50) DEFAULT '' COMMENT '菜单图标',
   `desc` varchar(255) DEFAULT '' COMMENT '描述',
   PRIMARY KEY (`class_id`,`access_mask`)
@@ -35,8 +36,10 @@ CREATE TABLE `t_form_action` (
 -- ----------------------------
 -- Records of t_form_action
 -- ----------------------------
-INSERT INTO `t_form_action` VALUES ('1001', '查看', 'view', '5', '1', '1', '7', '', '供应商资料查看权限');
-INSERT INTO `t_form_action` VALUES ('1001', '修改', 'edit', '10', '4', '1', '7', '', '供应商资料修改权限');
+INSERT INTO `t_form_action` VALUES ('1001', '查看', 'view', '5', '1', '1', '7', '1', '', '供应商资料查看权限');
+INSERT INTO `t_form_action` VALUES ('1001', '新增', 'edit', '10', '2', '1', '7', '2', '', '供应商资料新增权限');
+INSERT INTO `t_form_action` VALUES ('1001', '修改', 'edit', '10', '4', '1', '7', '3', '', '供应商资料修改权限');
+INSERT INTO `t_form_action` VALUES ('1001', '删除', 'edit', '10', '8', '1', '7', '3', '', '供应商资料删除权限');
 
 -- ----------------------------
 -- Table structure for t_form_class

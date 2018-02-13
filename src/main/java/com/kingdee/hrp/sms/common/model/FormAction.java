@@ -11,6 +11,8 @@ public class FormAction extends FormActionKey {
 
     private Integer ownerType;
 
+    private Integer group;
+
     private String icon;
 
     private String desc;
@@ -53,6 +55,14 @@ public class FormAction extends FormActionKey {
 
     public void setOwnerType(Integer ownerType) {
         this.ownerType = ownerType;
+    }
+
+    public Integer getGroup() {
+        return group;
+    }
+
+    public void setGroup(Integer group) {
+        this.group = group;
     }
 
     public String getIcon() {

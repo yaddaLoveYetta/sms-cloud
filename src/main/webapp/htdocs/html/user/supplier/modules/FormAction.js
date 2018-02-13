@@ -10,8 +10,10 @@ define('FormAction', function (require, module, exports) {
     var API = SMS.require('API');
 
     var ButtonList = SMS.require('ButtonList');
-
+    var bl;
     var emitter = MiniQuery.Event.create();
+
+    var items = [];
 
     var __default__ = {
         container: '#div-button-list',
@@ -51,21 +53,33 @@ define('FormAction', function (require, module, exports) {
     }
 
     function create(config) {
-        /*        {
-                    classId:1001
-                }*/
+
         loadFormAction(config, function (actions) {
 
             actions = actions || [];
 
-            __default__.items = $.Array.map(actions, function (item, index) {
-
+            // 处理菜单分组--actions是Object
+            actions = $.Array.aggregate(actions, 'group', function (item, index) {
                 return {
                     text: item.name,
                     name: item.text,
                     icon: item.icon
                 };
             });
+            // 处理菜单分组--转换成Array结构
+            actions = $.Object.toArray(actions, function (index, group) {
+                if (group.length > 1) {
+                    // 多个菜单-分组
+                    var item = group[0];
+                    item.items = group.slice(1, group.length);
+
+                    return item;
+                }
+
+                return group;
+            })
+
+            __default__.items = actions;
 
             var bl = new ButtonList(__default__);
 
@@ -74,9 +88,10 @@ define('FormAction', function (require, module, exports) {
                 console.dir(item);
             });
 
-            return bl;
+        });
 
-        })
+
+        return bl;
 
 
     }

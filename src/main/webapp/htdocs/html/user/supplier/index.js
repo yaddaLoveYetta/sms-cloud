@@ -17,6 +17,8 @@
 
     var ButtonList = FormAction.create({'classId': classId});
 
+    ButtonList.render();
+
     console.log(ButtonList);
 
 })(jQuery, MiniQuery, SMS);
