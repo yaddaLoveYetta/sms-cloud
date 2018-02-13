@@ -9,8 +9,6 @@ define('FormAction', function (require, module, exports) {
     var SMS = require('SMS');
     var API = SMS.require('API');
 
-    var ButtonList = SMS.require('ButtonList');
-    var bl;
     var emitter = MiniQuery.Event.create();
 
     var items = [];
@@ -52,7 +50,7 @@ define('FormAction', function (require, module, exports) {
         });
     }
 
-    function create(config) {
+    function create(config,fn) {
 
         loadFormAction(config, function (actions) {
 
@@ -81,17 +79,19 @@ define('FormAction', function (require, module, exports) {
 
             __default__.items = actions;
 
-            var bl = new ButtonList(__default__);
+/*            var bl = new ButtonList(__default__);
 
             // 总事件，最后触发
             bl.on('click', function (item, index) {
                 console.dir(item);
-            });
+            });*/
+
+           fn && fn(__default__);
 
         });
 
 
-        return bl;
+      //  return bl;
 
 
     }
