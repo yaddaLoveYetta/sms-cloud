@@ -3976,11 +3976,17 @@
 
         function fire(sn, name, args) {
 
-            if (typeof name == 'object') { // 重载 fire(name, item)
+            if (typeof name == 'object') {
+                // 重载 fire(name, item)
                 var item = name;
                 name = sn;
                 sn = item.id;
                 args = [item];
+            }
+
+            if (!name) {
+                // fire(name)-向所有iframe传递事件 TODO
+                return;
             }
 
 
@@ -5907,6 +5913,9 @@
          * info: 提示文本 caption: 提示标题 showClose: 是否显示关闭按钮
          */
         function show(info, caption, showClose) {
+
+            info = $.String.format('<div style="padding: 20px 20px">{0}</div>', info);
+
             Dialog.use(function (Dialog) {
                 var config = {
                     title: caption ? caption : '金蝶提示',
@@ -5936,6 +5945,8 @@
                     fnClose = caption;
                     caption = '';
                 }
+
+                info = $.String.format('<div style="padding: 20px 20px">{0}</div>', info);
 
                 var dialog = new Dialog({
                     title: caption ? caption : '金蝶提示!',

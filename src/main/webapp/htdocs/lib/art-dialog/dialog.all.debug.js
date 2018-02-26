@@ -1,7 +1,4 @@
-
-
 define(function (require) {
-
 
 
     var id$module = {};
@@ -49,8 +46,6 @@ define(function (require) {
     };
 
     $.extend(innerRequire, require);
-
-
 
 
     //------------------------------------
@@ -131,34 +126,33 @@ define(function (require) {
         // 模板（使用 table 解决 IE7 宽度自适应的 BUG）
         // js 使用 i="***" 属性识别结构，其余的均可自定义
         innerHTML:
-            '<div i="dialog" class="ui-dialog">'
-            + '<div class="ui-dialog-arrow-a"></div>'
-            + '<div class="ui-dialog-arrow-b"></div>'
-            + '<table class="ui-dialog-grid">'
-            + '<tr>'
-            + '<td i="header" class="ui-dialog-header">'
-            + '<button i="close" class="ui-dialog-close">&#215;</button>'
-            + '<div i="title" class="ui-dialog-title"></div>'
-            + '</td>'
-            + '</tr>'
-            + '<tr>'
-            + '<td i="body" class="ui-dialog-body">'
-            + '<div i="content" class="ui-dialog-content"></div>'
-            + '</td>'
-            + '</tr>'
-            + '<tr>'
-            + '<td i="footer" class="ui-dialog-footer">'
-            + '<div i="statusbar" class="ui-dialog-statusbar"></div>'
-            + '<div i="button" class="ui-dialog-button"></div>'
-            + '</td>'
-            + '</tr>'
-            + '</table>'
-            + '</div>',
+        '<div i="dialog" class="ui-dialog">'
+        + '<div class="ui-dialog-arrow-a"></div>'
+        + '<div class="ui-dialog-arrow-b"></div>'
+        + '<table class="ui-dialog-grid">'
+        + '<tr>'
+        + '<td i="header" class="ui-dialog-header">'
+        + '<button i="close" class="ui-dialog-close">&#215;</button>'
+        + '<div i="title" class="ui-dialog-title"></div>'
+        + '</td>'
+        + '</tr>'
+        + '<tr>'
+        + '<td i="body" class="ui-dialog-body">'
+        + '<div i="content" class="ui-dialog-content"></div>'
+        + '</td>'
+        + '</tr>'
+        + '<tr>'
+        + '<td i="footer" class="ui-dialog-footer">'
+        + '<div i="statusbar" class="ui-dialog-statusbar"></div>'
+        + '<div i="button" class="ui-dialog-button"></div>'
+        + '</td>'
+        + '</tr>'
+        + '</table>'
+        + '</div>',
 
         draggable: true // by micty
 
     }, SMS.Dialog.config()));
-
 
 
     /*!
@@ -173,8 +167,9 @@ define(function (require) {
     define("popup", function (innerRequire) {
 
         var $ = innerRequire("jquery");
+        var defaults = innerRequire("dialog-config");
 
-        var _count = 0;
+        var _count = defaults.zIndex || 0; // 配置文件中指定起始z-index （一般高于页面中最大z-index）
         var _isIE6 = !('minWidth' in $('html')[0].style);
         var _isFixed = !_isIE6;
 
@@ -225,46 +220,46 @@ define(function (require) {
         $.extend(Popup.prototype, {
 
             /**
-                * 初始化完毕事件，在 show()、showModal() 执行
-                * @name Popup.prototype.onshow
-                * @event
-                */
+             * 初始化完毕事件，在 show()、showModal() 执行
+             * @name Popup.prototype.onshow
+             * @event
+             */
 
             /**
-                * 关闭事件，在 close() 执行
-                * @name Popup.prototype.onclose
-                * @event
-                */
+             * 关闭事件，在 close() 执行
+             * @name Popup.prototype.onclose
+             * @event
+             */
 
             /**
-                * 销毁前事件，在 remove() 前执行
-                * @name Popup.prototype.onbeforeremove
-                * @event
-                */
+             * 销毁前事件，在 remove() 前执行
+             * @name Popup.prototype.onbeforeremove
+             * @event
+             */
 
             /**
-                * 销毁事件，在 remove() 执行
-                * @name Popup.prototype.onremove
-                * @event
-                */
+             * 销毁事件，在 remove() 执行
+             * @name Popup.prototype.onremove
+             * @event
+             */
 
             /**
-                * 重置事件，在 reset() 执行
-                * @name Popup.prototype.onreset
-                * @event
-                */
+             * 重置事件，在 reset() 执行
+             * @name Popup.prototype.onreset
+             * @event
+             */
 
             /**
-                * 焦点事件，在 foucs() 执行
-                * @name Popup.prototype.onfocus
-                * @event
-                */
+             * 焦点事件，在 foucs() 执行
+             * @name Popup.prototype.onfocus
+             * @event
+             */
 
             /**
-                * 失焦事件，在 blur() 执行
-                * @name Popup.prototype.onblur
-                * @event
-                */
+             * 失焦事件，在 blur() 执行
+             * @name Popup.prototype.onblur
+             * @event
+             */
 
             /** 浮层 DOM 素节点 */
             node: null,
@@ -303,9 +298,9 @@ define(function (require) {
             className: 'ui-popup',
 
             /**
-                * 显示浮层
-                * @param   {HTMLElement, Event}  指定位置（可选）
-                */
+             * 显示浮层
+             * @param   {HTMLElement, Event}  指定位置（可选）
+             */
             show: function (anchor) {
 
                 if (this.destroyed) {
@@ -354,8 +349,6 @@ define(function (require) {
                 this.__backdrop.show();
 
 
-
-
                 this.reset().focus();
                 this.__dispatchEvent('show');
 
@@ -371,8 +364,8 @@ define(function (require) {
             },
 
             /**
-            * 查找对话框内的 DOM 元素
-            */
+             * 查找对话框内的 DOM 元素
+             */
             find: function (selector) {
                 var domId = this.domId;
                 return $('#' + domId).find(selector);
@@ -503,10 +496,10 @@ define(function (require) {
 
 
             /**
-            * 添加事件
-            * @param   {String}    事件类型
-            * @param   {Function}  监听函数
-            */
+             * 添加事件
+             * @param   {String}    事件类型
+             * @param   {Function}  监听函数
+             */
             addEventListener: function (type, callback) {
                 this.__getEventListener(type).push(callback);
                 return this;
@@ -514,10 +507,10 @@ define(function (require) {
 
             //by micty
             /**
-            * 添加事件
-            * @param   {String}    事件类型
-            * @param   {Function}  监听函数
-            */
+             * 添加事件
+             * @param   {String}    事件类型
+             * @param   {Function}  监听函数
+             */
             on: function (name, fn) {
 
                 if (typeof name == 'object') {
@@ -537,28 +530,27 @@ define(function (require) {
             },
 
             /**
-            * 设置数据。
-            * by micty
-            */
+             * 设置数据。
+             * by micty
+             */
             setData: function (data) {
                 this['__data__'] = data;
             },
 
             /**
-            * 获取数据。
-            * by micty
-            */
+             * 获取数据。
+             * by micty
+             */
             getData: function () {
                 return this['__data__'];
             },
 
 
-
             /**
-                * 删除事件
-                * @param   {String}    事件类型
-                * @param   {Function}  监听函数
-                */
+             * 删除事件
+             * @param   {String}    事件类型
+             * @param   {Function}  监听函数
+             */
             removeEventListener: function (type, callback) {
                 var listeners = this.__getEventListener(type);
                 for (var i = 0; i < listeners.length; i++) {
@@ -606,7 +598,8 @@ define(function (require) {
                     if (this.autofocus && !/^iframe$/i.test(elem.nodeName)) {
                         elem.focus();
                     }
-                } catch (e) { }
+                } catch (e) {
+                }
             },
 
 
@@ -617,7 +610,8 @@ define(function (require) {
                     var contentDocument = activeElement.contentDocument;
                     var elem = contentDocument && contentDocument.activeElement || activeElement;
                     return elem;
-                } catch (e) { }
+                } catch (e) {
+                }
             },
 
 
@@ -707,8 +701,8 @@ define(function (require) {
                 var css = {};
                 var align = this.align.split(' ');
                 var className = this.className + '-';
-                var reverse = { top: 'bottom', bottom: 'top', left: 'right', right: 'left' };
-                var name = { top: 'top', bottom: 'top', left: 'left', right: 'left' };
+                var reverse = {top: 'bottom', bottom: 'top', left: 'right', right: 'left'};
+                var name = {top: 'top', bottom: 'top', left: 'left', right: 'left'};
 
 
                 var temp = [{
@@ -848,15 +842,15 @@ define(function (require) {
 
 
                 backdrop
-                .css(backdropCss)
-                .animate({ opacity: this.backdropOpacity }, 150)
-                .insertAfter(popup)
-                // 锁住模态对话框的 tab 简单办法
-                // 甚至可以避免焦点落入对话框外的 iframe 中
-                .attr({ tabindex: '0' })
-                .on('focus', function () {
-                    that.focus();
-                });
+                    .css(backdropCss)
+                    .animate({opacity: this.backdropOpacity}, 150)
+                    .insertAfter(popup)
+                    // 锁住模态对话框的 tab 简单办法
+                    // 甚至可以避免焦点落入对话框外的 iframe 中
+                    .attr({tabindex: '0'})
+                    .on('focus', function () {
+                        that.focus();
+                    });
 
             },
 
@@ -885,8 +879,6 @@ define(function (require) {
         return Popup;
 
     });
-
-
 
 
     /*!
@@ -936,7 +928,7 @@ define(function (require) {
 
             if (typeof options === 'string' || options.nodeType === 1) {
 
-                options = { content: options, fixed: !_isMobile };
+                options = {content: options, fixed: !_isMobile};
             }
 
 
@@ -1009,7 +1001,8 @@ define(function (require) {
             return artDialog.list[id] = new artDialog.create(options);
         };
 
-        var popup = function () { };
+        var popup = function () {
+        };
         popup.prototype = Popup.prototype;
         var prototype = artDialog.prototype = new popup();
 
@@ -1044,18 +1037,18 @@ define(function (require) {
                 'aria-labelledby': this._$('title')
                     .attr('id', 'title:' + this.id).attr('id'),
                 'aria-describedby': this._$('content')
-                    .attr('id',this.id).attr('id')
+                    .attr('id', this.id).attr('id')
             });
 
 
             // 关闭按钮
             this._$('close')
-            .css('display', this.cancel === false ? 'none' : '')
-            .attr('title', this.cancelValue)
-            .on('click', function (event) {
-                that._trigger('cancel');
-                event.preventDefault();
-            });
+                .css('display', this.cancel === false ? 'none' : '')
+                .attr('title', this.cancelValue)
+                .on('click', function (event) {
+                    that._trigger('cancel');
+                    event.preventDefault();
+                });
 
 
             // 添加视觉参数
@@ -1120,121 +1113,120 @@ define(function (require) {
         artDialog.create.prototype = prototype;
 
 
-
         $.extend(prototype, {
 
             /**
-                * 显示对话框
-                * @name artDialog.prototype.show
-                * @param   {HTMLElement Object, Event Object}  指定位置（可选）
-                */
+             * 显示对话框
+             * @name artDialog.prototype.show
+             * @param   {HTMLElement Object, Event Object}  指定位置（可选）
+             */
 
             /**
-                * 显示对话框（模态）
-                * @name artDialog.prototype.showModal
-                * @param   {HTMLElement Object, Event Object}  指定位置（可选）
-                */
+             * 显示对话框（模态）
+             * @name artDialog.prototype.showModal
+             * @param   {HTMLElement Object, Event Object}  指定位置（可选）
+             */
 
             /**
-                * 关闭对话框
-                * @name artDialog.prototype.close
-                * @param   {String, Number}    返回值，可被 onclose 事件收取（可选）
-                */
+             * 关闭对话框
+             * @name artDialog.prototype.close
+             * @param   {String, Number}    返回值，可被 onclose 事件收取（可选）
+             */
 
             /**
-                * 销毁对话框
-                * @name artDialog.prototype.remove
-                */
+             * 销毁对话框
+             * @name artDialog.prototype.remove
+             */
 
             /**
-                * 重置对话框位置
-                * @name artDialog.prototype.reset
-                */
+             * 重置对话框位置
+             * @name artDialog.prototype.reset
+             */
 
             /**
-                * 让对话框聚焦（同时置顶）
-                * @name artDialog.prototype.focus
-                */
+             * 让对话框聚焦（同时置顶）
+             * @name artDialog.prototype.focus
+             */
 
             /**
-                * 让对话框失焦（同时置顶）
-                * @name artDialog.prototype.blur
-                */
+             * 让对话框失焦（同时置顶）
+             * @name artDialog.prototype.blur
+             */
 
             /**
-                * 添加事件
-                * @param   {String}    事件类型
-                * @param   {Function}  监听函数
-                * @name artDialog.prototype.addEventListener
-                */
+             * 添加事件
+             * @param   {String}    事件类型
+             * @param   {Function}  监听函数
+             * @name artDialog.prototype.addEventListener
+             */
 
             /**
-                * 删除事件
-                * @param   {String}    事件类型
-                * @param   {Function}  监听函数
-                * @name artDialog.prototype.removeEventListener
-                */
+             * 删除事件
+             * @param   {String}    事件类型
+             * @param   {Function}  监听函数
+             * @name artDialog.prototype.removeEventListener
+             */
 
             /**
-                * 对话框显示事件，在 show()、showModal() 执行
-                * @name artDialog.prototype.onshow
-                * @event
-                */
+             * 对话框显示事件，在 show()、showModal() 执行
+             * @name artDialog.prototype.onshow
+             * @event
+             */
 
             /**
-                * 关闭事件，在 close() 执行
-                * @name artDialog.prototype.onclose
-                * @event
-                */
+             * 关闭事件，在 close() 执行
+             * @name artDialog.prototype.onclose
+             * @event
+             */
 
             /**
-                * 销毁前事件，在 remove() 前执行
-                * @name artDialog.prototype.onbeforeremove
-                * @event
-                */
+             * 销毁前事件，在 remove() 前执行
+             * @name artDialog.prototype.onbeforeremove
+             * @event
+             */
 
             /**
-                * 销毁事件，在 remove() 执行
-                * @name artDialog.prototype.onremove
-                * @event
-                */
+             * 销毁事件，在 remove() 执行
+             * @name artDialog.prototype.onremove
+             * @event
+             */
 
             /**
-                * 重置事件，在 reset() 执行
-                * @name artDialog.prototype.onreset
-                * @event
-                */
+             * 重置事件，在 reset() 执行
+             * @name artDialog.prototype.onreset
+             * @event
+             */
 
             /**
-                * 焦点事件，在 foucs() 执行
-                * @name artDialog.prototype.onfocus
-                * @event
-                */
+             * 焦点事件，在 foucs() 执行
+             * @name artDialog.prototype.onfocus
+             * @event
+             */
 
             /**
-                * 失焦事件，在 blur() 执行
-                * @name artDialog.prototype.onblur
-                * @event
-                */
+             * 失焦事件，在 blur() 执行
+             * @name artDialog.prototype.onblur
+             * @event
+             */
 
 
             /**
-                * 设置内容
-                * @param    {String, HTMLElement}   内容
-                */
+             * 设置内容
+             * @param    {String, HTMLElement}   内容
+             */
             content: function (html) {
 
                 this._$('content').empty('')
-                [typeof html === 'object' ? 'append' : 'html'](html);
+                    [typeof html === 'object' ? 'append' : 'html'](html);
 
                 return this.reset();
             },
 
 
             /**
-                * 设置标题
-                * @param    {String}   标题内容
-                */
+             * 设置标题
+             * @param    {String}   标题内容
+             */
             title: function (text) {
                 this._$('title').text(text);
                 this._$('header')[text ? 'show' : 'hide']();
@@ -1257,16 +1249,15 @@ define(function (require) {
 
 
             /**
-                * 设置按钮组
-                * @param   {Array, String}
-                */
+             * 设置按钮组
+             * @param   {Array, String}
+             */
             button: function (args) {
                 args = args || [];
                 var that = this;
                 var html = '';
                 var number = 0;
                 this.callbacks = {};
-
 
 
                 if (typeof args === 'string') {
@@ -1288,14 +1279,14 @@ define(function (require) {
 
                         html +=
                             '<button'
-                        + ' type="button"'
-                        + ' data-id="' + val.id + '"'
-                        + style
-                        + (val.disabled ? ' disabled' : '')
-                         + (val.autofocus ? ' autofocus class="ui-dialog-autofocus ' + className + '"' : ' class="' + className + '"') //增加按钮自定义样式 by yadda
-                        + '>'
-                        + val.value
-                        + '</button>';
+                            + ' type="button"'
+                            + ' data-id="' + val.id + '"'
+                            + style
+                            + (val.disabled ? ' disabled' : '')
+                            + (val.autofocus ? ' autofocus class="ui-dialog-autofocus ' + className + '"' : ' class="' + className + '"') //增加按钮自定义样式 by yadda
+                            + '>'
+                            + val.value
+                            + '</button>';
 
                     });
                 }
@@ -1309,7 +1300,7 @@ define(function (require) {
 
             statusbar: function (html) {
                 this._$('statusbar')
-                .html(html)[html ? 'show' : 'hide']();
+                    .html(html)[html ? 'show' : 'hide']();
 
                 return this;
             },
@@ -1332,9 +1323,7 @@ define(function (require) {
         });
 
 
-
         artDialog.oncreate = $.noop;
-
 
 
         /** 最顶层的对话框API */
@@ -1343,34 +1332,29 @@ define(function (require) {
         };
 
 
-
         /**
-            * 根据 ID 获取某对话框 API
-            * @param    {String}    对话框 ID
-            * @return   {Object}    对话框 API (实例)
-            */
+         * 根据 ID 获取某对话框 API
+         * @param    {String}    对话框 ID
+         * @return   {Object}    对话框 API (实例)
+         */
         artDialog.get = function (id) {
             return id === undefined
-            ? artDialog.list
-            : artDialog.list[id];
+                ? artDialog.list
+                : artDialog.list[id];
         };
 
         artDialog.list = {};
 
 
-
         /**
-            * 默认配置
-            */
+         * 默认配置
+         */
         artDialog.defaults = defaults;
-
 
 
         return artDialog;
 
     });
-
-
 
 
     /*!
@@ -1427,8 +1411,8 @@ define(function (require) {
                 event = this.startFix(event);
 
                 $document
-                .on(types.over, this.over)
-                .on(types.end, this.end);
+                    .on(types.over, this.over)
+                    .on(types.end, this.end);
 
                 this.onstart(event);
                 return false;
@@ -1444,8 +1428,8 @@ define(function (require) {
                 event = this.endFix(event);
 
                 $document
-                .off(types.over, this.over)
-                .off(types.end, this.end);
+                    .off(types.over, this.over)
+                    .off(types.end, this.end);
 
                 this.onend(event);
                 return false;
@@ -1460,8 +1444,8 @@ define(function (require) {
                 };
 
                 $document
-                .on('selectstart', this.selectstart)
-                .on('dblclick', this.end);
+                    .on('selectstart', this.selectstart)
+                    .on('dblclick', this.end);
 
                 if (isLosecapture) {
                     this.target.on('losecapture', this.end);
@@ -1485,8 +1469,8 @@ define(function (require) {
                 event = getEvent(event);
 
                 $document
-                .off('selectstart', this.selectstart)
-                .off('dblclick', this.end);
+                    .off('selectstart', this.selectstart)
+                    .off('dblclick', this.end);
 
                 if (isLosecapture) {
                     this.target.off('losecapture', this.end);
@@ -1505,15 +1489,16 @@ define(function (require) {
 
 
         /**
-            * 启动拖拽
-            * @param   {HTMLElement}   被拖拽的元素
-            * @param   {Event} 触发拖拽的事件对象。可选，若无则监听 elem 的按下事件启动
-            */
+         * 启动拖拽
+         * @param   {HTMLElement}   被拖拽的元素
+         * @param   {Event} 触发拖拽的事件对象。可选，若无则监听 elem 的按下事件启动
+         */
         DragEvent.create = function (elem, event) {
             var $elem = $(elem);
             var dragEvent = new DragEvent();
             var startType = DragEvent.types.start;
-            var noop = function () { };
+            var noop = function () {
+            };
             var className = elem.className
                 .replace(/^\s|\s.*/g, '') + '-drag-start';
 
@@ -1653,8 +1638,6 @@ define(function (require) {
                 })(options.data);
 
 
-
-
                 $iframe = $('<iframe />');
 
                 $iframe.attr({
@@ -1731,7 +1714,8 @@ define(function (require) {
                             $(frames[i]).one('unload', un);
                             break;
                         }
-                    } catch (e) { }
+                    } catch (e) {
+                    }
                 }
             }
 
@@ -1749,9 +1733,7 @@ define(function (require) {
             }
 
 
-
         };
-
 
 
         dialog.get = function (id) {
@@ -1774,7 +1756,6 @@ define(function (require) {
             }
 
         };
-
 
 
         return dialog;

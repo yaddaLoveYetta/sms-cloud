@@ -7,15 +7,17 @@
           content="app, web app, responsive, responsive layout, admin, admin panel, admin dashboard, flat, flat ui, ui kit, AngularJS, ui route, charts, widgets, components"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 
-    <link rel="stylesheet" href="css2/bootstrap.css" type="text/css"/>
-    <link rel="stylesheet" href="css2/animate.css" type="text/css"/>
-    <link rel="stylesheet" href="css2/iconfont/iconfont.css">
+    <link rel="stylesheet" href="css/global.debug.css" type="text/css"/>
+    <link rel="stylesheet" href="css/bootstrap.css" type="text/css"/>
+    <link rel="stylesheet" href="css/animate.css" type="text/css"/>
+    <link rel="stylesheet" href="css/iconfont/iconfont.css">
 
-    <link rel="stylesheet" href="css2/font-awesome.min.css" type="text/css"/>
-    <link rel="stylesheet" href="css2/simple-line-icons.css" type="text/css"/>
+    <link rel="stylesheet" href="css/font-awesome.min.css" type="text/css"/>
+    <link rel="stylesheet" href="css/simple-line-icons.css" type="text/css"/>
 
     <!--grunt.css.begin-->
-    <link rel="stylesheet" href="css2/main/app.css" type="text/css"/>
+    <link rel="stylesheet" href="css/main/index.debug.css" type="text/css"/>
+
     <!--grunt.css.end-->
 </head>
 <body>
@@ -25,14 +27,14 @@
         <!-- navbar header -->
         <div class="navbar-header bg-dark">
             <button class="pull-right visible-xs dk" data-toggle="class:show" data-target=".navbar-collapse">
-                <i class="glyphicon glyphicon-cog"></i>
+                <i class="iconfont icon-nitification icon-color-red"></i>
             </button>
             <button class="pull-right visible-xs" data-toggle="class:off-screen" data-target=".app-aside"
                     ui-scroll="app">
-                <i class="glyphicon glyphicon-align-justify"></i>
+                <i class="iconfont icon-icon-bars icon-color-green"></i>
             </button>
             <!-- brand -->
-            <a href="#/" class="navbar-brand text-lt">
+            <a href="#/" class="navbar-brand text-lt" title="云端上的供应链管理平台">
                 <i class="fa fa-btc"></i>
 
                 <span class="hidden-folded m-l-xs">易供应</span>
@@ -60,7 +62,7 @@
                         <input type="text" ng-model="selected"
                                typeahead="state for state in states | filter:$viewValue | limitTo:8"
                                class="form-control input-sm bg-light no-border rounded padder"
-                               placeholder="Search projects...">
+                               placeholder="Search orders...">
                         <span class="input-group-btn">
                             <button type="submit" class="btn btn-sm bg-light rounded"><i
                                     class="fa fa-search"></i></button>
@@ -74,7 +76,7 @@
             <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown">
                     <a href="#" data-toggle="dropdown" class="dropdown-toggle">
-                        <i class="icon-bell fa-fw"></i>
+                        <i class="iconfont icon-nitification fa-fw"></i>
                         <span class="visible-xs-inline">Notifications</span>
                         <span class="badge badge-sm up bg-danger pull-right-xs">2</span>
                     </a>
@@ -87,7 +89,7 @@
                             <div class="list-group">
                                 <a href class="media list-group-item">
                                     <span class="pull-left thumb-sm">
-                                      <img src="css2/img/a0.jpg" alt="..." class="img-circle">
+                                      <img src="css/img/a0.jpg" alt="..." class="img-circle">
                                     </span>
                                     <span class="media-body block m-b-none">
                                           Use awesome animate.css<br>
@@ -126,7 +128,7 @@
                         <li id="btn-edit-profile">
                             <a href>
                                 <span class="badge bg-danger pull-right">set</span>
-                                <span>公司信息</span>
+                                <span>信息维护</span>
                             </a>
                         </li>
                         <li class="divider"></li>
@@ -167,25 +169,25 @@
                         <li class="hidden-folded padder m-t m-b-sm text-muted text-xs">
                             <span translate="aside.nav.HEADER">云端上的供应链管理平台</span>
                         </li>
-
+                        <li class="line dk"></li>
                         #--menu.item.begin--#
-                        <li data-index="{index}" data-id="{id}" draggable="true">
+                        <li data-index="{index}" data-id="{id}" draggable="true" title="{title}">
 
                             <a href class="auto">
                               <span class="pull-right text-muted">
                                 <i class="fa fa-fw fa-angle-right text"></i>
                                 <i class="fa fa-fw fa-angle-down text-active"></i>
                               </span>
-                                <i class="iconfont {icon} icon text-primary-dker"></i>
+                                <i class="iconfont {icon} icon"></i>
                                 <span class="font-bold" translate="aside.nav.DASHBOARD">{name}</span>
                             </a>
 
                            #--menu.sub.begin--#
                             <ul class="nav nav-sub dk">
                                 #--menu.sub.item.begin--#
-                                <li ui-sref-active="active" data-index="{index}" data-id="{id}" draggable="true">
+                                <li ui-sref-active="active" data-index="{index}" data-id="{id}" draggable="true" title="{title}">
                                     <a ui-sref="app.dashboard-v1">
-                                        <i class="iconfont {icon} icon text-primary-dker"></i>
+                                        <i class="iconfont {icon} icon"></i>
                                         <span>{name}</span>
                                     </a>
                                 </li>
@@ -239,7 +241,7 @@
                         style="display: none;">
                         <!--
                             <li data-index="{index}" style="{item-display}" class="{on}"{draggable} >
-                                {name}<i class="icon-close" title="{title}" style="{icon-display}"></i>
+                                {name}<i class="icon-close pull-right" title="{title}" style="{icon-display}"></i>
                             </li>
                         -->
 
@@ -278,13 +280,198 @@
 
 
     <!-- footer -->
-    <div class="app-footer wrapper bg-dark ">
+    <div class="app-footer wrapper .bg-dark.w ">
         <span class="pull-right">1.0.0 </span>
         <span class="pull-right m-r">
         &copy; 2017   <a href="http://www.kingdee.com/" target="_blank" title="模板之家">金蝶国际软件集团有限公司</a> -
         粤ICP备05041751号-2</span>
     </div>
     <!-- / footer -->
+</div>
+
+<div style="display: none;">
+    <!--公共控件用到的各种模板，请不要删除-->
+
+    <!--Samples.SimplePager--!
+<ul id="{ul-id}" class="page-label">
+    <li class="left-btn {first-disabled-class}" data-button="previous">
+        <a href="javascript:"><i></i></a>
+    </li>
+    <li>
+        <input id="{txt-id}" value="{current}/{count}" />
+    </li>
+    <li class="right-btn {final-disabled-class}" data-button="next" >
+        <a href="javascript:"><i></i></a>
+    </li>
+</ul>
+--Samples.SimplePager-->
+
+    <!--Samples.Pager--!
+<ul id="{ul-id}" class="pagination footer">
+    <li class="buttons">
+        <ul>
+            <li class="LR-button {first-disabled-class}" data-button="previous" title="上一页">
+                <i class="left-btn"></i>
+            </li>
+
+            #--item.begin--#
+            <li class="item {active}" {data-no}>{no}</li>
+            #--item.end--#
+
+            #--more.begin--#
+            <li class="item more"></li>
+            #--more.end--#
+
+            <li class="LR-button {final-disabled-class}"  data-button="next" title="下一页">
+                <i class="right-btn"></i>
+            </li>
+        </ul>
+    </li>
+    <li class="page-count">
+        共<span>{count}</span>页
+    </li>
+    <li class="page-count">
+        共有<span>{total}</span>条记录
+    </li>
+    <li class="page-jump">
+        <span>到第</span>
+        <input id="{txt-id}" type="text" class="page-number" value="{toNo}" {txt-disabled}/><span>页</span>
+        <a href="javascript:" class="jump-button {jump-disabled-class}" data-button="to">跳转</a>
+    </li>
+</ul>
+--Samples.Pager-->
+
+    <!--Samples.CascadePicker--!
+<select class="{not-selected}" data-index="{index}">
+    #--item.begin--#
+    <option {selected}>{text}</option>
+    #--item.end--#
+</select>
+--Samples.CascadePicker-->
+
+    <!--Samples.Login--!
+<ul>
+    <li class="input-panel">
+        <span class="icon-user"></span>
+        <input data-field="user" type="text" placeholder="账号/邮箱/用户名" value="{user}"/>
+    </li>
+    <li class="input-panel">
+        <span class="icon-lock"></span>
+        <input data-field="password" type="password" placeholder="密码" />
+    </li>
+    <li class="warm-text">
+        <span data-field="msg" style="display:none;">*账号或密码错误</span>
+    </li>
+</ul>
+--Samples.Login-->
+
+    <!--Samples.Loading--!
+<p>
+    <i class="icon-refresh icon-spin"></i>
+    {text}
+</p>
+--Samples.Loading-->
+
+    <!--Samples.CascadePath--!
+
+#--ol.begin--#
+<ol id="{ol-id}" class="bread-crumbs">
+    #--item.begin--#
+    <li data-index="{index}">
+        <a href="javascript:">{name}</a>
+        <span>
+            <i class="icon-dropdown"></i>
+        </span>
+    </li>
+    #--item.end--#
+
+    #--leaf.begin--#
+    <li data-index="{index}" class="last">
+        <a href="javascript:">{name}</a>
+    </li>
+    #--leaf.end--#
+</ol>
+#--ol.end--#
+
+--Samples.CascadePath-->
+
+    <!--Samples.CascadeMenus--!
+#--div.begin--#
+<div id="{div-id}" class="selector-panel" style="left:{left}px; top:{top}px; display:none;">
+    #--group.begin--#
+    <ol class="top{topN}" data-index="{index}" >
+        #--item.begin--#
+        <li class="{actived}" data-index="{index}">
+            {name}<i class="branch-item"></i>
+        </li>
+        #--item.end--#
+        #--leaf.begin--#
+        <li class="{actived}" data-index="{index}">
+            {name}
+        </li>
+        #--leaf.end--#
+    </ol>
+    #--group.end--#
+</div>
+#--div.end--#
+--Samples.CascadeMenus-->
+
+    <!--Samples.DataSelector--!
+#--selector.begin--#
+    <div class="sms-F7selector">
+        <input type="text" data-role="label"  /><span data-role="btn"><i></i></span>
+    </div>
+#--selector.end--#
+--Samples.DataSelector-->
+
+
+    <!--Samples.ButtonMenus--!
+#--li.begin--#
+<li class="btn-multi">
+    <button class="btn">{text}</button>
+    <ol class="btn-more">
+        #--item.begin--#
+        <li><a href="javascript:">{text}</a></li>
+        #--item.end--#
+    </ol>
+    <span class="bt-dropdown"><i class="icon-dropdown"></i></span>
+</li>
+#--li.end--#
+--Samples.ButtonMenus-->
+
+    <!--Samples.ButtonList--!
+#--ul.begin--#
+<ul class=sms-btn-menu">
+
+    #--item.begin--#
+    <li data-index="{index}" class=sms-btn-item>
+    <i class="icons" style="background-image: url({icon});"></i>
+    {text}</li>
+    #--item.end--#
+
+    #--group.begin--#
+    <li data-index="{index}" class=sms-btn-menu {css-class}">
+        <button class=sms-btn-item>
+        <i class="icons" style="background-image: url({icon});"></i>
+        {text}</button>
+        <ol id="{ol-id}{index}" class="btn-more" style="display:none;">
+            #--group.item.begin--#
+            <li data-index="{index}" data-no="{no}">
+                <a href="javascript:">
+                <i class="icons" style="background-image: url({icon});"></i>
+                {text}</a>
+            </li>
+            #--group.item.end--#
+        </ol>
+        <span id="{span-id}{index}" class="bt-dropdown"><i class="icon-dropdown"></i></span>
+    </li>
+    #--group.end--#
+
+</ul>
+#--ul.end--#
+--Samples.ButtonList-->
+
+
 </div>
 
 <script src="lib/jquery/jquery-1.11.1.debug.js"></script>

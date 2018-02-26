@@ -6,6 +6,7 @@ define('UserInfos', function (require, module, exports) {
     var $ = require('$');
     var MiniQuery = require('MiniQuery');
     var SMS = require('SMS');
+    var emitter = MiniQuery.Event.create();
 
     var MD5 = SMS.require('MD5');
     var API = SMS.require('API');
@@ -14,28 +15,68 @@ define('UserInfos', function (require, module, exports) {
     var panel = document.getElementById('li-user-infos');
     var user = SMS.Login.get();
 
-    function render() {
+    // 标识事件绑定
+    var hasBind = false;
 
+    //检查登录
+    if (!SMS.Login.check(true)) {
+        return;
+    }
+
+    function render() {
 
         //批量填充
         SMS.Template.fill({
             '#li-user-infos': {
-                img: user.img || 'css2/img/a0.jpg',
+                img: user.img || 'css/img/a0.jpg',
                 name: user.name
             }
         });
 
+        bindEvents();
 
-        $('#btn-change-password').on('click', function () {
-            openChangePwd();
+    }
+
+
+    function bindEvents() {
+
+        if (hasBind) {
+            return;
+        }
+
+        $('#btn-edit-profile').on('click', function (e) {
+
+            e.preventDefault();
+
+            if (!user.isAdmin) {
+                MessageBox.show('您不是管理员，只有管理员能维护该信息', '金蝶提示', true);
+                return;
+            }
+
+            editProfile();
+
+        })
+        // 修改面
+        $('#btn-change-password').on('click', function (e) {
+            e.preventDefault();
+            changePwd();
+            emitter.fire('change-password-over', []);
         });
 
-        $('#btn-logout').on('click', function () {
+        $('#btn-logout').on('click', function (e) {
+
+            e.preventDefault();
 
             var btn = this;
 
             MessageBox.confirm('确定退出系统?', function (result) {
                 if (result) {
+
+                    var values = emitter.fire('before-logout', []);
+                    if (values && values[values.length - 1] === false) {
+                        emitter.fire('cancel-logout', [item]); //触发事件
+                        return; //取消注销
+                    }
 
                     btn.innerHTML = '注销中...';
                     $(btn).addClass('disabled');
@@ -59,10 +100,38 @@ define('UserInfos', function (require, module, exports) {
 
         });
 
+        hasBind = true;
     }
 
+    function editProfile() {
 
-    function openChangePwd() {
+        /*        var width = 1024;
+                var height = 600;
+                SMS.use('Dialog', function (Dialog) {
+                    var dialog = new Dialog({
+                        id: 'editProfile',
+                        title: 'Test',
+                        url: './html/home/520/index.html', // ./ 表示相对于网站根目录
+                        width: width,
+                        height: height,
+                        button: [{
+                            value: '确定',
+                            className: 'sms-submit-btn',
+                            callback: function () {
+                            }
+                        }, {
+                            value: '关闭',
+                            className: 'sms-cancel-btn'
+                        }],
+                    });
+
+                    dialog.showModal();
+                });*/
+
+        emitter.fire('edit-profile', []);
+    };
+
+    function changePwd() {
 
         var width = 400;
         var height = 130;
@@ -84,7 +153,7 @@ define('UserInfos', function (require, module, exports) {
                             var newPwd = data.newPwd.value;
 
                             dialog.find('[data-id="修改密码"]').attr('disabled', true);
-                            changePwd({
+                            doChangePwd({
                                 oldPwd: oldPwd,
                                 newPwd: newPwd,
                                 userId: user.userId
@@ -106,7 +175,7 @@ define('UserInfos', function (require, module, exports) {
         });
     };
 
-    function changePwd(config, fn) {
+    function doChangePwd(config, fn) {
 
         var api = new API('user/editPwd');
 
@@ -145,8 +214,9 @@ define('UserInfos', function (require, module, exports) {
     }
 
     return {
-        render: render
-    };
+        render: render,
+        on: emitter.on.bind(emitter)
+    }
 
 });
 

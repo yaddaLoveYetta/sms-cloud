@@ -248,7 +248,8 @@ define('PageList', function (require, module, exports) {
         var endIndex = lastIndex() + 1;
 
         var tasks = $.Array.keep(1, endIndex, function (item, index) {
-            return index < endIndex ? fnTask : hide;
+            // 第一项首页，最后一项'关闭所有页签'不移除
+            return index < endIndex - 2 ? fnTask : hide;
         });
 
         SMS.require('Multitask').serial(tasks); //串行执行任务队列

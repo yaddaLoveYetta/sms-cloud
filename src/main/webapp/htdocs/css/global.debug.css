@@ -1,4 +1,7 @@
 /* 2015-02-03 */
+label{
+    font-weight: normal !important;
+}
 .sms-F7selector label {
     display: inline-block;
     padding: 0 5px;

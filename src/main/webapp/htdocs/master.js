@@ -21,7 +21,6 @@
     var Sidebar = require('Sidebar');
     var NavBar = require('NavBar');
 
-
     //检查登录
     if (!SMS.Login.check(true)) {
         return;
@@ -57,12 +56,90 @@
         }
     });
 
+    //页签标签
+    PageTabs.on({
+        'active': function (item) {
+            Iframes.active(item);   //会触发 active 事件
+            PageList.active(item);  //安静模式，不触发事件
+            //Sidebar.active(item);     //安静模式，不触发事件
+        },
+        'remove': function (item) {
+            Iframes.remove(item);  //会触发 remove 事件
+            PageList.remove(item); //安静模式，不触发 remove 事件，但会触发 active 事件
+        },
+        'dragdrop': function (srcIndex, destIndex) {
+            PageList.dragdrop(srcIndex, destIndex);
+        },
+        'before-close': function (item) {
+            return Iframe.fire('before-close', item);
+        },
+        'cancel-close': function (item) {
+            return Iframe.fire('cancel-close', item);
+        },
+        'close': function (item) {
+            return Iframe.fire('close', item);
+        }
+    });
+
+    //页签列表
+    PageList.on({
+        'active': function (item) {
+            Iframes.active(item);   //会触发 active 事件
+            PageTabs.active(item);  //安静模式，不触发事件
+            //Menus.active(item);     //安静模式，不触发事件
+        },
+        'remove': function (item) { //如果移除的是当前的激活项，则会触发 active 事件
+            Iframes.remove(item);
+            PageTabs.remove(item); //安静模式，不触发事件
+        },
+        'clear': function () {
+            Iframes.clear();
+            PageTabs.clear();
+        },
+        'dragdrop': function (srcIndex, destIndex) {
+            PageTabs.dragdrop(srcIndex, destIndex);
+        },
+        'before-close': function (item) {
+            return Iframe.fire('before-close', item);
+        },
+        'cancel-close': function (item) {
+            return Iframe.fire('cancel-close', item);
+        },
+        'close': function (item) {
+            return Iframe.fire('close', item);
+        },
+    });
+
+    UserInfos.on({
+        'edit-profile': function () {
+            // 修改个人信息
+            var user = SMS.Login.get();
+            console.log(user);
+
+            Iframe.open({
+                id: Math.random(),
+                name: '用户信息',
+                url: './html/user/supplier/index.html?classId=1001',
+                query: {
+                    'type': user.role.type, // 用户角色类别
+                    'user': user.id
+                }
+            });
+
+        },
+        'before-logout': function () {
+            // 注销前置事件
+            return Iframe.fire('before-logout');
+        },
+        'cancel-logout': function () {
+            // 取消注销事件
+            Iframe.fire('cancel-logout', []);
+        }
+    });
+
     //iframe 页面
     Iframes.on({
         'active': function (item) {
-/*            Sidebar.active(item);
-            Tips.active(item);
-            Iframe.fire(item.id, 'active', [item]);*/
             Tips.active(item);
             Iframe.fire(item.id, 'active', [item]);
         },
@@ -79,25 +156,25 @@
     Iframe.on('open', function (group, index, data) {
 
         // 已有菜单打开方式
-        MenuData.getItem(group, index, function (item) {
+        /*        MenuData.getItem(group, index, function (item) {
 
-            if (!item) {
-                return;
-            }
+                    if (!item) {
+                        return;
+                    }
 
-            var query = data.query;
-            if (query) {
-                //item.url = $.Url.addQueryString(item.url, query);
-                //不能直接修改原对象的 url，否则可能会影响到原来的 url
-                item = $.Object.extend({}, item, {
-                    url: $.Url.addQueryString(item.url, query)
-                });
-            }
+                    var query = data.query;
+                    if (query) {
+                        //item.url = $.Url.addQueryString(item.url, query);
+                        //不能直接修改原对象的 url，否则可能会影响到原来的 url
+                        item = $.Object.extend({}, item, {
+                            url: $.Url.addQueryString(item.url, query)
+                        });
+                    }
 
-            PageTabs.add(item); //安静模式，不触发事件
-            PageList.add(item); //安静模式，不触发事件
-            Iframes.add(item, true); //强制刷新
-        });
+                    PageTabs.add(item); //安静模式，不触发事件
+                    PageList.add(item); //安静模式，不触发事件
+                    Iframes.add(item, true); //强制刷新
+                });*/
 
         //重载以对象传入的方式
         if (typeof group == 'object') {

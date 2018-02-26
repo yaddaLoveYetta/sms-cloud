@@ -444,73 +444,183 @@ public class UserExample {
             return (Criteria) this;
         }
 
-        public Criteria andTypeIsNull() {
-            addCriterion("`type` is null");
+        public Criteria andRoleIsNull() {
+            addCriterion("`role` is null");
             return (Criteria) this;
         }
 
-        public Criteria andTypeIsNotNull() {
-            addCriterion("`type` is not null");
+        public Criteria andRoleIsNotNull() {
+            addCriterion("`role` is not null");
             return (Criteria) this;
         }
 
-        public Criteria andTypeEqualTo(String value) {
-            addCriterion("`type` =", value, "type");
+        public Criteria andRoleEqualTo(Long value) {
+            addCriterion("`role` =", value, "role");
             return (Criteria) this;
         }
 
-        public Criteria andTypeNotEqualTo(String value) {
-            addCriterion("`type` <>", value, "type");
+        public Criteria andRoleNotEqualTo(Long value) {
+            addCriterion("`role` <>", value, "role");
             return (Criteria) this;
         }
 
-        public Criteria andTypeGreaterThan(String value) {
-            addCriterion("`type` >", value, "type");
+        public Criteria andRoleGreaterThan(Long value) {
+            addCriterion("`role` >", value, "role");
             return (Criteria) this;
         }
 
-        public Criteria andTypeGreaterThanOrEqualTo(String value) {
-            addCriterion("`type` >=", value, "type");
+        public Criteria andRoleGreaterThanOrEqualTo(Long value) {
+            addCriterion("`role` >=", value, "role");
             return (Criteria) this;
         }
 
-        public Criteria andTypeLessThan(String value) {
-            addCriterion("`type` <", value, "type");
+        public Criteria andRoleLessThan(Long value) {
+            addCriterion("`role` <", value, "role");
             return (Criteria) this;
         }
 
-        public Criteria andTypeLessThanOrEqualTo(String value) {
-            addCriterion("`type` <=", value, "type");
+        public Criteria andRoleLessThanOrEqualTo(Long value) {
+            addCriterion("`role` <=", value, "role");
             return (Criteria) this;
         }
 
-        public Criteria andTypeLike(String value) {
-            addCriterion("`type` like", value, "type");
+        public Criteria andRoleIn(List<Long> values) {
+            addCriterion("`role` in", values, "role");
             return (Criteria) this;
         }
 
-        public Criteria andTypeNotLike(String value) {
-            addCriterion("`type` not like", value, "type");
+        public Criteria andRoleNotIn(List<Long> values) {
+            addCriterion("`role` not in", values, "role");
             return (Criteria) this;
         }
 
-        public Criteria andTypeIn(List<String> values) {
-            addCriterion("`type` in", values, "type");
+        public Criteria andRoleBetween(Long value1, Long value2) {
+            addCriterion("`role` between", value1, value2, "role");
             return (Criteria) this;
         }
 
-        public Criteria andTypeNotIn(List<String> values) {
-            addCriterion("`type` not in", values, "type");
+        public Criteria andRoleNotBetween(Long value1, Long value2) {
+            addCriterion("`role` not between", value1, value2, "role");
             return (Criteria) this;
         }
 
-        public Criteria andTypeBetween(String value1, String value2) {
-            addCriterion("`type` between", value1, value2, "type");
+        public Criteria andIsAdminIsNull() {
+            addCriterion("is_admin is null");
             return (Criteria) this;
         }
 
-        public Criteria andTypeNotBetween(String value1, String value2) {
-            addCriterion("`type` not between", value1, value2, "type");
+        public Criteria andIsAdminIsNotNull() {
+            addCriterion("is_admin is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsAdminEqualTo(Boolean value) {
+            addCriterion("is_admin =", value, "isAdmin");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsAdminNotEqualTo(Boolean value) {
+            addCriterion("is_admin <>", value, "isAdmin");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsAdminGreaterThan(Boolean value) {
+            addCriterion("is_admin >", value, "isAdmin");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsAdminGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("is_admin >=", value, "isAdmin");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsAdminLessThan(Boolean value) {
+            addCriterion("is_admin <", value, "isAdmin");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsAdminLessThanOrEqualTo(Boolean value) {
+            addCriterion("is_admin <=", value, "isAdmin");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsAdminIn(List<Boolean> values) {
+            addCriterion("is_admin in", values, "isAdmin");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsAdminNotIn(List<Boolean> values) {
+            addCriterion("is_admin not in", values, "isAdmin");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsAdminBetween(Boolean value1, Boolean value2) {
+            addCriterion("is_admin between", value1, value2, "isAdmin");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsAdminNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("is_admin not between", value1, value2, "isAdmin");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrgIsNull() {
+            addCriterion("org is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrgIsNotNull() {
+            addCriterion("org is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrgEqualTo(Long value) {
+            addCriterion("org =", value, "org");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrgNotEqualTo(Long value) {
+            addCriterion("org <>", value, "org");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrgGreaterThan(Long value) {
+            addCriterion("org >", value, "org");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrgGreaterThanOrEqualTo(Long value) {
+            addCriterion("org >=", value, "org");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrgLessThan(Long value) {
+            addCriterion("org <", value, "org");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrgLessThanOrEqualTo(Long value) {
+            addCriterion("org <=", value, "org");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrgIn(List<Long> values) {
+            addCriterion("org in", values, "org");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrgNotIn(List<Long> values) {
+            addCriterion("org not in", values, "org");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrgBetween(Long value1, Long value2) {
+            addCriterion("org between", value1, value2, "org");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrgNotBetween(Long value1, Long value2) {
+            addCriterion("org not between", value1, value2, "org");
             return (Criteria) this;
         }
     }

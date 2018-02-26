@@ -58,7 +58,6 @@ public class ResponseAspect {
 
 
     @Around(value = "responseBodyPointCut()")
-    @ResponseBody
     public void formatResult2JSON(ProceedingJoinPoint pjp) throws Throwable {
 
         Object ret = pjp.proceed(pjp.getArgs());
@@ -71,6 +70,9 @@ public class ResponseAspect {
         result.setData(ret);
 
         HttpServletResponse response = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getResponse();
+        // test
+        response.addHeader("Access-Control-Allow-Origin", "*");
+
         HttpOutputMessage outputMessage = new ServletServerHttpResponse(response);
 
         converter.write(result, MediaType.APPLICATION_JSON, outputMessage);

@@ -3,8 +3,10 @@ package com.kingdee.hrp.sms.system.user.controller;
 import com.kingdee.hrp.sms.common.domain.ResultWarp;
 import com.kingdee.hrp.sms.common.domain.StatusCode;
 import com.kingdee.hrp.sms.common.exception.BusinessLogicRunTimeException;
+import com.kingdee.hrp.sms.common.model.Role;
 import com.kingdee.hrp.sms.common.model.User;
 import com.kingdee.hrp.sms.system.user.service.IUserService;
+import com.kingdee.hrp.sms.util.Common;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -14,6 +16,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.beans.IntrospectionException;
+import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 用户控制器
@@ -54,8 +60,9 @@ public class UserController {
      */
     @RequestMapping("/login")
     @ResponseBody
-    public User login(String userName, String password, HttpServletRequest request) {
+    public Map<String, Object> login(String userName, String password, HttpServletRequest request) {
 
+        Map<String, Object> ret = new HashMap<>();
 
         if ("".equals(userName) || "".equals(password)) {
             throw new BusinessLogicRunTimeException("用户名或密码不能为空!");
@@ -64,8 +71,22 @@ public class UserController {
         User user = userService.login(userName, password);
 
         if (null != user) {
+
+            Role role = userService.getUserRole(user.getId());
+
+            try {
+                ret = Common.beanToMap(user);
+                // 用户角色信息返回给客户端
+                ret.put("role", role);
+            } catch (Exception e) {
+                throw new BusinessLogicRunTimeException(e);
+            }
+
+            // 将用户及用户角色信息放到session中
             request.getSession().setAttribute("user", user);
-            return user;
+            request.getSession().setAttribute("role", role);
+
+            return ret;
         }
 
         throw new BusinessLogicRunTimeException("登录失败!");

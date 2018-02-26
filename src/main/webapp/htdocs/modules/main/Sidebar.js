@@ -33,8 +33,8 @@ define('Sidebar', function (require, module, exports) {
         isHome: true,
         id: $.String.random(5),
         //url: 'html/home/login.html',
-        //url: 'html/home/index-hrp.html',
-        url: 'html/520/index.html'
+        url: 'html/home/index-hrp.html',
+        //url: 'html/520/index.html'
     };
 
     function loadMenuData(fn) {
@@ -90,16 +90,18 @@ define('Sidebar', function (require, module, exports) {
                     id: topItem.id,
                     icon: topItem.icon,
                     name: topItem.name,
-                    sub: $.String.format(samples["sub"], {
+                    title: topItem.desc,
+                    sub: topItem.items ? $.String.format(samples["sub"], {
                         subItem: $.Array.keep(topItem.items, function (subItem, subIndex) {
                             return $.String.format(samples["subItem"], {
                                 index: topIndex + '-' + subIndex,
                                 id: subItem.id,
                                 icon: subItem.icon,
                                 name: subItem.name,
+                                title: subItem.desc
                             });
                         }).join("")
-                    }),
+                    }) : '',
                     line: (topIndex + 1) % 3 === 0 ? $.String.format(samples["line"], {}) : ''
                 });
             }).join("")

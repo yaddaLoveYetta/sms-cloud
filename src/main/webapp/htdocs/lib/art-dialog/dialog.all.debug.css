@@ -12,7 +12,7 @@
     _float: left;
     position: relative;
     background-color: #FFF;
-    border: 1px solid #999;
+    /*border: 1px solid #999;*/
     border-radius: 6px;
     outline: 0;
     background-clip: padding-box;
@@ -102,7 +102,7 @@
     color: #27292b;
 }
 .ui-dialog-body {
-    padding: 20px 25px;
+    padding: 2px 2px;
     text-align: center;
 }
 .ui-dialog-content {
