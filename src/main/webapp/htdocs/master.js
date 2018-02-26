@@ -116,12 +116,27 @@
             var user = SMS.Login.get();
             console.log(user);
 
+            var url, classId;
+            var roleType = user.role.type;
+
+            if (roleType === 1) {
+                // 系统管理员-暂时没有资料维护
+                return;
+            } else if (roleType === 2) {
+                //  医院角色类别
+                url = './html/user/hospital/index.html?classId=1002';
+                classId = 1002;
+            } else if (roleType === 3) {
+                // 供应商角色类别
+                url = './html/user/supplier/index.html?classId=1001'
+                classId = 1001;
+            }
             Iframe.open({
-                id: Math.random(),
-                name: '用户信息',
-                url: './html/user/supplier/index.html?classId=1001',
+                id: 'editProfile-' + classId,
+                name: '信息维护',
+                url: url,
                 query: {
-                    'type': user.role.type, // 用户角色类别
+                    'type': user.role.type,
                     'user': user.id
                 }
             });
