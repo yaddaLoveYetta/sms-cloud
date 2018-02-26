@@ -33,8 +33,8 @@ define('Sidebar', function (require, module, exports) {
         isHome: true,
         id: $.String.random(5),
         //url: 'html/home/login.html',
-        //url: 'html/home/index-hrp.html',
-        url: 'html/520/index.html'
+        url: 'html/home/index-hrp.html',
+        //url: 'html/520/index.html'
     };
 
     function loadMenuData(fn) {
