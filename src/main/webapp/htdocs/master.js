@@ -121,19 +121,19 @@
                 name: '用户信息',
                 url: './html/user/supplier/index.html?classId=1001',
                 query: {
-                    'type': user.type,
+                    'type': user.role.type, // 用户角色类别
                     'user': user.id
                 }
             });
 
         },
-        'before-logout':function () {
+        'before-logout': function () {
             // 注销前置事件
             return Iframe.fire('before-logout');
         },
-        'cancel-logout':function () {
+        'cancel-logout': function () {
             // 取消注销事件
-            Iframe.fire('before-logout', []);
+            Iframe.fire('cancel-logout', []);
         }
     });
 
