@@ -11,14 +11,28 @@
     var MessageBox = SMS.require('MessageBox');
     var FormAction = require('FormAction');
 
+    var BL = SMS.require('ButtonList');
 
     var itemId = MiniQuery.Url.getQueryString(window.location.href, 'id');
     var classId = MiniQuery.Url.getQueryString(window.location.href, 'classId');
+    var ButtonList;
 
-    var ButtonList = FormAction.create({'classId': classId});
+    FormAction.create({'classId': classId}, function (config) {
 
-    ButtonList.render();
+        ButtonList = new BL(config);
+        ButtonList.render();
 
-    console.log(ButtonList);
+        ButtonList.on('click', {
+            'add': function (item, index) {
+
+                console.log(item);
+            },
+            'edit': function (item, index) {
+                console.log(index);
+                console.log(item);
+            }
+        });
+    });
+
 
 })(jQuery, MiniQuery, SMS);
