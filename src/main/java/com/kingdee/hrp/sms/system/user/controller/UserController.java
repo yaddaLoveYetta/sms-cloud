@@ -72,7 +72,7 @@ public class UserController {
 
         if (null != user) {
 
-            Role role = userService.getUserRole(user.getId());
+            Role role = userService.getUserRole(user.getRole());
 
             try {
                 ret = Common.beanToMap(user);

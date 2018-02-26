@@ -2346,7 +2346,7 @@
                             return $.String.format(samples['item'], {
                                 'index': no,
                                 'text': item[textKey],
-                                'icon': item[iconKey] || 'file.png'
+                                'icon': item[iconKey] || 'icon-jibenziliao1'
                             });
                         }
 
@@ -2354,7 +2354,7 @@
                         return $.String.format(samples['group'], {
                             'index': no,
                             'text': item[textKey],
-                            'icon': item[iconKey] || 'file.png',
+                            'icon': item[iconKey] || 'icon-jibenziliao1',
                             'ol-id': meta.olId,
                             'span-id': meta.spanId,
                             'css-class': item.cssClass || '',
@@ -2365,7 +2365,7 @@
                                     'no': no,
                                     'index': index,
                                     'text': item[textKey],
-                                    'icon': item[iconKey] || 'file.png'
+                                    'icon': item[iconKey] || 'icon-jibenziliao1'
                                 });
 
                             }).join(''),

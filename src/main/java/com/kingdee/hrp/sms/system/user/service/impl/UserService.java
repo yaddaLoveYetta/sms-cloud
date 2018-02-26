@@ -99,15 +99,15 @@ public class UserService extends BaseService implements IUserService {
     /**
      * 获取用户的角色
      *
-     * @param userId
+     * @param roleId
      * @return
      */
     @Override
-    public Role getUserRole(Long userId) {
+    public Role getUserRole(Long roleId) {
 
         RoleMapper roleMapper = sqlSession.getMapper(RoleMapper.class);
 
-        return roleMapper.selectByPrimaryKey(userId);
+        return roleMapper.selectByPrimaryKey(roleId);
     }
     
 }

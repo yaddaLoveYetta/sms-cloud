@@ -29,7 +29,6 @@ define('ButtonList', function (require, module, exports) {
     }
 
     return {
-        'render': render,
-        on: ButtonList.on
+        'render': render
     }
 });

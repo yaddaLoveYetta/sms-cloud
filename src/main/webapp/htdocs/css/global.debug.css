@@ -176,7 +176,7 @@ label{
     padding-left: 20px;
     display: inline-block;
     height: 18px;
-    vertical-align: middle;
+   /* vertical-align: middle;*/
 }
 
 .sms-btn-item:hover {
