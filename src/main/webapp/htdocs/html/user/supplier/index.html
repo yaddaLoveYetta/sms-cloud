@@ -20,34 +20,43 @@
     <div id="div-button-list" class="btn-box"></div>
 </div>
 <!--主显示区-->
-<form class="form-horizontal">
-    <div class="box-body">
-        <div class="form-group">
-            <label for="name" class="col-sm-2 control-label">公司全称</label>
-            <div class="col-sm-2">
-                <input type="text" class="form-control" id="name" placeholder="公司全称">
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="address" class="col-sm-2 control-label">地址</label>
-            <div class="col-sm-2">
-                <input type="text" class="form-control" id="address" placeholder="地址">
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="business_license" class="col-sm-2 control-label">营业执照号码</label>
-            <div class="col-sm-2">
-                <input type="text" class="form-control" id="business_license" placeholder="营业执照号码">
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="tax_id" class="col-sm-2 control-label">税务登记号</label>
-            <div class="col-sm-2">
-                <input type="text" class="form-control" id="tax_id" placeholder="税务登记号">
-            </div>
+
+<div class="container-fluid">
+
+    <!-- 一行一个字段 -->
+    <div class="row form-group">
+        <label class="col-sm-2 ">公司全称</label>
+        <div class="col-sm-2">
+            <input type="text" class="form-control" placeholder="公司全称">
         </div>
     </div>
-</form>
+
+    <!-- 一行两个字段 -->
+    <div class="row form-group">
+        <label class="col-sm-2 ">公司全称</label>
+        <div class="col-sm-2">
+            <input id="name" type="text" class="form-control" placeholder="公司全称">
+        </div>
+        <label class="col-sm-2 ">地址</label>
+        <div class="col-sm-2">
+            <input id="address" type="text" class="form-control" placeholder="地址">
+        </div>
+
+    </div>
+
+    <div class="row form-group">
+        <label class="col-sm-2 ">营业执照号码</label>
+        <div class="col-sm-2">
+            <input id="business_license" type="text" class="form-control" placeholder="营业执照号码">
+        </div>
+        <label class="col-sm-2 ">税务登记号</label>
+        <div class="col-sm-2">
+            <input id="tax_id"  type="text" class="form-control" placeholder="税务登记号">
+        </div>
+
+    </div>
+
+</div>
 
 <script src="../../../lib/jquery/jquery-1.11.1.debug.js"></script>
 <script src="../../../lib/miniquery/miniquery.debug.js"></script>
