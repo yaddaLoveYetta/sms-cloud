@@ -1,4 +1,4 @@
-package com.kingdee.hrp.sms.basedata.model;
+package com.kingdee.hrp.sms.system.user.model;
 
 /**
  * @author yadda<silenceisok@163.com>
@@ -6,7 +6,7 @@ package com.kingdee.hrp.sms.basedata.model;
  */
 public enum UserEnum {
 
-    SUPPLIER(1, "供应商用户"), HOSPTOR(2, "医院用户"),
+    SUPPLIER(1, "供应商用户"), HOSPITAL(2, "医院用户"),
 
     GUEST(3, "普通用户");
 
@@ -17,6 +17,4 @@ public enum UserEnum {
         this.id = id;
         this.name = name;
     }
-
-
 }

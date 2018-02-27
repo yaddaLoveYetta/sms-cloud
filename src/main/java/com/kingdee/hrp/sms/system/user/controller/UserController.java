@@ -44,7 +44,7 @@ public class UserController {
      */
     @RequestMapping("/register")
     @ResponseBody
-    public Boolean register(@RequestParam(value = "user") User user) {
+    public Boolean register(@RequestParam(value = "user") User user,Integer type) {
 
         userService.register(user);
         return true;
