@@ -76,7 +76,7 @@ define('FormAction', function (require, module, exports) {
                     return item;
                 }
 
-                return group;
+                return group[0];
             })
 
             __default__.items = actions;

@@ -445,20 +445,20 @@
 
     #--item.begin--#
     <li data-index="{index}" class=sms-btn-item>
-    <i class="icons" style="background-image: url({icon});"></i>
+    <i class=" iconfont {icon}" ></i>
     {text}</li>
     #--item.end--#
 
     #--group.begin--#
     <li data-index="{index}" class=sms-btn-menu {css-class}">
         <button class=sms-btn-item>
-        <i class="icons" style="background-image: url({icon});"></i>
+        <i class="iconfont {icon}"></i>
         {text}</button>
         <ol id="{ol-id}{index}" class="btn-more" style="display:none;">
             #--group.item.begin--#
             <li data-index="{index}" data-no="{no}">
                 <a href="javascript:">
-                <i class="icons" style="background-image: url({icon});"></i>
+                <i class="iconfont {icon}" ></i>
                 {text}</a>
             </li>
             #--group.item.end--#

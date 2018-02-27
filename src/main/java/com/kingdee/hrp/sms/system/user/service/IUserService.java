@@ -30,8 +30,8 @@ public interface IUserService extends Serializable {
     /**
      * 获取用户的角色
      *
-     * @param userId
+     * @param roleId
      * @return
      */
-    Role getUserRole(Long userId);
+    Role getUserRole(Long roleId);
 }
