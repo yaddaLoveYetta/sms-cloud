@@ -34,4 +34,14 @@ public interface IUserService extends Serializable {
      * @return
      */
     Role getUserRole(Long roleId);
+
+    /**
+     * 用户修改密码
+     * @param userId 用户ID
+     * @param oldpwd 原密码
+     * @param newpwd 新密码
+     * @return
+     */
+    boolean editpwd(Long userId, String oldpwd, String newpwd);
+
 }

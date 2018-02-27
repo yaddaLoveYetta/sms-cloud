@@ -5,7 +5,8 @@
 
 <generatorConfiguration>
 
-    <classPathEntry location="D:\java\maven-repo\mysql\mysql-connector-java\5.1.44\mysql-connector-java-5.1.44.jar"/>
+    <!--<classPathEntry location="D:\java\maven-repo\mysql\mysql-connector-java\5.1.44\mysql-connector-java-5.1.44.jar"/>-->
+    <classPathEntry location="D:\Java\apache-maven-3.3.9\repository\mysql\mysql-connector-java\5.1.44\mysql-connector-java-5.1.44.jar"/>
 
     <context id="MSSQL_Tables2Java" targetRuntime="MyBatis3">
 

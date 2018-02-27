@@ -1,7 +1,5 @@
 package com.kingdee.hrp.sms.system.user.controller;
 
-import com.kingdee.hrp.sms.common.domain.ResultWarp;
-import com.kingdee.hrp.sms.common.domain.StatusCode;
 import com.kingdee.hrp.sms.common.exception.BusinessLogicRunTimeException;
 import com.kingdee.hrp.sms.common.model.Role;
 import com.kingdee.hrp.sms.common.model.User;
@@ -16,8 +14,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.beans.IntrospectionException;
-import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -44,7 +40,7 @@ public class UserController {
      */
     @RequestMapping("/register")
     @ResponseBody
-    public Boolean register(@RequestParam(value = "user") User user,Integer type) {
+    public Boolean register(User user) {
 
         userService.register(user);
         return true;
@@ -103,5 +99,25 @@ public class UserController {
         request.getSession().removeAttribute("user");
         logger.info("注销成功");
         return true;
+    }
+
+    /**
+     * 用户修改密码
+     * @param userId 用户ID
+     * @param oldpwd 原密码
+     * @param newpwd 新密码
+     * @return
+     */
+    @RequestMapping("/editpwd")
+    @ResponseBody
+    public Boolean editpwd(Long userId,String oldpwd,String newpwd){
+
+        if (userService.editpwd(userId, oldpwd, newpwd)) {
+            logger.info("密码修改成功");
+            return true;
+        } else {
+            logger.info("密码修改失败");
+            return false;
+        }
     }
 }
