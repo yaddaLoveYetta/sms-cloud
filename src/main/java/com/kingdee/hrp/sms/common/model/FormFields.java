@@ -1,9 +1,9 @@
 package com.kingdee.hrp.sms.common.model;
 
 public class FormFields extends FormFieldsKey {
-    private String name;
-
     private Integer page;
+
+    private String name;
 
     private String sqlColumnName;
 
@@ -53,20 +53,20 @@ public class FormFields extends FormFieldsKey {
 
     private Integer isCount;
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name == null ? null : name.trim();
-    }
-
     public Integer getPage() {
         return page;
     }
 
     public void setPage(Integer page) {
         this.page = page;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name == null ? null : name.trim();
     }
 
     public String getSqlColumnName() {

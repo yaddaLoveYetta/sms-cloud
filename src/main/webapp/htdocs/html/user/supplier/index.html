@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
     <title>供应商用户信息</title>
@@ -20,15 +20,136 @@
     <div id="div-button-list" class="btn-box"></div>
 </div>
 <!--主显示区-->
+<div id="div-head-content" class="container-fluid">
 
-<div class="container-fluid">
+    <!--
+        #--ctrl.begin--#
 
-    <!-- 一行一个字段 -->
+            #--mustInput.begin--#
+            <span class="must-mark">*</span>
+            #--mustInput.end--#
+
+            #--text.begin--#
+            <div class="row form-group">
+                <label class="col-sm-2 "><span class="must-mark">*</span>文本编辑框</label>
+                <div class="col-sm-2">
+                    <input id="text" type="text" class="form-control" placeholder="文本">
+                    <span id="text-msg" class="msg"></span>
+                </div>
+            </div>
+            #--text.end--#
+
+            #--textarea.begin--#
+            <div class="row form-group">
+                <label class="col-sm-2 "><span class="must-mark">*</span>多行文本控件</label>
+                <div class="col-sm-2">
+                    <textarea id="textarea" class="form-control" placeholder="多行文本"></textarea>
+                    <span id="textarea-msg" class="msg"></span>
+                </div>
+            </div>
+            #--textarea.end--#
+
+            #--datatime.begin--#
+            <div class="row form-group has-feedback">
+                <label class="col-sm-2 "><span class="must-mark">*</span>日期时间控件</label>
+                <div class=" col-sm-2">
+                    <span class="iconfont icon-riqixuanze form-control-feedback"></span>
+                    <input id="dataTime" type="text" class="form-control" placeholder="日期时间">
+                    <span id="dataTime-msg" class="msg"></span>
+                </div>
+            </div>
+            #--datatime.end--#
+
+            #--checkbox.begin--#
+            <div class="row form-group">
+                <label class="col-sm-2 "><span class="must-mark">*</span>选择框控件</label>
+                <div class="col-sm-2">
+                    <input id="checkbox" type="checkbox" class="checkbox" placeholder="选择框">
+                    <span id="checkbox-msg" class="msg"></span>
+                </div>
+            </div>
+            #--checkbox.end--#
+
+            #--password.begin--#
+            <div class="row form-group">
+                <label class="col-sm-2 "><span class="must-mark">*</span>密码控件</label>
+                <div class="col-sm-2">
+                    <input id="password" type="password" class="form-control" placeholder="密码">
+                    <span id="password-msg" class="msg"></span>
+                </div>
+            </div>
+            #--password.end--#
+
+            #--f7.begin--#
+            <div class="row form-group has-feedback">
+                <label class="col-sm-2 "><span class="must-mark">*</span>F7选择框控件</label>
+                <div class="col-sm-2 F7-box" id="f7">
+                    <span class="iconfont icon-riqixuanze form-control-feedback"></span>
+                    <input type="text" class="form-control" placeholder="F7选择框">
+                </div>
+                <span id="f7-msg" class="msg"></span>
+            </div>
+            #--f7.end--#
+
+    #--ctrl.end--#
+
+    -->
+
+
+    <!-- 文本控件 -->
     <div class="row form-group">
-        <label class="col-sm-2 ">公司代码</label>
+        <label class="col-sm-2 "><span class="must-mark">*</span>文本编辑框</label>
         <div class="col-sm-2">
-            <input id="number" type="text" class="form-control" placeholder="公司全称">
+            <input id="text" type="text" class="form-control" placeholder="文本">
+            <span id="text-msg" class="msg"></span>
         </div>
+    </div>
+
+    <!-- 多行文本控件 -->
+    <div class="row form-group">
+        <label class="col-sm-2 "><span class="must-mark">*</span>多行文本控件</label>
+        <div class="col-sm-2">
+            <textarea id="textarea" class="form-control" placeholder="多行文本"></textarea>
+            <span id="textarea-msg" class="msg"></span>
+        </div>
+    </div>
+
+    <!-- 日期时间控件 -->
+    <div class="row form-group has-feedback">
+        <label class="col-sm-2 "><span class="must-mark">*</span>日期时间控件</label>
+        <div class=" col-sm-2">
+            <span class="iconfont icon-riqixuanze form-control-feedback"></span>
+            <input id="dataTime" type="text" class="form-control" placeholder="日期时间">
+            <span id="dataTime-msg" class="msg"></span>
+        </div>
+    </div>
+
+    <!-- 选择框控件 -->
+    <div class="row form-group">
+        <label class="col-sm-2 "><span class="must-mark">*</span>选择框控件</label>
+        <div class="col-sm-2">
+            <input id="checkbox" type="checkbox" class="checkbox" placeholder="选择框">
+            <span id="checkbox-msg" class="msg"></span>
+        </div>
+    </div>
+
+    <!-- 密码控件 -->
+    <div class="row form-group">
+        <label class="col-sm-2 "><span class="must-mark">*</span>密码控件</label>
+        <div class="col-sm-2">
+            <input id="password" type="password" class="form-control" placeholder="密码">
+            <span id="password-msg" class="msg"></span>
+        </div>
+    </div>
+
+    <!-- F7选择框控件 -->
+    <div class="row form-group has-feedback">
+        <label class="col-sm-2 "><span class="must-mark">*</span>F7选择框控件</label>
+        <div class="col-sm-2 F7-box" id="f7">
+            <span class="iconfont icon-riqixuanze form-control-feedback"></span>
+            <input type="text" class="form-control" placeholder="F7选择框">
+        </div>
+        <span id="f7-msg" class="msg"></span>
     </div>
 
     <!-- 一行两个字段 -->
@@ -62,14 +183,33 @@
 
 </div>
 
+<div id="div-body-content" class="container-fluid">
+    <!-- 表体表格-->
+    <div class="row form-group">
+        <div id="initCombo" class="dn col-sm-1">
+            <input type="text" class="textbox FParkNumberAuto" name="FParkNumber" autocomplete="off">
+        </div>
+        <div class="grid-wrap col-sm-12">
+            <!-- jqGrid table -->
+            <table id="bd-grid"></table>
+            <!-- jqGrid 分页 div -->
+            <div id="bd-grid-pager"></div>
+        </div>
+        <span class="error-msg" id="bd-grid-msg"></span>
+    </div>
+
+</div>
+
 <script src="../../../lib/jquery/jquery-1.11.1.debug.js"></script>
 <script src="../../../lib/miniquery/miniquery.debug.js"></script>
 <script src="../../../lib/sms/sms.debug.js"></script>
 <script src="../../../config.js"></script>
 
 <!--grunt.js.begin-->
-<script src="modules/ButtonList.js"></script>
-<script src="modules/FormAction.js"></script>
+<script src="../../selector/module/DataSelector.js"></script>
+<script src="../../common-edit/Validate.js"></script>
+<script src="../../common-edit/FormEdit.js"></script>
+<script src="../../common-edit/FormAction.js"></script>
 <script src="index.js"></script>
 
 <!--grunt.js.end-->

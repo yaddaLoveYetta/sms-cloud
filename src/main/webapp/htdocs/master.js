@@ -136,8 +136,9 @@
                 name: '信息维护',
                 url: url,
                 query: {
-                    'type': user.role.type,
-                    'user': user.id
+                    'roleType': user.role.type,
+                    'user': user.id,
+                    'operate':0   // 0：查看 1：新增 2：修改
                 }
             });
 

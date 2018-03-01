@@ -29,7 +29,7 @@ public class TemplateController {
     private ITemplateService templateService;
 
     /**
-     * 查询基础资料/单据模板数据
+     * 查询单据模板数据
      */
     @RequestMapping(value = "getFormTemplate")
     public Map<String, Object> getFormTemplate(Integer classId) {

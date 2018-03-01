@@ -1,12 +1,16 @@
 package com.kingdee.hrp.sms.common.service.impl;
 
 import com.kingdee.hrp.sms.common.dao.generate.FormActionMapper;
-import com.kingdee.hrp.sms.common.model.FormAction;
-import com.kingdee.hrp.sms.common.model.FormActionExample;
+import com.kingdee.hrp.sms.common.dao.generate.FormClassEntryMapper;
+import com.kingdee.hrp.sms.common.dao.generate.FormClassMapper;
+import com.kingdee.hrp.sms.common.dao.generate.FormFieldsMapper;
+import com.kingdee.hrp.sms.common.exception.BusinessLogicRunTimeException;
+import com.kingdee.hrp.sms.common.model.*;
 import com.kingdee.hrp.sms.common.service.BaseService;
 import com.kingdee.hrp.sms.common.service.ITemplateService;
 import org.springframework.stereotype.Service;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -18,8 +22,96 @@ public class TemplateService extends BaseService implements ITemplateService {
      * @param classId
      */
     @Override
-    public Map<String, Object> getFormTemplate(Integer classId) {
-        return null;
+    public Map<String, Object> getFormTemplate(Integer classId, Integer type) {
+
+        Map<String, Object> retMap = new LinkedHashMap<String, Object>();
+
+        // 主表模板
+        Map<String, Object> formFields = new LinkedHashMap<String, Object>();
+        // 子表模板
+        Map<String, Object> formEntry = new LinkedHashMap<String, Object>();
+
+        // 获取单据类别描述信息
+        FormClassMapper classMapper = sqlSession.getMapper(FormClassMapper.class);
+
+        // 主表单据类别描述
+        FormClass formClass = classMapper.selectByPrimaryKey(classId);
+
+        if (null == formClass) {
+            throw new BusinessLogicRunTimeException("模板不存在或不唯一,请联系管理员!");
+        }
+
+
+        // 获取单据模板page=0表头
+
+        FormFieldsMapper formFieldsMapper = sqlSession.getMapper(FormFieldsMapper.class);
+
+        FormFieldsExample fieldsExample = new FormFieldsExample();
+        FormFieldsExample.Criteria fieldsCriteria = fieldsExample.createCriteria();
+
+        fieldsCriteria.andClassIdEqualTo(classId);
+        fieldsCriteria.andPageEqualTo(0);
+
+        if (type == 1) {
+            // 后端构建查询脚本时调用
+            fieldsExample.setOrderByClause("page, ctlIndex");
+
+        } else {
+            // 前端处理显示顺序时调用
+            fieldsExample.setOrderByClause("page, [index]");
+        }
+
+        List<FormFields> headFields = formFieldsMapper.selectByExample(fieldsExample);
+
+        // 子表单据类别描述
+        FormClassEntryMapper classEntryMapper = sqlSession.getMapper(FormClassEntryMapper.class);
+        FormClassEntryExample classEntryExample = new FormClassEntryExample();
+        FormClassEntryExample.Criteria entryCriteria = classEntryExample.createCriteria();
+
+        entryCriteria.andClassIdEqualTo(classId);
+        List<FormClassEntry> formClassEntries = classEntryMapper.selectByExample(classEntryExample);
+
+        // 打包表头字段模板
+        Map<String, FormFields> formFields0 = new LinkedHashMap<String, FormFields>();
+        for (FormFields item : headFields) {
+            formFields0.put(item.getKey(), item);
+        }
+        // 表头模板
+        formFields.put("0", formFields0);
+
+        // 循环打包子表字段模板
+        for (FormClassEntry entry : formClassEntries) {
+
+            String entryIndex = entry.getEntryIndex().toString();
+
+            formEntry.put(entryIndex, entry);
+
+            // 查询子表字段模板(按子表page)
+            FormFieldsExample formFieldsExample = new FormFieldsExample();
+            FormFieldsExample.Criteria formFieldsExampleCriteria = formFieldsExample.createCriteria();
+
+            formFieldsExampleCriteria.andClassIdEqualTo(classId);
+            formFieldsExampleCriteria.andPageEqualTo(entry.getEntryIndex());
+
+            List<FormFields> entryIndexFieldsByExample = formFieldsMapper.selectByExample(formFieldsExample);
+
+            Map<String, FormFields> formFieldsEntryIndex = new LinkedHashMap<String, FormFields>();
+            // 打包子表字段模板
+            for (FormFields fields : entryIndexFieldsByExample) {
+                formFieldsEntryIndex.put(fields.getKey(), fields);
+            }
+
+            // 第entryIndex个子表模板
+            formFields.put(entryIndex, formFieldsEntryIndex);
+        }
+
+        retMap.put("formClass", formClass);
+        retMap.put("formClassEntry", formEntry);
+        retMap.put("formFields", formFields);
+
+        return retMap;
+
+
     }
 
     /**

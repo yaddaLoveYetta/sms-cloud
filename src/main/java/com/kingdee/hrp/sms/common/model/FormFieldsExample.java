@@ -234,6 +234,66 @@ public class FormFieldsExample {
             return (Criteria) this;
         }
 
+        public Criteria andPageIsNull() {
+            addCriterion("page is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPageIsNotNull() {
+            addCriterion("page is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPageEqualTo(Integer value) {
+            addCriterion("page =", value, "page");
+            return (Criteria) this;
+        }
+
+        public Criteria andPageNotEqualTo(Integer value) {
+            addCriterion("page <>", value, "page");
+            return (Criteria) this;
+        }
+
+        public Criteria andPageGreaterThan(Integer value) {
+            addCriterion("page >", value, "page");
+            return (Criteria) this;
+        }
+
+        public Criteria andPageGreaterThanOrEqualTo(Integer value) {
+            addCriterion("page >=", value, "page");
+            return (Criteria) this;
+        }
+
+        public Criteria andPageLessThan(Integer value) {
+            addCriterion("page <", value, "page");
+            return (Criteria) this;
+        }
+
+        public Criteria andPageLessThanOrEqualTo(Integer value) {
+            addCriterion("page <=", value, "page");
+            return (Criteria) this;
+        }
+
+        public Criteria andPageIn(List<Integer> values) {
+            addCriterion("page in", values, "page");
+            return (Criteria) this;
+        }
+
+        public Criteria andPageNotIn(List<Integer> values) {
+            addCriterion("page not in", values, "page");
+            return (Criteria) this;
+        }
+
+        public Criteria andPageBetween(Integer value1, Integer value2) {
+            addCriterion("page between", value1, value2, "page");
+            return (Criteria) this;
+        }
+
+        public Criteria andPageNotBetween(Integer value1, Integer value2) {
+            addCriterion("page not between", value1, value2, "page");
+            return (Criteria) this;
+        }
+
         public Criteria andNameIsNull() {
             addCriterion("`name` is null");
             return (Criteria) this;
@@ -301,66 +361,6 @@ public class FormFieldsExample {
 
         public Criteria andNameNotBetween(String value1, String value2) {
             addCriterion("`name` not between", value1, value2, "name");
-            return (Criteria) this;
-        }
-
-        public Criteria andPageIsNull() {
-            addCriterion("page is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andPageIsNotNull() {
-            addCriterion("page is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andPageEqualTo(Integer value) {
-            addCriterion("page =", value, "page");
-            return (Criteria) this;
-        }
-
-        public Criteria andPageNotEqualTo(Integer value) {
-            addCriterion("page <>", value, "page");
-            return (Criteria) this;
-        }
-
-        public Criteria andPageGreaterThan(Integer value) {
-            addCriterion("page >", value, "page");
-            return (Criteria) this;
-        }
-
-        public Criteria andPageGreaterThanOrEqualTo(Integer value) {
-            addCriterion("page >=", value, "page");
-            return (Criteria) this;
-        }
-
-        public Criteria andPageLessThan(Integer value) {
-            addCriterion("page <", value, "page");
-            return (Criteria) this;
-        }
-
-        public Criteria andPageLessThanOrEqualTo(Integer value) {
-            addCriterion("page <=", value, "page");
-            return (Criteria) this;
-        }
-
-        public Criteria andPageIn(List<Integer> values) {
-            addCriterion("page in", values, "page");
-            return (Criteria) this;
-        }
-
-        public Criteria andPageNotIn(List<Integer> values) {
-            addCriterion("page not in", values, "page");
-            return (Criteria) this;
-        }
-
-        public Criteria andPageBetween(Integer value1, Integer value2) {
-            addCriterion("page between", value1, value2, "page");
-            return (Criteria) this;
-        }
-
-        public Criteria andPageNotBetween(Integer value1, Integer value2) {
-            addCriterion("page not between", value1, value2, "page");
             return (Criteria) this;
         }
 

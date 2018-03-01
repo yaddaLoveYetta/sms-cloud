@@ -9,12 +9,6 @@ define('FormAction', function (require, module, exports) {
     var SMS = require('SMS');
     var API = SMS.require('API');
 
-    var ButtonList = SMS.require('ButtonList');
-    var bl;
-    var emitter = MiniQuery.Event.create();
-
-    var items = [];
-
     var __default__ = {
         container: '#div-button-list',
         fields: {
@@ -83,24 +77,12 @@ define('FormAction', function (require, module, exports) {
 
             fn && fn(__default__);
 
-            /*           var bl = new ButtonList(__default__);
-
-                       // 总事件，最后触发
-                       bl.on('click', function (item, index) {
-                           console.dir(item);
-                       });*/
-
         });
-
-
-        // return bl;
-
 
     }
 
     return {
-        create: create,
-        on: emitter.on.bind(emitter)
+        create: create
     };
 
 });

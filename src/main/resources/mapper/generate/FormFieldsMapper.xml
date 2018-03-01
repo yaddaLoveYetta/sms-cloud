@@ -4,8 +4,8 @@
   <resultMap id="BaseResultMap" type="com.kingdee.hrp.sms.common.model.FormFields">
     <id column="class_id" jdbcType="INTEGER" property="classId" />
     <id column="key" jdbcType="VARCHAR" property="key" />
-    <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="page" jdbcType="INTEGER" property="page" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="sql_column_name" jdbcType="VARCHAR" property="sqlColumnName" />
     <result column="data_type" jdbcType="INTEGER" property="dataType" />
     <result column="ctrl_type" jdbcType="INTEGER" property="ctrlType" />
@@ -90,7 +90,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    class_id, `key`, `name`, page, sql_column_name, data_type, ctrl_type, ctrl_index, 
+    class_id, `key`, page, `name`, sql_column_name, data_type, ctrl_type, ctrl_index, 
     `index`, display, show_width, lookup_type, lookup_class_id, src_table, src_table_alis, 
     src_field, display_field, display_ext, join_type, `filter`, default_value, max_value, 
     min_value, must_input, `length`, `lock`, is_condition, is_count
@@ -128,8 +128,8 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.kingdee.hrp.sms.common.model.FormFields">
-    insert into t_form_fields (class_id, `key`, `name`, 
-      page, sql_column_name, data_type, 
+    insert into t_form_fields (class_id, `key`, page, 
+      `name`, sql_column_name, data_type, 
       ctrl_type, ctrl_index, `index`, 
       display, show_width, lookup_type, 
       lookup_class_id, src_table, src_table_alis, 
@@ -138,8 +138,8 @@
       max_value, min_value, must_input, 
       `length`, `lock`, is_condition, 
       is_count)
-    values (#{classId,jdbcType=INTEGER}, #{key,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
-      #{page,jdbcType=INTEGER}, #{sqlColumnName,jdbcType=VARCHAR}, #{dataType,jdbcType=INTEGER}, 
+    values (#{classId,jdbcType=INTEGER}, #{key,jdbcType=VARCHAR}, #{page,jdbcType=INTEGER}, 
+      #{name,jdbcType=VARCHAR}, #{sqlColumnName,jdbcType=VARCHAR}, #{dataType,jdbcType=INTEGER}, 
       #{ctrlType,jdbcType=INTEGER}, #{ctrlIndex,jdbcType=INTEGER}, #{index,jdbcType=INTEGER}, 
       #{display,jdbcType=INTEGER}, #{showWidth,jdbcType=INTEGER}, #{lookupType,jdbcType=INTEGER}, 
       #{lookupClassId,jdbcType=INTEGER}, #{srcTable,jdbcType=VARCHAR}, #{srcTableAlis,jdbcType=VARCHAR}, 
@@ -158,11 +158,11 @@
       <if test="key != null">
         `key`,
       </if>
-      <if test="name != null">
-        `name`,
-      </if>
       <if test="page != null">
         page,
+      </if>
+      <if test="name != null">
+        `name`,
       </if>
       <if test="sqlColumnName != null">
         sql_column_name,
@@ -244,11 +244,11 @@
       <if test="key != null">
         #{key,jdbcType=VARCHAR},
       </if>
-      <if test="name != null">
-        #{name,jdbcType=VARCHAR},
-      </if>
       <if test="page != null">
         #{page,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
       </if>
       <if test="sqlColumnName != null">
         #{sqlColumnName,jdbcType=VARCHAR},
@@ -339,11 +339,11 @@
       <if test="record.key != null">
         `key` = #{record.key,jdbcType=VARCHAR},
       </if>
-      <if test="record.name != null">
-        `name` = #{record.name,jdbcType=VARCHAR},
-      </if>
       <if test="record.page != null">
         page = #{record.page,jdbcType=INTEGER},
+      </if>
+      <if test="record.name != null">
+        `name` = #{record.name,jdbcType=VARCHAR},
       </if>
       <if test="record.sqlColumnName != null">
         sql_column_name = #{record.sqlColumnName,jdbcType=VARCHAR},
@@ -426,8 +426,8 @@
     update t_form_fields
     set class_id = #{record.classId,jdbcType=INTEGER},
       `key` = #{record.key,jdbcType=VARCHAR},
-      `name` = #{record.name,jdbcType=VARCHAR},
       page = #{record.page,jdbcType=INTEGER},
+      `name` = #{record.name,jdbcType=VARCHAR},
       sql_column_name = #{record.sqlColumnName,jdbcType=VARCHAR},
       data_type = #{record.dataType,jdbcType=INTEGER},
       ctrl_type = #{record.ctrlType,jdbcType=INTEGER},
@@ -459,11 +459,11 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.kingdee.hrp.sms.common.model.FormFields">
     update t_form_fields
     <set>
-      <if test="name != null">
-        `name` = #{name,jdbcType=VARCHAR},
-      </if>
       <if test="page != null">
         page = #{page,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        `name` = #{name,jdbcType=VARCHAR},
       </if>
       <if test="sqlColumnName != null">
         sql_column_name = #{sqlColumnName,jdbcType=VARCHAR},
@@ -543,8 +543,8 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.kingdee.hrp.sms.common.model.FormFields">
     update t_form_fields
-    set `name` = #{name,jdbcType=VARCHAR},
-      page = #{page,jdbcType=INTEGER},
+    set page = #{page,jdbcType=INTEGER},
+      `name` = #{name,jdbcType=VARCHAR},
       sql_column_name = #{sqlColumnName,jdbcType=VARCHAR},
       data_type = #{dataType,jdbcType=INTEGER},
       ctrl_type = #{ctrlType,jdbcType=INTEGER},

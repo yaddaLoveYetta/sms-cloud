@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kingdee.hrp.sms.common.dao.generate.FormClassEntryMapper">
+  <resultMap id="BaseResultMap" type="com.kingdee.hrp.sms.common.model.FormClassEntry">
+    <id column="class_id" jdbcType="INTEGER" property="classId" />
+    <result column="entry_index" jdbcType="INTEGER" property="entryIndex" />
+    <result column="table_name" jdbcType="VARCHAR" property="tableName" />
+    <result column="primary_key" jdbcType="VARCHAR" property="primaryKey" />
+    <result column="foreign_key" jdbcType="VARCHAR" property="foreignKey" />
+    <result column="join_type" jdbcType="VARCHAR" property="joinType" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    class_id, entry_index, `table_name`, primary_key, foreign_key, join_type
+  </sql>
+  <select id="selectByExample" parameterType="com.kingdee.hrp.sms.common.model.FormClassEntryExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_form_class_entry
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_form_class_entry
+    where class_id = #{classId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_form_class_entry
+    where class_id = #{classId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.kingdee.hrp.sms.common.model.FormClassEntryExample">
+    delete from t_form_class_entry
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.kingdee.hrp.sms.common.model.FormClassEntry">
+    insert into t_form_class_entry (class_id, entry_index, `table_name`, 
+      primary_key, foreign_key, join_type
+      )
+    values (#{classId,jdbcType=INTEGER}, #{entryIndex,jdbcType=INTEGER}, #{tableName,jdbcType=VARCHAR}, 
+      #{primaryKey,jdbcType=VARCHAR}, #{foreignKey,jdbcType=VARCHAR}, #{joinType,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.kingdee.hrp.sms.common.model.FormClassEntry">
+    insert into t_form_class_entry
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="classId != null">
+        class_id,
+      </if>
+      <if test="entryIndex != null">
+        entry_index,
+      </if>
+      <if test="tableName != null">
+        `table_name`,
+      </if>
+      <if test="primaryKey != null">
+        primary_key,
+      </if>
+      <if test="foreignKey != null">
+        foreign_key,
+      </if>
+      <if test="joinType != null">
+        join_type,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="classId != null">
+        #{classId,jdbcType=INTEGER},
+      </if>
+      <if test="entryIndex != null">
+        #{entryIndex,jdbcType=INTEGER},
+      </if>
+      <if test="tableName != null">
+        #{tableName,jdbcType=VARCHAR},
+      </if>
+      <if test="primaryKey != null">
+        #{primaryKey,jdbcType=VARCHAR},
+      </if>
+      <if test="foreignKey != null">
+        #{foreignKey,jdbcType=VARCHAR},
+      </if>
+      <if test="joinType != null">
+        #{joinType,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.kingdee.hrp.sms.common.model.FormClassEntryExample" resultType="java.lang.Long">
+    select count(*) from t_form_class_entry
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update t_form_class_entry
+    <set>
+      <if test="record.classId != null">
+        class_id = #{record.classId,jdbcType=INTEGER},
+      </if>
+      <if test="record.entryIndex != null">
+        entry_index = #{record.entryIndex,jdbcType=INTEGER},
+      </if>
+      <if test="record.tableName != null">
+        `table_name` = #{record.tableName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.primaryKey != null">
+        primary_key = #{record.primaryKey,jdbcType=VARCHAR},
+      </if>
+      <if test="record.foreignKey != null">
+        foreign_key = #{record.foreignKey,jdbcType=VARCHAR},
+      </if>
+      <if test="record.joinType != null">
+        join_type = #{record.joinType,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update t_form_class_entry
+    set class_id = #{record.classId,jdbcType=INTEGER},
+      entry_index = #{record.entryIndex,jdbcType=INTEGER},
+      `table_name` = #{record.tableName,jdbcType=VARCHAR},
+      primary_key = #{record.primaryKey,jdbcType=VARCHAR},
+      foreign_key = #{record.foreignKey,jdbcType=VARCHAR},
+      join_type = #{record.joinType,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.kingdee.hrp.sms.common.model.FormClassEntry">
+    update t_form_class_entry
+    <set>
+      <if test="entryIndex != null">
+        entry_index = #{entryIndex,jdbcType=INTEGER},
+      </if>
+      <if test="tableName != null">
+        `table_name` = #{tableName,jdbcType=VARCHAR},
+      </if>
+      <if test="primaryKey != null">
+        primary_key = #{primaryKey,jdbcType=VARCHAR},
+      </if>
+      <if test="foreignKey != null">
+        foreign_key = #{foreignKey,jdbcType=VARCHAR},
+      </if>
+      <if test="joinType != null">
+        join_type = #{joinType,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where class_id = #{classId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.kingdee.hrp.sms.common.model.FormClassEntry">
+    update t_form_class_entry
+    set entry_index = #{entryIndex,jdbcType=INTEGER},
+      `table_name` = #{tableName,jdbcType=VARCHAR},
+      primary_key = #{primaryKey,jdbcType=VARCHAR},
+      foreign_key = #{foreignKey,jdbcType=VARCHAR},
+      join_type = #{joinType,jdbcType=VARCHAR}
+    where class_id = #{classId,jdbcType=INTEGER}
+  </update>
+</mapper>

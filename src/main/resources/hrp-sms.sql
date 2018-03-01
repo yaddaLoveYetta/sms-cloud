@@ -1,7 +1,7 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : mysql-180
+Source Server         : mysql_180
 Source Server Version : 50617
 Source Host           : 10.0.0.180:3306
 Source Database       : hrp-sms
@@ -10,10 +10,93 @@ Target Server Type    : MYSQL
 Target Server Version : 50617
 File Encoding         : 65001
 
-Date: 2018-02-13 15:01:52
+Date: 2018-02-28 16:50:57
 */
 
 SET FOREIGN_KEY_CHECKS=0;
+
+-- ----------------------------
+-- Table structure for t_assistance
+-- ----------------------------
+DROP TABLE IF EXISTS `t_assistance`;
+CREATE TABLE `t_assistance` (
+  `detail_id` int(11) NOT NULL DEFAULT '0' COMMENT '在每一个辅助属性类别中是唯一的',
+  `type_id` int(11) NOT NULL DEFAULT '0' COMMENT '资料类别id，关联t_assistance_type表id',
+  `number` varchar(20) DEFAULT NULL COMMENT '辅助属性代码',
+  `name` varchar(200) NOT NULL COMMENT '名称',
+  `enable` bit(1) NOT NULL DEFAULT b'1' COMMENT '是否可用',
+  `index` int(11) DEFAULT '0' COMMENT '显示顺序',
+  PRIMARY KEY (`detail_id`,`type_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='辅助属性表\r\n存储系统中枚举变量值，如币别有：人民币，美元，欧元等类似的可以只用代码名称两个属性描述的资料';
+
+-- ----------------------------
+-- Records of t_assistance
+-- ----------------------------
+INSERT INTO `t_assistance` VALUES ('1', '10', '', '数字', '', '0');
+INSERT INTO `t_assistance` VALUES ('1', '15', '', '新增时对于平台用户锁定', '', '0');
+INSERT INTO `t_assistance` VALUES ('1', '20', '', '查看时对于平台用户显示', '', '0');
+INSERT INTO `t_assistance` VALUES ('1', '25', '', '新增时对于平台用户必填', '', '0');
+INSERT INTO `t_assistance` VALUES ('1', '30', '', '数字', '', '0');
+INSERT INTO `t_assistance` VALUES ('1', '35', '', '引用基础资料', '', '0');
+INSERT INTO `t_assistance` VALUES ('2', '10', '', '文本值', '', '0');
+INSERT INTO `t_assistance` VALUES ('2', '15', '', '编辑时对于平台用户锁定', '', '0');
+INSERT INTO `t_assistance` VALUES ('2', '20', '', '新增时对于平台用户显示', '', '0');
+INSERT INTO `t_assistance` VALUES ('2', '25', '', '编辑时对于平台用户必填', '', '0');
+INSERT INTO `t_assistance` VALUES ('2', '30', '', '数字带小数', '', '0');
+INSERT INTO `t_assistance` VALUES ('2', '35', '', '引用辅助属性', '', '0');
+INSERT INTO `t_assistance` VALUES ('3', '10', '', '日期时间', '', '0');
+INSERT INTO `t_assistance` VALUES ('3', '30', '', '选择框', '', '0');
+INSERT INTO `t_assistance` VALUES ('3', '35', '', '引用基础资料的附加属性', '', '0');
+INSERT INTO `t_assistance` VALUES ('4', '10', '', '布尔', '', '0');
+INSERT INTO `t_assistance` VALUES ('4', '15', '', '新增时对于供应商用户锁定', '', '0');
+INSERT INTO `t_assistance` VALUES ('4', '20', '', '编辑时对于平台用户显示', '', '0');
+INSERT INTO `t_assistance` VALUES ('4', '25', '', '新增时对于供应商用户必填', '', '0');
+INSERT INTO `t_assistance` VALUES ('4', '35', '', '普通引用其他表-关联查询', '', '0');
+INSERT INTO `t_assistance` VALUES ('5', '30', '', '下拉列表', '', '0');
+INSERT INTO `t_assistance` VALUES ('5', '35', '', '普通引用其他表的其他字段-主要为了避免为4即引用他表数据时，需引用多个字段时关联表重复问题。依附于=4时存在', '', '0');
+INSERT INTO `t_assistance` VALUES ('6', '30', '', 'F7选择框', '', '0');
+INSERT INTO `t_assistance` VALUES ('7', '30', '', '级联选择器', '', '0');
+INSERT INTO `t_assistance` VALUES ('8', '15', '', '编辑时对于供应商用户锁定', '', '0');
+INSERT INTO `t_assistance` VALUES ('8', '20', '', '查看时对于供应商用户显示', '', '0');
+INSERT INTO `t_assistance` VALUES ('8', '25', '', '编辑时对于供应商用户必填', '', '0');
+INSERT INTO `t_assistance` VALUES ('8', '30', '', '手机号码', '', '0');
+INSERT INTO `t_assistance` VALUES ('9', '30', '', '座机电话', '', '0');
+INSERT INTO `t_assistance` VALUES ('10', '30', '', '普通文本', '', '0');
+INSERT INTO `t_assistance` VALUES ('11', '30', '', '多行文本', '', '0');
+INSERT INTO `t_assistance` VALUES ('12', '30', '', '日期时间', '', '0');
+INSERT INTO `t_assistance` VALUES ('13', '30', '', '男：女', '', '0');
+INSERT INTO `t_assistance` VALUES ('14', '30', '', '密码控件', '', '0');
+INSERT INTO `t_assistance` VALUES ('16', '15', '', '新增时对于医院用户锁定', '', '0');
+INSERT INTO `t_assistance` VALUES ('16', '20', '', '新增时对于供应商用户显示', '', '0');
+INSERT INTO `t_assistance` VALUES ('16', '25', '', '新增时对于医院用户必填', '', '0');
+INSERT INTO `t_assistance` VALUES ('32', '15', '', '编辑时对于医院用户锁定', '', '0');
+INSERT INTO `t_assistance` VALUES ('32', '20', '', '编辑时对于供应商用户显示', '', '0');
+INSERT INTO `t_assistance` VALUES ('32', '25', '', '编辑时对于医院用户必填', '', '0');
+INSERT INTO `t_assistance` VALUES ('64', '20', '', '新增时对于医院用户显示', '', '0');
+INSERT INTO `t_assistance` VALUES ('128', '20', '', '新增时对于医院用户显示', '', '0');
+INSERT INTO `t_assistance` VALUES ('256', '20', '', '编辑时对于医院用户显示', '', '0');
+INSERT INTO `t_assistance` VALUES ('512', '20', '', '是否在列表中显示(子表模板独有,子表数据显示在表头列表中)', '', '0');
+
+-- ----------------------------
+-- Table structure for t_assistance_type
+-- ----------------------------
+DROP TABLE IF EXISTS `t_assistance_type`;
+CREATE TABLE `t_assistance_type` (
+  `id` int(11) NOT NULL,
+  `name` varchar(50) NOT NULL COMMENT '类别名称',
+  `desc` varchar(255) DEFAULT NULL COMMENT '描述信息',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='辅助属性类别表\r\n存储系统中枚举类型资料（该类资料只有代码名称）';
+
+-- ----------------------------
+-- Records of t_assistance_type
+-- ----------------------------
+INSERT INTO `t_assistance_type` VALUES ('10', '字段类型', '基础资料元数据配置中(t_form_fields)的dataType值参考这里，一般可设置为该字段在数据库里面的储存类型对应的java数据类型，后台应根据此配置校验前端提交的数据合法性');
+INSERT INTO `t_assistance_type` VALUES ('15', '字段锁定性', '基础资料元数据配置中(t_form_fields)的lock值参考这里，用于前段页面控制字段可用性');
+INSERT INTO `t_assistance_type` VALUES ('20', '字段数据权限控制类型', '后端元数据配置中(t_form_fields)的disPlay值参考这里');
+INSERT INTO `t_assistance_type` VALUES ('25', '字段必录性控制类型', '后端元数据配置中(t_form_fields)的mustInput值参考这里，前后端校验用');
+INSERT INTO `t_assistance_type` VALUES ('30', '控件类型', '控件类型-用于描述元数据在前端页面的展示结构,后端元数据配置中(t_form_fields)的ctrlType值参考这里');
+INSERT INTO `t_assistance_type` VALUES ('35', '标示字段的引用类型', '标示字段的引用类型，如引用基础资料、辅助资料，基础资料属性等,元数据配置中(t_form_fields)的lookupType值参考这里');
 
 -- ----------------------------
 -- Table structure for t_form_action
@@ -36,10 +119,10 @@ CREATE TABLE `t_form_action` (
 -- ----------------------------
 -- Records of t_form_action
 -- ----------------------------
-INSERT INTO `t_form_action` VALUES ('1001', '查看', 'view', '5', '1', '1', '7', '1', '', '供应商资料查看权限');
-INSERT INTO `t_form_action` VALUES ('1001', '新增', 'edit', '10', '2', '1', '7', '2', '', '供应商资料新增权限');
-INSERT INTO `t_form_action` VALUES ('1001', '修改', 'edit', '10', '4', '1', '7', '3', '', '供应商资料修改权限');
-INSERT INTO `t_form_action` VALUES ('1001', '删除', 'edit', '10', '8', '1', '7', '3', '', '供应商资料删除权限');
+INSERT INTO `t_form_action` VALUES ('1001', '查看', 'view', '5', '1', '1', '7', '1', 'icon-chakan', '供应商资料查看权限');
+INSERT INTO `t_form_action` VALUES ('1001', '新增', 'edit', '10', '2', '1', '7', '2', 'icon-icon-xinzeng', '供应商资料新增权限');
+INSERT INTO `t_form_action` VALUES ('1001', '修改', 'edit', '10', '4', '1', '7', '3', 'icon-xiugaiziliao', '供应商资料修改权限');
+INSERT INTO `t_form_action` VALUES ('1001', '删除', 'edit', '10', '8', '1', '7', '3', 'icon-delete', '供应商资料删除权限');
 
 -- ----------------------------
 -- Table structure for t_form_class
@@ -59,6 +142,7 @@ CREATE TABLE `t_form_class` (
 -- ----------------------------
 INSERT INTO `t_form_class` VALUES ('1001', '注册供应商', 't_supplier', 'id', '供应商注册用户时的供应商资料');
 INSERT INTO `t_form_class` VALUES ('1002', '注册医院', 't_hospital', 'id', '医院注册用户时的医院基本资料');
+INSERT INTO `t_form_class` VALUES ('2001', '采购订单', 't_order', 'id', '采购订单');
 
 -- ----------------------------
 -- Table structure for t_form_fields
@@ -66,9 +150,9 @@ INSERT INTO `t_form_class` VALUES ('1002', '注册医院', 't_hospital', 'id', '
 DROP TABLE IF EXISTS `t_form_fields`;
 CREATE TABLE `t_form_fields` (
   `class_id` int(11) NOT NULL COMMENT '业务类型id，对应t_form_class表class_id',
+  `page` int(4) NOT NULL DEFAULT '0' COMMENT '标示模板字段所在的页面（0是表头，1是第一个子表，2是第二个子表，以此类推...）',
   `key` varchar(30) NOT NULL DEFAULT '' COMMENT '字段唯一标示(用于关联表显示字段名与本表字段名同名的情况，同一个class_id中key是唯一的)',
   `name` varchar(50) NOT NULL COMMENT '字段名(显示的字段名)',
-  `page` int(4) NOT NULL DEFAULT '0' COMMENT '标示模板字段所在的页面（0是表头，1是第一个子表，2是第二个子表，以此类推...）',
   `sql_column_name` varchar(20) NOT NULL COMMENT '物理表中的字段名',
   `data_type` int(4) NOT NULL COMMENT '字段类型(数字，文本等)1:数字2:文本3:日期4:布尔,用于前端解析',
   `ctrl_type` int(4) NOT NULL COMMENT '控件类型，指示前端展示时的特殊类型，比如多选框，基础资料选择框等',
@@ -99,6 +183,12 @@ CREATE TABLE `t_form_fields` (
 -- ----------------------------
 -- Records of t_form_fields
 -- ----------------------------
+INSERT INTO `t_form_fields` VALUES ('1001', '0', 'address', '地址', 'address', '2', '10', '1', '25', '511', '80', '0', '0', '', '', '', '', '', '', '', null, null, null, '0', '255', '0', '1', '0');
+INSERT INTO `t_form_fields` VALUES ('1001', '0', 'business_license', '营业执照号', 'business_license', '2', '10', '1', '15', '511', '80', '0', '0', '', '', '', '', '', '', '', null, null, null, '0', '20', '0', '1', '0');
+INSERT INTO `t_form_fields` VALUES ('1001', '0', 'id', '主键', 'id', '1', '1', '0', '0', '0', '80', '0', '0', '', '', '', '', '', '', '', null, null, null, '0', '64', '63', '0', '0');
+INSERT INTO `t_form_fields` VALUES ('1001', '0', 'name', '名称', 'name', '2', '10', '1', '10', '511', '80', '0', '0', '', '', '', '', '', '', '', null, null, null, '0', '50', '0', '1', '0');
+INSERT INTO `t_form_fields` VALUES ('1001', '0', 'number', '代码', 'number', '2', '10', '1', '5', '511', '80', '0', '0', '', '', '', '', '', '', '', null, null, null, '0', '20', '0', '1', '0');
+INSERT INTO `t_form_fields` VALUES ('1001', '0', 'tax_id', '税务登记号', 'tax_id', '2', '10', '1', '20', '511', '80', '0', '0', '', '', '', '', '', '', '', null, null, null, '0', '255', '0', '1', '0');
 
 -- ----------------------------
 -- Table structure for t_hospital
@@ -221,6 +311,7 @@ CREATE TABLE `t_supplier` (
 -- ----------------------------
 -- Records of t_supplier
 -- ----------------------------
+INSERT INTO `t_supplier` VALUES ('1', 'GZ-KF', '广东康发有限公司', '12345678908765', '广州市天河区', '12313121241');
 
 -- ----------------------------
 -- Table structure for t_user
@@ -233,7 +324,7 @@ CREATE TABLE `t_user` (
   `password` varchar(50) NOT NULL COMMENT '登陆密码',
   `mobile` varchar(11) NOT NULL COMMENT '手机号码',
   `role` bigint(64) NOT NULL COMMENT '角色(关联t_role表id)',
-  `is_admin` bit(1) NOT NULL DEFAULT b'0' COMMENT '是否为管理员',
+  `is_admin` bit(1) NOT NULL DEFAULT b'0' COMMENT '是否为管理员(1:管理员2:非管理员)\r\n\r\n注册用户都是管理员',
   `org` bigint(64) NOT NULL COMMENT '关联组织\r\n对于供应商用户此字段记录t_supplier供应商资料id\r\n对于医院用户此字段记录t_hospital医院资料id\r\n对于系统用户改字段为0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -241,4 +332,6 @@ CREATE TABLE `t_user` (
 -- ----------------------------
 -- Records of t_user
 -- ----------------------------
-INSERT INTO `t_user` VALUES ('11', 'yadda', '111', 'bcbe3365e6ac95ea2c0343a2395834dd', '15212345678', '1', '', '0');
+INSERT INTO `t_user` VALUES ('1', 'yadda', '111', 'bcbe3365e6ac95ea2c0343a2395834dd', '15212345678', '1', '', '0');
+INSERT INTO `t_user` VALUES ('2', '康发公司', '222', 'bcbe3365e6ac95ea2c0343a2395834dd', '15212345678', '3', '', '1');
+SET FOREIGN_KEY_CHECKS=1;
