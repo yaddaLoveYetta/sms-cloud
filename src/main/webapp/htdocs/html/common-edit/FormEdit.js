@@ -156,7 +156,7 @@ define('FormEdit', function (require, module, exports) {
 
     //------是否必填校验逻辑 END-----//
 
-    function initController(itemId) {
+    function initController() {
 
         var isUpdate = !!itemId; //新增 || 修改
 
@@ -313,67 +313,180 @@ define('FormEdit', function (require, module, exports) {
 
         var fields = MiniQuery.Object.toArray(metaData['formFields'][0]);
 
-        div.innerHTML = $.String.format(samples["table"], {
+        var length = fields.length;
+        if (length < 10) {
+            // 分组：小于10个字段每行显示两个字段
+            fields = $.Array.group(fields, 1);
+        } else if (length <= 20) {
+            // 分组：小于20个字段每行显示两个字段
+            fields = $.Array.group(fields, 2);
+        } else if (length <= 40) {
+            // 分组：小于40个字段每行显示三个字段
+            fields = $.Array.group(fields, 3);
+        } else {
+            // 分组：大于40个字段每行显示四个字段
+            fields = $.Array.group(fields, 4);
+        }
 
-            trs: $.Array.keep(fields, function (item, no) {
+        div.innerHTML = $.Array.keep(fields, function (group, no) {
 
-                var sample = "";
+            return $.String.format(samples["items"], {
 
-                if (!item.display) {
-                    return "";
-                }
+                item: $.Array.keep(group, function (field, no) {
 
-                var domType = item.ctrlType;
+                    var sample = "";
 
-                if (!!!domType) {
-                    // 默认文本
-                    domType = 10;
-                }
+                    if (!field.display) {
+                        return "";
+                    }
 
-                /*
-                 1,3,5,6,7,8,9,10,12,98,99
-                 */
-                switch (domType) {
-                    case 1: // 小数
-                    case 8: // 手机号码
-                    case 9://座机电话
-                    case 10: // 普通文本
-                        sample = samples["tr.text"];
-                        break;
-                    case 11://多行文本
-                        sample = samples["tr.textarea"];
-                        break;
-                    case 12:
-                        sample = samples["tr.datatime"];
-                        break;
-                    case 3: // checkbox
-                        sample = samples["tr.checkbox"];
-                        break;
-                    case 6:
-                        sample = samples["tr.f7"];
-                        break;
-                    case 99:
-                        sample = samples["tr.password"];
-                        break;
-                    default:
-                        sample = samples["tr.text"];
-                }
+                    var ctrlType = field.ctrlType;
 
-                return $.String.format(sample, {
-                    mustInput: item.mustInput ? $.String.format(samples["td.mustInput"], {}) : "",
-                    name: item.name,
-                    key: item.key,
-                    // disabled: item.lookUpType && item.lookUpType == 3 ? "disabled" : "", // 辅助属性不可编辑
-                });
+                    if (!ctrlType) {
+                        // 默认文本
+                        ctrlType = 10;
+                    }
 
-            }).join(""),
+                    /*
+                        1	数字
+                        2	数字带小数
+                        3	选择框
+                        5	下拉列表
+                        6	F7选择框
+                        7	级联选择器
+                        8	手机号码
+                        9	座机电话
+                        10	普通文本
+                        11	多行文本
+                        12	日期时间
+                        13	男：女
+                        14	密码控件
+                        15	是：否
+                     */
+                    switch (ctrlType) {
+                        case 1:
+                        case 2:
+                        case 8:
+                        case 9:
+                        case 10:
+                            sample = samples["text"];
+                            break;
+                        case 11://多行文本
+                            sample = samples["textarea"];
+                            break;
+                        case 12:
+                            sample = samples["datatime"];
+                            break;
+                        case 3: // checkbox
+                            sample = samples["checkbox"];
+                            break;
+                        case 6:
+                            sample = samples["f7"];
+                            break;
+                        case 13: //男：女
+                            sample = samples["man_female"];
+                            break;
+                        case 14:
+                            sample = samples["password"];
+                            break;
+                        case 15: //是：否
+                            sample = samples["yes_no"];
+                            break;
+                        default:
+                            sample = samples["text"];
+                    }
 
+                    return $.String.format(sample, {
+                        mustInput: field.mustInput ? $.String.format(samples["mustInput"], {}) : "",
+                        name: field.name,
+                        key: field.key,
+                    });
 
-        });
+                }).join("")
+
+            });
+        }).join('');
+
+        /*  div.innerHTML = $.String.format(samples["ctrl"], {
+
+              items: $.Array.keep(fields, function (item, no) {
+
+                  var sample = "";
+
+                  if (!item.display) {
+                      return "";
+                  }
+
+                  var domType = item.ctrlType;
+
+                  if (!!!domType) {
+                      // 默认文本
+                      domType = 10;
+                  }
+
+                  /!*
+                      1	数字
+                      2	数字带小数
+                      3	选择框
+                      5	下拉列表
+                      6	F7选择框
+                      7	级联选择器
+                      8	手机号码
+                      9	座机电话
+                      10	普通文本
+                      11	多行文本
+                      12	日期时间
+                      13	男：女
+                      14	密码控件
+                   *!/
+                  switch (domType) {
+                      case 1:
+                      case 2:
+                      case 8:
+                      case 9:
+                      case 10:
+                          sample = samples["text"];
+                          break;
+                      case 11://多行文本
+                          sample = samples["textarea"];
+                          break;
+                      case 12:
+                          sample = samples["datatime"];
+                          break;
+                      case 3: // checkbox
+                          sample = samples["checkbox"];
+                          break;
+                      case 6:
+                          sample = samples["f7"];
+                          break;
+                      case 14:
+                          sample = samples["password"];
+                          break;
+                      default:
+                          sample = samples["text"];
+                  }
+
+                  return $.String.format(sample, {
+                      mustInput: item.mustInput ? $.String.format(samples["mustInput"], {}) : "",
+                      name: item.name,
+                      key: item.key,
+                  });
+
+              }).join(""),
+
+              'text': '', // 这个清空，已在 items 里填充了
+              'textarea': '', // 这个清空，已在 items 里填充了
+              'datatime': '', // 这个清空，已在 items 里填充了
+              'checkbox': '', // 这个清空，已在 items 里填充了
+              'f7': '', // 这个清空，已在 items 里填充了
+              'password': '', // 这个清空，已在 items 里填充了
+              'mustInput': '' // 这个清空，已在 items 里填充了
+
+          });*/
     }
 
     // 初始化选择框控件
-    function initSelectors(metaData) {
+    function initSelectors() {
 
         var fields = metaData['formFields'][0];
 
@@ -427,7 +540,7 @@ define('FormEdit', function (require, module, exports) {
 
     }
 
-    function initDateTimerPicker(metaData) {
+    function initDateTimerPicker() {
 
         var fields = metaData['formFields'][0];
 
@@ -481,11 +594,11 @@ define('FormEdit', function (require, module, exports) {
         // 填充页面控件
         initPage();
         // 初始化selectors
-        initSelectors(metaData);
+        initSelectors();
         // 初始化时间控件
-        initDateTimerPicker(metaData);
+        initDateTimerPicker();
         //控件初始化，控制显示隐藏，只读 ,默认值等..
-        initController(itemId);
+        initController();
 
         fixIE();
 

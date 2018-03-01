@@ -54,11 +54,11 @@ public class TemplateService extends BaseService implements ITemplateService {
 
         if (type == 1) {
             // 后端构建查询脚本时调用
-            fieldsExample.setOrderByClause("page, ctlIndex");
+            fieldsExample.setOrderByClause("ctlIndex");
 
         } else {
             // 前端处理显示顺序时调用
-            fieldsExample.setOrderByClause("page, [index]");
+            fieldsExample.setOrderByClause("`index`");
         }
 
         List<FormFields> headFields = formFieldsMapper.selectByExample(fieldsExample);
@@ -92,6 +92,8 @@ public class TemplateService extends BaseService implements ITemplateService {
 
             formFieldsExampleCriteria.andClassIdEqualTo(classId);
             formFieldsExampleCriteria.andPageEqualTo(entry.getEntryIndex());
+
+            formFieldsExample.setOrderByClause("`index`");
 
             List<FormFields> entryIndexFieldsByExample = formFieldsMapper.selectByExample(formFieldsExample);
 

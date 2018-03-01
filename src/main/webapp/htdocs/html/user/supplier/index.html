@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/html">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>供应商用户信息</title>
@@ -25,76 +25,123 @@
     <!--
         #--ctrl.begin--#
 
+            #--ctrl.items.begin--#
+            <div class="row form-group">
+                 #--ctrl.items.item.begin--#
+                 #--ctrl.items.item.end--#
+            </div>
+            #--ctrl.items.end--#
+
             #--mustInput.begin--#
             <span class="must-mark">*</span>
             #--mustInput.end--#
 
             #--text.begin--#
-            <div class="row form-group">
-                <label class="col-sm-2 "><span class="must-mark">*</span>文本编辑框</label>
+
+                <label class="col-sm-2 ">{mustInput}{name}</label>
                 <div class="col-sm-2">
-                    <input id="text" type="text" class="form-control" placeholder="文本">
-                    <span id="text-msg" class="msg"></span>
+                    <input id="{key}" type="text" class="form-control" placeholder="请输入{name}">
+                    <span id="{key}-msg" class="msg"></span>
                 </div>
-            </div>
+
             #--text.end--#
 
             #--textarea.begin--#
-            <div class="row form-group">
-                <label class="col-sm-2 "><span class="must-mark">*</span>多行文本控件</label>
+
+                <label class="col-sm-2 ">{mustInput}{name}</label>
                 <div class="col-sm-2">
-                    <textarea id="textarea" class="form-control" placeholder="多行文本"></textarea>
-                    <span id="textarea-msg" class="msg"></span>
+                    <textarea id="{key}" class="form-control" placeholder="请输入{name}"></textarea>
+                    <span id="{key}-msg" class="msg"></span>
                 </div>
-            </div>
+
             #--textarea.end--#
 
             #--datatime.begin--#
-            <div class="row form-group has-feedback">
-                <label class="col-sm-2 "><span class="must-mark">*</span>日期时间控件</label>
+
+                <label class="col-sm-2 ">{mustInput}{name}</label>
                 <div class=" col-sm-2">
                     <span class="iconfont icon-riqixuanze form-control-feedback"></span>
-                    <input id="dataTime" type="text" class="form-control" placeholder="日期时间">
-                    <span id="dataTime-msg" class="msg"></span>
+                    <input id="{key}" type="text" class="form-control" placeholder="点击选择{name}">
+                    <span id="{key}-msg" class="msg"></span>
                 </div>
-            </div>
+
             #--datatime.end--#
 
             #--checkbox.begin--#
-            <div class="row form-group">
-                <label class="col-sm-2 "><span class="must-mark">*</span>选择框控件</label>
+
+                <label class="col-sm-2 ">{mustInput}{name}</label>
                 <div class="col-sm-2">
-                    <input id="checkbox" type="checkbox" class="checkbox" placeholder="选择框">
-                    <span id="checkbox-msg" class="msg"></span>
+                    <input id="{key}" type="checkbox" class="checkbox" >
+                    <span id="{key}-msg" class="msg"></span>
                 </div>
-            </div>
+
             #--checkbox.end--#
 
             #--password.begin--#
-            <div class="row form-group">
-                <label class="col-sm-2 "><span class="must-mark">*</span>密码控件</label>
+
+                <label class="col-sm-2 ">{mustInput}{name}</label>
                 <div class="col-sm-2">
-                    <input id="password" type="password" class="form-control" placeholder="密码">
-                    <span id="password-msg" class="msg"></span>
+                    <input id="{key}" type="password" class="form-control" placeholder="请输入{name}">
+                    <span id="{key}-msg" class="msg"></span>
                 </div>
-            </div>
+
             #--password.end--#
 
             #--f7.begin--#
-            <div class="row form-group has-feedback">
-                <label class="col-sm-2 "><span class="must-mark">*</span>F7选择框控件</label>
-                <div class="col-sm-2 F7-box" id="f7">
-                    <span class="iconfont icon-riqixuanze form-control-feedback"></span>
-                    <input type="text" class="form-control" placeholder="F7选择框">
+
+                <label class="col-sm-2 ">{mustInput}{name}</label>
+                <div class="col-sm-2 F7-box" id="{key}">
+                    <span class="iconfont icon-icon-bars form-control-feedback"></span>
+                    <input type="text" class="form-control" placeholder="请选择{name}">
                 </div>
-                <span id="f7-msg" class="msg"></span>
-            </div>
+                <span id="{key}-msg" class="msg"></span>
+
             #--f7.end--#
 
-    #--ctrl.end--#
+            #--man_female.begin--#
+            <label class="col-sm-2 ">{mustInput}{name}</label>
+            <div class="col-sm-1">
+                <select id="{key}" class="form-control">
+                    <option value="0">男</option>
+                    <option value="1">女</option>
+                </select>
+            </div>
+            #--man_female.end--#
+
+             #--yes_no.begin--#
+            <label class="col-sm-2 ">{mustInput}{name}</label>
+            <div class="col-sm-1">
+                <select id="{key}" class="form-control">
+                    <option value="1">是</option>
+                    <option value="0">否</option>
+                </select>
+            </div>
+            #--yes_no.end--#
+
+        #--ctrl.end--#
 
     -->
 
+</div>
+
+<div id="div-body-content" class="container-fluid">
+    <!-- 表体表格-->
+    <div class="row form-group">
+        <div id="initCombo" class="dn col-sm-1">
+            <input type="text" class="textbox FParkNumberAuto" name="FParkNumber" autocomplete="off">
+        </div>
+        <div class="grid-wrap col-sm-12">
+            <!-- jqGrid table -->
+            <table id="bd-grid"></table>
+            <!-- jqGrid 分页 div -->
+            <div id="bd-grid-pager"></div>
+        </div>
+        <span class="error-msg" id="bd-grid-msg"></span>
+    </div>
+
+</div>
+
+<div style="display: none">
 
     <!-- 文本控件 -->
     <div class="row form-group">
@@ -105,6 +152,15 @@
         </div>
     </div>
 
+    <div class="row form-group">
+        <label class="col-sm-2 "><span class="must-mark">*</span>男/女</label>
+        <div class="col-sm-2">
+            <select id="man_female" class="form-control">
+                <option value="0">男</option>
+                <option value="1">女</option>
+            </select>
+        </div>
+    </div>
     <!-- 多行文本控件 -->
     <div class="row form-group">
         <label class="col-sm-2 "><span class="must-mark">*</span>多行文本控件</label>
@@ -180,24 +236,6 @@
         </div>
 
     </div>
-
-</div>
-
-<div id="div-body-content" class="container-fluid">
-    <!-- 表体表格-->
-    <div class="row form-group">
-        <div id="initCombo" class="dn col-sm-1">
-            <input type="text" class="textbox FParkNumberAuto" name="FParkNumber" autocomplete="off">
-        </div>
-        <div class="grid-wrap col-sm-12">
-            <!-- jqGrid table -->
-            <table id="bd-grid"></table>
-            <!-- jqGrid 分页 div -->
-            <div id="bd-grid-pager"></div>
-        </div>
-        <span class="error-msg" id="bd-grid-msg"></span>
-    </div>
-
 </div>
 
 <script src="../../../lib/jquery/jquery-1.11.1.debug.js"></script>
@@ -209,6 +247,7 @@
 <script src="../../selector/module/DataSelector.js"></script>
 <script src="../../common-edit/Validate.js"></script>
 <script src="../../common-edit/FormEdit.js"></script>
+<script src="../../common-edit/Samples.js"></script>
 <script src="../../common-edit/FormAction.js"></script>
 <script src="index.js"></script>
 

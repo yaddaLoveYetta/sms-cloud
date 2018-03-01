@@ -1,6 +1,7 @@
 /**
- * Samples 模块
- * Created by yadda on 2018/2/28.
+ * @Title: Samples 模块
+ * @author：yadda(silenceisok@163.com)
+ * @date： 2018/2/2816:05
  */
 define('Samples', function (require, module, exports) {
 
@@ -13,65 +14,83 @@ define('Samples', function (require, module, exports) {
     function get(div) {
 
         var samples = $.String.getTemplates(div.innerHTML, [
+
             {
-                name: 'table',
-                begin: '<!--',
-                end: '-->',
+                name: "ctrl",
+                begin: '#--ctrl.begin--#',
+                end: "#--ctrl.end--#",
+            },
+            {
+                name: "items",
+                begin: ' #--ctrl.items.begin--#',
+                end: "#--ctrl.items.end--#",
+                outer: '{items}'
+            },
+            {
+                name: "item",
+                begin: ' #--ctrl.items.item.begin--#',
+                end: "#--ctrl.items.item.end--#",
+                outer: '{item}'
+            },
+            {
+                name: 'checkbox',
+                begin: '#--checkbox.begin--#',
+                end: '#--checkbox.end--#',
+                outer: '{checkbox}'
                 //fn: trim,
             },
             {
-                name: "tr",
-                begin: '#--tr.begin--#',
-                end: "#--tr.end--#",
-                outer: '{trs}',
-            },
-            {
-                name: 'tr.checkbox',
-                begin: '#--tr.checkbox.begin--#',
-                end: '#--tr.checkbox.end--#',
-                outer: '{checkbox}',
+                name: 'mustInput',
+                begin: '#--mustInput.begin--#',
+                end: '#--mustInput.end--#',
+                outer: '{mustInput}'
                 //fn: trim,
             },
             {
-                name: 'td.mustInput',
-                begin: '#--td.mustInput.begin--#',
-                end: '#--td.mustInput.end--#',
-                outer: '{mustInput}',
+                name: 'text',
+                begin: '#--text.begin--#',
+                end: '#--text.end--#',
+                outer: '{text}'
                 //fn: trim,
             },
             {
-                name: 'tr.text',
-                begin: '#--tr.text.begin--#',
-                end: '#--tr.text.end--#',
-                outer: '{text}',
+                name: 'textarea',
+                begin: '#--textarea.begin--#',
+                end: '#--textarea.end--#',
+                outer: '{textarea}'
+            },
+            {
+                name: 'datatime',
+                begin: '#--datatime.begin--#',
+                end: '#--datatime.end--#',
+                outer: '{datatime}'
+            },
+            {
+                name: 'password',
+                begin: '#--password.begin--#',
+                end: '#--password.end--#',
+                outer: '{password}'
                 //fn: trim,
             },
             {
-                name: 'tr.textarea',
-                begin: '#--tr.textarea.begin--#',
-                end: '#--tr.textarea.end--#',
-                outer: '{textarea}',
-            },
-            {
-                name: 'tr.datatime',
-                begin:'#--tr.datatime.begin--#',
-                end: '#--tr.datatime.end--#',
-                outer: '{datatime}',
-            },
-            {
-                name: 'tr.password',
-                begin: '#--tr.password.begin--#',
-                end: '#--tr.password.end--#',
-                outer: '{password}',
+                name: 'f7',
+                begin: '#--f7.begin--#',
+                end: '#--f7.end--#',
+                outer: '{f7}'
                 //fn: trim,
             },
             {
-                name: 'tr.f7',
-                begin: '#--tr.f7.begin--#',
-                end: '#--tr.f7.end--#',
-                outer: '{f7}',
-                //fn: trim,
+                name:'man_female',
+                begin: '#--man_female.begin--#',
+                end: '#--man_female.end--#',
+                outer: '{man_female}'
             },
+            {
+                name:'yes_no',
+                begin: '#--yes_no.begin--#',
+                end: '#--yes_no.end--#',
+                outer: '{yes_no}'
+            }
         ]);
 
         return samples;
@@ -81,10 +100,3 @@ define('Samples', function (require, module, exports) {
     return get;
 
 });
-
-
-
-
-
-
-

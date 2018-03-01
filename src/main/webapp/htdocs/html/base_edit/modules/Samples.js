@@ -1,7 +1,7 @@
+
 /**
- * @Title: Samples 模块
- * @author：yadda(silenceisok@163.com)
- * @date： 2018/2/2816:05
+ * Samples 模块
+ * Created by yadda on 2018/2/28.
  */
 define('Samples', function (require, module, exports) {
 
@@ -21,55 +21,55 @@ define('Samples', function (require, module, exports) {
                 //fn: trim,
             },
             {
-                name: "ctrl",
-                begin: '#--ctrl.begin--#',
-                end: "#--ctrl.end--#",
-                outer: '{ctrls}',
+                name: "tr",
+                begin: '#--tr.begin--#',
+                end: "#--tr.end--#",
+                outer: '{trs}',
             },
             {
-                name: 'checkbox',
-                begin: '#--checkbox.begin--#',
-                end: '#--checkbox.end--#',
+                name: 'tr.checkbox',
+                begin: '#--tr.checkbox.begin--#',
+                end: '#--tr.checkbox.end--#',
                 outer: '{checkbox}',
                 //fn: trim,
             },
             {
-                name: 'mustInput',
-                begin: '#--mustInput.begin--#',
-                end: '#--mustInput.end--#',
+                name: 'td.mustInput',
+                begin: '#--td.mustInput.begin--#',
+                end: '#--td.mustInput.end--#',
                 outer: '{mustInput}',
                 //fn: trim,
             },
             {
-                name: 'text',
-                begin: '#--text.begin--#',
-                end: '#--text.end--#',
+                name: 'tr.text',
+                begin: '#--tr.text.begin--#',
+                end: '#--tr.text.end--#',
                 outer: '{text}',
                 //fn: trim,
             },
             {
-                name: 'textarea',
-                begin: '#--textarea.begin--#',
-                end: '#--textarea.end--#',
+                name: 'tr.textarea',
+                begin: '#--tr.textarea.begin--#',
+                end: '#--tr.textarea.end--#',
                 outer: '{textarea}',
             },
             {
-                name: 'datatime',
-                begin: '#--datatime.begin--#',
-                end: '#--datatime.end--#',
+                name: 'tr.datatime',
+                begin:'#--tr.datatime.begin--#',
+                end: '#--tr.datatime.end--#',
                 outer: '{datatime}',
             },
             {
-                name: 'password',
-                begin: '#--password.begin--#',
-                end: '#--password.end--#',
+                name: 'tr.password',
+                begin: '#--tr.password.begin--#',
+                end: '#--tr.password.end--#',
                 outer: '{password}',
                 //fn: trim,
             },
             {
-                name: 'f7',
-                begin: '#--f7.begin--#',
-                end: '#--f7.end--#',
+                name: 'tr.f7',
+                begin: '#--tr.f7.begin--#',
+                end: '#--tr.f7.end--#',
                 outer: '{f7}',
                 //fn: trim,
             },
@@ -82,6 +82,14 @@ define('Samples', function (require, module, exports) {
     return get;
 
 });
+
+
+
+
+
+
+
+
 
 
 

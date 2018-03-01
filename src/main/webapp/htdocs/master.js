@@ -16,6 +16,7 @@
     var PageTabs = require('PageTabs');
     var PageList = require('PageList');
     var Tips = require('Tips');
+    var MessageBox = SMS.require('MessageBox');
 
     var UserInfos = require('UserInfos');
     var Sidebar = require('Sidebar');
@@ -121,15 +122,16 @@
 
             if (roleType === 1) {
                 // 系统管理员-暂时没有资料维护
+                MessageBox.show('系统管理员无可维护信息！');
                 return;
             } else if (roleType === 2) {
                 //  医院角色类别
-                url = './html/user/hospital/index.html?classId=1002';
-                classId = 1002;
+                url = './html/user/hospital/index.html?classId=1003';
+                classId = 1003;
             } else if (roleType === 3) {
                 // 供应商角色类别
-                url = './html/user/supplier/index.html?classId=1001'
-                classId = 1001;
+                url = './html/user/supplier/index.html?classId=1002'
+                classId = 1002;
             }
             Iframe.open({
                 id: 'editProfile-' + classId,
@@ -138,7 +140,7 @@
                 query: {
                     'roleType': user.role.type,
                     'user': user.id,
-                    'operate':0   // 0：查看 1：新增 2：修改
+                    'operate': 0   // 0：查看 1：新增 2：修改
                 }
             });
 
