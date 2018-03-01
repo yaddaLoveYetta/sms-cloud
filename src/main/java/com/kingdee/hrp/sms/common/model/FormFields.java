@@ -19,9 +19,9 @@ public class FormFields extends FormFieldsKey {
 
     private Integer showWidth;
 
-    private Integer lookupType;
+    private Integer lookUpType;
 
-    private Integer lookupClassId;
+    private Integer lookUpClassId;
 
     private String srcTable;
 
@@ -125,20 +125,20 @@ public class FormFields extends FormFieldsKey {
         this.showWidth = showWidth;
     }
 
-    public Integer getLookupType() {
-        return lookupType;
+    public Integer getLookUpType() {
+        return lookUpType;
     }
 
-    public void setLookupType(Integer lookupType) {
-        this.lookupType = lookupType;
+    public void setLookUpType(Integer lookUpType) {
+        this.lookUpType = lookUpType;
     }
 
-    public Integer getLookupClassId() {
-        return lookupClassId;
+    public Integer getLookUpClassId() {
+        return lookUpClassId;
     }
 
-    public void setLookupClassId(Integer lookupClassId) {
-        this.lookupClassId = lookupClassId;
+    public void setLookUpClassId(Integer lookUpClassId) {
+        this.lookUpClassId = lookUpClassId;
     }
 
     public String getSrcTable() {

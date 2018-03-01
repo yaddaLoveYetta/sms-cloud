@@ -1,11 +1,7 @@
 package com.kingdee.hrp.sms.common.model;
 
-import com.kingdee.hrp.sms.common.RootModel;
-
-public class FormClassEntry extends RootModel {
-    private Integer classId;
-
-    private Integer entryIndex;
+public class FormClassEntry extends FormClassEntryKey {
+    private String name;
 
     private String tableName;
 
@@ -15,20 +11,12 @@ public class FormClassEntry extends RootModel {
 
     private String joinType;
 
-    public Integer getClassId() {
-        return classId;
+    public String getName() {
+        return name;
     }
 
-    public void setClassId(Integer classId) {
-        this.classId = classId;
-    }
-
-    public Integer getEntryIndex() {
-        return entryIndex;
-    }
-
-    public void setEntryIndex(Integer entryIndex) {
-        this.entryIndex = entryIndex;
+    public void setName(String name) {
+        this.name = name == null ? null : name.trim();
     }
 
     public String getTableName() {

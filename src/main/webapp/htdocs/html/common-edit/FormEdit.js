@@ -407,102 +407,29 @@ define('FormEdit', function (require, module, exports) {
             });
         }).join('');
 
-        /*  div.innerHTML = $.String.format(samples["ctrl"], {
-
-              items: $.Array.keep(fields, function (item, no) {
-
-                  var sample = "";
-
-                  if (!item.display) {
-                      return "";
-                  }
-
-                  var domType = item.ctrlType;
-
-                  if (!!!domType) {
-                      // 默认文本
-                      domType = 10;
-                  }
-
-                  /!*
-                      1	数字
-                      2	数字带小数
-                      3	选择框
-                      5	下拉列表
-                      6	F7选择框
-                      7	级联选择器
-                      8	手机号码
-                      9	座机电话
-                      10	普通文本
-                      11	多行文本
-                      12	日期时间
-                      13	男：女
-                      14	密码控件
-                   *!/
-                  switch (domType) {
-                      case 1:
-                      case 2:
-                      case 8:
-                      case 9:
-                      case 10:
-                          sample = samples["text"];
-                          break;
-                      case 11://多行文本
-                          sample = samples["textarea"];
-                          break;
-                      case 12:
-                          sample = samples["datatime"];
-                          break;
-                      case 3: // checkbox
-                          sample = samples["checkbox"];
-                          break;
-                      case 6:
-                          sample = samples["f7"];
-                          break;
-                      case 14:
-                          sample = samples["password"];
-                          break;
-                      default:
-                          sample = samples["text"];
-                  }
-
-                  return $.String.format(sample, {
-                      mustInput: item.mustInput ? $.String.format(samples["mustInput"], {}) : "",
-                      name: item.name,
-                      key: item.key,
-                  });
-
-              }).join(""),
-
-              'text': '', // 这个清空，已在 items 里填充了
-              'textarea': '', // 这个清空，已在 items 里填充了
-              'datatime': '', // 这个清空，已在 items 里填充了
-              'checkbox': '', // 这个清空，已在 items 里填充了
-              'f7': '', // 这个清空，已在 items 里填充了
-              'password': '', // 这个清空，已在 items 里填充了
-              'mustInput': '' // 这个清空，已在 items 里填充了
-
-          });*/
     }
 
-    // 初始化选择框控件
+
+    /**
+     * 初始化F7选择框控件
+     */
     function initSelectors() {
 
         var fields = metaData['formFields'][0];
 
-        for (var item in fields) {
+        for (var key in fields) {
 
-            var field = fields[item];
+            var field = fields[key];
 
-            if (field.lookUpType === 1 || field.lookUpType === 2) {
+            if (field.lookUpType === 1) {
                 // 引用基础资料
                 var config = {
                     targetType: 1, //跳转方案
-                    classID: field.lookUpClassID,
+                    classID: field.lookUpClassId,
                     destClassId: field.classId,
                     hasBreadcrumbs: true,
                     fieldKey: field.key,
-                    container: document.getElementById('bd-' + field.key),
+                    container: document.getElementById(field.key),
                     title: field.name,
                     defaults: {
                         pageSize: 8
@@ -532,7 +459,7 @@ define('FormEdit', function (require, module, exports) {
             },
             'done': function (key, data) {
                 emitter.fire(key, [data, selectors, metaData]);
-            },
+            }
         });
 
         // 初始化selectors后将selectors抛出，Edit模块中可能需要

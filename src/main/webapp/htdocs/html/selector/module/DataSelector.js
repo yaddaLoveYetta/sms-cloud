@@ -65,7 +65,7 @@
 
             var meta = mapper.get(selector);
 
-            $(meta.container).delegate('[data-role="btn"]', 'click', function () {
+            $(meta.container).delegate('[data-role="btn"]', 'click', function (e) {
 
                 var url = $.Url.setQueryString(defaults.targetList[meta.targetType], 'classId', meta.classID);
 

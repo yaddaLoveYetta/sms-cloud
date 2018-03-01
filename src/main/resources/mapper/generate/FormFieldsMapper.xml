@@ -13,8 +13,8 @@
     <result column="index" jdbcType="INTEGER" property="index" />
     <result column="display" jdbcType="INTEGER" property="display" />
     <result column="show_width" jdbcType="INTEGER" property="showWidth" />
-    <result column="lookup_type" jdbcType="INTEGER" property="lookupType" />
-    <result column="lookup_class_id" jdbcType="INTEGER" property="lookupClassId" />
+    <result column="look_up_type" jdbcType="INTEGER" property="lookUpType" />
+    <result column="look_up_class_id" jdbcType="INTEGER" property="lookUpClassId" />
     <result column="src_table" jdbcType="VARCHAR" property="srcTable" />
     <result column="src_table_alis" jdbcType="VARCHAR" property="srcTableAlis" />
     <result column="src_field" jdbcType="VARCHAR" property="srcField" />
@@ -91,7 +91,7 @@
   </sql>
   <sql id="Base_Column_List">
     class_id, `key`, page, `name`, sql_column_name, data_type, ctrl_type, ctrl_index, 
-    `index`, display, show_width, lookup_type, lookup_class_id, src_table, src_table_alis, 
+    `index`, display, show_width, look_up_type, look_up_class_id, src_table, src_table_alis, 
     src_field, display_field, display_ext, join_type, `filter`, default_value, max_value, 
     min_value, must_input, `length`, `lock`, is_condition, is_count
   </sql>
@@ -131,8 +131,8 @@
     insert into t_form_fields (class_id, `key`, page, 
       `name`, sql_column_name, data_type, 
       ctrl_type, ctrl_index, `index`, 
-      display, show_width, lookup_type, 
-      lookup_class_id, src_table, src_table_alis, 
+      display, show_width, look_up_type, 
+      look_up_class_id, src_table, src_table_alis, 
       src_field, display_field, display_ext, 
       join_type, `filter`, default_value, 
       max_value, min_value, must_input, 
@@ -141,8 +141,8 @@
     values (#{classId,jdbcType=INTEGER}, #{key,jdbcType=VARCHAR}, #{page,jdbcType=INTEGER}, 
       #{name,jdbcType=VARCHAR}, #{sqlColumnName,jdbcType=VARCHAR}, #{dataType,jdbcType=INTEGER}, 
       #{ctrlType,jdbcType=INTEGER}, #{ctrlIndex,jdbcType=INTEGER}, #{index,jdbcType=INTEGER}, 
-      #{display,jdbcType=INTEGER}, #{showWidth,jdbcType=INTEGER}, #{lookupType,jdbcType=INTEGER}, 
-      #{lookupClassId,jdbcType=INTEGER}, #{srcTable,jdbcType=VARCHAR}, #{srcTableAlis,jdbcType=VARCHAR}, 
+      #{display,jdbcType=INTEGER}, #{showWidth,jdbcType=INTEGER}, #{lookUpType,jdbcType=INTEGER}, 
+      #{lookUpClassId,jdbcType=INTEGER}, #{srcTable,jdbcType=VARCHAR}, #{srcTableAlis,jdbcType=VARCHAR}, 
       #{srcField,jdbcType=VARCHAR}, #{displayField,jdbcType=VARCHAR}, #{displayExt,jdbcType=VARCHAR}, 
       #{joinType,jdbcType=VARCHAR}, #{filter,jdbcType=VARCHAR}, #{defaultValue,jdbcType=VARCHAR}, 
       #{maxValue,jdbcType=DOUBLE}, #{minValue,jdbcType=DOUBLE}, #{mustInput,jdbcType=INTEGER}, 
@@ -185,11 +185,11 @@
       <if test="showWidth != null">
         show_width,
       </if>
-      <if test="lookupType != null">
-        lookup_type,
+      <if test="lookUpType != null">
+        look_up_type,
       </if>
-      <if test="lookupClassId != null">
-        lookup_class_id,
+      <if test="lookUpClassId != null">
+        look_up_class_id,
       </if>
       <if test="srcTable != null">
         src_table,
@@ -271,11 +271,11 @@
       <if test="showWidth != null">
         #{showWidth,jdbcType=INTEGER},
       </if>
-      <if test="lookupType != null">
-        #{lookupType,jdbcType=INTEGER},
+      <if test="lookUpType != null">
+        #{lookUpType,jdbcType=INTEGER},
       </if>
-      <if test="lookupClassId != null">
-        #{lookupClassId,jdbcType=INTEGER},
+      <if test="lookUpClassId != null">
+        #{lookUpClassId,jdbcType=INTEGER},
       </if>
       <if test="srcTable != null">
         #{srcTable,jdbcType=VARCHAR},
@@ -366,11 +366,11 @@
       <if test="record.showWidth != null">
         show_width = #{record.showWidth,jdbcType=INTEGER},
       </if>
-      <if test="record.lookupType != null">
-        lookup_type = #{record.lookupType,jdbcType=INTEGER},
+      <if test="record.lookUpType != null">
+        look_up_type = #{record.lookUpType,jdbcType=INTEGER},
       </if>
-      <if test="record.lookupClassId != null">
-        lookup_class_id = #{record.lookupClassId,jdbcType=INTEGER},
+      <if test="record.lookUpClassId != null">
+        look_up_class_id = #{record.lookUpClassId,jdbcType=INTEGER},
       </if>
       <if test="record.srcTable != null">
         src_table = #{record.srcTable,jdbcType=VARCHAR},
@@ -435,8 +435,8 @@
       `index` = #{record.index,jdbcType=INTEGER},
       display = #{record.display,jdbcType=INTEGER},
       show_width = #{record.showWidth,jdbcType=INTEGER},
-      lookup_type = #{record.lookupType,jdbcType=INTEGER},
-      lookup_class_id = #{record.lookupClassId,jdbcType=INTEGER},
+      look_up_type = #{record.lookUpType,jdbcType=INTEGER},
+      look_up_class_id = #{record.lookUpClassId,jdbcType=INTEGER},
       src_table = #{record.srcTable,jdbcType=VARCHAR},
       src_table_alis = #{record.srcTableAlis,jdbcType=VARCHAR},
       src_field = #{record.srcField,jdbcType=VARCHAR},
@@ -486,11 +486,11 @@
       <if test="showWidth != null">
         show_width = #{showWidth,jdbcType=INTEGER},
       </if>
-      <if test="lookupType != null">
-        lookup_type = #{lookupType,jdbcType=INTEGER},
+      <if test="lookUpType != null">
+        look_up_type = #{lookUpType,jdbcType=INTEGER},
       </if>
-      <if test="lookupClassId != null">
-        lookup_class_id = #{lookupClassId,jdbcType=INTEGER},
+      <if test="lookUpClassId != null">
+        look_up_class_id = #{lookUpClassId,jdbcType=INTEGER},
       </if>
       <if test="srcTable != null">
         src_table = #{srcTable,jdbcType=VARCHAR},
@@ -552,8 +552,8 @@
       `index` = #{index,jdbcType=INTEGER},
       display = #{display,jdbcType=INTEGER},
       show_width = #{showWidth,jdbcType=INTEGER},
-      lookup_type = #{lookupType,jdbcType=INTEGER},
-      lookup_class_id = #{lookupClassId,jdbcType=INTEGER},
+      look_up_type = #{lookUpType,jdbcType=INTEGER},
+      look_up_class_id = #{lookUpClassId,jdbcType=INTEGER},
       src_table = #{srcTable,jdbcType=VARCHAR},
       src_table_alis = #{srcTableAlis,jdbcType=VARCHAR},
       src_field = #{srcField,jdbcType=VARCHAR},
