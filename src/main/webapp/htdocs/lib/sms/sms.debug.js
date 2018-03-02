@@ -6943,7 +6943,7 @@
                 // 5.1.0-all
 
                 Seajs.use([
-                    'grid.locale-cn-js',
+                    'grid.locale-cn-51-js',
                     'jqgrid-all-js',
                     'ui.jqgrid-bootstrap-ui-css',
                     'ui.jqgrid-bootstrap-css',

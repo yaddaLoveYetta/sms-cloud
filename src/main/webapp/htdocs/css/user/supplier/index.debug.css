@@ -32,3 +32,10 @@
     width: 16px;
     height: 16px;
 }
+
+.operating .iconfont {
+    font-size: 10px !important;
+    cursor: pointer;
+    overflow: hidden;
+    padding: 2px;
+}

@@ -17,9 +17,13 @@ define('FormEdit', function (require, module, exports) {
 
     var user = SMS.Login.get();
 
-    var div = document.getElementById("div-head-content");
-    var samples = require("Samples")(div);
+    var divHead = document.getElementById("div-head-content");
+    var divBody = document.getElementById("div-body-content");
 
+    var samples = require("Samples")(divHead);
+
+    // 第一个单据体(应设计成集合支持多表体)
+    var billGrid;
     // 控制业务是否有修改-有修改关闭时进行提示
     var billChanged = false;
     // 单据元数据
@@ -331,7 +335,7 @@ define('FormEdit', function (require, module, exports) {
             fields = $.Array.group(fields, 4);
         }
 
-        div.innerHTML = $.Array.keep(fields, function (group, no) {
+        divHead.innerHTML = $.Array.keep(fields, function (group, no) {
 
             return $.String.format(samples["items"], {
 
@@ -410,63 +414,67 @@ define('FormEdit', function (require, module, exports) {
             });
         }).join('');
 
-        // 子表的模板
-        var entry = MiniQuery.Object.remove(metaData['formFields'], '0');
+        var formClassEntry = MiniQuery.Object.toArray(metaData['formClassEntry']);
 
-        if (!MiniQuery.Object.isEmpty(entry)) {
+        // 构建子表dom结构
+        divBody.innerHTML = $.Array.keep(formClassEntry, function (item, no) {
+            return $.String.format(samples["detail"], {
+                key: item.foreignKey
+            });
+        }).join('');
 
-            // 存在子表-渲染出所有子表表格
-            MiniQuery.Object.each(entry, function (entryIndex, formFields) {
+        // 使用jqGrid渲染出所有子表表格
+        MiniQuery.Object.each(metaData['formClassEntry'], function (entryIndex, formClassEntryItem) {
 
-                SMS.use('Grid', function (Grid) {
+            SMS.use('Grid', function (Grid) {
 
-                    billGrid = new Grid('bd-grid');
+                billGrid = new Grid(formClassEntryItem.foreignKey);
 
-                    var defaults = GridConfig.get({
-                        'fields': formFields,
-                        'defaults': {
-                            gridName: 'bd-grid',
-                            width: 'auto',// $(window).width() - 5,
-                            height: 'auto',
-                            classId: formClassId,
-                        },
-                        'showType': 1// 新增时有添加删除按钮，编辑时有删除按钮,查看时无按钮
-                    });
+                var defaults = GridConfig.getConfig({
+                    'fields': metaData['formFields'][entryIndex],
+                    'defaults': {
+                        gridName: formClassEntryItem.foreignKey,
+                        width: 'auto',// $(window).width() - 5,
+                        height: 'auto',
+                        classId: formClassId,
+                    },
+                    'showType': 1// 新增时有添加删除按钮，编辑时有删除按钮,查看时无按钮
+                });
 
 
-                    billGrid.render(defaults, [], metaData, entryIndex);
+                billGrid.render(defaults, [], metaData, entryIndex);
 
-                    billGrid.on('f7Selected', function (data) {
-
-                    });
-
-                    billGrid.on('afterEditCell', function (classId, rowid, cellname, value, iRow, iCol) {
-
-                    });
-
-                    billGrid.on('afterSaveCell', function (classId, rowid, cellname, value, iRow, iCol) {
-
-                        if (classId === 2020) {
-                            // 发货单新增编辑时候值更新事件处理
-                            // 下一迭代重构(应该由数据库配置字段值更新规则先)
-                            switch (cellname) {
-                                case 'actualQty':
-                                    // 实发数量变化后修改金额
-                                    // 1：获取物料单价
-                                    var price = billGrid.getCell(rowid, 'price');
-                                    console.log("price=" + price);
-                                    var amount = (value * price).toFixed(2);
-                                    billGrid.setCell(rowid, 'amount', amount)
-                                    break;
-                            }
-
-                        }
-                    });
+                billGrid.on('f7Selected', function (data) {
 
                 });
 
+                billGrid.on('afterEditCell', function (classId, rowid, cellname, value, iRow, iCol) {
+
+                });
+
+                billGrid.on('afterSaveCell', function (classId, rowid, cellname, value, iRow, iCol) {
+
+                    if (classId === 2020) {
+                        // 发货单新增编辑时候值更新事件处理
+                        // 下一迭代重构(应该由数据库配置字段值更新规则先)
+                        switch (cellname) {
+                            case 'actualQty':
+                                // 实发数量变化后修改金额
+                                // 1：获取物料单价
+                                var price = billGrid.getCell(rowid, 'price');
+                                console.log("price=" + price);
+                                var amount = (value * price).toFixed(2);
+                                billGrid.setCell(rowid, 'amount', amount)
+                                break;
+                        }
+
+                    }
+                });
+
             });
-        }
+
+        });
+
 
     }
 

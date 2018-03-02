@@ -8,9 +8,9 @@
     <link rel="stylesheet" href="../../../css/bootstrap.css" type="text/css"/>
     <link rel="stylesheet" href="../../../css/iconfont/iconfont.css">
 
-    <link rel="stylesheet" href="../../../lib/jqGrid-5.1.0/jqGrid-master/css/ui.jqgrid-bootstrap-ui.css" />
-    <link rel="stylesheet" href="../../../lib/jqGrid-5.1.0/jqGrid-master/css/ui.jqgrid-bootstrap.css" />
-    <link rel="stylesheet" href="../../../lib/jqGrid-5.1.0/jqGrid-master/css/ui.jqgrid.css" />
+    <link rel="stylesheet" href="../../../lib/jqGrid-5.1.0/jqGrid-master/css/ui.jqgrid-bootstrap-ui.css"/>
+    <link rel="stylesheet" href="../../../lib/jqGrid-5.1.0/jqGrid-master/css/ui.jqgrid-bootstrap.css"/>
+    <link rel="stylesheet" href="../../../lib/jqGrid-5.1.0/jqGrid-master/css/ui.jqgrid.css"/>
 
 
     <!--grunt.css.begin-->
@@ -121,6 +121,21 @@
             </div>
             #--yes_no.end--#
 
+            #--detail.begin--#
+            <div class="row form-group">
+                <div id="initCombo" class="dn col-sm-1">
+                    <input type="text" class="textbox FParkNumberAuto" name="FParkNumber" autocomplete="off">
+                </div>
+                <div class="grid-wrap col-sm-12">
+
+                    <table id="{key}"></table>
+
+                    <div id="{key}-pager"></div>
+                </div>
+                <span class="error-msg" id="{key}-msg"></span>
+            </div>
+            #--detail.end--#
+
         #--ctrl.end--#
 
     -->
@@ -129,20 +144,22 @@
 
 <div id="div-body-content" class="container-fluid">
 
-    <!-- 表体表格-->
+    <!--
+
     <div class="row form-group">
         <div id="initCombo" class="dn col-sm-1">
             <input type="text" class="textbox FParkNumberAuto" name="FParkNumber" autocomplete="off">
         </div>
         <div class="grid-wrap col-sm-12">
-            <!-- jqGrid table -->
-            <table id="bd-grid"></table>
-            <!-- jqGrid 分页 div -->
-            <div id="bd-grid-pager"></div>
+
+            <table id="{key}"></table>
+
+            <div id="{key}-pager"></div>
         </div>
-        <span class="error-msg" id="bd-grid-msg"></span>
+        <span class="error-msg" id="{key}-msg"></span>
     </div>
 
+    -->
 </div>
 
 <div style="display: none">
@@ -240,6 +257,25 @@
         </div>
 
     </div>
+</div>
+
+<div class="container-fluid" style="display: none">
+
+    <!-- -->
+    <!-- 表体表格-->
+    <div class="row form-group">
+        <div id="initCombo" class="dn col-sm-1">
+            <input type="text" class="textbox FParkNumberAuto" name="FParkNumber" autocomplete="off">
+        </div>
+        <div class="grid-wrap col-sm-12">
+            <!-- jqGrid table -->
+            <table id="{key}"></table>
+            <!-- jqGrid 分页 div -->
+            <div id="{key}-pager"></div>
+        </div>
+        <span class="error-msg" id="{key}-msg"></span>
+    </div>
+
 </div>
 
 <script src="../../../lib/jquery/jquery-1.11.1.debug.js"></script>

@@ -132,7 +132,7 @@ define('GridConfig', function (require, module, exports) {
      * @param type 0:1:2-查看/新增/编辑
      * @returns {*}
      */
-    function get(fields, config, showKeys, editKeys, type) {
+    function getConfig(fields, config, showKeys, editKeys, type) {
 
         var cNames = [];
         var cModel = [];
@@ -183,6 +183,7 @@ define('GridConfig', function (require, module, exports) {
                 width: 40,
                 fixed: true,
                 formatter: function (val, opt, row) {
+
                     var html_con;
 
                     if (operator === 1) {
@@ -190,12 +191,13 @@ define('GridConfig', function (require, module, exports) {
                         html_con = '<div class="operating" data-id="' + opt.rowId + '"><span class="ui-icon ui-icon-plus" title="新增行"></span></div>';
                     } else if (operator === 2) {
                         // del
-                        html_con = '<div class="operating" data-id="' + opt.rowId + '"><span class="ui-icon ui-icon-trash" title="删除行"></span></div>';
+                        html_con = '<div class="operating" data-id="' + opt.rowId + '"><span class="ui-icon-trash iconfont icon-delete" title="删除行"></span></div>';
                     } else if (operator === 3) {
                         // add & del
                         html_con = '<div class="operating" data-id="' + opt.rowId + '"><span class="ui-icon ui-icon-plus" title="新增行"></span><span class="ui-icon ui-icon-trash" title="删除行"></span></div>';
                     }
 
+                    html_con = '<div class="operating" data-id="' + opt.rowId + '"><span class="ui-icon ui-icon-plus iconfont icon-icon-xinzeng" title="新增行"></span><span class="ui-icon ui-icon-trash iconfont icon-delete" title="删除行"></span></div>';
                     return html_con;
                 },
                 align: "center",
@@ -402,7 +404,7 @@ define('GridConfig', function (require, module, exports) {
     }
 
     return {
-        get: get,
+        getConfig: getConfig,
     };
 
 });

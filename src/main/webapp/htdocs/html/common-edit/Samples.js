@@ -80,16 +80,22 @@ define('Samples', function (require, module, exports) {
                 //fn: trim,
             },
             {
-                name:'man_female',
+                name: 'man_female',
                 begin: '#--man_female.begin--#',
                 end: '#--man_female.end--#',
                 outer: '{man_female}'
             },
             {
-                name:'yes_no',
+                name: 'yes_no',
                 begin: '#--yes_no.begin--#',
                 end: '#--yes_no.end--#',
                 outer: '{yes_no}'
+            },
+            {
+                name: 'detail',
+                begin: '#--detail.begin--#',
+                end: '#--detail.end--#',
+                outer: '{detail}'
             }
         ]);
 
