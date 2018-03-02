@@ -90,7 +90,8 @@
                     filterValue = conditionData.filterValue || "";
                     valueRule = conditionData.valueRule || "";
 
-                    var value; // 最终过滤条件
+                    // 最终过滤条件
+                    var value;
 
                     if (type == "selector" && $.trim(target) !== "" && $.trim(filterKey) !== "") {
                         // 条件取自页面其他F7控件的值
