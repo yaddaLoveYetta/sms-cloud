@@ -6927,7 +6927,7 @@
 
             use: function (fn) {
                 // 4.5.4
-                Seajs.use([
+/*                Seajs.use([
                     'grid-locale-cn-js',
                     'grid-base-js',
                     'jquery-combo-js',
@@ -6936,13 +6936,13 @@
                     'common-css'
                 ], function () {
                     fn && fn(Grid);
-                });
+                });*/
                 // 5.1.0-all
-                /*
-                 * Seajs.use([ 'grid-locale-cn-js', 'ui-css', 'common-css',
-                 * 'jqgrid-all-css', 'jqgrid-all-js',
-                 *  ], function () { fn && fn(Grid); });
-                 */
+
+                  Seajs.use([ 'grid-locale-cn-js', 'ui-css', 'common-css',
+                  'jqgrid-all-css', 'jqgrid-all-js',
+                   ], function () { fn && fn(Grid); });
+
 
             },
 
