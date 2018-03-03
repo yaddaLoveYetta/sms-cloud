@@ -114,6 +114,7 @@
                 'datetimepicker-js': 'datetimepicker/js/datetimepicker.mod.{@}.js',
                 'zTree-js': 'ztree/js/jquery.ztree.all-3.5.js?r=' + Math.random(),
                 'zTree-css': 'ztree/css/zTreeStyle/zTreeStyle.css#',
+
                 'grid-base-js': 'jqgrid/grid.base.js?r=' + Math.random(),
                 'grid-celledit-js': 'jqgrid/grid.celledit.js',
                 'grid-custom-js': 'jqgrid/grid.custom.js',
@@ -123,12 +124,17 @@
                 'jqgrid-css': 'jqgrid/ui.jqgrid.css#',
                 'ui-css': 'jqgrid/ui.css#',
                 'common-css': 'jqgrid/common.css#',
-                'jqgrid-all-js': 'jqGrid-5.1.0/jqGrid-master/js/jquery.jqGrid.js',
-                'jqgrid-all-css': 'jqGrid-5.1.0/jqGrid-master/css/ui.jqgrid.css#',
+
+                'grid.locale-cn-51-js': 'jqGrid-5.1.0/jqGrid-master/js/i18n/grid.locale-cn.js',
+                'jqgrid-all-js': 'jqGrid-5.1.0/jqGrid-master/js/jquery.jqGrid.min.js',
+                'ui.jqgrid-bootstrap-ui-css': 'jqGrid-5.1.0/jqGrid-master/css/ui.jqgrid-bootstrap-ui.css',
+                'ui.jqgrid-bootstrap-css': 'jqGrid-5.1.0/jqGrid-master/css/ui.jqgrid-bootstrap.css',
+                'ui.jqgrid-css': 'jqGrid-5.1.0/jqGrid-master/css/ui.jqgrid.css',
+
                 'jquery-barcode': 'jquery-barcode-2.0.3/jquery/jquery-barcode.{@}.js',
                 'jquery.jqprint': 'jquery.jqprint/jquery.jqprint-0.3.js',
                 'jquery-migrate': 'jquery.jqprint/jquery-migrate-1.2.1.min.js',
-                'easy-tabs': 'jspkg-archive/lib/jquery.easytabs.{@}.js',
+                'easy-tabs': 'jspkg-archive/lib/jquery.easytabs.{@}.js'
             }
         },
 

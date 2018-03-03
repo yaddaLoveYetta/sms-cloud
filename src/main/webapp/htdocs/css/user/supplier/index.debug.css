@@ -8,3 +8,50 @@
     margin-bottom: 10px;
 }
 
+.iconfont {
+    font-size: 14px !important;
+}
+
+.row > label {
+    text-align: right;
+    padding-top: 7px;
+}
+
+.input-group[class*="col-"] {
+    padding-right: 15px !important;
+    padding-left: 15px !important;
+}
+
+.form-control-feedback {
+    right: 15px !important;
+    pointer-events: auto !important;
+}
+
+.form-group input[type='checkbox'] {
+    position: absolute;
+    width: 16px;
+    height: 16px;
+}
+
+.operating .iconfont {
+    font-size: 10px !important;
+    cursor: pointer;
+    overflow: hidden;
+    padding: 2px;
+}
+
+/*单元格内的文本自动换行*/
+  .ui-jqgrid tr.jqgrow td {
+    white-space: normal !important;
+    height:auto;
+    /*vertical-align:text-top;*/
+      vertical-align: middle;
+    padding-top:2px;
+}
+
+.table-bordered > thead > tr > th{
+    border-bottom-width: 1px !important;
+    height: 30px !important;
+    background-color: #d2efef;
+    vertical-align: middle;
+}

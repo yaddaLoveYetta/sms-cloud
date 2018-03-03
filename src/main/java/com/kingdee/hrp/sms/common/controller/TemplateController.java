@@ -1,17 +1,12 @@
 package com.kingdee.hrp.sms.common.controller;
 
-import com.kingdee.hrp.sms.common.domain.StatusCode;
 import com.kingdee.hrp.sms.common.exception.BusinessLogicRunTimeException;
 import com.kingdee.hrp.sms.common.service.ITemplateService;
-import com.sun.tools.corba.se.idl.constExpr.BooleanAnd;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -29,16 +24,17 @@ public class TemplateController {
     private ITemplateService templateService;
 
     /**
-     * 查询基础资料/单据模板数据
+     * 查询单据模板数据
      */
     @RequestMapping(value = "getFormTemplate")
+    @ResponseBody
     public Map<String, Object> getFormTemplate(Integer classId) {
 
         if (classId < 0) {
             throw new BusinessLogicRunTimeException("参数错误：必须提交classId");
         }
 
-        return null;
+        return templateService.getFormTemplate(classId, 0);
 
     }
 

@@ -65,7 +65,7 @@
 
             var meta = mapper.get(selector);
 
-            $(meta.container).delegate('[data-role="btn"]', 'click', function () {
+            $(meta.container).delegate('[data-role="btn"]', 'click', function (e) {
 
                 var url = $.Url.setQueryString(defaults.targetList[meta.targetType], 'classId', meta.classID);
 
@@ -90,7 +90,8 @@
                     filterValue = conditionData.filterValue || "";
                     valueRule = conditionData.valueRule || "";
 
-                    var value; // 最终过滤条件
+                    // 最终过滤条件
+                    var value;
 
                     if (type == "selector" && $.trim(target) !== "" && $.trim(filterKey) !== "") {
                         // 条件取自页面其他F7控件的值

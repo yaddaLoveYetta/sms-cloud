@@ -234,6 +234,66 @@ public class FormFieldsExample {
             return (Criteria) this;
         }
 
+        public Criteria andPageIsNull() {
+            addCriterion("page is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPageIsNotNull() {
+            addCriterion("page is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPageEqualTo(Integer value) {
+            addCriterion("page =", value, "page");
+            return (Criteria) this;
+        }
+
+        public Criteria andPageNotEqualTo(Integer value) {
+            addCriterion("page <>", value, "page");
+            return (Criteria) this;
+        }
+
+        public Criteria andPageGreaterThan(Integer value) {
+            addCriterion("page >", value, "page");
+            return (Criteria) this;
+        }
+
+        public Criteria andPageGreaterThanOrEqualTo(Integer value) {
+            addCriterion("page >=", value, "page");
+            return (Criteria) this;
+        }
+
+        public Criteria andPageLessThan(Integer value) {
+            addCriterion("page <", value, "page");
+            return (Criteria) this;
+        }
+
+        public Criteria andPageLessThanOrEqualTo(Integer value) {
+            addCriterion("page <=", value, "page");
+            return (Criteria) this;
+        }
+
+        public Criteria andPageIn(List<Integer> values) {
+            addCriterion("page in", values, "page");
+            return (Criteria) this;
+        }
+
+        public Criteria andPageNotIn(List<Integer> values) {
+            addCriterion("page not in", values, "page");
+            return (Criteria) this;
+        }
+
+        public Criteria andPageBetween(Integer value1, Integer value2) {
+            addCriterion("page between", value1, value2, "page");
+            return (Criteria) this;
+        }
+
+        public Criteria andPageNotBetween(Integer value1, Integer value2) {
+            addCriterion("page not between", value1, value2, "page");
+            return (Criteria) this;
+        }
+
         public Criteria andNameIsNull() {
             addCriterion("`name` is null");
             return (Criteria) this;
@@ -301,66 +361,6 @@ public class FormFieldsExample {
 
         public Criteria andNameNotBetween(String value1, String value2) {
             addCriterion("`name` not between", value1, value2, "name");
-            return (Criteria) this;
-        }
-
-        public Criteria andPageIsNull() {
-            addCriterion("page is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andPageIsNotNull() {
-            addCriterion("page is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andPageEqualTo(Integer value) {
-            addCriterion("page =", value, "page");
-            return (Criteria) this;
-        }
-
-        public Criteria andPageNotEqualTo(Integer value) {
-            addCriterion("page <>", value, "page");
-            return (Criteria) this;
-        }
-
-        public Criteria andPageGreaterThan(Integer value) {
-            addCriterion("page >", value, "page");
-            return (Criteria) this;
-        }
-
-        public Criteria andPageGreaterThanOrEqualTo(Integer value) {
-            addCriterion("page >=", value, "page");
-            return (Criteria) this;
-        }
-
-        public Criteria andPageLessThan(Integer value) {
-            addCriterion("page <", value, "page");
-            return (Criteria) this;
-        }
-
-        public Criteria andPageLessThanOrEqualTo(Integer value) {
-            addCriterion("page <=", value, "page");
-            return (Criteria) this;
-        }
-
-        public Criteria andPageIn(List<Integer> values) {
-            addCriterion("page in", values, "page");
-            return (Criteria) this;
-        }
-
-        public Criteria andPageNotIn(List<Integer> values) {
-            addCriterion("page not in", values, "page");
-            return (Criteria) this;
-        }
-
-        public Criteria andPageBetween(Integer value1, Integer value2) {
-            addCriterion("page between", value1, value2, "page");
-            return (Criteria) this;
-        }
-
-        public Criteria andPageNotBetween(Integer value1, Integer value2) {
-            addCriterion("page not between", value1, value2, "page");
             return (Criteria) this;
         }
 
@@ -794,123 +794,123 @@ public class FormFieldsExample {
             return (Criteria) this;
         }
 
-        public Criteria andLookupTypeIsNull() {
-            addCriterion("lookup_type is null");
+        public Criteria andLookUpTypeIsNull() {
+            addCriterion("look_up_type is null");
             return (Criteria) this;
         }
 
-        public Criteria andLookupTypeIsNotNull() {
-            addCriterion("lookup_type is not null");
+        public Criteria andLookUpTypeIsNotNull() {
+            addCriterion("look_up_type is not null");
             return (Criteria) this;
         }
 
-        public Criteria andLookupTypeEqualTo(Integer value) {
-            addCriterion("lookup_type =", value, "lookupType");
+        public Criteria andLookUpTypeEqualTo(Integer value) {
+            addCriterion("look_up_type =", value, "lookUpType");
             return (Criteria) this;
         }
 
-        public Criteria andLookupTypeNotEqualTo(Integer value) {
-            addCriterion("lookup_type <>", value, "lookupType");
+        public Criteria andLookUpTypeNotEqualTo(Integer value) {
+            addCriterion("look_up_type <>", value, "lookUpType");
             return (Criteria) this;
         }
 
-        public Criteria andLookupTypeGreaterThan(Integer value) {
-            addCriterion("lookup_type >", value, "lookupType");
+        public Criteria andLookUpTypeGreaterThan(Integer value) {
+            addCriterion("look_up_type >", value, "lookUpType");
             return (Criteria) this;
         }
 
-        public Criteria andLookupTypeGreaterThanOrEqualTo(Integer value) {
-            addCriterion("lookup_type >=", value, "lookupType");
+        public Criteria andLookUpTypeGreaterThanOrEqualTo(Integer value) {
+            addCriterion("look_up_type >=", value, "lookUpType");
             return (Criteria) this;
         }
 
-        public Criteria andLookupTypeLessThan(Integer value) {
-            addCriterion("lookup_type <", value, "lookupType");
+        public Criteria andLookUpTypeLessThan(Integer value) {
+            addCriterion("look_up_type <", value, "lookUpType");
             return (Criteria) this;
         }
 
-        public Criteria andLookupTypeLessThanOrEqualTo(Integer value) {
-            addCriterion("lookup_type <=", value, "lookupType");
+        public Criteria andLookUpTypeLessThanOrEqualTo(Integer value) {
+            addCriterion("look_up_type <=", value, "lookUpType");
             return (Criteria) this;
         }
 
-        public Criteria andLookupTypeIn(List<Integer> values) {
-            addCriterion("lookup_type in", values, "lookupType");
+        public Criteria andLookUpTypeIn(List<Integer> values) {
+            addCriterion("look_up_type in", values, "lookUpType");
             return (Criteria) this;
         }
 
-        public Criteria andLookupTypeNotIn(List<Integer> values) {
-            addCriterion("lookup_type not in", values, "lookupType");
+        public Criteria andLookUpTypeNotIn(List<Integer> values) {
+            addCriterion("look_up_type not in", values, "lookUpType");
             return (Criteria) this;
         }
 
-        public Criteria andLookupTypeBetween(Integer value1, Integer value2) {
-            addCriterion("lookup_type between", value1, value2, "lookupType");
+        public Criteria andLookUpTypeBetween(Integer value1, Integer value2) {
+            addCriterion("look_up_type between", value1, value2, "lookUpType");
             return (Criteria) this;
         }
 
-        public Criteria andLookupTypeNotBetween(Integer value1, Integer value2) {
-            addCriterion("lookup_type not between", value1, value2, "lookupType");
+        public Criteria andLookUpTypeNotBetween(Integer value1, Integer value2) {
+            addCriterion("look_up_type not between", value1, value2, "lookUpType");
             return (Criteria) this;
         }
 
-        public Criteria andLookupClassIdIsNull() {
-            addCriterion("lookup_class_id is null");
+        public Criteria andLookUpClassIdIsNull() {
+            addCriterion("look_up_class_id is null");
             return (Criteria) this;
         }
 
-        public Criteria andLookupClassIdIsNotNull() {
-            addCriterion("lookup_class_id is not null");
+        public Criteria andLookUpClassIdIsNotNull() {
+            addCriterion("look_up_class_id is not null");
             return (Criteria) this;
         }
 
-        public Criteria andLookupClassIdEqualTo(Integer value) {
-            addCriterion("lookup_class_id =", value, "lookupClassId");
+        public Criteria andLookUpClassIdEqualTo(Integer value) {
+            addCriterion("look_up_class_id =", value, "lookUpClassId");
             return (Criteria) this;
         }
 
-        public Criteria andLookupClassIdNotEqualTo(Integer value) {
-            addCriterion("lookup_class_id <>", value, "lookupClassId");
+        public Criteria andLookUpClassIdNotEqualTo(Integer value) {
+            addCriterion("look_up_class_id <>", value, "lookUpClassId");
             return (Criteria) this;
         }
 
-        public Criteria andLookupClassIdGreaterThan(Integer value) {
-            addCriterion("lookup_class_id >", value, "lookupClassId");
+        public Criteria andLookUpClassIdGreaterThan(Integer value) {
+            addCriterion("look_up_class_id >", value, "lookUpClassId");
             return (Criteria) this;
         }
 
-        public Criteria andLookupClassIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("lookup_class_id >=", value, "lookupClassId");
+        public Criteria andLookUpClassIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("look_up_class_id >=", value, "lookUpClassId");
             return (Criteria) this;
         }
 
-        public Criteria andLookupClassIdLessThan(Integer value) {
-            addCriterion("lookup_class_id <", value, "lookupClassId");
+        public Criteria andLookUpClassIdLessThan(Integer value) {
+            addCriterion("look_up_class_id <", value, "lookUpClassId");
             return (Criteria) this;
         }
 
-        public Criteria andLookupClassIdLessThanOrEqualTo(Integer value) {
-            addCriterion("lookup_class_id <=", value, "lookupClassId");
+        public Criteria andLookUpClassIdLessThanOrEqualTo(Integer value) {
+            addCriterion("look_up_class_id <=", value, "lookUpClassId");
             return (Criteria) this;
         }
 
-        public Criteria andLookupClassIdIn(List<Integer> values) {
-            addCriterion("lookup_class_id in", values, "lookupClassId");
+        public Criteria andLookUpClassIdIn(List<Integer> values) {
+            addCriterion("look_up_class_id in", values, "lookUpClassId");
             return (Criteria) this;
         }
 
-        public Criteria andLookupClassIdNotIn(List<Integer> values) {
-            addCriterion("lookup_class_id not in", values, "lookupClassId");
+        public Criteria andLookUpClassIdNotIn(List<Integer> values) {
+            addCriterion("look_up_class_id not in", values, "lookUpClassId");
             return (Criteria) this;
         }
 
-        public Criteria andLookupClassIdBetween(Integer value1, Integer value2) {
-            addCriterion("lookup_class_id between", value1, value2, "lookupClassId");
+        public Criteria andLookUpClassIdBetween(Integer value1, Integer value2) {
+            addCriterion("look_up_class_id between", value1, value2, "lookUpClassId");
             return (Criteria) this;
         }
 
-        public Criteria andLookupClassIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("lookup_class_id not between", value1, value2, "lookupClassId");
+        public Criteria andLookUpClassIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("look_up_class_id not between", value1, value2, "lookUpClassId");
             return (Criteria) this;
         }
 

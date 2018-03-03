@@ -1,9 +1,9 @@
 package com.kingdee.hrp.sms.common.model;
 
 public class FormFields extends FormFieldsKey {
-    private String name;
-
     private Integer page;
+
+    private String name;
 
     private String sqlColumnName;
 
@@ -19,9 +19,9 @@ public class FormFields extends FormFieldsKey {
 
     private Integer showWidth;
 
-    private Integer lookupType;
+    private Integer lookUpType;
 
-    private Integer lookupClassId;
+    private Integer lookUpClassId;
 
     private String srcTable;
 
@@ -53,20 +53,20 @@ public class FormFields extends FormFieldsKey {
 
     private Integer isCount;
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name == null ? null : name.trim();
-    }
-
     public Integer getPage() {
         return page;
     }
 
     public void setPage(Integer page) {
         this.page = page;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name == null ? null : name.trim();
     }
 
     public String getSqlColumnName() {
@@ -125,20 +125,20 @@ public class FormFields extends FormFieldsKey {
         this.showWidth = showWidth;
     }
 
-    public Integer getLookupType() {
-        return lookupType;
+    public Integer getLookUpType() {
+        return lookUpType;
     }
 
-    public void setLookupType(Integer lookupType) {
-        this.lookupType = lookupType;
+    public void setLookUpType(Integer lookUpType) {
+        this.lookUpType = lookUpType;
     }
 
-    public Integer getLookupClassId() {
-        return lookupClassId;
+    public Integer getLookUpClassId() {
+        return lookUpClassId;
     }
 
-    public void setLookupClassId(Integer lookupClassId) {
-        this.lookupClassId = lookupClassId;
+    public void setLookUpClassId(Integer lookUpClassId) {
+        this.lookUpClassId = lookUpClassId;
     }
 
     public String getSrcTable() {

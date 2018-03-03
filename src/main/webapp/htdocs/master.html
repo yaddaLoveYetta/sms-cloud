@@ -62,7 +62,7 @@
                         <input type="text" ng-model="selected"
                                typeahead="state for state in states | filter:$viewValue | limitTo:8"
                                class="form-control input-sm bg-light no-border rounded padder"
-                               placeholder="Search projects...">
+                               placeholder="Search orders...">
                         <span class="input-group-btn">
                             <button type="submit" class="btn btn-sm bg-light rounded"><i
                                     class="fa fa-search"></i></button>
@@ -418,9 +418,8 @@
 
     <!--Samples.DataSelector--!
 #--selector.begin--#
-    <div class="sms-F7selector">
-        <input type="text" data-role="label"  /><span data-role="btn"><i></i></span>
-    </div>
+    <span data-role="btn" class="iconfont icon-icon-bars form-control-feedback"></span>
+    <input type="text" data-role="label" class="form-control" placeholder="请选择{name}">
 #--selector.end--#
 --Samples.DataSelector-->
 
@@ -445,20 +444,20 @@
 
     #--item.begin--#
     <li data-index="{index}" class=sms-btn-item>
-    <i class="icons" style="background-image: url({icon});"></i>
+    <i class=" iconfont {icon}" ></i>
     {text}</li>
     #--item.end--#
 
     #--group.begin--#
     <li data-index="{index}" class=sms-btn-menu {css-class}">
         <button class=sms-btn-item>
-        <i class="icons" style="background-image: url({icon});"></i>
+        <i class="iconfont {icon}"></i>
         {text}</button>
         <ol id="{ol-id}{index}" class="btn-more" style="display:none;">
             #--group.item.begin--#
             <li data-index="{index}" data-no="{no}">
                 <a href="javascript:">
-                <i class="icons" style="background-image: url({icon});"></i>
+                <i class="iconfont {icon}" ></i>
                 {text}</a>
             </li>
             #--group.item.end--#

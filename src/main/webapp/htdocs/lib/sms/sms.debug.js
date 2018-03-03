@@ -2346,7 +2346,7 @@
                             return $.String.format(samples['item'], {
                                 'index': no,
                                 'text': item[textKey],
-                                'icon': item[iconKey] || 'file.png'
+                                'icon': item[iconKey] || 'icon-jibenziliao1'
                             });
                         }
 
@@ -2354,7 +2354,7 @@
                         return $.String.format(samples['group'], {
                             'index': no,
                             'text': item[textKey],
-                            'icon': item[iconKey] || 'file.png',
+                            'icon': item[iconKey] || 'icon-jibenziliao1',
                             'ol-id': meta.olId,
                             'span-id': meta.spanId,
                             'css-class': item.cssClass || '',
@@ -2365,7 +2365,7 @@
                                     'no': no,
                                     'index': index,
                                     'text': item[textKey],
-                                    'icon': item[iconKey] || 'file.png'
+                                    'icon': item[iconKey] || 'icon-jibenziliao1'
                                 });
 
                             }).join(''),
@@ -6334,8 +6334,10 @@
             }
 
             bdGrid.jqGrid({
+                caption: 'test',
                 data: data,
                 datatype: 'clientSide', // 'local',
+                styleUI: 'Bootstrap',//设置jqgrid的全局样式为bootstrap样式
                 colNames: config.colNames,
                 colModel: config.colModel,
                 width: config.width,
@@ -6623,7 +6625,7 @@
         }
 
         function getPrimaryKey(metaData, entryIndex) {
-            var entry = metaData['formEntries'][entryIndex];
+            var entry = metaData['formClassEntry'][entryIndex];
             return entry['primaryKey'];
         }
 
@@ -6937,11 +6939,18 @@
                 ], function () {
                     fn && fn(Grid);
                 });*/
+
                 // 5.1.0-all
 
-                  Seajs.use([ 'grid-locale-cn-js', 'ui-css', 'common-css',
-                  'jqgrid-all-css', 'jqgrid-all-js',
-                   ], function () { fn && fn(Grid); });
+                Seajs.use([
+                    'grid.locale-cn-51-js',
+                    'jqgrid-all-js',
+                    'ui.jqgrid-bootstrap-ui-css',
+                    'ui.jqgrid-bootstrap-css',
+                    'ui.jqgrid-css',
+                ], function () {
+                    fn && fn(Grid);
+                });
 
 
             },

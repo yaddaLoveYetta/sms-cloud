@@ -4,17 +4,14 @@ import com.kingdee.hrp.sms.common.dao.generate.RoleMapper;
 import com.kingdee.hrp.sms.common.dao.generate.UserMapper;
 import com.kingdee.hrp.sms.common.exception.BusinessLogicRunTimeException;
 import com.kingdee.hrp.sms.common.model.Role;
-import com.kingdee.hrp.sms.common.model.RoleExample;
 import com.kingdee.hrp.sms.common.model.User;
 import com.kingdee.hrp.sms.common.model.UserExample;
 import com.kingdee.hrp.sms.common.service.BaseService;
 import com.kingdee.hrp.sms.system.user.service.IUserService;
-import com.kingdee.hrp.sms.util.Common;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -99,15 +96,45 @@ public class UserService extends BaseService implements IUserService {
     /**
      * 获取用户的角色
      *
-     * @param userId
+     * @param roleId
      * @return
      */
     @Override
-    public Role getUserRole(Long userId) {
+    public Role getUserRole(Long roleId) {
 
         RoleMapper roleMapper = sqlSession.getMapper(RoleMapper.class);
 
-        return roleMapper.selectByPrimaryKey(userId);
+        return roleMapper.selectByPrimaryKey(roleId);
     }
-    
+
+    @Override
+    @Transactional(rollbackFor = {RuntimeException.class})
+    public boolean editpwd(Long userId, String oldpwd, String newpwd) {
+
+        User user = null;
+        UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+
+
+        UserExample example = new UserExample();
+        UserExample.Criteria criteria = example.createCriteria();
+
+        criteria.andPasswordEqualTo(oldpwd);
+        criteria.andIdEqualTo(userId);
+
+        List<User> list = userMapper.selectByExample(example);
+
+        if (list != null && list.size() > 0) {
+            user = list.get(0);
+        }
+        if (null == user) {
+            throw new BusinessLogicRunTimeException("输入的原密码错误");
+        }
+        if (user.getPassword().equals(newpwd)) {
+            throw new BusinessLogicRunTimeException("修改密码的新密码不能与原密码相同");
+        }
+        user.setPassword(newpwd);
+        userMapper.updateByPrimaryKey(user);
+        return true;
+    }
+
 }
