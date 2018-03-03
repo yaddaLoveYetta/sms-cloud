@@ -8,6 +8,7 @@ define('FormEdit', function (require, module, exports) {
     var SMS = require('SMS');
     var API = SMS.require('API');
     var MD5 = SMS.require('MD5');
+    var Multitask = SMS.require('Multitask');
 
     var Validate = require('Validate');
     var DataSelector = require('DataSelector');
@@ -97,8 +98,8 @@ define('FormEdit', function (require, module, exports) {
         });
     }
 
-    //-----------F7处理逻辑Begin-------------//
-    var getF7Data = function (itemId, classId, fn) {
+    // 获取引用类型数据
+    var getF7Data = function (classId, itemId, fn) {
 
 
         var api = new API('template/getItemById');
@@ -123,11 +124,17 @@ define('FormEdit', function (require, module, exports) {
 
     };
 
-    var setF7Data = function (itemId, classId, key) {
+    /**
+     * 设置F7控件值(传递一个内码值，显示时候显示其名称)
+     * @param classId 业务类别
+     * @param id 内码
+     * @param key 模板key
+     */
+    var setF7Data = function (classId, id, key) {
 
-        if (itemId && itemId.trim() != '') { //是否具有默认值
+        if (id && id !== 0) {
 
-            getF7Data(itemId, classId, function (data) {
+            getF7Data(classId, id, function (data) {
                 var selectorData = [{
                     ID: data[metaData['formClass'].primaryKey],
                     number: data.number || '',
@@ -139,8 +146,6 @@ define('FormEdit', function (require, module, exports) {
 
         }
     };
-
-    //-----------F7处理逻辑End-------------//
 
     //------是否必填校验逻辑(因多地方使用所以抽出来) BEGIN-----//
     var isMustFiled = function (isUpdate, field) {
@@ -170,6 +175,7 @@ define('FormEdit', function (require, module, exports) {
 
     //------是否必填校验逻辑 END-----//
 
+    // 控件初始化
     function initController() {
 
         var isUpdate = !!itemId; //新增 || 修改
@@ -180,13 +186,13 @@ define('FormEdit', function (require, module, exports) {
         }
         var fields = metaData['formFields'][0];
 
-        for (var item in fields) {
+        for (var key in fields) {
 
-            var field = fields[item];
-            var keyName = field['key'];
-            var defaultValue = initValue ? initValue[keyName] || field['defaultValue'] : field['defaultValue'];
-            var lookUpClassId = field['lookUpClassID'];
-            var element = getElements(keyName);
+            var field = fields[key];
+
+            var defaultValue = initValue ? initValue[key] || field['defaultValue'] : field['defaultValue'] || '';
+
+            var element = getElements(key);
             if (!element) {
                 continue;
             }
@@ -233,14 +239,14 @@ define('FormEdit', function (require, module, exports) {
             if (isLock) {
                 if (field['ctrlType'] == 6) {
                     //F7选择框锁定特殊处理
-                    selectors[keyName].lock();
+                    selectors[key].lock();
                 } else {
                     element.prop("disabled", "disabled");
                 }
             } else {
                 if (field['ctrlType'] == 6) {
                     //F7选择框锁定特殊处理
-                    selectors[keyName].unlock();
+                    selectors[key].unlock();
                 } else {
                     element.prop("disabled", "");
                 }
@@ -279,7 +285,7 @@ define('FormEdit', function (require, module, exports) {
                         element.prop("checked", defaultValue);
                     }
                     if (field["ctrlType"] == 6) { //选择框
-                        setF7Data(defaultValue, field['lookUpClassID'], keyName);
+                        setF7Data(defaultValue, field['lookUpClassID'], key);
                     }
                 }
             }
@@ -460,7 +466,7 @@ define('FormEdit', function (require, module, exports) {
                     'defaults': {
                         caption: formClassEntryItem.name,
                         gridName: formClassEntryItem.foreignKey,
-                        width: $(window).width(),
+                        width: 'auto',// $(window).width()-30,
                         height: 'auto',
                         classId: formClassId,
                     },
@@ -550,11 +556,10 @@ define('FormEdit', function (require, module, exports) {
 
     }
 
-
     /**
      * 初始化F7选择框控件
      */
-    function initSelectors() {
+    function initSelectors(fn) {
 
         var fields = metaData['formFields'][0];
 
@@ -606,10 +611,11 @@ define('FormEdit', function (require, module, exports) {
         // 初始化selectors后将selectors抛出，Edit模块中可能需要
         emitter.fire("afterInitSelectors", [selectors]);
 
+        fn && fn(1);
     }
 
     // 日期时间控件初始化
-    function initDateTimerPicker() {
+    function initDateTimerPicker(fn) {
 
         var fields = metaData['formFields'][0];
 
@@ -624,7 +630,7 @@ define('FormEdit', function (require, module, exports) {
             }
         }
         emitter.fire("afterInitDateTimerPicker", []);
-
+        fn && fn(1);
     }
 
     // 创建日期时间控件
@@ -649,7 +655,7 @@ define('FormEdit', function (require, module, exports) {
     }
 
     // 数字控件初始化
-    function initNumeric() {
+    function initNumeric(fn) {
 
         var fields = metaData['formFields'][0];
 
@@ -680,7 +686,7 @@ define('FormEdit', function (require, module, exports) {
             }
         }
         emitter.fire("afterInitNumeric", []);
-
+        fn && fn(1);
     }
 
     // 创建数字控件
@@ -704,6 +710,65 @@ define('FormEdit', function (require, module, exports) {
 
     }
 
+    // 初始化字段默认值-新增时有效
+    function initDefaultValue() {
+
+        if (operate !== 0) {
+            // 非新增状态不处理-由后台数据填充
+            return;
+        }
+
+        if (!metaData || !metaData['formFields'] || !metaData['formFields'][0]) {
+            SMS.Tips.error('元数据错误，请联系管理员');
+            return;
+        }
+        var fields = metaData['formFields'][0];
+
+        for (var key in fields) {
+
+            var field = fields[key];
+
+            var defaultValue = initValue ? initValue[key] || field['defaultValue'] : field['defaultValue'] || '';
+
+            var element = getElements(key);
+            if (!element) {
+                continue;
+            }
+
+
+            //新增时处理默认值-默认值可来自模板配置或者业务传递，业务传递的默认值优先于模板配置
+            if (defaultValue && defaultValue.trim() !== '') {
+
+                if (field.ctrlType === 1 || field.ctrlType === 2 || field.ctrlType === 16) {
+                    // 数字
+                    //element.val(defaultValue);
+                    numberFields[key].set(defaultValue);
+                }
+                else if (field.ctrlType === 10) {
+                    //文本
+                    element.val(defaultValue);
+                }
+                else if (field.ctrlType === 12) {
+                    //日期时间
+                    element.val(defaultValue);
+                }
+                else if (field.ctrlType === 15) {
+                    // 是/否
+                    //element.prop("checked", defaultValue);
+                    element.val(defaultValue);
+                }
+                else if (field.ctrlType === 6) {
+                    //F7选择框
+                    setF7Data(defaultValue, field.lookUpClassId, key);
+                } else {
+                    element.val(defaultValue);
+                }
+            }
+
+        }
+
+    }
+
     /**
      * 界面渲染
      * @param formClassId
@@ -722,14 +787,35 @@ define('FormEdit', function (require, module, exports) {
 
         // 填充页面控件
         initPage();
-        // 初始化selectors
-        initSelectors();
-        // 初始化时间控件
-        initDateTimerPicker();
-        // 初始化数字控件
-        initNumeric();
+
+        var tasks = [
+            {
+                fn: initSelectors // 填充页面控件
+            },
+            {
+                fn: initDateTimerPicker
+            },
+            {
+                fn: initNumeric
+            }];
+
+        //并行发起请求
+        Multitask.concurrency(tasks, function (data) {
+            // 默认值处理-只在新增是处理
+            initDefaultValue();
+        });
+
+
+        /*        // 初始化selectors
+                initSelectors();
+                // 初始化时间控件
+                initDateTimerPicker();
+                // 初始化数字控件
+                initNumeric();
+                // 默认值处理-只在新增是处理
+                initDefaultValue();*/
         //控件初始化，控制显示隐藏，只读 ,默认值等..
-        initController();
+        //initController();
 
         fixIE();
 
