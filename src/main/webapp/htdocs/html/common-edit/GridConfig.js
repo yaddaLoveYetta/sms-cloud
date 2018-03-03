@@ -31,14 +31,53 @@ define('GridConfig', function (require, module, exports) {
         model.hidden = !isShow;
         model.tabIndex = field.index;
 
-        if (field.ctrlType == 6) {
-
-            model.name = field.key + '_DspName'; // 显示的值保存在 field.key + '_DspName' 的key中
+        // F7选择对话框
+        if (field.ctrlType === 6) {
+            /**
+             * 引用基础资料的控件
+             * 表格中占用两列，一列保存内码值(隐藏),一列显示其名称
+             * 显示的值保存在 field.key + '_DspName' 的key中
+             * 真实数据库中的值保存在field.key 的key中
+             * @type {string}
+             */
+            model.name = field.key + '_DspName';
             model.edittype = 'custom';
 
             function element(value, options) {
-                var el = $('.' + field.key + 'Auto')[0];
-                return el;
+                /* var el = $('.' + field.key + 'Auto')[0];
+                 return el;*/
+
+                var $div = $('<div></div>');
+
+                var $span = $('<span></span>');
+
+                $span.addClass('iconfont icon-icon-bars form-control-feedback ui-icon-ellipsis');
+
+                $span.appendTo($div);        //将子div添加到父div中
+
+                var el = $("<input>", {
+                    type: 'text',
+                    class: 'form-control',
+                    val: value,
+                    onclick: function () {
+                        this.focus();
+                        this.select();
+                    }
+                });
+
+                el.appendTo($div);        //将子div添加到父div中
+
+                //return el;
+                return $div;
+
+                /*                var el = document.createElement("input");
+
+                                el.type="text";
+                                el.value = value;
+                                el.onclick = function() { el.focus(); el.select(); };
+                                return el;*/
+
+
             }
 
             function value(elem, operation, value) {
@@ -74,16 +113,18 @@ define('GridConfig', function (require, module, exports) {
 
             model.data = field;
         }
+        // 日期
+        if (field.ctrlType === 12) {
 
-        if (field.ctrlType == 12) {
-            // 日期
-            /*
-             * model.edittype = 'date'; model.formatter = "date";
-             * model.formatoptions = { srcformat: 'Y-m-d H:i:s',
-             * newformat: 'Y-m-d H:i:s' }
-             */
+            /*            model.edittype = 'date';
+                        model.formatter = "date";
+                        model.formatoptions = {
+                            srcformat: 'Y-m-d H:i:s',
+                            newformat: 'Y-m-d H:i:s'
+                        }*/
             model.edittype = 'text';
             model.editrules = {required: false};
+            //model.editable = false;
             model.editoptions = {
                 size: 10, maxlengh: 10,
                 dataInit: function (element) {
@@ -102,10 +143,26 @@ define('GridConfig', function (require, module, exports) {
                 }
             }
         }
+        // 数字-无小数
+        if (field.ctrlType === 1) {
 
-        if (field.dataType == 1) {
-            // 数字
             //model.edittype = 'text';
+            model.align = 'right'; // 数字靠右显示
+            model.editrules = {
+                required: false,
+                number: true
+            };
+            model.formatter = 'number';
+            model.formatoptions = {
+                decimalSeparator: ".",
+                thousandsSeparator: " ",
+                decimalPlaces: 0,
+                defaulValue: ''
+            };
+        }
+        // 数字-两位小数
+        if (field.ctrlType === 2) {
+
             model.align = 'right'; // 数字靠右显示
             model.editrules = {
                 required: false,
@@ -119,6 +176,24 @@ define('GridConfig', function (require, module, exports) {
                 defaulValue: 0
             };
         }
+
+        // 数字-单价金额-两位小数
+        if (field.ctrlType === 16) {
+
+            model.align = 'right'; // 数字靠右显示
+            model.editrules = {
+                required: false,
+                number: true
+            };
+            model.formatter = 'number';
+            model.formatoptions = {
+                decimalSeparator: ".",
+                thousandsSeparator: " ",
+                decimalPlaces: 2,
+                defaulValue: 0
+            };
+        }
+
         return model;
     }
 
@@ -180,7 +255,7 @@ define('GridConfig', function (require, module, exports) {
             model = {
                 name: 'operate',
                 label: ' ',
-                width: 40,
+                width: 50,
                 fixed: true,
                 formatter: function (val, opt, row) {
 
@@ -214,7 +289,7 @@ define('GridConfig', function (require, module, exports) {
                 continue;
             }
 
-            if (field.lookUpType == 1) {
+            if (field.ctrlType == 6 && field.lookUpType == 1) {
                 // 引用类型增加保存列-不显示-用作表格保存时取数
                 var keyModel = {
                     name: field.key,

@@ -33,6 +33,18 @@
     height: 16px;
 }
 
+/*
+ 表体样式  -------------------------------begin------------------------------
+*/
+.dn {
+    display: none;
+}
+.body-content{
+    margin-top: 20px;
+}
+/*
+    jqgrid 样式覆盖 --begin----------------------------
+ */
 .operating .iconfont {
     font-size: 10px !important;
     cursor: pointer;
@@ -41,17 +53,38 @@
 }
 
 /*单元格内的文本自动换行*/
-  .ui-jqgrid tr.jqgrow td {
+.ui-jqgrid tr.jqgrow td {
     white-space: normal !important;
-    height:auto;
+    height: auto;
     /*vertical-align:text-top;*/
-      vertical-align: middle;
-    padding-top:2px;
+    vertical-align: middle;
+    padding-top: 2px;
 }
 
-.table-bordered > thead > tr > th{
+.table-bordered > thead > tr > th {
     border-bottom-width: 1px !important;
     height: 30px !important;
     background-color: #d2efef;
     vertical-align: middle;
 }
+
+.ui-jqgrid tr.jqgrow td {
+    height: 37px !important;
+}
+
+.customelement {
+    width: 100%;
+    position: relative;
+}
+
+.customelement .form-control-feedback {
+    right: 0px !important;
+}
+
+/*
+    jqgrid 样式覆盖 --end------------------------------
+ */
+
+/*
+ 表体样式  -------------------------------begin------------------------------
+*/

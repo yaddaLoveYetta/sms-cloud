@@ -6334,7 +6334,7 @@
             }
 
             bdGrid.jqGrid({
-                caption: 'test',
+                caption: config.caption,
                 data: data,
                 datatype: 'clientSide', // 'local',
                 styleUI: 'Bootstrap',//设置jqgrid的全局样式为bootstrap样式

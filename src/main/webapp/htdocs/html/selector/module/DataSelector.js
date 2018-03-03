@@ -252,7 +252,7 @@
                 }
             });
 
-            $(meta.container).find('input[data-role="label"]').prop("placeholder", "请选择" + meta.title);
+            //$(meta.container).find('input[data-role="label"]').prop("placeholder", "请选择" + meta.title);
         };
 
     }
@@ -272,7 +272,14 @@
         render: function () {
 
             var meta = mapper.get(this);
-            $(meta.container).html(samples.selector);
+
+            var html = $.String.format(samples.selector, {
+                name: meta.title,
+                key: meta.fieldKey
+            });
+
+            //$(meta.container).html(samples.selector);
+            $(meta.container).html(html);
             meta.bindEvents(this);
 
         },

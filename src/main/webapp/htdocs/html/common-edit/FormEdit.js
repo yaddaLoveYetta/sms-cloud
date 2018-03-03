@@ -22,6 +22,8 @@ define('FormEdit', function (require, module, exports) {
 
     var samples = require("Samples")(divHead);
 
+    // 当前单据操作类别 0：查看 1：新增 2：修改
+    var operate;
     // 第一个单据体(应设计成集合支持多表体)
     var billGrid;
     // 控制业务是否有修改-有修改关闭时进行提示
@@ -32,6 +34,10 @@ define('FormEdit', function (require, module, exports) {
     var selectors = {};
     // F7选择控件个性处理函数
     var fnSelectors;
+    // 日期控件集合
+    var dateTimePickers = {};
+    // 数字控件集合
+    var numberFields = {};
     // 业务类别id
     var formClassId;
     //单据内码
@@ -48,10 +54,11 @@ define('FormEdit', function (require, module, exports) {
      * @param fnE 含有表体字段时，暂时通过回调给到调用者呈现
      * @param fnS 含有特殊控件时，特殊控件初始化前回调给调用者做配置
      */
-    function render(classId, id, fnE, fnS, dfValue) {
+    function render(classId, id, opt, fnE, fnS, dfValue) {
 
         formClassId = classId;
         itemId = id;
+        operate = opt || 0;
         fnEntry = fnE;
         fnSelectors = fnS;
         initValue = dfValue;
@@ -318,24 +325,38 @@ define('FormEdit', function (require, module, exports) {
      */
     function initPage() {
 
-        var fields = MiniQuery.Object.toArray(metaData['formFields'][0]);
+        // 过滤出显示字段
+        var showFields = getShowKeys(metaData['formFields'][0]);
+        // 转成数组操作
+        showFields = MiniQuery.Object.toArray(showFields);
+        // 是否有子表
+        var existEntry = !MiniQuery.Object.isEmpty(metaData['formClassEntry']);
 
-        var length = fields.length;
-        if (length < 10) {
-            // 分组：小于10个字段每行显示两个字段
-            fields = $.Array.group(fields, 1);
-        } else if (length <= 20) {
-            // 分组：小于20个字段每行显示两个字段
-            fields = $.Array.group(fields, 2);
-        } else if (length <= 40) {
-            // 分组：小于40个字段每行显示三个字段
-            fields = $.Array.group(fields, 3);
+        // 有子表时，表头小于8个显示字段时，无子表时小于10个字段===>每行显示一个字段
+        var oneFieldPerGroup = existEntry ? 8 : 10;
+        // 有子表时，表头小于16个显示字段时，无子表时小于20个字段===>每行显示两个字段
+        var twoFieldPerGroup = existEntry ? 16 : 20;
+        // 有子表时，表头小于24个显示字段时，无子表时小于42个字段===>每行显示三个字段
+        var threeFieldPerGroup = existEntry ? 24 : 42;
+
+        var length = showFields.length;
+
+        if (length < oneFieldPerGroup) {
+            // 分组：每行显示一个字段
+            showFields = $.Array.group(showFields, 1);
+        } else if (length <= twoFieldPerGroup) {
+            // 分组：每行显示两个字段
+            showFields = $.Array.group(showFields, 2);
+        } else if (length <= threeFieldPerGroup) {
+            // 分组：每行显示三个字段
+            showFields = $.Array.group(showFields, 3);
         } else {
-            // 分组：大于40个字段每行显示四个字段
-            fields = $.Array.group(fields, 4);
+            // 分组：每行显示四个字段
+            showFields = $.Array.group(showFields, 4);
         }
 
-        divHead.innerHTML = $.Array.keep(fields, function (group, no) {
+        // 单据头字段渲染
+        divHead.innerHTML = $.Array.keep(showFields, function (group, no) {
 
             return $.String.format(samples["items"], {
 
@@ -378,17 +399,17 @@ define('FormEdit', function (require, module, exports) {
                         case 10:
                             sample = samples["text"];
                             break;
-                        case 11://多行文本
-                            sample = samples["textarea"];
-                            break;
-                        case 12:
-                            sample = samples["datatime"];
-                            break;
                         case 3: // checkbox
                             sample = samples["checkbox"];
                             break;
                         case 6:
                             sample = samples["f7"];
+                            break;
+                        case 11://多行文本
+                            sample = samples["textarea"];
+                            break;
+                        case 12:
+                            sample = samples["datatime"];
                             break;
                         case 13: //男：女
                             sample = samples["man_female"];
@@ -414,6 +435,10 @@ define('FormEdit', function (require, module, exports) {
             });
         }).join('');
 
+        if (!existEntry) {
+            return;
+        }
+        // 子表列表转成数组操作
         var formClassEntry = MiniQuery.Object.toArray(metaData['formClassEntry']);
 
         // 构建子表dom结构
@@ -424,7 +449,6 @@ define('FormEdit', function (require, module, exports) {
         }).join('');
 
         // 使用jqGrid渲染出所有子表表格
-
         MiniQuery.Object.each(metaData['formClassEntry'], function (entryIndex, formClassEntryItem) {
 
             SMS.use('Grid', function (Grid) {
@@ -434,8 +458,9 @@ define('FormEdit', function (require, module, exports) {
                 var defaults = GridConfig.getConfig({
                     'fields': metaData['formFields'][entryIndex],
                     'defaults': {
+                        caption: formClassEntryItem.name,
                         gridName: formClassEntryItem.foreignKey,
-                        width: 'auto',// $(window).width() - 5,
+                        width: $(window).width(),
                         height: 'auto',
                         classId: formClassId,
                     },
@@ -537,7 +562,7 @@ define('FormEdit', function (require, module, exports) {
 
             var field = fields[key];
 
-            if (field.lookUpType === 1) {
+            if (field.ctrlType === 6 && field.lookUpType === 1) {
                 // 引用基础资料
                 var config = {
                     targetType: 1, //跳转方案
@@ -583,13 +608,14 @@ define('FormEdit', function (require, module, exports) {
 
     }
 
+    // 日期时间控件初始化
     function initDateTimerPicker() {
 
         var fields = metaData['formFields'][0];
 
-        for (var item in fields) {
+        for (var key in fields) {
 
-            var field = fields[item];
+            var field = fields[key];
 
             if (field.ctrlType === 12) {
                 // 日期控件
@@ -601,21 +627,81 @@ define('FormEdit', function (require, module, exports) {
 
     }
 
+    // 创建日期时间控件
     function generateDateTimePicker(key) {
         // 异步执行，不可放入for循环，否则key存在被覆盖的风险
         SMS.use('DateTimePicker', function (DateTimePicker) {
 
-            new DateTimePicker(getValueElement(key), {
+            var dateTimePicker = new DateTimePicker(getValueElement(key), {
                 format: 'yyyy-mm-dd',
                 autoclose: true,
                 todayBtn: true,
                 todayHighlight: true,
                 timepicker: false,
                 startView: 'month',
-                minView: 2,
+                minView: 2
+            });
+
+            // 控件对象缓存下来，设置获取值时使用
+            dateTimePickers[key] = dateTimePicker;
+
+        });
+    }
+
+    // 数字控件初始化
+    function initNumeric() {
+
+        var fields = metaData['formFields'][0];
+
+        for (var key in fields) {
+
+            var field = fields[key];
+
+            if (field.ctrlType === 1) {
+                // 数字-无小数
+                generateNumeric(field.key, {
+                    decimalCount: 0,
+                    empty: 'zero'
+                });
+
+            } else if (field.ctrlType === 2) {
+                // 数字-两位小数
+                generateNumeric(field.key, {
+                    decimalCount: 2,
+                    empty: 'zero'
+                });
+            } else if (field.ctrlType === 16) {
+                // 单价金额-两位小数
+                generateNumeric(field.key, {
+                    decimalCount: 2,
+                    empty: '',
+                    currencySign: '¥'
+                });
+            }
+        }
+        emitter.fire("afterInitNumeric", []);
+
+    }
+
+    // 创建数字控件
+    function generateNumeric(key, config) {
+
+        SMS.use('NumberField', function (NumberField) {
+
+            var numberField = new NumberField(getValueElement(key), config);
+
+            // 控件对象缓存下来，设置获取值时使用
+            numberFields[key] = numberField;
+
+            $(getValueElement(key)).focusout(function () {
+                //debugger;
+                var v = nf.get();
+                console.log(v);
             });
 
         });
+
+
     }
 
     /**
@@ -640,6 +726,8 @@ define('FormEdit', function (require, module, exports) {
         initSelectors();
         // 初始化时间控件
         initDateTimerPicker();
+        // 初始化数字控件
+        initNumeric();
         //控件初始化，控制显示隐藏，只读 ,默认值等..
         initController();
 
@@ -1152,19 +1240,91 @@ define('FormEdit', function (require, module, exports) {
     }
 
     function getValueElement(keyName) {
-        return document.getElementById('bd-' + keyName);
+        return document.getElementById(keyName);
     }
 
     function getNameElement(keyName) {
-        return document.getElementById('bd-' + keyName + '-name');
+        return document.getElementById(keyName + '-name');
     }
 
     function getElements(keyName) {
-        return $('#bd-' + keyName);
+        return $('#' + keyName);
     }
 
     function isBillChanged() {
         return billChanged;
+    }
+
+    /**
+     *  根据用户的角色类别获取要显示的模板
+     * @param fields 模板对象
+     * @returns {*} 要显示的模板
+     */
+    function getShowKeys(fields) {
+
+        var displayMask = 0;
+        // 用户角色类别
+        var userRoleType = user.role.type;
+
+        /*        1	查看时对于平台用户显示
+                2	新增时对于平台用户显示
+                4	编辑时对于平台用户显示
+                8	查看时对于供应商用户显示
+                16	新增时对于供应商用户显示
+                32	编辑时对于供应商用户显示
+                64	查看时对于医院用户显示
+                128	新增时对于医院用户显示
+                256	编辑时对于医院用户显示
+                512	是否在列表中显示(子表模板独有,子表数据显示在表头列表中)
+         */
+
+        if (operate === 0) {
+            // 查看
+            if (userRoleType === 1) {
+                // 平台用户
+                displayMask = 1;
+            } else if (userRoleType === 2) {
+                //供应商用户
+                displayMask = 8;
+            } else if (userRoleType === 3) {
+                //医院用户
+                displayMask = 64;
+            }
+        } else if (operate === 1) {
+            // 新增
+
+            if (userRoleType === 1) {
+                // 平台用户
+                displayMask = 2;
+            } else if (userRoleType === 2) {
+                //供应商用户
+                displayMask = 16;
+            } else if (userRoleType === 3) {
+                //医院用户
+                displayMask = 128;
+            }
+        } else if (operate === 2) {
+            // 编辑
+
+            if (userRoleType === 1) {
+                // 平台用户
+                displayMask = 4;
+            } else if (userRoleType === 2) {
+                //供应商用户
+                displayMask = 16;
+            } else if (userRoleType === 3) {
+                //医院用户
+                displayMask = 256;
+            }
+        }
+
+
+        var showFields = MiniQuery.Object.grep(fields, function (key, field) {
+            return !!(field.display & displayMask);
+        });
+
+        return showFields;
+
     }
 
     return {
