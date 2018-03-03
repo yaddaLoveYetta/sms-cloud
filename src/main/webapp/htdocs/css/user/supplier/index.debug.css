@@ -39,3 +39,19 @@
     overflow: hidden;
     padding: 2px;
 }
+
+/*单元格内的文本自动换行*/
+  .ui-jqgrid tr.jqgrow td {
+    white-space: normal !important;
+    height:auto;
+    /*vertical-align:text-top;*/
+      vertical-align: middle;
+    padding-top:2px;
+}
+
+.table-bordered > thead > tr > th{
+    border-bottom-width: 1px !important;
+    height: 30px !important;
+    background-color: #d2efef;
+    vertical-align: middle;
+}
