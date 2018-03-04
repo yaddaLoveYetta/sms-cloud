@@ -112,7 +112,16 @@ public class Condition implements Serializable {
         LinkTypeEnum(String name) {
             this.name = name;
         }
+        @JsonValue
+        public String getName() {
+            return name;
+        }
 
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        @JsonCreator
         private static LinkTypeEnum getDirectionEnum(String name) {
 
             for (LinkTypeEnum linkTypeEnum : LinkTypeEnum.values()) {
@@ -136,6 +145,7 @@ public class Condition implements Serializable {
 
         private String name;
         private String description;
+
 
         LogicOperatorEnum(String name, String description) {
             this.name = name;
