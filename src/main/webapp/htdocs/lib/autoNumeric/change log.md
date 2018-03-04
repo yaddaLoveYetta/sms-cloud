@@ -79,7 +79,7 @@
 + Fixed the caret position when jumping over the thousand separator with back arrow.
 
 #### Version 1.9.6
-+ Fixed bug introduced in 1.9.3 with shift key.
++ Fixed bug introduced in 1.9.3 with shift fieldKey.
 + additional modification to the processKeypress function that automatically inserts a negative sign when vMax less tham or equal to 0 and vMin is less tham vMax.
 
 #### Version 1.9.5
@@ -93,7 +93,7 @@
 #### Version 1.9.3
 
 + Fixed a bug in autoCode function that corrects pasted values and page re-load
-+ Added support for "shift" + "insert" paste key combination
++ Added support for "shift" + "insert" paste fieldKey combination
 
 #### Version 1.9.2
 
@@ -186,7 +186,7 @@
 
 + Fixed the issue for numbers that are less than 1 and greater than -1 and have six or more decimal places.
 
-+ Fixed 'crtl' + 'a' (select all) and 'ctrl' + 'c' (copy) combined key events.
++ Fixed 'crtl' + 'a' (select all) and 'ctrl' + 'c' (copy) combined fieldKey events.
 
 + Fixed a IE & FF bug on readonly attribute.
 

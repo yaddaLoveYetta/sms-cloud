@@ -1,6 +1,6 @@
 ﻿/**
  * List 模块
- * 
+ *
  */
 define("List", function (require, module, exports) {
     var $ = require("$");
@@ -24,7 +24,11 @@ define("List", function (require, module, exports) {
     var index$selected = {};
     // 记录选中的索引
     function load(config, fn) {
-        SMS.Tips.loading("数据加载中...");
+        //SMS.Tips.loading("数据加载中...");
+        SMS.Tips.loading({
+            text: '数据加载中...',
+            delay: 500
+        });
         API.get({
             classId: config.classId,
             pageNo: config.pageNo,
@@ -37,10 +41,38 @@ define("List", function (require, module, exports) {
         });
     }
 
+    function getTableHtml(field, data) {
+
+        if (!data || data.length == 0 || data[0] == null) {
+            return "";
+        }
+        var html = $.String.format(samples["item.table"], {
+            // 行
+            'item_table_tr': $.Array.keep(data, function (item, no) {
+                return $.String.format(samples["item.table.tr"], {
+                    index: no,
+                    child: 1,
+                    'item_table_tr_td': $.String.format(samples["item.table.tr.td"], {
+                        index: no,
+                        child: 1,
+                        key: field.key,
+                        td: item,
+                        title: item,
+                    })
+                });
+            }).join(""),
+        });
+
+
+        return html;
+
+    }
+
+
     function getHtml(type, data) {
         /*
-		 * if ( typeof data == 'boolean') { data = data ? '是' : '否'; }
-		 */
+         * if ( typeof data == 'boolean') { data = data ? '是' : '否'; }
+         */
         if (data == null) {
             data = "";
         }
@@ -74,6 +106,7 @@ define("List", function (require, module, exports) {
     function render(config, fn) {
         // 清空已选择项
         index$selected = {};
+
         load({
             classId: config.classId,
             pageNo: config.pageNo,
@@ -94,10 +127,12 @@ define("List", function (require, module, exports) {
                     });
                 }).join(""),
                 trs: $.Array.keep(bodyItems, function (item, no) {
+
                     // 行
                     return $.String.format(samples["tr"], {
                         index: no,
-                        "disabled-class": item.disabled ? "disabled" : "",
+                        //"disabled-class": item.disabled ? "disabled" : "",
+                        "disabled-class": "",
                         checkbox: data.checkbox ? $.String.format(samples["td.checkbox"], {
                             index: no
                         }) : "",
@@ -108,8 +143,9 @@ define("List", function (require, module, exports) {
                             return $.String.format(samples["td"], {
                                 index: index,
                                 key: field.key,
-                                td: field.isEntry ? getHtml("entry", item.value) : getHtml(field.type, item.value),
-                                "number-class": field.key == "number" ? "number" : ""
+                                "number-class": field.key == "number" ? "number" : "",
+                                td: field.isEntry ? getTableHtml(field, item.value) : getHtml(field.type, item.value),
+                                title: field.isEntry ? '' : getHtml(field.type, item.value),
                             });
                         }).join("")
                     });
@@ -119,7 +155,7 @@ define("List", function (require, module, exports) {
                     return $.String.format(samples["tdtotal"], {
                         index: index,
                         key: field.key,
-                        needTotal: field.isCount=="1",//(field.type == 1 && field.lookupType == 0),
+                        needTotal: field.isCount == "1",//(field.type == 1 && field.lookupType == 0),
                         width: field.width
                     });
                 }).join("")
@@ -189,8 +225,16 @@ define("List", function (require, module, exports) {
                 event.stopPropagation();
             });
         }
+
+        // 主表列单击事件
         $(div).delegate("td[data-index]", "click", function (event) {
             var td = this;
+
+            if (td.getAttribute("child")) {
+                // 子表列单击
+                //td = td.parentNode.parentNode.parentNode.parentNode; // 转换成主表列
+                return; // 不触发,猫婆触发上级td事件
+            }
             var tr = td.parentNode;
             var index = +td.getAttribute("data-index");
             // 列号
@@ -211,8 +255,16 @@ define("List", function (require, module, exports) {
             emitter.fire("click:" + field.key, args);
             emitter.fire("cell.click", args);
         });
+        //主表行单击事件
         $(div).delegate("tr[data-index]", "click", function (event) {
             var tr = this;
+
+            if (tr.getAttribute("child")) {
+                // 子表列单击
+                // tr = tr.parentNode.parentNode.parentNode.parentNode; // 转换成主表行
+                return; // 不触发,猫婆触发上级tr事件
+            }
+
             var no = +tr.getAttribute("data-index");
             // 行号
             var bodyItems = list.body.items;
@@ -222,7 +274,7 @@ define("List", function (require, module, exports) {
             }, event];
             emitter.fire("click:" + no, args);
             emitter.fire("row.click", args);
-            var chk = $(this).find("[data-check=item]")[0];
+            var chk = $(tr).find("[data-check=item]")[0];
             var checked = !chk.checked;
             chk.checked = checked;
             if (!multiSelect) {
@@ -235,7 +287,9 @@ define("List", function (require, module, exports) {
             }
             check(chk, checked);
         });
+
     }
+
 
     function check(chk, checked) {
         checked = chk.checked = typeof checked == "boolean" ? checked : chk.checked;
@@ -263,7 +317,7 @@ define("List", function (require, module, exports) {
     }
 
     function getPrimaryKey() {
-        return primaryKey;
+        return list.primaryKey;
     }
 
     function forbid(classId, list, operateType, fn) {
@@ -273,9 +327,19 @@ define("List", function (require, module, exports) {
     function del(classId, list, fn) {
         Operation.del(classId, list, fn);
     }
+
+    function review(classId, list, fn) {
+        Operation.review(classId, list, fn);
+    }
+
+    function unReview(classId, list, fn) {
+        Operation.unReview(classId, list, fn);
+    }
+
     function send(classId, list, fn) {
         Operation.send(classId, list, fn);
     }
+
     return {
         load: load,
         render: render,
@@ -285,6 +349,9 @@ define("List", function (require, module, exports) {
         del: del,
         getFilterItems: getFilterItems,
         forbid: forbid,
+        review: review,
+        unReview: unReview,
         send: send,
     };
-});
+})
+;

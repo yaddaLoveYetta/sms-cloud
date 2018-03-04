@@ -6,7 +6,7 @@ Visit my home page for extensive demo's and documentation [http://www.decorplani
 
 autoNumeric is a jQuery plugin that automatically formats currency and numbers as you type on form inputs. It supports most International numeric formats and currency signs including those used in Europe, North and South America, Asia and India lakhs (Lakhs values supported below 1 billion). 
 
-Any number of currency formats can reside on the same page and are configured by settings/options that can be placed as HTML5 data attribute or passed as an argument. These settings can easily be changed at any time using the new ‘update’ method or via the callback feature. autoNumeric to many other elements, allowing you to place formatted numbers and currency on just about any part of the page.
+Any number of currency formats can reside on the same page and are configured by settings/options that can be placed as HTML5 data attribute or passed as an argument. These settings can easily be changed at any time using the new ï¿½updateï¿½ method or via the callback feature. autoNumeric to many other elements, allowing you to place formatted numbers and currency on just about any part of the page.
 
 Seven built in methods gives you the flexibility needed to use autoNumeric to its maximum potential. You can now easily start and stop autoNumeric, update the settings and remove the formatting from multiple inputs, preparing the values for manipulation or form submission.
 
@@ -83,11 +83,11 @@ The following is a list of the methods and settings/options the control autoNume
 +	aDec: '.'	period   (default)
 +	aDec: ','	comma
 
-**"altDec"** - this was developed to accommodate for different keyboard layouts. altDec allows you to declare an alternative key to enter the decimal separator assigned in aDec
+**"altDec"** - this was developed to accommodate for different keyboard layouts. altDec allows you to declare an alternative fieldKey to enter the decimal separator assigned in aDec
 
 +	altDec: null   (default)
 
-**"aSign"** - displays the desired currency symbol (examples: € or EUR). Note: other symbols can be used, such as %, °C, °F, km/h & MPH the possibilities are endless
+**"aSign"** - displays the desired currency symbol (examples: ï¿½ or EUR). Note: other symbols can be used, such as %, ï¿½C, ï¿½F, km/h & MPH the possibilities are endless
 
 +	aSign: '' none   (default)
 	+ example - aSign: 'U$D' 
@@ -164,7 +164,7 @@ You can change the defaults with options via the "init" method or the "update" m
 
 &lt;input type="text" id="someID" class="someClass"&gt;
 
-$('someSelector').autoNumeric('init', {aSign: '€ ', vMax: '-999999999.99', nBracket: '(,)'});
+$('someSelector').autoNumeric('init', {aSign: 'ï¿½ ', vMax: '-999999999.99', nBracket: '(,)'});
 
 + Initializes autoNumeric 
 + Adds the Euro sign
@@ -176,7 +176,7 @@ $('someSelector').autoNumeric('init', {aSign: '€ ', vMax: '-999999999.99', nBrac
 You can also change the defaults with HTML5 data attributes - example:
 
 
-&lt;input type="text" id="someID" class="someClass  data-a-sign="€ " data-v-max="-999999999.99" data-n-bracket"(,)"&gt;
+&lt;input type="text" id="someID" class="someClass  data-a-sign="ï¿½ " data-v-max="-999999999.99" data-n-bracket"(,)"&gt;
 
 $('someSelector').autoNumeric('init');
 

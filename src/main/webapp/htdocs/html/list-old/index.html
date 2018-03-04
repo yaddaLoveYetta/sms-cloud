@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>基础资料</title>
+    <!--grunt.css.begin-->
+    <link href="../../css/base.css" rel="stylesheet"/>
+    <link href="../../css/global.debug.css" rel="stylesheet"/>
+    <link href="../../css/base/index.debug.css" rel="stylesheet"/>
+
+    <!--grunt.css.end-->
+</head>
+<body class="iframe">
+
+
+<div class="nav-panel">
+    <div id="div-cascade-path" class="bread-crumbs-box">
+    </div>
+    <div id="div-cascade-menus">
+    </div>
+
+    <div class="search-box">
+        <i class="sms-icon-search"></i>
+        <input id="txt-simple-search" type="text" placeholder="单据编号"/>
+        <!--<span class="bt-dropdown"><i class="sms-icon-dropdown"></i></span>-->
+    </div>
+</div>
+
+<div class="options-panel">
+    <div id="div-button-list" class="btn-box">
+
+    </div>
+
+    <div id="div-pager-simple" class="pager-box">
+    </div>
+
+</div>
+
+<div id="div-list" class="table-panel">
+    <!--
+    <table class="data-table">
+        <thead>
+        <tr>
+            #--th.checkbox.begin--#
+            <th style="width: 20px;">
+                <input type="checkbox" data-check="all"/>
+            </th>
+            #--th.checkbox.end--#
+
+            #--th.begin--#
+            <th style="width: {width}px;">
+                {th}
+            </th>
+            #--th.end--#
+
+        </tr>
+        </thead>
+        <tbody>
+
+        #--tr.begin--#
+        <tr data-index="{index}" class="{disabled-class}">
+
+            #--td.checkbox.begin--#
+            <td>
+                <input type="checkbox" data-check="item" data-index="{index}"/>
+            </td>
+            #--td.checkbox.end--#
+
+            #--td.begin--#
+            <td data-index="{index}" key="{key}" class="{number-class}">
+                {td}
+
+                !--item.a.begin--!
+                <a href="javascript:" title="{text}">{text}</a>
+                !--item.a.end--!
+
+            </td>
+            #--td.end--#
+        </tr>
+        #--tr.end--#
+        </tbody>
+    </table>
+    -->
+</div>
+<div id="div-pager-normal" class="page-panel"></div>
+
+<script src="../../lib/jquery/jquery-1.11.1.debug.js"></script>
+<script src="../../lib/miniquery/miniquery.debug.js"></script>
+<script src="../../lib/sms/sms.debug.js"></script>
+<script src="../../config.js"></script>
+
+<!--grunt.js.begin-->
+<script src="modules/ButtonList.js"></script>
+<script src="modules/ButtonListOption.js"></script>
+<script src="modules/List/Samples.js"></script>
+<script src="modules/List/API/Head.js"></script>
+<script src="modules/List/API/Body.js"></script>
+<script src="modules/List/API.js"></script>
+<script src="modules/List/Operation.js"></script>
+<script src="modules/List.js"></script>
+<script src="modules/Pager.js"></script>
+
+<script src="modules/Bill/API/Template.js"></script>
+<script src="modules/Bill/API/Data.js"></script>
+<script src="modules/Bill/API.js"></script>
+<script src="modules/Bill/Head/Samples.js"></script>
+<script src="modules/Bill/Head.js"></script>
+<script src="modules/Bill/Head/Samples.js"></script>
+<script src="modules/Bill/Entry/GridBuilder.js"></script>
+<script src="modules/Bill/Entry.js"></script>
+<script src="modules/Bill.js"></script>
+
+<script src="index.js"></script>
+<!--grunt.js.end-->
+
+
+</body>
+</html>

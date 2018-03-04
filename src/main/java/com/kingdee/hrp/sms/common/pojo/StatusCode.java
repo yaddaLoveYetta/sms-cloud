@@ -1,4 +1,4 @@
-package com.kingdee.hrp.sms.common.domain;
+package com.kingdee.hrp.sms.common.pojo;
 
 /**
  * 

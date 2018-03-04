@@ -1,6 +1,6 @@
 ﻿/**
  *
- *
+ * 列表数据
  */
 define('List/API/Body', function (require, module, exports) {
 
@@ -26,7 +26,6 @@ define('List/API/Body', function (require, module, exports) {
         }
 
         var pageNo = config.pageNo;
-
         var api = new API('template/getItems');
 
         var params = {

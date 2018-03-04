@@ -13,12 +13,12 @@ define('List/API/Head', function (require, module, exports) {
     var cache = null;
     var headItems = [];
     var display;
-    // 字段显示权限-后端FDisPlay定义 1：平台用户显示，2：供应商用户显示：3：都显示
+    // 字段显示权限-后端FDisPlay定义 1：平台用户显示，2：物业用户显示：3：平台物业用户都显示
     if (user.type == 'QpXq24FxxE6c3lvHMPyYCxACEAI=') {
         // 平台用户
         display = 1; // 00 -- 01 --10 --11
     } else if (user.type == 'B3sMo22ZLkWApjO/oEeDOxACEAI=') {
-        // 供应商用户
+        // 物业用户
         display = 2; // 10
     } else {
         display = 0;
@@ -44,9 +44,7 @@ define('List/API/Head', function (require, module, exports) {
         });
 
         api.on('success', function (data, json) {
-
-            console.log('getHead finished');
-
+            console.log('getHead from server finished');
             cache = data;
             fn && fn(data);
 
@@ -67,7 +65,29 @@ define('List/API/Head', function (require, module, exports) {
     }
 
     function getItems(fields) {
+        /*
+         //表头信息-数组
+         headItems = headItems || $.Array.keep(fields, function(item, index) {
 
+         var key = item.fieldKey;
+
+         item = $.Object.extend({}, key$field[key], item);
+
+         var mask = item.visible || 0;
+
+         return {
+         'text' : item.caption,
+         'type' : item.listStyle,
+         'key' : key,
+         'width' : item.showWidth,
+         'visible' : !!(mask & 2), //转成 boolean
+         'lookupType' : item.lookupType,
+         };
+         });
+         */
+
+        //fields = $.extend({}, fields["0"], fields["1"]); // 将主表及第一个子表模板取出
+        fields = fields["0"];
         if (headItems.length > 0) {
             return headItems;
         }
@@ -88,6 +108,8 @@ define('List/API/Head', function (require, module, exports) {
                 'visible': !!(mask & display), //转成 boolean--字段按用户类别显示
                 'lookupType': item.lookUpType,
                 'isCount': item.isCount,
+                'entryIndex': item.page,
+                'isEntry': item.page === 1,
             };
 
             headItems.push(headItem);

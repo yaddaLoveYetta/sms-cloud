@@ -124,7 +124,7 @@ define('List/Operation', function (require, module, exports) {
 
         items = items.substr(1);
 
-        post('sendcargo/sendHrp', {
+        post('sync/hrp/sendItem', {
             'classId': classId,
             'items': items,
         }, fn);

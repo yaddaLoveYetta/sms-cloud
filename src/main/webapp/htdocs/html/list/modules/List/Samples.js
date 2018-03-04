@@ -1,9 +1,7 @@
-﻿
-
-/**
-* List/Samples 模块
-* 
-*/
+﻿/**
+ * List/Samples 模块
+ *
+ */
 define('List/Samples', function (require, module, exports) {
 
     var $ = require('$');
@@ -57,11 +55,34 @@ define('List/Samples', function (require, module, exports) {
                 //fn: trim,
             },
             {
+                name: 'td.value',
+                begin:'#--td.value.begin--#',
+                end:' #--td.value.end--#',
+                outer:'{td}'
+            },
+            {
                 name: 'item.a',
                 begin: '!--item.a.begin--!',
                 end: '!--item.a.end--!',
                 outer: '',
                 //fn: trim,
+            },
+            {
+                name: 'item.table',
+                begin: '!--item.table.begin--!',
+                end: '!--item.table.end--!',
+                outer: '{item_table}',
+            },
+            {
+                name: 'item.table.tr',
+                begin: '!--item.table.tr.begin--!',
+                end: '!--item.table.tr.end--!',
+                outer: '{item_table_tr}',
+            }, {
+                name: 'item.table.tr.td',
+                begin: ' !--item.table.tr.td.begin--!',
+                end: '!--item.table.tr.td.end--!',
+                outer: '{item_table_tr_td}',
             },
             {
                 name: 'trtotal',
@@ -84,12 +105,11 @@ define('List/Samples', function (require, module, exports) {
                 outer: '{emptys}'
                 //fn: trim,
             }
-            
+
         ]);
 
         return samples;
     }
-
 
 
     return get;

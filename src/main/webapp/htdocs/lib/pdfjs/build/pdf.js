@@ -1745,7 +1745,7 @@ PDFJS.maxCanvasPixels = (PDFJS.maxCanvasPixels === undefined ?
  * This is the main entry point for loading a PDF and interacting with it.
  * NOTE: If a URL is used to fetch the PDF data a standard XMLHttpRequest(XHR)
  * is used, which means it must follow the same origin rules that any XHR does
- * e.g. No cross domain requests without CORS.
+ * e.g. No cross pojo requests without CORS.
  *
  * @param {string|TypedArray|DocumentInitParameters} source Can be a url to
  * where a PDF is located, a typed array (Uint8Array) already populated with

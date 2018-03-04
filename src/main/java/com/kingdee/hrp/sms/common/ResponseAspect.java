@@ -1,8 +1,8 @@
 package com.kingdee.hrp.sms.common;
 
 import com.kingdee.hrp.sms.common.exception.BaseRuntimeException;
-import com.kingdee.hrp.sms.common.domain.NoJsonWarp;
-import com.kingdee.hrp.sms.common.domain.ResultWarp;
+import com.kingdee.hrp.sms.common.pojo.NoJsonWarp;
+import com.kingdee.hrp.sms.common.pojo.ResultWarp;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.AfterThrowing;
@@ -17,7 +17,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.http.server.ServletServerHttpResponse;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 

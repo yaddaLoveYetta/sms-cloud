@@ -1,12 +1,17 @@
 package com.kingdee.hrp.sms.common.controller;
 
+import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kingdee.hrp.sms.common.exception.BusinessLogicRunTimeException;
+import com.kingdee.hrp.sms.common.pojo.Condition;
+import com.kingdee.hrp.sms.common.pojo.Sorts;
 import com.kingdee.hrp.sms.common.service.ITemplateService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -54,23 +59,29 @@ public class TemplateController {
     /**
      * 通过模板获取业务数据
      *
-     * @param classId   业务类型
-     * @param condition 过滤条件（json结构化数据）
-     * @param orderBy   排序条件（json结构化数据）
-     * @param pageSize  分页大小
-     * @param pageNo    当前页码
+     * @param classId    业务类型
+     * @param conditions 过滤条件（json结构化数据）
+     * @param sorts      排序条件（json结构化数据）
+     * @param pageSize   分页大小
+     * @param pageNo     当前页码
      */
 
 
     @RequestMapping(value = "getItems")
-    public Map<String, Object> getItems(Integer classId, String condition, String orderBy, Integer pageSize, Integer pageNo) {
+    @ResponseBody
+    public Map<String, Object> getItems(Integer classId, String conditions, Sorts sorts, Integer pageSize, Integer pageNo) throws IOException {
 
 
         if (classId < 0) {
             throw new BusinessLogicRunTimeException("参数错误：必须提交classId");
         }
 
-        return null;
+        ObjectMapper objectMapper = new ObjectMapper();
+        JavaType javaType = objectMapper.getTypeFactory().constructParametricType(List.class, Condition.class);
+        List<Condition> list = objectMapper.readValue(conditions, javaType);
+
+
+        return templateService.getItems(classId, conditions, sorts, pageSize, pageNo);
 
     }
 

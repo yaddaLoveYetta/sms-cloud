@@ -1,7 +1,7 @@
 package com.kingdee.hrp.sms.common.exception;
 
 
-import com.kingdee.hrp.sms.common.domain.StatusCode;
+import com.kingdee.hrp.sms.common.pojo.StatusCode;
 
 /**
  * 权限出错

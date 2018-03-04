@@ -5314,7 +5314,7 @@ var PDFFunction = (function PDFFunctionClosure() {
       var range = dict.get('Range');
 
       if (!domain || !range) {
-        error('No domain or range');
+        error('No pojo or range');
       }
 
       var inputSize = domain.length / 2;
@@ -5483,12 +5483,12 @@ var PDFFunction = (function PDFFunctionClosure() {
       var domain = dict.get('Domain');
 
       if (!domain) {
-        error('No domain');
+        error('No pojo');
       }
 
       var inputSize = domain.length / 2;
       if (inputSize !== 1) {
-        error('Bad domain for stiched function');
+        error('Bad pojo for stiched function');
       }
 
       var fnRefs = dict.get('Functions');
@@ -5526,7 +5526,7 @@ var PDFFunction = (function PDFFunctionClosure() {
           return v;
         };
 
-        // clip to domain
+        // clip to pojo
         var v = clip(src[srcOffset], domain[0], domain[1]);
         // calulate which bound the value is in
         for (var i = 0, ii = bounds.length; i < ii; ++i) {
@@ -5535,7 +5535,7 @@ var PDFFunction = (function PDFFunctionClosure() {
           }
         }
 
-        // encode value into domain of function
+        // encode value into pojo of function
         var dmin = domain[0];
         if (i > 0) {
           dmin = bounds[i - 1];
@@ -5561,7 +5561,7 @@ var PDFFunction = (function PDFFunctionClosure() {
       var range = dict.get('Range');
 
       if (!domain) {
-        error('No domain.');
+        error('No pojo.');
       }
 
       if (!range) {
@@ -9682,7 +9682,7 @@ Shadings.RadialAxial = (function RadialAxialClosure() {
     if (t0 >= t1 || step <= 0) {
       // Acrobat doesn't seem to handle these cases so we'll ignore for
       // now.
-      info('Bad shading domain.');
+      info('Bad shading pojo.');
       return;
     }
 

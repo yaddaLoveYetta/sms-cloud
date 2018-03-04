@@ -178,7 +178,7 @@ DROP TABLE IF EXISTS `t_form_fields`;
 CREATE TABLE `t_form_fields` (
   `class_id` int(11) NOT NULL COMMENT '业务类型id，对应t_form_class表class_id',
   `page` int(4) NOT NULL DEFAULT '0' COMMENT '标示模板字段所在的页面（0是表头，1是第一个子表，2是第二个子表，以此类推...）',
-  `key` varchar(30) NOT NULL DEFAULT '' COMMENT '字段唯一标示(用于关联表显示字段名与本表字段名同名的情况，同一个class_id中key是唯一的)',
+  `fieldKey` varchar(30) NOT NULL DEFAULT '' COMMENT '字段唯一标示(用于关联表显示字段名与本表字段名同名的情况，同一个class_id中key是唯一的)',
   `name` varchar(50) NOT NULL COMMENT '字段名(显示的字段名)',
   `sql_column_name` varchar(20) NOT NULL COMMENT '物理表中的字段名',
   `data_type` int(4) NOT NULL COMMENT '字段类型(数字，文本等)1:数字2:文本3:日期4:布尔,用于前端解析',
@@ -204,7 +204,7 @@ CREATE TABLE `t_form_fields` (
   `lock` int(4) DEFAULT '0' COMMENT '字段锁定性:表示字段页面展现的控制可编辑形式。\r\n采用二进制方式配置\r\n如3表示新增修改时都锁定\r\n参考t_SubSysEnum,typeID=2',
   `is_condition` int(4) DEFAULT '0' COMMENT '是否可作为过滤条件，0：否，1：是',
   `is_count` int(4) DEFAULT '0' COMMENT '是否统计项，0：否，1：是',
-  PRIMARY KEY (`class_id`,`key`)
+  PRIMARY KEY (`class_id`,`fieldKey`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------

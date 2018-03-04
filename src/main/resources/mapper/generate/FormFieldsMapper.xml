@@ -3,7 +3,7 @@
 <mapper namespace="com.kingdee.hrp.sms.common.dao.generate.FormFieldsMapper">
   <resultMap id="BaseResultMap" type="com.kingdee.hrp.sms.common.model.FormFields">
     <id column="class_id" jdbcType="INTEGER" property="classId" />
-    <id column="key" jdbcType="VARCHAR" property="key" />
+    <id column="fieldKey" jdbcType="VARCHAR" property="fieldKey" />
     <result column="page" jdbcType="INTEGER" property="page" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="sql_column_name" jdbcType="VARCHAR" property="sqlColumnName" />
@@ -90,7 +90,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    class_id, `key`, page, `name`, sql_column_name, data_type, ctrl_type, ctrl_index, 
+    class_id, `fieldKey`, page, `name`, sql_column_name, data_type, ctrl_type, ctrl_index,
     `index`, display, show_width, look_up_type, look_up_class_id, src_table, src_table_alis, 
     src_field, display_field, display_ext, join_type, `filter`, default_value, max_value, 
     min_value, must_input, `length`, `lock`, is_condition, is_count
@@ -114,12 +114,12 @@
     <include refid="Base_Column_List" />
     from t_form_fields
     where class_id = #{classId,jdbcType=INTEGER}
-      and `key` = #{key,jdbcType=VARCHAR}
+      and `fieldKey` = #{fieldKey,jdbcType=VARCHAR}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="com.kingdee.hrp.sms.common.model.FormFieldsKey">
     delete from t_form_fields
     where class_id = #{classId,jdbcType=INTEGER}
-      and `key` = #{key,jdbcType=VARCHAR}
+      and `fieldKey` = #{fieldKey,jdbcType=VARCHAR}
   </delete>
   <delete id="deleteByExample" parameterType="com.kingdee.hrp.sms.common.model.FormFieldsExample">
     delete from t_form_fields
@@ -128,7 +128,7 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.kingdee.hrp.sms.common.model.FormFields">
-    insert into t_form_fields (class_id, `key`, page, 
+    insert into t_form_fields (class_id, `fieldKey`, page,
       `name`, sql_column_name, data_type, 
       ctrl_type, ctrl_index, `index`, 
       display, show_width, look_up_type, 
@@ -138,7 +138,7 @@
       max_value, min_value, must_input, 
       `length`, `lock`, is_condition, 
       is_count)
-    values (#{classId,jdbcType=INTEGER}, #{key,jdbcType=VARCHAR}, #{page,jdbcType=INTEGER}, 
+    values (#{classId,jdbcType=INTEGER}, #{fieldKey,jdbcType=VARCHAR}, #{page,jdbcType=INTEGER},
       #{name,jdbcType=VARCHAR}, #{sqlColumnName,jdbcType=VARCHAR}, #{dataType,jdbcType=INTEGER}, 
       #{ctrlType,jdbcType=INTEGER}, #{ctrlIndex,jdbcType=INTEGER}, #{index,jdbcType=INTEGER}, 
       #{display,jdbcType=INTEGER}, #{showWidth,jdbcType=INTEGER}, #{lookUpType,jdbcType=INTEGER}, 
@@ -155,8 +155,8 @@
       <if test="classId != null">
         class_id,
       </if>
-      <if test="key != null">
-        `key`,
+      <if test="fieldKey != null">
+        `fieldKey`,
       </if>
       <if test="page != null">
         page,
@@ -241,8 +241,8 @@
       <if test="classId != null">
         #{classId,jdbcType=INTEGER},
       </if>
-      <if test="key != null">
-        #{key,jdbcType=VARCHAR},
+      <if test="fieldKey != null">
+        #{fieldKey,jdbcType=VARCHAR},
       </if>
       <if test="page != null">
         #{page,jdbcType=INTEGER},
@@ -336,8 +336,8 @@
       <if test="record.classId != null">
         class_id = #{record.classId,jdbcType=INTEGER},
       </if>
-      <if test="record.key != null">
-        `key` = #{record.key,jdbcType=VARCHAR},
+      <if test="record.fieldKey != null">
+        `fieldKey` = #{record.fieldKey,jdbcType=VARCHAR},
       </if>
       <if test="record.page != null">
         page = #{record.page,jdbcType=INTEGER},
@@ -425,7 +425,7 @@
   <update id="updateByExample" parameterType="map">
     update t_form_fields
     set class_id = #{record.classId,jdbcType=INTEGER},
-      `key` = #{record.key,jdbcType=VARCHAR},
+      `fieldKey` = #{record.fieldKey,jdbcType=VARCHAR},
       page = #{record.page,jdbcType=INTEGER},
       `name` = #{record.name,jdbcType=VARCHAR},
       sql_column_name = #{record.sqlColumnName,jdbcType=VARCHAR},
@@ -539,7 +539,7 @@
       </if>
     </set>
     where class_id = #{classId,jdbcType=INTEGER}
-      and `key` = #{key,jdbcType=VARCHAR}
+      and `fieldKey` = #{fieldKey,jdbcType=VARCHAR}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.kingdee.hrp.sms.common.model.FormFields">
     update t_form_fields
@@ -570,6 +570,6 @@
       is_condition = #{isCondition,jdbcType=INTEGER},
       is_count = #{isCount,jdbcType=INTEGER}
     where class_id = #{classId,jdbcType=INTEGER}
-      and `key` = #{key,jdbcType=VARCHAR}
+      and `fieldKey` = #{fieldKey,jdbcType=VARCHAR}
   </update>
 </mapper>

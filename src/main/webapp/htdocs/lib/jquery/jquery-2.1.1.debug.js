@@ -7555,7 +7555,7 @@ var
 	allTypes = "*/".concat("*");
 
 // #8138, IE may throw an exception when accessing
-// a field from window.location if document.domain has been set
+// a field from window.location if document.pojo has been set
 try {
 	ajaxLocation = location.href;
 } catch( e ) {
@@ -7908,7 +7908,7 @@ jQuery.extend({
 			responseHeaders,
 			// timeout handle
 			timeoutTimer,
-			// Cross-domain detection vars
+			// Cross-pojo detection vars
 			parts,
 			// To know if global events are to be dispatched
 			fireGlobals,
@@ -8022,7 +8022,7 @@ jQuery.extend({
 		// Extract dataTypes list
 		s.dataTypes = jQuery.trim( s.dataType || "*" ).toLowerCase().match( rnotwhite ) || [ "" ];
 
-		// A cross-domain request is in order when we have a protocol:host:port mismatch
+		// A cross-pojo request is in order when we have a protocol:host:port mismatch
 		if ( s.crossDomain == null ) {
 			parts = rurl.exec( s.url.toLowerCase() );
 			s.crossDomain = !!( parts &&
@@ -8543,7 +8543,7 @@ support.ajax = xhrSupported = !!xhrSupported;
 jQuery.ajaxTransport(function( options ) {
 	var callback;
 
-	// Cross domain only allowed if supported through XMLHttpRequest
+	// Cross pojo only allowed if supported through XMLHttpRequest
 	if ( support.cors || xhrSupported && !options.crossDomain ) {
 		return {
 			send: function( headers, complete ) {
@@ -8566,10 +8566,10 @@ jQuery.ajaxTransport(function( options ) {
 				}
 
 				// X-Requested-With header
-				// For cross-domain requests, seeing as conditions for a preflight are
+				// For cross-pojo requests, seeing as conditions for a preflight are
 				// akin to a jigsaw puzzle, we simply never set it to be sure.
 				// (it can always be set on a per-request basis or even using ajaxSetup)
-				// For same-domain requests, won't change header if already provided.
+				// For same-pojo requests, won't change header if already provided.
 				if ( !options.crossDomain && !headers["X-Requested-With"] ) {
 					headers["X-Requested-With"] = "XMLHttpRequest";
 				}
@@ -8669,7 +8669,7 @@ jQuery.ajaxPrefilter( "script", function( s ) {
 
 // Bind script tag hack transport
 jQuery.ajaxTransport( "script", function( s ) {
-	// This transport only deals with cross domain requests
+	// This transport only deals with cross pojo requests
 	if ( s.crossDomain ) {
 		var script, callback;
 		return {

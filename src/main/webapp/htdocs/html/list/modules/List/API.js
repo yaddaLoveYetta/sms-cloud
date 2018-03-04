@@ -1,5 +1,5 @@
 ﻿/**
- * API模块
+ * List/API模块
  */
 define('List/API', function (require, module, exports) {
 
@@ -16,20 +16,22 @@ define('List/API', function (require, module, exports) {
 
     function get(config, fn) {
 
-        var tasks = [{
-            fn: Head.get,
-            args: [{
-                'classId': config.classId
-            }]
-        }, {
-            fn: Body.get,
-            args: [{
-                'classId': config.classId,
-                'pageNo': config.pageNo,
-                'pageSize': config.pageSize,
-                'conditions': config.conditions
-            }]
-        }];
+        var tasks = [
+            {
+                fn: Head.get,
+                args: [{
+                    'classId': config.classId
+                }]
+            },
+            {
+                fn: Body.get,
+                args: [{
+                    'classId': config.classId,
+                    'pageNo': config.pageNo,
+                    'pageSize': config.pageSize,
+                    'conditions': config.conditions
+                }]
+            }];
 
         //并行发起请求
         Multitask.concurrency(tasks, function (list) {
@@ -37,14 +39,12 @@ define('List/API', function (require, module, exports) {
             var headData = list[0];
             var bodyData = list[1];
             var headItems;
-            console.dir(list);
 
-            // var headItems = Head.getItems(bodyData['fieldShow'], headData.formFields[0]);  //old
-            headItems = Head.getItems(headData.formFields[0]);
-            //var entry= Head.getItems(headData.formFields[1]);
+            // headItems = Head.getItems(headData.formFields[0]);
+            headItems = Head.getItems(headData.formFields);
+
             var filterItems = Head.getFilterItem(headData.formFields);
 
-            //var bodyItems = Body.getItems(bodyData.items, headItems, headData.formClass.primaryKey);//old
             var bodyItems = Body.getItems(bodyData.list, headItems, headData.formClass.primaryKey);
 
             fn && fn({
@@ -72,16 +72,17 @@ define('List/API', function (require, module, exports) {
                         });
 
                         return row;
-                    }),
+                    })
                 },
                 filterItems: filterItems
 
             });
         });
 
-    };
+    }
 
     return {
         get: get
-    };
+    }
+
 });

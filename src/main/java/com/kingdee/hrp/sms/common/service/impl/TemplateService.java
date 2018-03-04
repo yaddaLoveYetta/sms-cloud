@@ -6,6 +6,8 @@ import com.kingdee.hrp.sms.common.dao.generate.FormClassMapper;
 import com.kingdee.hrp.sms.common.dao.generate.FormFieldsMapper;
 import com.kingdee.hrp.sms.common.exception.BusinessLogicRunTimeException;
 import com.kingdee.hrp.sms.common.model.*;
+import com.kingdee.hrp.sms.common.pojo.Condition;
+import com.kingdee.hrp.sms.common.pojo.Sorts;
 import com.kingdee.hrp.sms.common.service.BaseService;
 import com.kingdee.hrp.sms.common.service.ITemplateService;
 import org.springframework.stereotype.Service;
@@ -143,14 +145,14 @@ public class TemplateService extends BaseService implements ITemplateService {
     /**
      * 通过模板获取业务数据
      *
-     * @param classId   业务类型
-     * @param condition 过滤条件（json结构化数据）
-     * @param orderBy   排序条件（json结构化数据）
-     * @param pageSize  分页大小
-     * @param pageNo    当前页码
+     * @param classId    业务类型
+     * @param conditions 过滤条件（json结构化数据）
+     * @param sorts      排序条件（json结构化数据）
+     * @param pageSize   分页大小
+     * @param pageNo     当前页码
      */
     @Override
-    public Map<String, Object> getItems(Integer classId, String condition, String orderBy, Integer pageSize, Integer pageNo) {
+    public Map<String, Object> getItems(Integer classId, String conditions, Sorts sorts, Integer pageSize, Integer pageNo) {
         return null;
     }
 

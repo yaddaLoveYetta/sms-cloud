@@ -1,5 +1,8 @@
 package com.kingdee.hrp.sms.common.service;
 
+import com.kingdee.hrp.sms.common.pojo.Condition;
+import com.kingdee.hrp.sms.common.pojo.Sorts;
+
 import java.util.List;
 import java.util.Map;
 
@@ -27,13 +30,13 @@ public interface ITemplateService {
      * 通过模板获取业务数据
      *
      * @param classId   业务类型
-     * @param condition 过滤条件（json结构化数据）
-     * @param orderBy   排序条件（json结构化数据）
+     * @param conditions 过滤条件（json结构化数据）
+     * @param sorts   排序条件（json结构化数据）
      * @param pageSize  分页大小
      * @param pageNo    当前页码
      */
 
-    Map<String, Object> getItems(Integer classId, String condition, String orderBy, Integer pageSize, Integer pageNo);
+    Map<String, Object> getItems(Integer classId, String conditions, Sorts sorts, Integer pageSize, Integer pageNo);
 
     /**
      * 通过内码获取单个业务类型数据
