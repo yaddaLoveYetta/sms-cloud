@@ -11,6 +11,8 @@ public class FormClassEntry extends FormClassEntryKey {
 
     private String joinType;
 
+    private String desc;
+
     public String getName() {
         return name;
     }
@@ -49,5 +51,13 @@ public class FormClassEntry extends FormClassEntryKey {
 
     public void setJoinType(String joinType) {
         this.joinType = joinType == null ? null : joinType.trim();
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc == null ? null : desc.trim();
     }
 }

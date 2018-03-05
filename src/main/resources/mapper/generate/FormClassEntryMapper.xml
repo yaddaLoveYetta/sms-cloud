@@ -9,6 +9,7 @@
     <result column="primary_key" jdbcType="VARCHAR" property="primaryKey" />
     <result column="foreign_key" jdbcType="VARCHAR" property="foreignKey" />
     <result column="join_type" jdbcType="VARCHAR" property="joinType" />
+    <result column="desc" jdbcType="VARCHAR" property="desc" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -69,7 +70,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    class_id, entry_index, `name`, `table_name`, primary_key, foreign_key, join_type
+    class_id, entry_index, `name`, `table_name`, primary_key, foreign_key, join_type, 
+    `desc`
   </sql>
   <select id="selectByExample" parameterType="com.kingdee.hrp.sms.common.model.FormClassEntryExample" resultMap="BaseResultMap">
     select
@@ -106,10 +108,10 @@
   <insert id="insert" parameterType="com.kingdee.hrp.sms.common.model.FormClassEntry">
     insert into t_form_class_entry (class_id, entry_index, `name`, 
       `table_name`, primary_key, foreign_key, 
-      join_type)
+      join_type, `desc`)
     values (#{classId,jdbcType=INTEGER}, #{entryIndex,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, 
       #{tableName,jdbcType=VARCHAR}, #{primaryKey,jdbcType=VARCHAR}, #{foreignKey,jdbcType=VARCHAR}, 
-      #{joinType,jdbcType=VARCHAR})
+      #{joinType,jdbcType=VARCHAR}, #{desc,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.kingdee.hrp.sms.common.model.FormClassEntry">
     insert into t_form_class_entry
@@ -135,6 +137,9 @@
       <if test="joinType != null">
         join_type,
       </if>
+      <if test="desc != null">
+        `desc`,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="classId != null">
@@ -157,6 +162,9 @@
       </if>
       <if test="joinType != null">
         #{joinType,jdbcType=VARCHAR},
+      </if>
+      <if test="desc != null">
+        #{desc,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -190,6 +198,9 @@
       <if test="record.joinType != null">
         join_type = #{record.joinType,jdbcType=VARCHAR},
       </if>
+      <if test="record.desc != null">
+        `desc` = #{record.desc,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -203,7 +214,8 @@
       `table_name` = #{record.tableName,jdbcType=VARCHAR},
       primary_key = #{record.primaryKey,jdbcType=VARCHAR},
       foreign_key = #{record.foreignKey,jdbcType=VARCHAR},
-      join_type = #{record.joinType,jdbcType=VARCHAR}
+      join_type = #{record.joinType,jdbcType=VARCHAR},
+      `desc` = #{record.desc,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -226,6 +238,9 @@
       <if test="joinType != null">
         join_type = #{joinType,jdbcType=VARCHAR},
       </if>
+      <if test="desc != null">
+        `desc` = #{desc,jdbcType=VARCHAR},
+      </if>
     </set>
     where class_id = #{classId,jdbcType=INTEGER}
       and entry_index = #{entryIndex,jdbcType=INTEGER}
@@ -236,7 +251,8 @@
       `table_name` = #{tableName,jdbcType=VARCHAR},
       primary_key = #{primaryKey,jdbcType=VARCHAR},
       foreign_key = #{foreignKey,jdbcType=VARCHAR},
-      join_type = #{joinType,jdbcType=VARCHAR}
+      join_type = #{joinType,jdbcType=VARCHAR},
+      `desc` = #{desc,jdbcType=VARCHAR}
     where class_id = #{classId,jdbcType=INTEGER}
       and entry_index = #{entryIndex,jdbcType=INTEGER}
   </update>

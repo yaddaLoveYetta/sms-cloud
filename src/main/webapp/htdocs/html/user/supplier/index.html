@@ -44,8 +44,8 @@
 
                 <label class="col-sm-2 ">{mustInput}{name}</label>
                 <div class="col-sm-2">
-                    <input id="{fieldKey}" type="text" class="form-control" placeholder="请输入{name}">
-                    <span id="{fieldKey}-msg" class="msg"></span>
+                    <input id="{key}" type="text" class="form-control" placeholder="请输入{name}">
+                    <span id="{key}-msg" class="msg"></span>
                 </div>
 
             #--text.end--#
@@ -54,8 +54,8 @@
 
                 <label class="col-sm-2 ">{mustInput}{name}</label>
                 <div class="col-sm-2">
-                    <textarea id="{fieldKey}" class="form-control" placeholder="请输入{name}"></textarea>
-                    <span id="{fieldKey}-msg" class="msg"></span>
+                    <textarea id="{key}" class="form-control" placeholder="请输入{name}"></textarea>
+                    <span id="{key}-msg" class="msg"></span>
                 </div>
 
             #--textarea.end--#
@@ -65,8 +65,8 @@
                 <label class="col-sm-2 ">{mustInput}{name}</label>
                 <div class=" col-sm-2">
                     <span class="iconfont icon-riqixuanze form-control-feedback"></span>
-                    <input id="{fieldKey}" type="text" class="form-control" placeholder="点击选择{name}">
-                    <span id="{fieldKey}-msg" class="msg"></span>
+                    <input id="{key}" type="text" class="form-control" placeholder="点击选择{name}">
+                    <span id="{key}-msg" class="msg"></span>
                 </div>
 
             #--datatime.end--#
@@ -75,8 +75,8 @@
 
                 <label class="col-sm-2 ">{mustInput}{name}</label>
                 <div class="col-sm-2">
-                    <input id="{fieldKey}" type="checkbox" class="checkbox" >
-                    <span id="{fieldKey}-msg" class="msg"></span>
+                    <input id="{key}" type="checkbox" class="checkbox" >
+                    <span id="{key}-msg" class="msg"></span>
                 </div>
 
             #--checkbox.end--#
@@ -85,8 +85,8 @@
 
                 <label class="col-sm-2 ">{mustInput}{name}</label>
                 <div class="col-sm-2">
-                    <input id="{fieldKey}" type="password" class="form-control" placeholder="请输入{name}">
-                    <span id="{fieldKey}-msg" class="msg"></span>
+                    <input id="{key}" type="password" class="form-control" placeholder="请输入{name}">
+                    <span id="{key}-msg" class="msg"></span>
                 </div>
 
             #--password.end--#
@@ -94,7 +94,7 @@
             #--f7.begin--#
 
                 <label class="col-sm-2 ">{mustInput}{name}</label>
-                <div class="col-sm-2 " id="{fieldKey}">
+                <div class="col-sm-2 " id="{key}">
 
                 </div>
 
@@ -103,7 +103,7 @@
             #--man_female.begin--#
             <label class="col-sm-2 ">{mustInput}{name}</label>
             <div class="col-sm-1">
-                <select id="{fieldKey}" class="form-control">
+                <select id="{key}" class="form-control">
                     <option value="0">男</option>
                     <option value="1">女</option>
                 </select>
@@ -113,7 +113,7 @@
              #--yes_no.begin--#
             <label class="col-sm-2 ">{mustInput}{name}</label>
             <div class="col-sm-1">
-                <select id="{fieldKey}" class="form-control">
+                <select id="{key}" class="form-control">
                     <option value="1">是</option>
                     <option value="0">否</option>
                 </select>
@@ -128,11 +128,11 @@
                 </div>
                 <div class="grid-wrap col-sm-12">
 
-                    <table id="{fieldKey}"></table>
+                    <table id="{key}"></table>
 
-                    <div id="{fieldKey}-pager"></div>
+                    <div id="{key}-pager"></div>
                 </div>
-                <span class="error-msg" id="{fieldKey}-msg"></span>
+                <span class="error-msg" id="{key}-msg"></span>
             </div>
             #--detail.end--#
 
@@ -231,11 +231,11 @@
     <div class="row form-group">
         <label class="col-sm-2 ">公司全称</label>
         <div class="col-sm-2">
-            <input id="name" type="text" class="form-control" placeholder="公司全称">
+            <input id="ddd" type="text" class="form-control" placeholder="公司全称">
         </div>
         <label class="col-sm-2 ">地址</label>
         <div class="col-sm-2">
-            <input id="address" type="text" class="form-control" placeholder="地址">
+            <input id="eee" type="text" class="form-control" placeholder="地址">
         </div>
 
     </div>
@@ -243,15 +243,15 @@
     <div class="row form-group">
         <label class="col-sm-2 ">营业执照号码</label>
         <div class="col-sm-2">
-            <input id="business_license" type="text" class="form-control" placeholder="营业执照号码">
+            <input id="aaa" type="text" class="form-control" placeholder="营业执照号码">
         </div>
         <label class="col-sm-2 ">税务登记号</label>
         <div class="col-sm-2">
-            <input id="tax_id" type="text" class="form-control" placeholder="税务登记号">
+            <input id="bbb" type="text" class="form-control" placeholder="税务登记号">
         </div>
         <label class="col-sm-2 ">主键</label>
         <div class="col-sm-2">
-            <input id="id" type="text" class="form-control" placeholder="主键">
+            <input id="ccc" type="text" class="form-control" placeholder="主键">
         </div>
 
     </div>
@@ -267,11 +267,11 @@
         </div>
         <div class="grid-wrap col-sm-12">
             <!-- jqGrid table -->
-            <table id="{fieldKey}"></table>
+            <table id="grid"></table>
             <!-- jqGrid 分页 div -->
-            <div id="{fieldKey}-pager"></div>
+            <div id="grid-pager"></div>
         </div>
-        <span class="error-msg" id="{fieldKey}-msg"></span>
+        <span class="error-msg" id="grid-msg"></span>
     </div>
 
 </div>
