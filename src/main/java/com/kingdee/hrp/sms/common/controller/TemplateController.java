@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kingdee.hrp.sms.common.exception.BusinessLogicRunTimeException;
 import com.kingdee.hrp.sms.common.pojo.Condition;
-import com.kingdee.hrp.sms.common.pojo.Sorts;
+import com.kingdee.hrp.sms.common.pojo.Sort;
 import com.kingdee.hrp.sms.common.service.ITemplateService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -76,7 +76,7 @@ public class TemplateController {
         }
 
         List<Condition> conditions = null;
-        List<Sorts> sorts = null;
+        List<Sort> sorts = null;
 
         // 包装查询条件-方便操作
         if (null != condition && !condition.equals("")) {
@@ -87,7 +87,7 @@ public class TemplateController {
         // 包装查询结果排序-方便操作
         if (null != sort && !sort.equals("")) {
             ObjectMapper objectMapper = new ObjectMapper();
-            JavaType javaType = objectMapper.getTypeFactory().constructParametricType(List.class, Sorts.class);
+            JavaType javaType = objectMapper.getTypeFactory().constructParametricType(List.class, Sort.class);
             sorts = objectMapper.readValue(sort, javaType);
         }
 

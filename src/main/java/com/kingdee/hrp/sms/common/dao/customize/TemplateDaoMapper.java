@@ -69,14 +69,5 @@ public interface TemplateDaoMapper {
 	 * @date 2017-05-23 16:46:10 星期二
 	 */
 	void unCheck(Map<String, Object> statement);
-	
-	/**
-	 * 反审核時修改同步状态
-	 * 
-	 * @Title unCheck
-	 * @param statement
-	 * @return void
-	 * @date 2017-05-23 16:46:10 星期二
-	 */
-	void unsyncStatus(Map<String, Object> statement);
+
 }

@@ -20,13 +20,13 @@
     }
 
     // 业务类别
-    var classId = MiniQuery.Url.getQueryString(window.location.href, 'classId');
+    var classId = Number(MiniQuery.Url.getQueryString(window.location.href, 'classId'));
     // 用户角色类别
-    var roleType = MiniQuery.Url.getQueryString(window.location.href, 'roleType');
+    var roleType = Number(MiniQuery.Url.getQueryString(window.location.href, 'roleType'));
     // 用户id
-    var userId = MiniQuery.Url.getQueryString(window.location.href, 'user');
+    var userId = Number(MiniQuery.Url.getQueryString(window.location.href, 'user'));
     // 操作类别 0：查看 1：新增 2：修改
-    var operate = MiniQuery.Url.getQueryString(window.location.href, 'operate');
+    var operate = Number(MiniQuery.Url.getQueryString(window.location.href, 'operate'));
 
     var ButtonList;
 

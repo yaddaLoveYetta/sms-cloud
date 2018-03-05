@@ -2,6 +2,7 @@ package com.kingdee.hrp.sms.common.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.kingdee.hrp.sms.common.dao.customize.TemplateDaoMapper;
 import com.kingdee.hrp.sms.common.dao.generate.FormActionMapper;
 import com.kingdee.hrp.sms.common.dao.generate.FormClassEntryMapper;
 import com.kingdee.hrp.sms.common.dao.generate.FormClassMapper;
@@ -9,7 +10,8 @@ import com.kingdee.hrp.sms.common.dao.generate.FormFieldsMapper;
 import com.kingdee.hrp.sms.common.exception.BusinessLogicRunTimeException;
 import com.kingdee.hrp.sms.common.model.*;
 import com.kingdee.hrp.sms.common.pojo.Condition;
-import com.kingdee.hrp.sms.common.pojo.Sorts;
+import com.kingdee.hrp.sms.common.pojo.DataTypeEnum;
+import com.kingdee.hrp.sms.common.pojo.Sort;
 import com.kingdee.hrp.sms.common.service.BaseService;
 import com.kingdee.hrp.sms.common.service.ITemplateService;
 import com.kingdee.hrp.sms.util.Common;
@@ -58,7 +60,7 @@ public class TemplateService extends BaseService implements ITemplateService {
 
         if (type == 1) {
             // 后端构建查询脚本时调用
-            fieldsExample.setOrderByClause("ctlIndex");
+            fieldsExample.setOrderByClause("ctrl_Index");
 
         } else {
             // 前端处理显示顺序时调用
@@ -155,7 +157,7 @@ public class TemplateService extends BaseService implements ITemplateService {
      */
     @Override
     @SuppressWarnings("unchecked")
-    public Map<String, Object> getItems(Integer classId, List<Condition> conditions, List<Sorts> sorts, Integer pageSize, Integer pageNo) {
+    public Map<String, Object> getItems(Integer classId, List<Condition> conditions, List<Sort> sorts, Integer pageSize, Integer pageNo) {
 
         Map<String, Object> ret = new HashMap<String, Object>(16);
 
@@ -165,7 +167,7 @@ public class TemplateService extends BaseService implements ITemplateService {
         // 主表资料描述信息
         FormClass formClass = (FormClass) template.get("formClass");
         // 子表资料描述信息
-        Map<String, Object> formEntries = (Map<String, Object>) template.get("formEntries");
+        Map<String, Object> formEntries = (Map<String, Object>) template.get("formClassEntry");
 
         // 主表字段模板
         Map<String, Object> formFields0 = (Map<String, Object>) ((Map<String, Object>) template.get("formFields")).get("0");
@@ -222,12 +224,10 @@ public class TemplateService extends BaseService implements ITemplateService {
 
         }
 
-        if (orderByString != null && !orderByString.equals("")) {
+        if (sorts != null && !sorts.isEmpty()) {
 
-            // 客户端传入了排序字段
-            JSONArray orderByArray = JSONArray.parseArray(orderByString);
-
-            orderByStr = getOrderByStr(classId, orderByArray); // 获取where条件
+            // 获取客户端传入了排序条件
+            orderByStr = getOrderByStr(classId, sorts);
 
         }
 
@@ -288,7 +288,8 @@ public class TemplateService extends BaseService implements ITemplateService {
             List<Map<String, Object>> itemByIds = new ArrayList<>();
 
             if (idList.size() > 0) {
-                itemByIds = getItemByIds(classId, idList, orderByStr);
+                //TODO
+                //itemByIds = getItemByIds(classId, idList, orderByStr);
             }
 
             ret.put("list", itemByIds);
@@ -301,12 +302,18 @@ public class TemplateService extends BaseService implements ITemplateService {
 
         // 将记录转换成返回接口的格式，将主表关联多行子表记录时，子表记录整合到返回结构"entry"中
         for (Map<String, Object> item : data) {
-            // 循环每一行
-            Map<String, Object> head = new HashMap<String, Object>();// 主表所有字段
-            Map<String, Object> entries = new HashMap<String, Object>(); // 所有子表entry
 
-            List<Map<String, Object>> formEntryRows = new ArrayList<Map<String, Object>>(); // 第一个子表所有行
-            Map<String, Object> formEntryRow = new HashMap<String, Object>();// 子表每一行的元素
+            // 循环每一行
+
+            // 主表所有字段
+            Map<String, Object> head = new HashMap<String, Object>();
+            // 所有子表entry
+            Map<String, Object> entries = new HashMap<String, Object>();
+
+            // 第一个子表所有行
+            List<Map<String, Object>> formEntryRows = new ArrayList<Map<String, Object>>();
+            // 子表每一行的元素
+            Map<String, Object> formEntryRow = new HashMap<String, Object>();
 
             for (Iterator<Map.Entry<String, Object>> it = item.entrySet().iterator(); it.hasNext(); ) {
                 // 循环行中的列
@@ -315,7 +322,8 @@ public class TemplateService extends BaseService implements ITemplateService {
                 String cName = column.getKey();
                 Object cValue = column.getValue();
 
-                String cNameTrueKey = cName; // 真实的模板key
+                // 真实的模板key
+                String cNameTrueKey = cName;
 
                 if (cName.contains("_")) {
                     // 关联查询字段时携带的_DspName,_NmbName等模板之外的key
@@ -323,31 +331,27 @@ public class TemplateService extends BaseService implements ITemplateService {
                 }
 
                 if (formFields0.containsKey(cNameTrueKey)) {
-                    // formClass即主表字段
-                    // formClass.put(cNameTrueKey, cValue);
 
-                    // if (!cNameTrueKey.equals(cName)) {
                     // 关联查询字段时携带的_DspName,_NmbName等模板之外的key
                     head.put(cName, item.get(cName));
-                    // }
 
                 } else if (isChildTableExist && formFields1.containsKey(cNameTrueKey)) {
-                    // formEntries1即第一个子表字段
-                    // formEntryRow.put(cNameTrueKey, cValue);
 
-                    // if (!cNameTrueKey.equals(cName)) {
                     // 关联查询字段时携带的_DspName,_NmbName等模板之外的key
                     formEntryRow.put(cName, item.get(cName));
-                    // }
+
                 }
             }
 
             if (isChildTableExist) {
-                formEntryRows.add(formEntryRow); // 这里formEntryRows也就一行，为了构造{[]}的结构
-                entries.put("1", formEntryRows); // 第一个子表数据
+                // 这里formEntryRows也就一行，为了构造{[]}的结构
+                formEntryRows.add(formEntryRow);
+                // 第一个子表数据
+                entries.put("1", formEntryRows);
             }
 
-            head.put("entry", entries);// 将子表已关键字"entry"作为key插入到formClass中
+            // 将子表已关键字"entry"作为key插入到formClass中
+            head.put("entry", entries);
 
             Map<String, Object> keyInList = isKeyInList(returnList, primaryKey, head.get(primaryKey));
 
@@ -453,7 +457,7 @@ public class TemplateService extends BaseService implements ITemplateService {
         // 主表资料描述信息
         FormClass formClass = (FormClass) template.get("formClass");
         // 子表资料描述信息
-        Map<String, Object> formEntries = (Map<String, Object>) template.get("formEntries");
+        Map<String, Object> formEntries = (Map<String, Object>) template.get("formClassEntry");
         // 数据库字段-关键字处理
         Map<String, String> dbDelimiter = getDBDelimiter();
         String bDelimiter = dbDelimiter.get("bDelimiter");
@@ -726,6 +730,13 @@ public class TemplateService extends BaseService implements ITemplateService {
         return statement;
     }
 
+    /**
+     * 构建查询时的where条件
+     *
+     * @param classId    业务类别
+     * @param conditions 结构化条件信息
+     * @return 查询条件
+     */
     @SuppressWarnings("unchecked")
     private Map<String, Object> getWhereStr(Integer classId, List<Condition> conditions) {
 
@@ -740,7 +751,7 @@ public class TemplateService extends BaseService implements ITemplateService {
         // 基础资料模板
         Map<String, Object> templateMap = getFormTemplate(classId, 1);
         // 所有字段模板
-        Map<String, FormFields> itemClassTemplateMap = getFormFields(classId, -1);
+        Map<String, FormFields> formFieldsAll = getFormFields(classId, -1);
         // 主表资料描述信息
         FormClass formClass = (FormClass) templateMap.get("formClass");
         // 子表资料描述信息
@@ -771,12 +782,13 @@ public class TemplateService extends BaseService implements ITemplateService {
                 // 存在子表但子表FormEntries中配置错误
                 throw new BusinessLogicRunTimeException("没有模板数据");
             }
-
         }
 
         sbWhere.append("WHERE 1=1 AND (");
 
-        for (Condition condition : conditions) {
+        for (int i = 0; i < conditions.size(); i++) {
+
+            Condition condition = conditions.get(i);
 
             // 处理脚本参数格式化时参数值不符合TSQL规则BUG
             String preValue = "";
@@ -787,97 +799,61 @@ public class TemplateService extends BaseService implements ITemplateService {
             boolean skip = false;
 
             // AND OR 条件链接符号-默认AND
-            String andOr = condition.getLinkType().getName();
+            Condition.LinkTypeEnum andOr = condition.getLinkType();
 
-            if (condition.containsKey("andOr")) {
-                andOr = condition.getString("andOr");
-            }
             // 第一个条件忽略连接关系
-            andOr = i == 0 ? "" : andOr;
+            //andOr = i == 0 ? "" : andOr;
 
-            String leftParenTheses = "("; // 左括号-可能有多个，如 "(("，甚至"((("等复杂查询,默认"("
 
-            if (condition.containsKey("leftParenTheses")) {
-                leftParenTheses = condition.getString("leftParenTheses");
-            }
+            // 左括号-可能有多个，如 "(("，甚至"((("等复杂查询,默认"("
+            String leftParenTheses = condition.getLeftParenTheses();
 
-            String fieldKey = "";// 比较字段名
+            // 比较字段名
+            String fieldKey = condition.getFieldKey();
 
-            if (condition.containsKey("fieldKey")) {
-                fieldKey = condition.getString("fieldKey");
-            } else {
+            if (null == fieldKey || "".equals(fieldKey)) {
                 throw new BusinessLogicRunTimeException("参数错误：condition必须包括fieldKey");
             }
 
-            String logicOperator = "="; // 比较符号
+            // 比较符号
+            Condition.LogicOperatorEnum logicOperator = condition.getLogicOperator();
 
-            if (condition.containsKey("logicOperator")) {
-                logicOperator = condition.getString("logicOperator");
-            } else {
-                throw new BusinessLogicRunTimeException("参数错误：condition必须包括logicOperator");
+            if (null == logicOperator || "".equals(logicOperator) || logicOperator == Condition.LogicOperatorEnum.NOT_SUPPORT) {
+                throw new BusinessLogicRunTimeException("参数错误：condition必须包含正确的logicOperator");
             }
 
-            /**
-             * 有些公司防火墙会禁止>= <= 等比较符号参数，被认为可能存在sql注入，此处做兼容
-             *
-             * equal 等于 =
-             * lessThan 等于 <=
-             * greaterThan 等于 >=
-             */
-            String logicOperatorCopy = logicOperator.toLowerCase();
-            switch (logicOperatorCopy) {
-                case "equal":
-                    logicOperator = "=";
-                    break;
-                case "lessthan":
-                    logicOperator = "<=";
-                    break;
-                case "greaterthan":
-                    logicOperator = ">=";
-                    break;
-                default:
-                    break;
+            // 比较值
+            Object value = condition.getValue();
+
+            if (null == value) {
+                throw new BusinessLogicRunTimeException("参数错误：condition必须包括比较值value");
             }
 
-            String value = ""; // 比较值
+            // 右括号
+            String rightParenTheses = condition.getRightParenTheses();
 
-            if (condition.containsKey("value")) {
-                value = condition.getString("value");
-                // value = handleSqlInjection(value);
-            } else {
-                throw new BusinessLogicRunTimeException("参数错误：condition必须包括value");
-            }
+            // 是否需要转换条件字段，用于传入引用他表字段时过滤，例如传入引用基础资料key是否需要转换为名称条件，用户输入时通常需要转换成名称查询，而代码中调用不需要转换，直接用ID匹配
+            boolean needConvert = condition.getNeedConvert();
 
-            String rightParenTheses = ")"; // 右括号
-
-            if (condition.containsKey("rightParenTheses")) {
-                rightParenTheses = condition.getString("rightParenTheses");
-            }
-
-            boolean needConvert = true;// 是否需要转换条件字段，用于传入引用他表字段时过滤，例如传入引用基础资料key是否需要转换为名称条件，用户输入时通常需要转换成名称查询，而代码中调用不需要转换，直接用ID匹配
-
-            if (condition.containsKey("needConvert")) {
-                needConvert = condition.getBoolean("needConvert");
-            }
-
-            if (!itemClassTemplateMap.containsKey(fieldKey)) {
+            if (!formFieldsAll.containsKey(fieldKey)) {
                 // 没有定义模板-忽略
                 continue;
             }
 
-            FormFields formfield = itemClassTemplateMap.get(fieldKey);
+            FormFields formField = formFieldsAll.get(fieldKey);
 
-            Integer page = (Integer) formfield.getPage();
-            String sqlColumnName = formfield.getSqlColumnName();
-            Integer lookUpType = formfield.getLookUpType();
-            Integer lookUpClassID = formfield.getLookUpClassID();
-            String srcTable = formfield.getSrcTable();
-            String srcTableAlisAs = formfield.getSrcTableAlisAs();
-            String disPlayField = formfield.getDisPlayField();
-            String srcField = formfield.getSrcField();
-            Integer dataType = formfield.getDataType();
+            Integer page = formField.getPage();
+            String sqlColumnName = formField.getSqlColumnName();
+            Integer lookUpType = formField.getLookUpType();
+            Integer lookUpClassId = formField.getLookUpClassId();
+            String srcTable = formField.getSrcTable();
+            String srcTableAlisAs = formField.getSrcTableAlis();
+            String disPlayField = formField.getDisplayField();
+            String srcField = formField.getSrcField();
+            Integer dataType = formField.getDataType();
 
-            String formFieldLinkedTable = ""; // 确定当前字段是属于哪个表
+            // 确定当前字段是属于哪个表
+            String formFieldLinkedTable = "";
 
             if (page == 0) {
                 formFieldLinkedTable = primaryTableName;
@@ -891,33 +867,34 @@ public class TemplateService extends BaseService implements ITemplateService {
             String tableName = formFieldLinkedTable;
             String fieldName = sqlColumnName;
 
-            DataTypeeEnum dataTypeeEnum = DataTypeeEnum.getTypeEnum(dataType);
+            DataTypeEnum dataTypeEnum = DataTypeEnum.getTypeEnum(dataType);
 
             if (needConvert && lookUpType > 0) {
                 // 需要转换为名称查询的引用类型的查询条件，dataType可能不是文本类型，但条件值是文本，需要文本格式化，此处修正值格式化类型
-                dataTypeeEnum = DataTypeeEnum.TEXT;
+                dataTypeEnum = DataTypeEnum.TEXT;
             }
 
-            switch (dataTypeeEnum) {
+            switch (dataTypeEnum) {
 
                 case NUMBER:
                     // 一般数字类型的不可能用like
                     break;
                 case TEXT:
-                    if (logicOperator.equalsIgnoreCase("like")) {
-                        value = "%" + value + "%";
-                    }
-                    if (logicOperator.equalsIgnoreCase("IN")) {
-                        preValue = "(";
+
+                    if (logicOperator == Condition.LogicOperatorEnum.LIKE) {
+                        //value = "%" + value + "%";
+                    } else if (logicOperator == Condition.LogicOperatorEnum.IN) {
+                        // 不适用此系统动态查询方式，对于IN，手工拼接脚本
+/*                        preValue = "(";
                         sufValue = ")";
-                        skip = true;// 不适用此系统动态查询方式，对于IN，手工拼接脚本
+                        skip = true;*/
                     }
                     break;
                 case TIME:
-                    if (logicOperator.equalsIgnoreCase("<=")) {
-                        if (!Common.isLongDate(value)) {
+                    if (logicOperator == Condition.LogicOperatorEnum.LESS_OR_EQUAL) {
+                        if (!Common.isLongDate(String.valueOf(value))) {
                             // 由于数据库中日期可能存储有时分秒，过滤天时过滤到当前23:59:59
-                            value = value + " 23:59:59"; // 小于等于结束时间
+                            value = value + " 23:59:59";
                         }
                     }
                     break;
@@ -931,7 +908,6 @@ public class TemplateService extends BaseService implements ITemplateService {
 
             if (lookUpType != null && (lookUpType == 1 || lookUpType == 2)) {
                 // 基础资料-辅助资料引用类型
-
                 // 引用字段查询-使用关联表显示字段作为条件
                 tableName = srcTableAlisAs == null || srcTableAlisAs.equals("") ? srcTable : srcTableAlisAs;
 
@@ -950,16 +926,15 @@ public class TemplateService extends BaseService implements ITemplateService {
                 // FLookUpType == 3
                 // 即引用基础资料属性的模板中，FDisPlayField的配置统一认为是引用基础资料模板中的key，需要二次验证引用资料模板确认查询字段
 
-                FormFields formField = getFormField(lookUpClassID, disPlayField);
+                FormFields lookUpFormField = getFormField(lookUpClassId, disPlayField);
 
-                String name = (String) formField.getName();
-                Integer lookUpTypeEx = formField.getLookUpType();
-                String srcTableEx = formField.getSrcTable();
-                String srcFieldEx = formField.getSrcField();
+                String name = lookUpFormField.getName();
+                Integer lookUpTypeEx = lookUpFormField.getLookUpType();
+                String srcTableEx = lookUpFormField.getSrcTable();
+                String srcFieldEx = lookUpFormField.getSrcField();
 
                 if (lookUpTypeEx != null && lookUpTypeEx > 0) {
                     // 基础资料的附加属性又是引用类型的情况--取显示字段并关联表
-
                     if (needConvert) {
                         fieldName = name;
                     } else {
@@ -973,14 +948,14 @@ public class TemplateService extends BaseService implements ITemplateService {
                     }
                 }
 
-            } else if (lookUpType != null && lookUpType == 4) {
+            } else if (lookUpType == 4) {
 
-                if (dataType != null && dataType == 2) {
+                if (dataType == 2) {
                     // 文本类的关联字段，未防止关联表中无记录，此处取主表字段值-如订单查询FCarNo字段取数
                     tableName = formFieldLinkedTable;
                 } else {
                     // 引用字段查询-使用关联表显示字段作为条件
-                    tableName = srcTableAlisAs == null || srcTableAlisAs.equals("") ? srcTable : srcTableAlisAs;
+                    tableName = srcTableAlisAs == null || "".equals(srcTableAlisAs) ? srcTable : srcTableAlisAs;
 
                     if (needConvert) {
                         fieldName = disPlayField;
@@ -992,7 +967,7 @@ public class TemplateService extends BaseService implements ITemplateService {
             } else if (lookUpType > 0 && lookUpType > 4) {
 
                 // 引用字段查询-使用关联表显示字段作为条件
-                tableName = srcTableAlisAs == null || srcTableAlisAs.equals("") ? srcTable : srcTableAlisAs;
+                tableName = srcTableAlisAs == null || "".equals(srcTableAlisAs) ? srcTable : srcTableAlisAs;
                 if (needConvert) {
                     fieldName = disPlayField;
                 } else {
@@ -1019,12 +994,95 @@ public class TemplateService extends BaseService implements ITemplateService {
 
         String whereStr = sbWhere.toString();
 
-        if (!whereStr.equals("WHERE 1=1 AND ()")) {
+        if (!"WHERE 1=1 AND ()".equals(whereStr)) {
             ret.put("whereStr", whereStr);
             ret.put("whereParams", sqlParams);
         }
 
         return ret;
+    }
+
+    @SuppressWarnings("unchecked")
+    private String getOrderByStr(Integer classId, List<Sort> sorts) {
+
+        StringBuilder sbOrderBy = new StringBuilder();
+        String separator = System.getProperty("line.separator");
+
+        // 基础资料模板
+        Map<String, Object> template = getFormTemplate(classId, 1);
+        // 所有字段模板
+        Map<String, FormFields> formFieldsAll = getFormFields(classId, -1);
+        // 主表资料描述信息
+        FormClass itemClass = (FormClass) template.get("formClass");
+        // 子表资料描述信息
+        Map<String, Object> formEntries = (Map<String, Object>) template.get("formEntries");
+
+        if (null == itemClass) {
+            throw new BusinessLogicRunTimeException("没有模板数据");
+        }
+
+        // 数据库字段-关键字处理
+        Map<String, String> dbDelimiter = getDBDelimiter();
+        String bDelimiter = dbDelimiter.get("bDelimiter");
+        String eDelimiter = dbDelimiter.get("eDelimiter");
+
+        String primaryTableName = itemClass.getTableName();
+        String primaryKey = itemClass.getPrimaryKey();
+
+        sbOrderBy.append("ORDER BY");
+
+        for (int i = 0; i < sorts.size(); i++) {
+
+            Sort sort = sorts.get(i);
+
+            String fieldKey = sort.getFieldKey();
+
+            if (fieldKey.equals("")) {
+                // 没有传递fieldKey,忽略
+                continue;
+            }
+            // 默认ASC排序
+            Sort.DirectionEnum orderDirection = sort.getDirection();
+
+            if (!formFieldsAll.containsKey(fieldKey)) {
+                // 没有定义模板-忽略
+                continue;
+            }
+
+            FormFields formFields = formFieldsAll.get(fieldKey);
+
+            Integer page = formFields.getPage();
+            String sqlColumnName = formFields.getSqlColumnName();
+            Integer lookUpType = formFields.getLookUpType();
+            String srcTable = formFields.getSrcTable();
+            String srcTableAlisAs = formFields.getSrcTableAlis();
+            String disPlayField = formFields.getDisplayField();
+
+            String tableName = primaryTableName;
+
+            if (page > 0) {
+                FormClassEntry entry = (FormClassEntry) formEntries.get(String.valueOf(page));
+                tableName = entry.getTableName();
+            }
+
+            String fieldName = sqlColumnName;
+
+            if (lookUpType > 0) {
+                // 引用类型字段-找到真实的表，字段
+                tableName = srcTableAlisAs == null || srcTableAlisAs.equals("") ? srcTable : srcTableAlisAs;
+                fieldName = disPlayField;
+            }
+
+            sbOrderBy.append(separator).append(String.format("%s.%s%s%s %s,", tableName, bDelimiter, fieldName, eDelimiter, orderDirection));
+
+        }
+
+        String orderByStr = sbOrderBy.toString();
+        if (orderByStr.equals("ORDER BY")) {
+            return "";
+        }
+
+        return orderByStr.substring(0, orderByStr.length() - 1);
     }
 
     /**
@@ -1041,8 +1099,8 @@ public class TemplateService extends BaseService implements ITemplateService {
             private static final long serialVersionUID = -2157281653097860908L;
 
             {
-                put("bDelimiter", "[");
-                put("eDelimiter", "]");
+                put("bDelimiter", "`");
+                put("eDelimiter", "`");
             }
         };
 
@@ -1128,5 +1186,23 @@ public class TemplateService extends BaseService implements ITemplateService {
 
         return retMap;
 
+    }
+
+    /**
+     * 判断List<Map<String, Object>>中的Map中key为targetKey的元素的值是否为targetValue，是则并返回该元素，否则返回null
+     *
+     * @param list        List<Map<String, Object>>
+     * @param targetKey
+     * @param targetValue
+     * @return
+     */
+    private Map<String, Object> isKeyInList(List<Map<String, Object>> list, String targetKey, Object targetValue) {
+
+        for (Map<String, Object> map : list) {
+            if (map.containsKey(targetKey) && map.get(targetKey).equals(targetValue)) {
+                return map;
+            }
+        }
+        return null;
     }
 }

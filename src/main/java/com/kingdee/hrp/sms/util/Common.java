@@ -11,6 +11,8 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class Common {
@@ -62,7 +64,7 @@ public class Common {
      * @throws IllegalAccessException    如果实例化 JavaBean 失败
      * @throws InvocationTargetException 如果调用属性的 setter 方法失败
      */
-    public static Map<String,Object> beanToMap(Object bean)
+    public static Map<String, Object> beanToMap(Object bean)
             throws IntrospectionException, IllegalAccessException, InvocationTargetException {
         Class type = bean.getClass();
         Map<String, Object> returnMap = new HashMap<String, Object>();
@@ -122,6 +124,22 @@ public class Common {
             }
         }
         return obj;
+    }
+
+    /**
+     * 判断日期是否为长日期(yyyy-MM-dd HH:mm:ss)
+     *
+     * @param timeStr
+     * @return boolean
+     * @Title isLongDate
+     * @date 2017-05-27 16:41:17 星期六
+     */
+    public static boolean isLongDate(String timeStr) {
+        String format = "((19|20)[0-9]{2})-(0?[1-9]|1[012])-(0?[1-9]|[12][0-9]|3[01]) "
+                + "([01]?[0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]";
+        Pattern pattern = Pattern.compile(format);
+        Matcher matcher = pattern.matcher(timeStr);
+        return matcher.matches();
     }
 
     public static void main(String[] args) {

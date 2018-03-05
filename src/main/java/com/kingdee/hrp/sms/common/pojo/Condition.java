@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * 列表查询where条件对象
@@ -103,7 +102,7 @@ public class Condition implements Serializable {
     /**
      * 条件链接类型
      */
-    private enum LinkTypeEnum implements Serializable {
+    public enum LinkTypeEnum implements Serializable {
 
         AND("AND"), OR("OR"), NOT_SUPPORT("NOT_SUPPORT");
 
@@ -112,6 +111,7 @@ public class Condition implements Serializable {
         LinkTypeEnum(String name) {
             this.name = name;
         }
+
         @JsonValue
         public String getName() {
             return name;
@@ -136,11 +136,11 @@ public class Condition implements Serializable {
     /**
      * 比较符号
      */
-    private enum LogicOperatorEnum implements Serializable {
+    public enum LogicOperatorEnum implements Serializable {
 
         EQUAL("ET", "等于"), NOT_EQUAL("NET", "不等于"), LESS_THAN("LT", "小于"), LESS_OR_EQUAL("LET", "小于或等于"),
         GREATER("GT", "大于"), GREATER_OR_EQUAL("GET", "大于或等于"),
-        LIKE("BLT", "LIKE模糊匹配"),
+        LIKE("BLT", "LIKE模糊匹配"), IN("IN", "包含于"),
         NOT_SUPPORT("NOT_SUPPORT", "不支持的比较符号");
 
         private String name;
@@ -151,6 +151,7 @@ public class Condition implements Serializable {
             this.name = name;
             this.description = description;
         }
+
         @JsonValue //序列化时 枚举对应生成的值
         public String getName() {
             return name;
