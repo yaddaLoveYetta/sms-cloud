@@ -1654,6 +1654,66 @@ public class FormFieldsExample {
             return (Criteria) this;
         }
 
+        public Criteria andNeedSaveIsNull() {
+            addCriterion("need_save is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andNeedSaveIsNotNull() {
+            addCriterion("need_save is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andNeedSaveEqualTo(Boolean value) {
+            addCriterion("need_save =", value, "needSave");
+            return (Criteria) this;
+        }
+
+        public Criteria andNeedSaveNotEqualTo(Boolean value) {
+            addCriterion("need_save <>", value, "needSave");
+            return (Criteria) this;
+        }
+
+        public Criteria andNeedSaveGreaterThan(Boolean value) {
+            addCriterion("need_save >", value, "needSave");
+            return (Criteria) this;
+        }
+
+        public Criteria andNeedSaveGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("need_save >=", value, "needSave");
+            return (Criteria) this;
+        }
+
+        public Criteria andNeedSaveLessThan(Boolean value) {
+            addCriterion("need_save <", value, "needSave");
+            return (Criteria) this;
+        }
+
+        public Criteria andNeedSaveLessThanOrEqualTo(Boolean value) {
+            addCriterion("need_save <=", value, "needSave");
+            return (Criteria) this;
+        }
+
+        public Criteria andNeedSaveIn(List<Boolean> values) {
+            addCriterion("need_save in", values, "needSave");
+            return (Criteria) this;
+        }
+
+        public Criteria andNeedSaveNotIn(List<Boolean> values) {
+            addCriterion("need_save not in", values, "needSave");
+            return (Criteria) this;
+        }
+
+        public Criteria andNeedSaveBetween(Boolean value1, Boolean value2) {
+            addCriterion("need_save between", value1, value2, "needSave");
+            return (Criteria) this;
+        }
+
+        public Criteria andNeedSaveNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("need_save not between", value1, value2, "needSave");
+            return (Criteria) this;
+        }
+
         public Criteria andLengthIsNull() {
             addCriterion("`length` is null");
             return (Criteria) this;

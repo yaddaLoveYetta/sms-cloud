@@ -8,6 +8,7 @@ import com.kingdee.hrp.sms.common.pojo.Sorts;
 import com.kingdee.hrp.sms.common.service.ITemplateService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
@@ -59,27 +60,36 @@ public class TemplateController {
     /**
      * 通过模板获取业务数据
      *
-     * @param classId    业务类型
-     * @param conditions 过滤条件（json结构化数据）
-     * @param sorts      排序条件（json结构化数据）
-     * @param pageSize   分页大小
-     * @param pageNo     当前页码
+     * @param classId   业务类型
+     * @param condition 过滤条件（json结构化数据）
+     * @param sort      排序条件（json结构化数据）
+     * @param pageSize  分页大小
+     * @param pageNo    当前页码
      */
-
-
     @RequestMapping(value = "getItems")
     @ResponseBody
-    public Map<String, Object> getItems(Integer classId, String conditions, Sorts sorts, Integer pageSize, Integer pageNo) throws IOException {
+    public Map<String, Object> getItems(@RequestParam(defaultValue = "0") Integer classId, String condition, String sort, @RequestParam(defaultValue = "10") Integer pageSize, @RequestParam(defaultValue = "1") Integer pageNo) throws IOException {
 
 
         if (classId < 0) {
             throw new BusinessLogicRunTimeException("参数错误：必须提交classId");
         }
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        JavaType javaType = objectMapper.getTypeFactory().constructParametricType(List.class, Condition.class);
-        List<Condition> list = objectMapper.readValue(conditions, javaType);
+        List<Condition> conditions = null;
+        List<Sorts> sorts = null;
 
+        // 包装查询条件-方便操作
+        if (null != condition && !condition.equals("")) {
+            ObjectMapper objectMapper = new ObjectMapper();
+            JavaType javaType = objectMapper.getTypeFactory().constructParametricType(List.class, Condition.class);
+            conditions = objectMapper.readValue(condition, javaType);
+        }
+        // 包装查询结果排序-方便操作
+        if (null != sort && !sort.equals("")) {
+            ObjectMapper objectMapper = new ObjectMapper();
+            JavaType javaType = objectMapper.getTypeFactory().constructParametricType(List.class, Sorts.class);
+            sorts = objectMapper.readValue(sort, javaType);
+        }
 
         return templateService.getItems(classId, conditions, sorts, pageSize, pageNo);
 

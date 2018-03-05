@@ -3,9 +3,8 @@ package com.kingdee.hrp.sms.common.dao.generate;
 import com.kingdee.hrp.sms.common.model.FormClassEntry;
 import com.kingdee.hrp.sms.common.model.FormClassEntryExample;
 import com.kingdee.hrp.sms.common.model.FormClassEntryKey;
-import org.apache.ibatis.annotations.Param;
-
 import java.util.List;
+import org.apache.ibatis.annotations.Param;
 
 public interface FormClassEntryMapper {
     long countByExample(FormClassEntryExample example);

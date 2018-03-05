@@ -45,6 +45,8 @@ public class FormFields extends FormFieldsKey {
 
     private Integer mustInput;
 
+    private Boolean needSave;
+
     private Integer length;
 
     private Integer lock;
@@ -227,6 +229,14 @@ public class FormFields extends FormFieldsKey {
 
     public void setMustInput(Integer mustInput) {
         this.mustInput = mustInput;
+    }
+
+    public Boolean getNeedSave() {
+        return needSave;
+    }
+
+    public void setNeedSave(Boolean needSave) {
+        this.needSave = needSave;
     }
 
     public Integer getLength() {

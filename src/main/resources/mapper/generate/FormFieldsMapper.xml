@@ -26,6 +26,7 @@
     <result column="max_value" jdbcType="DOUBLE" property="maxValue" />
     <result column="min_value" jdbcType="DOUBLE" property="minValue" />
     <result column="must_input" jdbcType="INTEGER" property="mustInput" />
+    <result column="need_save" jdbcType="BIT" property="needSave" />
     <result column="length" jdbcType="INTEGER" property="length" />
     <result column="lock" jdbcType="INTEGER" property="lock" />
     <result column="is_condition" jdbcType="INTEGER" property="isCondition" />
@@ -93,7 +94,7 @@
     class_id, `key`, page, `name`, sql_column_name, data_type, ctrl_type, ctrl_index, 
     `index`, display, show_width, look_up_type, look_up_class_id, src_table, src_table_alis, 
     src_field, display_field, display_ext, join_type, `filter`, default_value, max_value, 
-    min_value, must_input, `length`, `lock`, is_condition, is_count
+    min_value, must_input, need_save, `length`, `lock`, is_condition, is_count
   </sql>
   <select id="selectByExample" parameterType="com.kingdee.hrp.sms.common.model.FormFieldsExample" resultMap="BaseResultMap">
     select
@@ -136,8 +137,8 @@
       src_field, display_field, display_ext, 
       join_type, `filter`, default_value, 
       max_value, min_value, must_input, 
-      `length`, `lock`, is_condition, 
-      is_count)
+      need_save, `length`, `lock`, 
+      is_condition, is_count)
     values (#{classId,jdbcType=INTEGER}, #{key,jdbcType=VARCHAR}, #{page,jdbcType=INTEGER}, 
       #{name,jdbcType=VARCHAR}, #{sqlColumnName,jdbcType=VARCHAR}, #{dataType,jdbcType=INTEGER}, 
       #{ctrlType,jdbcType=INTEGER}, #{ctrlIndex,jdbcType=INTEGER}, #{index,jdbcType=INTEGER}, 
@@ -146,8 +147,8 @@
       #{srcField,jdbcType=VARCHAR}, #{displayField,jdbcType=VARCHAR}, #{displayExt,jdbcType=VARCHAR}, 
       #{joinType,jdbcType=VARCHAR}, #{filter,jdbcType=VARCHAR}, #{defaultValue,jdbcType=VARCHAR}, 
       #{maxValue,jdbcType=DOUBLE}, #{minValue,jdbcType=DOUBLE}, #{mustInput,jdbcType=INTEGER}, 
-      #{length,jdbcType=INTEGER}, #{lock,jdbcType=INTEGER}, #{isCondition,jdbcType=INTEGER}, 
-      #{isCount,jdbcType=INTEGER})
+      #{needSave,jdbcType=BIT}, #{length,jdbcType=INTEGER}, #{lock,jdbcType=INTEGER}, 
+      #{isCondition,jdbcType=INTEGER}, #{isCount,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.kingdee.hrp.sms.common.model.FormFields">
     insert into t_form_fields
@@ -223,6 +224,9 @@
       </if>
       <if test="mustInput != null">
         must_input,
+      </if>
+      <if test="needSave != null">
+        need_save,
       </if>
       <if test="length != null">
         `length`,
@@ -309,6 +313,9 @@
       </if>
       <if test="mustInput != null">
         #{mustInput,jdbcType=INTEGER},
+      </if>
+      <if test="needSave != null">
+        #{needSave,jdbcType=BIT},
       </if>
       <if test="length != null">
         #{length,jdbcType=INTEGER},
@@ -405,6 +412,9 @@
       <if test="record.mustInput != null">
         must_input = #{record.mustInput,jdbcType=INTEGER},
       </if>
+      <if test="record.needSave != null">
+        need_save = #{record.needSave,jdbcType=BIT},
+      </if>
       <if test="record.length != null">
         `length` = #{record.length,jdbcType=INTEGER},
       </if>
@@ -448,6 +458,7 @@
       max_value = #{record.maxValue,jdbcType=DOUBLE},
       min_value = #{record.minValue,jdbcType=DOUBLE},
       must_input = #{record.mustInput,jdbcType=INTEGER},
+      need_save = #{record.needSave,jdbcType=BIT},
       `length` = #{record.length,jdbcType=INTEGER},
       `lock` = #{record.lock,jdbcType=INTEGER},
       is_condition = #{record.isCondition,jdbcType=INTEGER},
@@ -525,6 +536,9 @@
       <if test="mustInput != null">
         must_input = #{mustInput,jdbcType=INTEGER},
       </if>
+      <if test="needSave != null">
+        need_save = #{needSave,jdbcType=BIT},
+      </if>
       <if test="length != null">
         `length` = #{length,jdbcType=INTEGER},
       </if>
@@ -565,6 +579,7 @@
       max_value = #{maxValue,jdbcType=DOUBLE},
       min_value = #{minValue,jdbcType=DOUBLE},
       must_input = #{mustInput,jdbcType=INTEGER},
+      need_save = #{needSave,jdbcType=BIT},
       `length` = #{length,jdbcType=INTEGER},
       `lock` = #{lock,jdbcType=INTEGER},
       is_condition = #{isCondition,jdbcType=INTEGER},
