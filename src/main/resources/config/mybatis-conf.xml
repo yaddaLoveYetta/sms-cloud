@@ -69,6 +69,7 @@
         <!-- =============================== 生成工具生成Mapper ========================begin=== -->
 
         <mapper resource="mapper/generate/UserMapper.xml"/>
+        <mapper resource="mapper/generate/UserEntryMapper.xml"/>
         <mapper resource="mapper/generate/RoleMapper.xml"/>
         <mapper resource="mapper/generate/RoleTypeMapper.xml"/>
         <mapper resource="mapper/generate/MenuMapper.xml"/>

@@ -118,7 +118,7 @@
             console.log(user);
 
             var url, classId;
-            var roleType = user.role.type;
+            var roleType = user.roles && user.roles[0] && user.roles[0]['type'];
 
             if (roleType === 1) {
                 // 系统管理员-暂时没有资料维护
@@ -138,7 +138,7 @@
                 name: '信息维护',
                 url: url,
                 query: {
-                    'roleType': user.role.type,
+                    'roleType': roleType,
                     'user': user.id,
                     'operate': 0   // 0：查看 1：新增 2：修改
                 }

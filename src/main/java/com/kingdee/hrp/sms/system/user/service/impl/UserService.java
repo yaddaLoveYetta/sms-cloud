@@ -1,18 +1,17 @@
 package com.kingdee.hrp.sms.system.user.service.impl;
 
 import com.kingdee.hrp.sms.common.dao.generate.RoleMapper;
+import com.kingdee.hrp.sms.common.dao.generate.UserEntryMapper;
 import com.kingdee.hrp.sms.common.dao.generate.UserMapper;
 import com.kingdee.hrp.sms.common.exception.BusinessLogicRunTimeException;
-import com.kingdee.hrp.sms.common.model.Role;
-import com.kingdee.hrp.sms.common.model.User;
-import com.kingdee.hrp.sms.common.model.UserExample;
+import com.kingdee.hrp.sms.common.model.*;
 import com.kingdee.hrp.sms.common.service.BaseService;
 import com.kingdee.hrp.sms.system.user.service.IUserService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import java.util.*;
 
 /**
  * Date: 2018/2/6 0006
@@ -96,15 +95,30 @@ public class UserService extends BaseService implements IUserService {
     /**
      * 获取用户的角色
      *
-     * @param roleId
+     * @param userId
      * @return
      */
     @Override
-    public Role getUserRole(Long roleId) {
+    public List<Role> getUserRole(Long userId) {
+
+        UserEntryMapper userEntryMapper = sqlSession.getMapper(UserEntryMapper.class);
+        UserEntryExample userEntryExample = new UserEntryExample();
+        UserEntryExample.Criteria criteria = userEntryExample.createCriteria();
+        criteria.andParentEqualTo(userId);
+        // 用户子表记录
+        List<UserEntry> userEntries = userEntryMapper.selectByExample(userEntryExample);
+        List<Long> userRoleIds = new ArrayList<Long>();
+        for (UserEntry userEntry : userEntries) {
+            userRoleIds.add(userEntry.getRole());
+        }
 
         RoleMapper roleMapper = sqlSession.getMapper(RoleMapper.class);
+        RoleExample roleExample = new RoleExample();
+        RoleExample.Criteria roleExampleCriteria = roleExample.createCriteria();
+        roleExampleCriteria.andIdIn(userRoleIds);
 
-        return roleMapper.selectByPrimaryKey(roleId);
+
+        return roleMapper.selectByExample(roleExample);
     }
 
     @Override

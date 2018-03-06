@@ -44,10 +44,18 @@ public interface ITemplateService {
      * @param classId 业务类型
      * @param id      单据内码
      * @param orderBy 排序结构(json 结构化数据) 查询单据时，单据分录需要排序
+     * @return 一个单据数据
      */
-
     Map<String, Object> getItemById(Integer classId, Long id, String orderBy);
 
+    /**
+     * 通过内码集合获取多个业务类型数据
+     * @param classId 业务类型
+     * @param ids 单据内码集合
+     * @param sorts 排序结构
+     * @return 单据集合
+     */
+    List<Map<String, Object>> getItemByIds(Integer classId, List<Long> ids, List<Sort> sorts);
     /**
      * 新增数据
      *

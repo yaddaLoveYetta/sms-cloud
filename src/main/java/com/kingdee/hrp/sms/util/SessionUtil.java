@@ -6,6 +6,7 @@ import com.kingdee.hrp.sms.common.model.Role;
 import com.kingdee.hrp.sms.common.model.User;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -32,7 +33,7 @@ public final class SessionUtil {
         Map<String, Object> map = LOCAL.get();
 
         if (map == null) {
-            map = new HashMap<String, Object>();
+            map = new HashMap<String, Object>(16);
             LOCAL.set(map);
         }
 
@@ -111,21 +112,42 @@ public final class SessionUtil {
     }
 
     /**
-     * 获取当前线程用户角色
+     * 获取当前线程用户角色列表
+     * 一个用户可能有多个角色
      *
      * @return Long
      * @Title getUserRole
      * @date 2017-05-30 01:04:05 星期二
      */
-    public static Role getUserRole() {
+    public static List<Role> getUserRole() {
 
-        Object object = get("role");
+        Object object = get("roles");
 
         if (null == object) {
             throw new SessionLostRuntimeException("用户未登录，请重新登录！");
         }
 
-        return (Role) object;
+        return (List<Role>) object;
+
+    }
+
+    /**
+     * 获取当前线程用户角色类别
+     * 一个用户可能有多个角色，但多个角色都对应同一个类别(1: 系统角色 2: 医院角色 3: 供应商角色)
+     * 且归属于同一家供应商/医院
+     *
+     * @return 用户角色类别
+     */
+    public static Integer getUserRoleType() {
+
+        Object object = get("roles");
+
+        if (null == object) {
+            throw new SessionLostRuntimeException("用户未登录，请重新登录！");
+        }
+        List<Role> roles = (List<Role>) object;
+
+        return roles.get(0).getType();
 
     }
 
@@ -140,10 +162,10 @@ public final class SessionUtil {
      */
     public static Long getUserLinkSupplier() {
         // 1: 系统角色 2: 医院角色 3: 供应商角色
-        if (getUserRole().getType() != 3) {
+        if (getUserRoleType() != 3) {
             return -1L;
         }
-        return getUserRole().getOrg();
+        return getUserRole().get(0).getOrg();
     }
 
     /**
@@ -157,10 +179,10 @@ public final class SessionUtil {
      */
     public static Long getUserLinkHospital() {
         // 1: 系统角色 2: 医院角色 3: 供应商角色
-        if (getUserRole().getType() != 2) {
+        if (getUserRoleType() != 2) {
             return -1L;
         }
-        return getUserRole().getOrg();
+        return getUserRole().get(0).getOrg();
     }
 
     /**

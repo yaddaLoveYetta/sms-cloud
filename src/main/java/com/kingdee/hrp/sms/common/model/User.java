@@ -13,8 +13,6 @@ public class User extends RootModel {
 
     private String mobile;
 
-    private Long role;
-
     private Boolean isAdmin;
 
     private Long org;
@@ -57,14 +55,6 @@ public class User extends RootModel {
 
     public void setMobile(String mobile) {
         this.mobile = mobile == null ? null : mobile.trim();
-    }
-
-    public Long getRole() {
-        return role;
-    }
-
-    public void setRole(Long role) {
-        this.role = role;
     }
 
     public Boolean getIsAdmin() {

@@ -9,12 +9,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -68,19 +68,20 @@ public class UserController {
 
         if (null != user) {
 
-            Role role = userService.getUserRole(user.getRole());
+            // 一个用户可以对应多个角色
+            List<Role> roles = userService.getUserRole(user.getId());
 
             try {
                 ret = Common.beanToMap(user);
                 // 用户角色信息返回给客户端
-                ret.put("role", role);
+                ret.put("roles", roles);
             } catch (Exception e) {
                 throw new BusinessLogicRunTimeException(e);
             }
 
             // 将用户及用户角色信息放到session中
             request.getSession().setAttribute("user", user);
-            request.getSession().setAttribute("role", role);
+            request.getSession().setAttribute("roles", roles);
 
             return ret;
         }
@@ -103,6 +104,7 @@ public class UserController {
 
     /**
      * 用户修改密码
+     *
      * @param userId 用户ID
      * @param oldpwd 原密码
      * @param newpwd 新密码
@@ -110,7 +112,7 @@ public class UserController {
      */
     @RequestMapping("/editpwd")
     @ResponseBody
-    public Boolean editpwd(Long userId,String oldpwd,String newpwd){
+    public Boolean editpwd(Long userId, String oldpwd, String newpwd) {
 
         if (userService.editpwd(userId, oldpwd, newpwd)) {
             logger.info("密码修改成功");

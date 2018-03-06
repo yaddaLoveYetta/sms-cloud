@@ -444,66 +444,6 @@ public class UserExample {
             return (Criteria) this;
         }
 
-        public Criteria andRoleIsNull() {
-            addCriterion("`role` is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andRoleIsNotNull() {
-            addCriterion("`role` is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andRoleEqualTo(Long value) {
-            addCriterion("`role` =", value, "role");
-            return (Criteria) this;
-        }
-
-        public Criteria andRoleNotEqualTo(Long value) {
-            addCriterion("`role` <>", value, "role");
-            return (Criteria) this;
-        }
-
-        public Criteria andRoleGreaterThan(Long value) {
-            addCriterion("`role` >", value, "role");
-            return (Criteria) this;
-        }
-
-        public Criteria andRoleGreaterThanOrEqualTo(Long value) {
-            addCriterion("`role` >=", value, "role");
-            return (Criteria) this;
-        }
-
-        public Criteria andRoleLessThan(Long value) {
-            addCriterion("`role` <", value, "role");
-            return (Criteria) this;
-        }
-
-        public Criteria andRoleLessThanOrEqualTo(Long value) {
-            addCriterion("`role` <=", value, "role");
-            return (Criteria) this;
-        }
-
-        public Criteria andRoleIn(List<Long> values) {
-            addCriterion("`role` in", values, "role");
-            return (Criteria) this;
-        }
-
-        public Criteria andRoleNotIn(List<Long> values) {
-            addCriterion("`role` not in", values, "role");
-            return (Criteria) this;
-        }
-
-        public Criteria andRoleBetween(Long value1, Long value2) {
-            addCriterion("`role` between", value1, value2, "role");
-            return (Criteria) this;
-        }
-
-        public Criteria andRoleNotBetween(Long value1, Long value2) {
-            addCriterion("`role` not between", value1, value2, "role");
-            return (Criteria) this;
-        }
-
         public Criteria andIsAdminIsNull() {
             addCriterion("is_admin is null");
             return (Criteria) this;

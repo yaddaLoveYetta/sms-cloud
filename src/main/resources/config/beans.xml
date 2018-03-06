@@ -5,12 +5,13 @@
 	http://www.springframework.org/schema/beans/spring-beans.xsd">
 
     <!-- 异常处理器 -->
-    <!--    <bean class="com.kingdee.eas.hrp.sms.exception.SmsHandlerExceptionResolver"/>
+    <!--
+      <bean class="com.kingdee.hrp.sms.common.exception.SMSHandlerExceptionResolver"/>
 
-        <bean id="apiHandler" class="com.yadda.api.core.ApiHandler">
-            <property name="tokenService" ref="defaultTokenServiceImpl"/>
-            <property name="tokenHandler" ref="defaultTokenServiceImpl"/>
-        </bean>-->
+           <bean id="apiHandler" class="com.yadda.api.core.ApiHandler">
+               <property name="tokenService" ref="defaultTokenServiceImpl"/>
+               <property name="tokenHandler" ref="defaultTokenServiceImpl"/>
+           </bean>-->
 
     <bean id="customerObjectMapper" class="com.kingdee.hrp.sms.common.CustomerObjectMapper"/>
 
@@ -22,7 +23,6 @@
             </list>
         </property>
     </bean>
-
 </beans>
 
 

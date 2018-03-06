@@ -65,30 +65,6 @@
 
         </javaClientGenerator>
 
-        <table tableName="t_menu" domainObjectName="Menu">
-
-            <property name="useActualColumnNames" value="false"/>
-            <!--Dao 继承接口-->
-            <!-- <property name="rootInterface" value="java.io.Serializable"/>-->
-            <!--java Model继承类-->
-            <property name="rootClass" value="com.kingdee.hrp.sms.common.RootModel"/>
-
-        </table>
-
-        <table tableName="t_user" domainObjectName="User">
-            <property name="useActualColumnNames" value="false"/>
-            <property name="rootClass" value="com.kingdee.hrp.sms.common.RootModel"/>
-        </table>
-
-        <table tableName="t_role" domainObjectName="Role">
-            <property name="useActualColumnNames" value="false"/>
-            <property name="rootClass" value="com.kingdee.hrp.sms.common.RootModel"/>
-        </table>
-
-        <table tableName="t_role_type" domainObjectName="RoleType">
-            <property name="useActualColumnNames" value="false"/>
-            <property name="rootClass" value="com.kingdee.hrp.sms.common.RootModel"/>
-        </table>
 
         <table tableName="t_form_class" domainObjectName="FormClass">
             <property name="useActualColumnNames" value="false"/>
@@ -106,6 +82,36 @@
         </table>
 
         <table tableName="t_form_action" domainObjectName="FormAction">
+            <property name="useActualColumnNames" value="false"/>
+            <property name="rootClass" value="com.kingdee.hrp.sms.common.RootModel"/>
+        </table>
+
+        <table tableName="t_menu" domainObjectName="Menu">
+
+            <property name="useActualColumnNames" value="false"/>
+            <!--Dao 继承接口-->
+            <!-- <property name="rootInterface" value="java.io.Serializable"/>-->
+            <!--java Model继承类-->
+            <property name="rootClass" value="com.kingdee.hrp.sms.common.RootModel"/>
+
+        </table>
+
+        <table tableName="t_user" domainObjectName="User">
+            <property name="useActualColumnNames" value="false"/>
+            <property name="rootClass" value="com.kingdee.hrp.sms.common.RootModel"/>
+        </table>
+
+        <table tableName="t_user_entry" domainObjectName="UserEntry">
+            <property name="useActualColumnNames" value="false"/>
+            <property name="rootClass" value="com.kingdee.hrp.sms.common.RootModel"/>
+        </table>
+
+        <table tableName="t_role" domainObjectName="Role">
+            <property name="useActualColumnNames" value="false"/>
+            <property name="rootClass" value="com.kingdee.hrp.sms.common.RootModel"/>
+        </table>
+
+        <table tableName="t_role_type" domainObjectName="RoleType">
             <property name="useActualColumnNames" value="false"/>
             <property name="rootClass" value="com.kingdee.hrp.sms.common.RootModel"/>
         </table>

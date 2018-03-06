@@ -1,14 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.kingdee.hrp.sms.common.dao.generate.UserMapper">
-  <resultMap id="BaseResultMap" type="com.kingdee.hrp.sms.common.model.User">
+<mapper namespace="com.kingdee.hrp.sms.common.dao.generate.UserEntryMapper">
+  <resultMap id="BaseResultMap" type="com.kingdee.hrp.sms.common.model.UserEntry">
     <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="name" jdbcType="VARCHAR" property="name" />
-    <result column="user_name" jdbcType="VARCHAR" property="userName" />
-    <result column="password" jdbcType="VARCHAR" property="password" />
-    <result column="mobile" jdbcType="VARCHAR" property="mobile" />
-    <result column="is_admin" jdbcType="BIT" property="isAdmin" />
-    <result column="org" jdbcType="BIGINT" property="org" />
+    <result column="parent" jdbcType="BIGINT" property="parent" />
+    <result column="role" jdbcType="BIGINT" property="role" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -69,15 +65,15 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, `name`, user_name, `password`, mobile, is_admin, org
+    id, parent, `role`
   </sql>
-  <select id="selectByExample" parameterType="com.kingdee.hrp.sms.common.model.UserExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="com.kingdee.hrp.sms.common.model.UserEntryExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from t_user
+    from t_user_entry
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -88,105 +84,67 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from t_user
+    from t_user_entry
     where id = #{id,jdbcType=BIGINT}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    delete from t_user
+    delete from t_user_entry
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <delete id="deleteByExample" parameterType="com.kingdee.hrp.sms.common.model.UserExample">
-    delete from t_user
+  <delete id="deleteByExample" parameterType="com.kingdee.hrp.sms.common.model.UserEntryExample">
+    delete from t_user_entry
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.kingdee.hrp.sms.common.model.User">
-    insert into t_user (id, `name`, user_name, 
-      `password`, mobile, is_admin, 
-      org)
-    values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, 
-      #{password,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, #{isAdmin,jdbcType=BIT}, 
-      #{org,jdbcType=BIGINT})
+  <insert id="insert" parameterType="com.kingdee.hrp.sms.common.model.UserEntry">
+    insert into t_user_entry (id, parent, `role`
+      )
+    values (#{id,jdbcType=BIGINT}, #{parent,jdbcType=BIGINT}, #{role,jdbcType=BIGINT}
+      )
   </insert>
-  <insert id="insertSelective" parameterType="com.kingdee.hrp.sms.common.model.User">
-    insert into t_user
+  <insert id="insertSelective" parameterType="com.kingdee.hrp.sms.common.model.UserEntry">
+    insert into t_user_entry
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         id,
       </if>
-      <if test="name != null">
-        `name`,
+      <if test="parent != null">
+        parent,
       </if>
-      <if test="userName != null">
-        user_name,
-      </if>
-      <if test="password != null">
-        `password`,
-      </if>
-      <if test="mobile != null">
-        mobile,
-      </if>
-      <if test="isAdmin != null">
-        is_admin,
-      </if>
-      <if test="org != null">
-        org,
+      <if test="role != null">
+        `role`,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
         #{id,jdbcType=BIGINT},
       </if>
-      <if test="name != null">
-        #{name,jdbcType=VARCHAR},
+      <if test="parent != null">
+        #{parent,jdbcType=BIGINT},
       </if>
-      <if test="userName != null">
-        #{userName,jdbcType=VARCHAR},
-      </if>
-      <if test="password != null">
-        #{password,jdbcType=VARCHAR},
-      </if>
-      <if test="mobile != null">
-        #{mobile,jdbcType=VARCHAR},
-      </if>
-      <if test="isAdmin != null">
-        #{isAdmin,jdbcType=BIT},
-      </if>
-      <if test="org != null">
-        #{org,jdbcType=BIGINT},
+      <if test="role != null">
+        #{role,jdbcType=BIGINT},
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.kingdee.hrp.sms.common.model.UserExample" resultType="java.lang.Long">
-    select count(*) from t_user
+  <select id="countByExample" parameterType="com.kingdee.hrp.sms.common.model.UserEntryExample" resultType="java.lang.Long">
+    select count(*) from t_user_entry
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
-    update t_user
+    update t_user_entry
     <set>
       <if test="record.id != null">
         id = #{record.id,jdbcType=BIGINT},
       </if>
-      <if test="record.name != null">
-        `name` = #{record.name,jdbcType=VARCHAR},
+      <if test="record.parent != null">
+        parent = #{record.parent,jdbcType=BIGINT},
       </if>
-      <if test="record.userName != null">
-        user_name = #{record.userName,jdbcType=VARCHAR},
-      </if>
-      <if test="record.password != null">
-        `password` = #{record.password,jdbcType=VARCHAR},
-      </if>
-      <if test="record.mobile != null">
-        mobile = #{record.mobile,jdbcType=VARCHAR},
-      </if>
-      <if test="record.isAdmin != null">
-        is_admin = #{record.isAdmin,jdbcType=BIT},
-      </if>
-      <if test="record.org != null">
-        org = #{record.org,jdbcType=BIGINT},
+      <if test="record.role != null">
+        `role` = #{record.role,jdbcType=BIGINT},
       </if>
     </set>
     <if test="_parameter != null">
@@ -194,50 +152,30 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map">
-    update t_user
+    update t_user_entry
     set id = #{record.id,jdbcType=BIGINT},
-      `name` = #{record.name,jdbcType=VARCHAR},
-      user_name = #{record.userName,jdbcType=VARCHAR},
-      `password` = #{record.password,jdbcType=VARCHAR},
-      mobile = #{record.mobile,jdbcType=VARCHAR},
-      is_admin = #{record.isAdmin,jdbcType=BIT},
-      org = #{record.org,jdbcType=BIGINT}
+      parent = #{record.parent,jdbcType=BIGINT},
+      `role` = #{record.role,jdbcType=BIGINT}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.kingdee.hrp.sms.common.model.User">
-    update t_user
+  <update id="updateByPrimaryKeySelective" parameterType="com.kingdee.hrp.sms.common.model.UserEntry">
+    update t_user_entry
     <set>
-      <if test="name != null">
-        `name` = #{name,jdbcType=VARCHAR},
+      <if test="parent != null">
+        parent = #{parent,jdbcType=BIGINT},
       </if>
-      <if test="userName != null">
-        user_name = #{userName,jdbcType=VARCHAR},
-      </if>
-      <if test="password != null">
-        `password` = #{password,jdbcType=VARCHAR},
-      </if>
-      <if test="mobile != null">
-        mobile = #{mobile,jdbcType=VARCHAR},
-      </if>
-      <if test="isAdmin != null">
-        is_admin = #{isAdmin,jdbcType=BIT},
-      </if>
-      <if test="org != null">
-        org = #{org,jdbcType=BIGINT},
+      <if test="role != null">
+        `role` = #{role,jdbcType=BIGINT},
       </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.kingdee.hrp.sms.common.model.User">
-    update t_user
-    set `name` = #{name,jdbcType=VARCHAR},
-      user_name = #{userName,jdbcType=VARCHAR},
-      `password` = #{password,jdbcType=VARCHAR},
-      mobile = #{mobile,jdbcType=VARCHAR},
-      is_admin = #{isAdmin,jdbcType=BIT},
-      org = #{org,jdbcType=BIGINT}
+  <update id="updateByPrimaryKey" parameterType="com.kingdee.hrp.sms.common.model.UserEntry">
+    update t_user_entry
+    set parent = #{parent,jdbcType=BIGINT},
+      `role` = #{role,jdbcType=BIGINT}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

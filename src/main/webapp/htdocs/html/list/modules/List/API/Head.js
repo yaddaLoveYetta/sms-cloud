@@ -12,14 +12,21 @@ define('List/API/Head', function (require, module, exports) {
 
     var cache = null;
     var headItems = [];
+    // 字段显示权限-后端disPlay定义:系统用户显示||医院用户显示||供应商用户显示
     var display;
-    // 字段显示权限-后端FDisPlay定义 1：平台用户显示，2：物业用户显示：3：平台物业用户都显示
-    if (user.type == 'QpXq24FxxE6c3lvHMPyYCxACEAI=') {
+
+
+    var roleType = user.roles && user.roles[0] && user.roles[0]['type'];
+
+    if (roleType === 1) {
         // 平台用户
-        display = 1; // 00 -- 01 --10 --11
-    } else if (user.type == 'B3sMo22ZLkWApjO/oEeDOxACEAI=') {
-        // 物业用户
-        display = 2; // 10
+        display = 1;
+    } else if (roleType === 2) {
+        // 供应商用户
+        display = 8;
+    } else if (roleType === 3) {
+        // 医院用户
+        display = 64;
     } else {
         display = 0;
     }

@@ -4,6 +4,7 @@ import com.kingdee.hrp.sms.common.model.Role;
 import com.kingdee.hrp.sms.common.model.User;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * @author yadda<silenceisok@163.com>
@@ -30,13 +31,14 @@ public interface IUserService extends Serializable {
     /**
      * 获取用户的角色
      *
-     * @param roleId
+     * @param userId
      * @return
      */
-    Role getUserRole(Long roleId);
+    List<Role> getUserRole(Long userId);
 
     /**
      * 用户修改密码
+     *
      * @param userId 用户ID
      * @param oldpwd 原密码
      * @param newpwd 新密码

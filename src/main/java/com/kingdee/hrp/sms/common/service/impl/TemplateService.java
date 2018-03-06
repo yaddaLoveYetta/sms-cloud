@@ -16,6 +16,7 @@ import com.kingdee.hrp.sms.common.service.BaseService;
 import com.kingdee.hrp.sms.common.service.ITemplateService;
 import com.kingdee.hrp.sms.util.Common;
 import com.kingdee.hrp.sms.util.SessionUtil;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -278,18 +279,17 @@ public class TemplateService extends BaseService implements ITemplateService {
         // 存在子表的查询需要进行第二次查询，获取真实数据字段
         if (isChildTableExist) {
 
-            List<String> idList = new ArrayList<>();
+            List<Long> idList = new ArrayList<>();
 
             // 获取本次查询的主表内码集合
             for (Map<String, Object> item : data) {
-                idList.add("'" + item.get("id").toString() + "'");
+                idList.add((Long) item.get("id"));
             }
 
             List<Map<String, Object>> itemByIds = new ArrayList<>();
 
             if (idList.size() > 0) {
-                //TODO
-                //itemByIds = getItemByIds(classId, idList, orderByStr);
+                itemByIds = getItemByIds(classId, idList, sorts);
             }
 
             ret.put("list", itemByIds);
@@ -301,70 +301,9 @@ public class TemplateService extends BaseService implements ITemplateService {
         List<Map<String, Object>> returnList = new ArrayList<Map<String, Object>>();
 
         // 将记录转换成返回接口的格式，将主表关联多行子表记录时，子表记录整合到返回结构"entry"中
-        for (Map<String, Object> item : data) {
 
-            // 循环每一行
-
-            // 主表所有字段
-            Map<String, Object> head = new HashMap<String, Object>();
-            // 所有子表entry
-            Map<String, Object> entries = new HashMap<String, Object>();
-
-            // 第一个子表所有行
-            List<Map<String, Object>> formEntryRows = new ArrayList<Map<String, Object>>();
-            // 子表每一行的元素
-            Map<String, Object> formEntryRow = new HashMap<String, Object>();
-
-            for (Iterator<Map.Entry<String, Object>> it = item.entrySet().iterator(); it.hasNext(); ) {
-                // 循环行中的列
-                Map.Entry<String, Object> column = it.next();
-
-                String cName = column.getKey();
-                Object cValue = column.getValue();
-
-                // 真实的模板key
-                String cNameTrueKey = cName;
-
-                if (cName.contains("_")) {
-                    // 关联查询字段时携带的_DspName,_NmbName等模板之外的key
-                    cNameTrueKey = cName.substring(0, cName.indexOf("_"));
-                }
-
-                if (formFields0.containsKey(cNameTrueKey)) {
-
-                    // 关联查询字段时携带的_DspName,_NmbName等模板之外的key
-                    head.put(cName, item.get(cName));
-
-                } else if (isChildTableExist && formFields1.containsKey(cNameTrueKey)) {
-
-                    // 关联查询字段时携带的_DspName,_NmbName等模板之外的key
-                    formEntryRow.put(cName, item.get(cName));
-
-                }
-            }
-
-            if (isChildTableExist) {
-                // 这里formEntryRows也就一行，为了构造{[]}的结构
-                formEntryRows.add(formEntryRow);
-                // 第一个子表数据
-                entries.put("1", formEntryRows);
-            }
-
-            // 将子表已关键字"entry"作为key插入到formClass中
-            head.put("entry", entries);
-
-            Map<String, Object> keyInList = isKeyInList(returnList, primaryKey, head.get(primaryKey));
-
-            if (keyInList != null) {
-                // 已存在该条记录，增加子表行
-                ((List<Map<String, Object>>) ((Map<String, Object>) keyInList.get("entry")).get("1")).add(formEntryRow);
-            } else {
-                // 不存在该行记录，新增行
-                returnList.add(head);
-            }
-        }
-
-        ret.put("list", returnList);
+        // ret.put("list", returnList);
+        ret.put("list", data);
 
         return ret;
 
@@ -380,6 +319,148 @@ public class TemplateService extends BaseService implements ITemplateService {
     @Override
     public Map<String, Object> getItemById(Integer classId, Long id, String orderBy) {
         return null;
+    }
+
+    @Override
+    public List<Map<String, Object>> getItemByIds(Integer classId, List<Long> idList, List<Sort> sorts) {
+
+        if (idList == null || idList.size() == 0) {
+            throw new BusinessLogicRunTimeException("请提交单据内码");
+        }
+        String ids = StringUtils.join(idList.toArray(), ",");
+
+        // 基础资料模板
+        Map<String, Object> template = getFormTemplate(classId, 1);
+
+        // 主表字段模板
+        Map<String, Object> formFields0 = (Map<String, Object>) ((Map<String, Object>) template.get("formFields")).get("0");
+        // 第一个子表字段模板(如果有)
+        Map<String, Object> formFields1 = new HashMap<String, Object>();
+        // 主表资料描述信息
+        FormClass formClass = (FormClass) template.get("formClass");
+        // 子表资料描述信息
+        Map<String, Object> formEntries = (Map<String, Object>) template.get("formClassEntry");
+
+        if (null == formClass) {
+
+            throw new BusinessLogicRunTimeException("资料模板不存在");
+        }
+
+        // 主表表名
+        String primaryTableName = formClass.getTableName();
+        // 主表主键
+        String primaryKey = formClass.getPrimaryKey();
+        // 指示是否存在子表，存在时主表需要关联第一个子表查询
+        boolean isChildTableExist = false;
+
+        if (!formEntries.isEmpty()) {
+            // 存在关联字表-只关联第一个子表查询
+            isChildTableExist = true;
+            formFields1 = (Map<String, Object>) ((Map<String, Object>) template.get("formFields")).get("1");
+        }
+
+        // 数据库字段-关键字处理
+        Map<String, String> dbDelimiter = getDBDelimiter();
+        String bDelimiter = dbDelimiter.get("bDelimiter");
+        String eDelimiter = dbDelimiter.get("eDelimiter");
+
+        // 动态构建select语句
+
+        // 查询字段
+        String select = "";
+        // 查询表
+        String from = "";
+        // 查询条件
+        String where = "";
+        //String orderBy = orderByStr == null ? "" : orderByStr;
+        String orderBy = "";
+
+        Map<String, Object> statement = getStatement(classId);
+
+        select = (String) statement.get("select");
+        from = (String) statement.get("from");
+
+        // 查询条件
+        StringBuilder sbWhere = new StringBuilder();
+        sbWhere.append("WHERE").append(System.getProperty("line.separator")).append(String.format("%s.%s%s%s IN (%s)", primaryTableName, bDelimiter, primaryKey, eDelimiter, ids));
+        where = sbWhere.toString();
+
+        Map<String, Object> sqlMap = new HashMap<String, Object>();
+        // 完整的sql(带格式化参数)
+        String sql = select.toString() + System.getProperty("line.separator") + from.toString() + System.getProperty("line.separator") + where + System.getProperty("line.separator") + orderBy
+                + System.getProperty("line.separator");
+        sqlMap.put("sql", sql);
+
+        TemplateDaoMapper templateDaoMapper = sqlSession.getMapper(TemplateDaoMapper.class);
+
+        List<Map<String, Object>> data = templateDaoMapper.getItems(sqlMap);
+
+        List<Map<String, Object>> ret = new ArrayList<Map<String, Object>>();
+
+        // 将记录转换成返回接口的格式，将主表关联多行子表记录时，子表记录整合到返回结构"entry"中
+        for (Map<String, Object> item : data) {
+            // 循环每一行
+            Map<String, Object> head = new HashMap<String, Object>();// 主表所有字段
+            Map<String, Object> entries = new HashMap<String, Object>(); // 所有子表entry
+
+            List<Map<String, Object>> formEntryRows = new ArrayList<Map<String, Object>>(); // 第一个子表所有行
+            Map<String, Object> formEntryRow = new HashMap<String, Object>();// 子表每一行的元素
+
+            for (Iterator<Map.Entry<String, Object>> it = item.entrySet().iterator(); it.hasNext(); ) {
+                // 循环行中的列
+                Map.Entry<String, Object> column = it.next();
+
+                String cName = column.getKey();
+                Object cValue = column.getValue();
+                // 真实的模板key
+                String cNameTrueKey = cName;
+
+                if (cName.contains("_")) {
+                    // 关联查询字段时携带的_DspName,_NmbName等模板之外的key
+                    cNameTrueKey = cName.substring(0, cName.indexOf("_"));
+                }
+
+                if (formFields0.containsKey(cNameTrueKey)) {
+                    // formClass即主表字段
+                    // formClass.put(cNameTrueKey, cValue);
+
+                    // if (!cNameTrueKey.equals(cName)) {
+                    // 关联查询字段时携带的_DspName,_NmbName等模板之外的key
+                    head.put(cName, item.get(cName));
+                    // }
+
+                } else if (isChildTableExist && formFields1.containsKey(cNameTrueKey)) {
+                    // formEntries1即第一个子表字段
+                    // formEntryRow.put(cNameTrueKey, cValue);
+
+                    // if (!cNameTrueKey.equals(cName)) {
+                    // 关联查询字段时携带的_DspName,_NmbName等模板之外的key
+                    formEntryRow.put(cName, item.get(cName));
+                    // }
+                }
+            }
+
+            if (isChildTableExist) {
+                // 这里formEntryRows也就一行，为了构造{[]}的结构
+                formEntryRows.add(formEntryRow);
+                // 第一个子表数据
+                entries.put("1", formEntryRows);
+            }
+            // 将子表已关键字"entry"作为key插入到formClass中
+            head.put("entry", entries);
+
+            Map<String, Object> keyInList = isKeyInList(ret, primaryKey, head.get(primaryKey));
+
+            if (keyInList != null) {
+                // 已存在该条记录，增加子表行
+                ((List<Map<String, Object>>) ((Map<String, Object>) keyInList.get("entry")).get("1")).add(formEntryRow);
+            } else {
+                // 不存在该行记录，新增行
+                ret.add(head);
+            }
+        }
+
+        return ret;
     }
 
     /**
@@ -520,9 +601,9 @@ public class TemplateService extends BaseService implements ITemplateService {
             2	医院
             3	供应商
             */
-        Integer userRoleType = SessionUtil.getUserRole().getType();
-        // 供应商用户
-        int displayTypeList = 0;
+        Integer userRoleType = SessionUtil.getUserRoleType();
+
+/*        int displayTypeList = 0;
         int displayTypeAdd = 0;
         int displayTypeEdit = 0;
 
@@ -541,7 +622,7 @@ public class TemplateService extends BaseService implements ITemplateService {
             displayTypeList = 2;
             displayTypeAdd = 8;
             displayTypeEdit = 32;
-        }
+        }*/
 
         for (Iterator<String> iterator = formFieldsAll.keySet().iterator(); iterator.hasNext(); ) {
 
@@ -596,11 +677,11 @@ public class TemplateService extends BaseService implements ITemplateService {
 
                 String srcTableAlis = srcTableAlisAs == null || srcTableAlisAs.equals("") ? srcTable : srcTableAlisAs;
 
-                if (display > 0 && ((display & displayTypeList) != displayTypeList && (display & displayTypeAdd) != displayTypeAdd && (display & displayTypeEdit) != displayTypeEdit)) {
+/*                if (display > 0 && ((display & displayTypeList) != displayTypeList && (display & displayTypeAdd) != displayTypeAdd && (display & displayTypeEdit) != displayTypeEdit)) {
                     // 因为该函数需要兼容列表及编辑时查询，此处权限放开： 具有列表显示OR新增时显示OR编辑时显示的任意权限即可
                     // 当前用户类别无权限查看该字段
                     continue;
-                }
+                }*/
 
                 if (lookUpType != null && (lookUpType == 1 || lookUpType == 2)) {
                     // 基础资料/辅助资料引用类型
