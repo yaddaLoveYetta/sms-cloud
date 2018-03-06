@@ -2,8 +2,9 @@ package com.kingdee.hrp.sms.common.dao.generate;
 
 import com.kingdee.hrp.sms.common.model.UserEntry;
 import com.kingdee.hrp.sms.common.model.UserEntryExample;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface UserEntryMapper {
     long countByExample(UserEntryExample example);
