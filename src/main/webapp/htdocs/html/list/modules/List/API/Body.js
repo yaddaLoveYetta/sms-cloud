@@ -18,7 +18,9 @@ define('List/API/Body', function (require, module, exports) {
     function get(config, fn) {
 
         var conditions = new Array();
+
         for (var item in config.conditions) {
+
             if (config.conditions[item] === '') {
                 continue;
             }
@@ -33,6 +35,7 @@ define('List/API/Body', function (require, module, exports) {
             'pageNo': pageNo,
             'pageSize': config.pageSize,
             'condition': conditions.length > 0 ? conditions : '',
+            'sort': config.sort || ''
         };
 
         api.post(params);
@@ -40,13 +43,7 @@ define('List/API/Body', function (require, module, exports) {
         api.on({
             'success': function (data, json) {
 
-                if (!fields) {
-                    fields = data['fieldShow'];
-                } else {
-                    data['fieldShow'] = fields;
-                }
-
-                console.log('getBody finished');
+                console.log('List/API/Body getBody finished');
                 fn && fn(data, json);
             },
 
@@ -71,6 +68,7 @@ define('List/API/Body', function (require, module, exports) {
         return $.Array.keep(list, function (item, index) { // 行
 
             return {
+                
                 'disabled': item['status'], // 是否禁用
                 'data': item,
                 'primaryValue': item[primaryKey], // 主键对应的值

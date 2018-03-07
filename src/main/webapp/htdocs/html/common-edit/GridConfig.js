@@ -350,7 +350,7 @@ define('GridConfig', function (require, module, exports) {
         var displayKeys = [];
         var display = 0;
         // 用户角色类别
-        var userRoleType = user.role.type;
+        var userRoleType = user.roles && user.roles[0] && user.roles[0]['type'] || -1;
 
         /*        1	查看时对于平台用户显示
                 2	新增时对于平台用户显示
@@ -424,7 +424,7 @@ define('GridConfig', function (require, module, exports) {
         var lock = 0;
 
         // 用户角色类别
-        var userRoleType = user.role.type;
+        var userRoleType = user.roles && user.roles[0] && user.roles[0]['type'] || -1;
 
         if (showType == 0) {
             // 查看时都锁定

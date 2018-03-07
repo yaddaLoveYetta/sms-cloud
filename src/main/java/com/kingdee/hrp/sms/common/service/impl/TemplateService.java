@@ -417,7 +417,7 @@ public class TemplateService extends BaseService implements ITemplateService {
 
                 if (cName.contains("_")) {
                     // 关联查询字段时携带的_DspName,_NmbName等模板之外的key
-                    cNameTrueKey = cName.substring(0, cName.indexOf("_"));
+                    //cNameTrueKey = cName.substring(0, cName.indexOf("_"));
                 }
 
                 if (formFields0.containsKey(cNameTrueKey)) {
@@ -825,8 +825,6 @@ public class TemplateService extends BaseService implements ITemplateService {
             throw new BusinessLogicRunTimeException(String.format("classId=%s 没有模板数据", classId));
         }
 
-        // new ================================================
-
         // 查询的目标表
         String selTable = "";
         // 查询目标模板
@@ -839,9 +837,6 @@ public class TemplateService extends BaseService implements ITemplateService {
             // 子表
             selTable = ((FormClassEntry) formEntries.get(String.valueOf(page))).getTableName();
         }
-
-        // new ================================================
-
 
         StringBuilder sbSelect = new StringBuilder();
         StringBuilder sbFrom = new StringBuilder();
@@ -892,7 +887,7 @@ public class TemplateService extends BaseService implements ITemplateService {
 
             String srcTableAlis = srcTableAlisAs == null || srcTableAlisAs.equals("") ? srcTable : srcTableAlisAs;
 
-            if (lookUpType != null && (lookUpType == 1 || lookUpType == 2)) {
+            if (lookUpType == 1 || lookUpType == 2) {
 
                 // 基础资料/辅助资料引用类型-强制显示关联字段名称
                 sbSelect.append(String.format("%s.%s%s%s AS %s%s%s,", selTable, bDelimiter, sqlColumnName, eDelimiter, bDelimiter, key, eDelimiter)).append(separator);
@@ -912,7 +907,7 @@ public class TemplateService extends BaseService implements ITemplateService {
                     sbFrom.append(" as " + srcTableAlisAs);
                 }
 
-                sbFrom.append(String.format(" ON %s.%s%s%s = %s.%s%s%s ", formFieldLinkedTable, bDelimiter, sqlColumnName, eDelimiter, srcTableAlis, bDelimiter, srcField, eDelimiter))
+                sbFrom.append(String.format(" ON %s.%s%s%s = %s.%s%s%s ", selTable, bDelimiter, sqlColumnName, eDelimiter, srcTableAlis, bDelimiter, srcField, eDelimiter))
                         .append(separator);
 
                 if (filter != null && !filter.trim().equals("")) {
@@ -920,12 +915,11 @@ public class TemplateService extends BaseService implements ITemplateService {
                     sbFrom.append(filter).append(separator);
                 }
 
-            } else if (lookUpType != null && lookUpType == 3) {
+            } else if (lookUpType == 3) {
 
                 // 引用基础资料的附加属性
                 // lookUpType == 3
-                // 即引用基础资料属性的模板中，disPlayField的配置统一认为是被引用基础资料模板中的key，需要二次验证引用资料模板确认查询字段
-
+                // 即引用基础资料属性的模板中，disPlayField的配置统一认为是被引用基础资料模板中的key，需要二次验证引用资料模板确认查询字
                 // 举例：目标，在车辆信息中显示其车辆类别的车辆付费类型
                 // 基础资料车辆信息中引用另一个基础资料车辆类别，还需要显示基础资料车辆类别的另一个属性"车辆付费类型"，而"车辆付费类型"在车辆类别模板中又是辅助资料引用类型，
                 // 此时在车辆信息的模板中配置携带车辆类别基础资料的附属属性"车辆付费类型"的模板时，模板中disPlayField应配置为"车辆类别"模板中"车辆付费类型"的key(payType),
@@ -942,7 +936,7 @@ public class TemplateService extends BaseService implements ITemplateService {
 
                 if (needSave) {
                     // needSave 不需要保存的引用字段关联查询，需要保存的属性值直接查询
-                    sbSelect.append(String.format("%s.%s%s%s AS %s%s%s,", formFieldLinkedTable, bDelimiter, sqlColumnName, eDelimiter, bDelimiter, key, eDelimiter)).append(separator);
+                    sbSelect.append(String.format("%s.%s%s%s AS %s%s%s,", selTable, bDelimiter, sqlColumnName, eDelimiter, bDelimiter, key, eDelimiter)).append(separator);
 
                 } else {
 
@@ -967,23 +961,10 @@ public class TemplateService extends BaseService implements ITemplateService {
 
                 }
 
-            } else if (lookUpType != null && lookUpType == 4) {
+            } else if (lookUpType == 4) {
+
                 // 普通引用-引用其他表数据
-
                 sbSelect.append(String.format("%s.%s%s%s AS %s%s%s,", srcTableAlis, bDelimiter, disPlayField, eDelimiter, bDelimiter, key, eDelimiter)).append(separator);
-
-                // if (dataType != null && dataType == 2) {
-                // // 文本类的关联字段，未防止关联表中无记录，此处取主表字段值-如订单查询CarNo字段取数
-                // sbSelect.append(String.format("%s.%s%s%s AS %s%s%s,",
-                // formFieldLinkedTable, bDelimiter,
-                // sqlColumnName, eDelimiter, bDelimiter, key,
-                // eDelimiter)).append(separator);
-                // } else {
-                // sbSelect.append(String.format("%s.%s%s%s AS %s%s%s,",
-                // srcTableAlis, bDelimiter, disPlayField,
-                // eDelimiter, bDelimiter, key,
-                // eDelimiter)).append(separator);
-                // }
 
                 // from 中同时增加关联表
                 sbFrom.append(joinType).append(srcTable);
@@ -993,16 +974,16 @@ public class TemplateService extends BaseService implements ITemplateService {
                     sbFrom.append(" as " + srcTableAlisAs);
                 }
 
-                sbFrom.append(String.format(" ON %s.%s%s%s = %s.%s%s%s ", formFieldLinkedTable, bDelimiter, sqlColumnName, eDelimiter, srcTableAlis, bDelimiter, srcField, eDelimiter))
+                sbFrom.append(String.format(" ON %s.%s%s%s = %s.%s%s%s ", selTable, bDelimiter, sqlColumnName, eDelimiter, srcTableAlis, bDelimiter, srcField, eDelimiter))
                         .append(separator);
-            } else if (lookUpType != null && lookUpType == 5) {
+            } else if (lookUpType == 5) {
 
                 // 普通引用其他表的其他字段-主要为了避免为4即引用他表数据时，需引用多个字段时关联表重复问题。依附于=4时存在,即模板中肯定存在lookUpType=4的字段模板
 
                 sbSelect.append(String.format("%s.%s%s%s AS %s%s%s,", srcTableAlis, bDelimiter, disPlayField, eDelimiter, bDelimiter, key, eDelimiter)).append(separator);
 
             } else {
-                sbSelect.append(String.format("%s.%s%s%s AS %s%s%s,", formFieldLinkedTable, bDelimiter, sqlColumnName, eDelimiter, bDelimiter, key, eDelimiter)).append(separator);
+                sbSelect.append(String.format("%s.%s%s%s AS %s%s%s,", selTable, bDelimiter, sqlColumnName, eDelimiter, bDelimiter, key, eDelimiter)).append(separator);
             }
         }
 

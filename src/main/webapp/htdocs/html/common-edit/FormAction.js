@@ -48,6 +48,8 @@ define('FormAction', function (require, module, exports) {
 
     function create(config, fn) {
 
+        $.Object.extend(__default__, config);
+
         loadFormAction(config, function (actions) {
 
             actions = actions || [];

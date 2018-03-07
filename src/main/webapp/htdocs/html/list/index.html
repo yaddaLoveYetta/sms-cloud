@@ -9,14 +9,15 @@
 
     <!--grunt.css.begin-->
     <link rel="stylesheet" href="../../css/list/index.debug.css">
+
     <!--grunt.css.end-->
 </head>
 <body>
 
 <!--按钮区-->
-<div class="options">
+<div class="container-fluid options">
     <div id="div-button-list" class="btn-box"></div>
-    <div id="div-pager-simple" class="pager-box"></div>
+    <div id="div-pager-simple" class="pager-box pull-right"></div>
 </div>
 <!--主显示区-->
 <div id="div-list" class="container-fluid table-responsive">
@@ -172,9 +173,9 @@
 <script src="../../config.js"></script>
 
 <!--grunt.js.begin-->
+<script src="../common-edit/FormAction.js"></script>
 <script src="modules/ButtonList.js"></script>
 <script src="modules/ButtonListOption.js"></script>
-
 <script src="modules/List/Samples.js"></script>
 <script src="modules/List/API/Head.js"></script>
 <script src="modules/List/API/Body.js"></script>

@@ -24,18 +24,20 @@ define("List", function (require, module, exports) {
     var index$selected = {};
     // 记录选中的索引
     function load(config, fn) {
+
         //SMS.Tips.loading("数据加载中...");
         SMS.Tips.loading({
             text: '数据加载中...',
-            delay: 500
+            delay: 200
         });
+
         API.get({
             classId: config.classId,
             pageNo: config.pageNo,
             pageSize: config.pageSize,
             conditions: config.conditions
         }, function (data) {
-            SMS.Tips.success("数据加载成功", 1500);
+            SMS.Tips.success("数据加载成功", 1000);
             var total = data.body.total;
             fn && fn(data, total);
         });
@@ -104,6 +106,7 @@ define("List", function (require, module, exports) {
     }
 
     function render(config, fn) {
+
         // 清空已选择项
         index$selected = {};
 

@@ -9,10 +9,11 @@ define('List/API', function (require, module, exports) {
 
     var Multitask = SMS.require('Multitask');
 
-    var Head = require('/Head');
     //完整名称为 List/API/Head
-    var Body = require('/Body');
+    var Head = require('/Head');
     //完整名称为 List/API/Body
+    var Body = require('/Body');
+
 
     function get(config, fn) {
 

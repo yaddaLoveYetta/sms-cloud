@@ -21,7 +21,7 @@ define('Pager', function(require, module, exports) {
 			container : {
 				simple : '#div-pager-simple', //简易分页控件的容器
 				normal : '#div-pager-normal' //标准分页控件的容器
-			},
+			}
 		});
 
 		//SMS.SimplePager.create(config);
