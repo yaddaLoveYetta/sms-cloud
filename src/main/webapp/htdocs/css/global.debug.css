@@ -1211,7 +1211,10 @@ label{
     line-height: 25px;
     font-size: 12px;
 }
-
+.pagination > li > select {
+    height: 25px;
+    line-height: 25px;
+}
 .pagination .buttons .LR-button {
     position: relative;
     float: left;
@@ -1365,7 +1368,9 @@ label{
     -webkit-border-radius: 0px;
     border-radius: 0px;
 }
-
+.pagination .page-size {
+    margin: 0 5px;
+}
 .pagination:before,
 .pagination:after {
     content: " ";
