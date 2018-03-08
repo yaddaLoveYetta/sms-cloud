@@ -4626,7 +4626,7 @@
             var sizes = config.sizes || [10, 20, 30]; // 分页大小设置项
 
             //var size = config.size;
-            var size = sizes[0];             // 分页的大小，即每页的记录数
+            var size = config.size || sizes[0];             // 分页的大小，即每页的记录数
 
             var total = config.total;           // 总记录数
             var count = Math.ceil(total / size);// 总页数
@@ -5073,7 +5073,7 @@
             var container = config.container || defaults.container;
             var current = config.current || defaults.current;   // 当前页码，从 1 开始
             var sizes = config.sizes || defaults.sizes || [10, 20, 30];
-            var size = sizes[0];            // 分页的大小，即每页的记录数
+            var size = config.size || sizes[0];            // 分页的大小，即每页的记录数
 
             var total = config.total;           // 总记录数
             var count = Math.ceil(total / size);// 总页数
