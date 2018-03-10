@@ -152,7 +152,12 @@ public class Condition implements Serializable {
             this.description = description;
         }
 
-        @JsonValue //序列化时 枚举对应生成的值
+        /**
+         * 序列化时 枚举对应生成的值
+         *
+         * @return
+         */
+        @JsonValue
         public String getName() {
             return name;
         }
@@ -169,7 +174,14 @@ public class Condition implements Serializable {
             this.description = description;
         }
 
-        @JsonCreator //反序列化时的 初始化函数，入参为 对应该枚举的 json值
+
+        /**
+         * 反序列化时的 初始化函数，入参为 对应该枚举的 json值
+         *
+         * @param name name
+         * @return LogicOperatorEnum
+         */
+        @JsonCreator
         private static LogicOperatorEnum getLogicOperatorEnum(String name) {
 
             for (LogicOperatorEnum logicOperatorEnum : LogicOperatorEnum.values()) {

@@ -23,10 +23,13 @@ import java.util.*;
 
 @Service
 public class TemplateService extends BaseService implements ITemplateService {
+
     /**
      * 查询基础资料/单据模板数据
      *
-     * @param classId
+     * @param classId 业务类别
+     * @param type    查询方式（0:后端查询 1:前端获取）
+     * @return Map<String, Object>
      */
     @Override
     public Map<String, Object> getFormTemplate(Integer classId, Integer type) {
@@ -160,16 +163,15 @@ public class TemplateService extends BaseService implements ITemplateService {
     @SuppressWarnings("unchecked")
     public Map<String, Object> getItems(Integer classId, List<Condition> conditions, List<Sort> sorts, Integer pageSize, Integer pageNo) {
 
+        // 返回结构
         Map<String, Object> ret = new HashMap<String, Object>(16);
 
         // 基础资料模板
         Map<String, Object> template = this.getFormTemplate(classId, 1);
-
         // 主表资料描述信息
         FormClass formClass = (FormClass) template.get("formClass");
         // 子表资料描述信息
         Map<String, Object> formEntries = (Map<String, Object>) template.get("formClassEntry");
-
         // 主表字段模板
         Map<String, Object> formFields0 = (Map<String, Object>) ((Map<String, Object>) template.get("formFields")).get("0");
         // 第一个子表字段模板(如果有)
@@ -179,10 +181,10 @@ public class TemplateService extends BaseService implements ITemplateService {
             throw new BusinessLogicRunTimeException("资料模板不存在");
         }
 
-        // 插件事件---begin-------
+        // 插件事件 TODO---begin-------
         //  PlugInFactory factory = new PlugInFactory(classId);
         //  conditionString = factory.getConditions(classId, template, conditionString);
-        // 插件事件---begin-------
+        // 插件事件 TODO---begin-------
 
         // 主表表名
         String primaryTableName = formClass.getTableName();
@@ -201,9 +203,9 @@ public class TemplateService extends BaseService implements ITemplateService {
 
         // 动态构建select语句
 
-        // 模板拼接的select语句
+        // 模板拼接的完整select语句
         String select = "";
-        // 执行的select语句
+        // 执行的select语句(用于有子表关联查询时进行两次查询，第一次查询出该页所有主表主键，第二次根据第一次获取的主键查询)
         String selectExec = "";
         // 查询语句----from部分
         String from = "";
@@ -214,22 +216,19 @@ public class TemplateService extends BaseService implements ITemplateService {
 
         // 查询条件
         Map<String, Object> where = new HashMap<String, Object>();
-
+        // 查询条件格式化参数
         Map<String, Object> whereParams = new HashMap<String, Object>();
-
+        // 构建查询脚本
         Map<String, Object> statement = getStatement(classId);
 
+        // 获取客户端传入的查询条件
         if (conditions != null && !conditions.isEmpty()) {
-            // 获取客户端传入的查询条件
-            where = getWhereStr(classId, conditions);
-
+            where = getWhere(classId, conditions);
         }
 
+        // 获取客户端传入了排序规则
         if (sorts != null && !sorts.isEmpty()) {
-
-            // 获取客户端传入了排序条件
-            orderByStr = getOrderByStr(classId, sorts);
-
+            orderByStr = getSort(classId, sorts);
         }
 
         select = (String) statement.get("select");
@@ -596,25 +595,25 @@ public class TemplateService extends BaseService implements ITemplateService {
         String separator = System.getProperty("line.separator");
 
         sbSelect.append("SELECT").append(separator);
-        sbFrom.append("FROM " + primaryTableName).append(separator);
+        sbFrom.append("FROM ").append(primaryTableName).append(separator);
 
         if (isChildTableExist) {
+            // 存在子表先拼接子表
             sbFrom.append(String.format(" %s %s ON %s.%s%s%s = %s.%s%s%s", entryJoinType, childTableName, childTableName, bDelimiter, foreignKey, eDelimiter, primaryTableName, bDelimiter, primaryKey,
                     eDelimiter)).append(separator);
         }
 
         /*
-            用户角色类别
+            用户角色类别-用于字段权限控制(前端有控制，此处简单不做处理)
             1	系统管理员
             2	医院
             3	供应商
             */
         Integer userRoleType = SessionUtil.getUserRoleType();
 
-        for (Iterator<String> iterator = formFieldsAll.keySet().iterator(); iterator.hasNext(); ) {
+        for (String pageIndex : formFieldsAll.keySet()) {
 
-            String pageIndex = iterator.next();
-
+            // page=0/page=1的字段模板
             Map<String, Object> formFields = (Map<String, Object>) formFieldsAll.get(pageIndex);
 
             // 当前模板关联的物理表
@@ -630,13 +629,13 @@ public class TemplateService extends BaseService implements ITemplateService {
                 continue;
             }
 
-            for (Iterator<String> it = formFields.keySet().iterator(); it.hasNext(); ) {
+            for (String fieldKey : formFields.keySet()) {
 
-                String fieldKey = it.next();
                 FormFields formField = (FormFields) formFields.get(fieldKey);
+
                 String joinType = formField.getJoinType();
 
-                if (joinType == null || joinType.trim().equals("")) {
+                if (joinType == null || "".equals(joinType.trim())) {
                     // 默认 INNER JOIN
                     joinType = "INNER JOIN";
                 }
@@ -652,49 +651,62 @@ public class TemplateService extends BaseService implements ITemplateService {
                 Integer dataType = formField.getDataType();
                 Integer index = formField.getIndex();
                 Integer display = formField.getDisplay();
+                // 查找类型类别
                 Integer lookUpType = formField.getLookUpType();
+                // 具体查找类型
                 Integer lookUpClassId = formField.getLookUpClassId();
+                // 关联查询表
                 String srcTable = formField.getSrcTable();
+                // 关联表查询时，关联表可以给一个别名
                 String srcTableAlisAs = formField.getSrcTableAlis();
+                // 关联表字段
                 String srcField = formField.getSrcField();
+                // 查询时的显示字段(如订单关联物料查询，显示物料的名称)
                 String disPlayField = formField.getDisplayField();
-                String disPlayNum = formField.getDisplayExt();
+                // 扩展显示字段(如订单关联物料查询，还可显示物料的代码)
+                String displayExt = formField.getDisplayExt();
+                // 字段是否有物理表字段保存(如订单表中物料的规格型号不需要保存在订单表中，而是通过订单中的物料关联查询物料表获取)
                 boolean needSave = formField.getNeedSave();
 
+                // 设置了关联查询表别名时，查询字段应该用别名.字段名
+                // eg: select A.colA, B.colB from table_a AS A inner join table_b AS B on A.id=B.id
                 String srcTableAlis = srcTableAlisAs == null || srcTableAlisAs.equals("") ? srcTable : srcTableAlisAs;
 
                 if (lookUpType != null && (lookUpType == 1 || lookUpType == 2)) {
-                    // 基础资料/辅助资料引用类型
-                    // 强制显示关联字段名称
+
+                    // eg: select order.number as number_key,item.name as name_DspName,item.number as number_NmbName from
+                    // order inner join item on order.item_id=item.id
+
+                    // 基础资料/辅助资料引用类型-主表中记录关联字段值一般是id
+                    // 查询出主表中记录的关联字段值
                     sbSelect.append(String.format("%s.%s%s%s AS %s%s%s,", formFieldLinkedTable, bDelimiter, sqlColumnName, eDelimiter, bDelimiter, key, eDelimiter)).append(separator);
-
+                    // 查询出关联表该显示的值
                     sbSelect.append(String.format("%s.%s%s%s AS %s%s%s,", srcTableAlis, bDelimiter, disPlayField, eDelimiter, bDelimiter, key + "_DspName", eDelimiter)).append(separator);
-
-                    if (disPlayNum != null && !disPlayNum.trim().equals("")) {
+                    // 如果增加配置了关联表扩展显示值，则一并查询出
+                    if (displayExt != null && !"".equals(displayExt.trim())) {
                         // 代码显示字段
-                        sbSelect.append(String.format("%s.%s%s%s AS %s%s%s,", srcTableAlis, bDelimiter, disPlayNum, eDelimiter, bDelimiter, key + "_NmbName", eDelimiter)).append(separator);
+                        sbSelect.append(String.format("%s.%s%s%s AS %s%s%s,", srcTableAlis, bDelimiter, displayExt, eDelimiter, bDelimiter, key + "_NmbName", eDelimiter)).append(separator);
                     }
 
                     // from 中同时增加关联表
                     sbFrom.append(joinType).append(srcTable);
 
                     // 关联表的别名
-                    if (srcTableAlisAs != null && !srcTableAlisAs.equals("")) {
-                        sbFrom.append(" as " + srcTableAlisAs);
+                    if (srcTableAlisAs != null && !"".equals(srcTableAlisAs)) {
+                        sbFrom.append(" AS ").append(srcTableAlisAs);
                     }
-
+                    // 主表与关联表的关联条件
                     sbFrom.append(String.format(" ON %s.%s%s%s = %s.%s%s%s ", formFieldLinkedTable, bDelimiter, sqlColumnName, eDelimiter, srcTableAlis, bDelimiter, srcField, eDelimiter))
                             .append(separator);
 
-                    if (filter != null && !filter.trim().equals("")) {
-                        // 表链接有附加条件
+                    if (filter != null && !"".equals(filter.trim())) {
+                        // 表链接有附加条件-附件条件程序不校验合法性
                         sbFrom.append(filter).append(separator);
                     }
 
                 } else if (lookUpType != null && lookUpType == 3) {
 
-                    // 引用基础资料的附加属性
-                    // lookUpType == 3
+                    // 引用基础资料的附加属性-依赖lookUpType == 1 || lookUpType == 2 存在,即模板中必须存在该记录lookUpClassId且lookUpType=1/2 的字段模板
                     // 即引用基础资料属性的模板中，disPlayField的配置统一认为是被引用基础资料模板中的key，需要二次验证引用资料模板确认查询字段
 
                     // 举例：目标，在车辆信息中显示其车辆类别的车辆付费类型
@@ -705,6 +717,10 @@ public class TemplateService extends BaseService implements ITemplateService {
 
                     FormFields lookUpTypeFormField = getFormField(lookUpClassId, disPlayField);
 
+                    if (lookUpTypeFormField == null) {
+                        throw new BusinessLogicRunTimeException(String.format("classId=%s, key=%s 的disPlayField配置错误，请联系管理员", classId, key));
+                    }
+
                     String nameEx = lookUpTypeFormField.getName();
                     Integer lookUpTypeEx = lookUpTypeFormField.getLookUpType();
                     String joinTypeEx = lookUpTypeFormField.getJoinType();
@@ -712,22 +728,21 @@ public class TemplateService extends BaseService implements ITemplateService {
                     String srcFieldEx = lookUpTypeFormField.getSrcField();
 
                     if (needSave) {
-                        // needSave 不需要保存的引用字段关联查询，需要保存的属性值直接查询
+                        // 需要保存的携带属性值直接从主表查询
                         sbSelect.append(String.format("%s.%s%s%s AS %s%s%s,", formFieldLinkedTable, bDelimiter, sqlColumnName, eDelimiter, bDelimiter, key, eDelimiter)).append(separator);
 
                     } else {
-
+                        // 不需要保存的引用字段关联查询
                         if (lookUpTypeEx != null && lookUpTypeEx > 0) {
 
                             // 附加属性又是引用类型的情况--取显示字段并关联表
-
                             sbSelect.append(String.format("%s.%s%s%s AS %s%s%s,", srcTableAlis, bDelimiter, nameEx, eDelimiter, bDelimiter, key, eDelimiter)).append(separator);
 
                             // from 中同时增加关联表
                             sbFrom.append(joinTypeEx).append(srcTableEx);
 
                             // 关联表的别名
-                            sbFrom.append(" as " + srcTableAlis);
+                            sbFrom.append(" AS ").append(srcTableAlis);
 
                             sbFrom.append(String.format(" ON %s.%s%s%s = %s.%s%s%s ", srcTableEx, bDelimiter, srcFieldEx, eDelimiter, srcTableAlis, bDelimiter, srcFieldEx, eDelimiter))
                                     .append(separator);
@@ -743,32 +758,21 @@ public class TemplateService extends BaseService implements ITemplateService {
 
                     sbSelect.append(String.format("%s.%s%s%s AS %s%s%s,", srcTableAlis, bDelimiter, disPlayField, eDelimiter, bDelimiter, key, eDelimiter)).append(separator);
 
-                    // if (dataType != null && dataType == 2) {
-                    // // 文本类的关联字段，未防止关联表中无记录，此处取主表字段值-如订单查询CarNo字段取数
-                    // sbSelect.append(String.format("%s.%s%s%s AS %s%s%s,",
-                    // formFieldLinkedTable, bDelimiter,
-                    // sqlColumnName, eDelimiter, bDelimiter, key,
-                    // eDelimiter)).append(separator);
-                    // } else {
-                    // sbSelect.append(String.format("%s.%s%s%s AS %s%s%s,",
-                    // srcTableAlis, bDelimiter, disPlayField,
-                    // eDelimiter, bDelimiter, key,
-                    // eDelimiter)).append(separator);
-                    // }
-
                     // from 中同时增加关联表
                     sbFrom.append(joinType).append(srcTable);
 
                     // 关联表的别名
-                    if (srcTableAlisAs != null && !srcTableAlisAs.equals("")) {
-                        sbFrom.append(" as " + srcTableAlisAs);
+                    if (srcTableAlisAs != null && !"".equals(srcTableAlisAs)) {
+                        sbFrom.append(" AS ").append(srcTableAlisAs);
                     }
 
                     sbFrom.append(String.format(" ON %s.%s%s%s = %s.%s%s%s ", formFieldLinkedTable, bDelimiter, sqlColumnName, eDelimiter, srcTableAlis, bDelimiter, srcField, eDelimiter))
                             .append(separator);
+
                 } else if (lookUpType != null && lookUpType == 5) {
 
-                    // 普通引用其他表的其他字段-主要为了避免为4即引用他表数据时，需引用多个字段时关联表重复问题。依附于=4时存在,即模板中肯定存在lookUpType=4的字段模板
+                    // 普通引用其他表的其他字段-
+                    // 主要为了避免为4即引用他表数据时，需引用多个字段时关联表重复问题。依附于=4时存在,即模板中肯定存在lookUpType=4的字段模板
 
                     sbSelect.append(String.format("%s.%s%s%s AS %s%s%s,", srcTableAlis, bDelimiter, disPlayField, eDelimiter, bDelimiter, key, eDelimiter)).append(separator);
 
@@ -822,13 +826,17 @@ public class TemplateService extends BaseService implements ITemplateService {
         }
 
         if (formFieldsAll.isEmpty()) {
-            throw new BusinessLogicRunTimeException(String.format("classId=%s 没有模板数据", classId));
+            throw new BusinessLogicRunTimeException(String.format("classId=%s 没有模板数据,请联系管理员！", classId));
         }
 
         // 查询的目标表
         String selTable = "";
         // 查询目标模板
         Map<String, FormFields> selFormFields = (Map<String, FormFields>) formFieldsAll.get(String.valueOf(page));
+
+        if (selFormFields.isEmpty()) {
+            throw new BusinessLogicRunTimeException(String.format("classId=%s page=%s 没有模板数据,请联系管理员！", classId, page));
+        }
 
         if (page == 0) {
             // 主表
@@ -852,141 +860,16 @@ public class TemplateService extends BaseService implements ITemplateService {
             String fieldKey = it.next();
             FormFields formField = selFormFields.get(fieldKey);
 
-            String joinType = formField.getJoinType();
-
-            if (joinType == null || joinType.trim().equals("")) {
-                // 默认 INNER JOIN
-                joinType = "INNER JOIN";
-            }
-
-            // 两边加一空格，防止模板配置时两边无空格，链接脚本错误
-            joinType = " " + joinType.trim() + " ";
-
-            // 过滤条件-用于关联表时的附加条件
-            String filter = formField.getFilter();
-            // 数据库字段名
             String sqlColumnName = formField.getSqlColumnName();
-            // key
             String key = formField.getKey();
-            // 查找类型
-            Integer lookUpType = formField.getLookUpType();
-            // 查找类型具体
-            Integer lookUpClassId = formField.getLookUpClassId();
-            // 关联表名lookUpType>0时必须
-            String srcTable = formField.getSrcTable();
-            // 关联表别名
-            String srcTableAlisAs = formField.getSrcTableAlis();
-            // 关联表字段
-            String srcField = formField.getSrcField();
-            // 关联表查询显示字段
-            String disPlayField = formField.getDisplayField();
-            // 关联表查询显示字段扩展
-            String displayExt = formField.getDisplayExt();
-            // 是否需保存字段
             boolean needSave = formField.getNeedSave();
 
-            String srcTableAlis = srcTableAlisAs == null || srcTableAlisAs.equals("") ? srcTable : srcTableAlisAs;
-
-            if (lookUpType == 1 || lookUpType == 2) {
-
-                // 基础资料/辅助资料引用类型-强制显示关联字段名称
-                sbSelect.append(String.format("%s.%s%s%s AS %s%s%s,", selTable, bDelimiter, sqlColumnName, eDelimiter, bDelimiter, key, eDelimiter)).append(separator);
-
-                sbSelect.append(String.format("%s.%s%s%s AS %s%s%s,", srcTableAlis, bDelimiter, disPlayField, eDelimiter, bDelimiter, key + "_DspName", eDelimiter)).append(separator);
-
-                if (displayExt != null && !displayExt.trim().equals("")) {
-                    // 代码显示字段
-                    sbSelect.append(String.format("%s.%s%s%s AS %s%s%s,", srcTableAlis, bDelimiter, displayExt, eDelimiter, bDelimiter, key + "_NmbName", eDelimiter)).append(separator);
-                }
-
-                // from 中同时增加关联表
-                sbFrom.append(joinType).append(srcTable);
-
-                // 关联表的别名
-                if (srcTableAlisAs != null && !srcTableAlisAs.equals("")) {
-                    sbFrom.append(" as " + srcTableAlisAs);
-                }
-
-                sbFrom.append(String.format(" ON %s.%s%s%s = %s.%s%s%s ", selTable, bDelimiter, sqlColumnName, eDelimiter, srcTableAlis, bDelimiter, srcField, eDelimiter))
-                        .append(separator);
-
-                if (filter != null && !filter.trim().equals("")) {
-                    // 表链接有附加条件
-                    sbFrom.append(filter).append(separator);
-                }
-
-            } else if (lookUpType == 3) {
-
-                // 引用基础资料的附加属性
-                // lookUpType == 3
-                // 即引用基础资料属性的模板中，disPlayField的配置统一认为是被引用基础资料模板中的key，需要二次验证引用资料模板确认查询字
-                // 举例：目标，在车辆信息中显示其车辆类别的车辆付费类型
-                // 基础资料车辆信息中引用另一个基础资料车辆类别，还需要显示基础资料车辆类别的另一个属性"车辆付费类型"，而"车辆付费类型"在车辆类别模板中又是辅助资料引用类型，
-                // 此时在车辆信息的模板中配置携带车辆类别基础资料的附属属性"车辆付费类型"的模板时，模板中disPlayField应配置为"车辆类别"模板中"车辆付费类型"的key(payType),
-                // srcField应该配置为"车辆类别"表与辅助资料的关联字段(即车辆类别表t_CarType与辅助资料车辆付费类型的关联字段payType),
-                // srcTableAlisAs必须配置，可随意，但需保证在车辆信息模板中不重复。
-
-                FormFields lookUpTypeFormField = getFormField(lookUpClassId, disPlayField);
-
-                String nameEx = lookUpTypeFormField.getName();
-                Integer lookUpTypeEx = lookUpTypeFormField.getLookUpType();
-                String joinTypeEx = lookUpTypeFormField.getJoinType();
-                String srcTableEx = lookUpTypeFormField.getSrcTable();
-                String srcFieldEx = lookUpTypeFormField.getSrcField();
-
-                if (needSave) {
-                    // needSave 不需要保存的引用字段关联查询，需要保存的属性值直接查询
-                    sbSelect.append(String.format("%s.%s%s%s AS %s%s%s,", selTable, bDelimiter, sqlColumnName, eDelimiter, bDelimiter, key, eDelimiter)).append(separator);
-
-                } else {
-
-                    if (lookUpTypeEx != null && lookUpTypeEx > 0) {
-
-                        // 附加属性又是引用类型的情况--取显示字段并关联表
-
-                        sbSelect.append(String.format("%s.%s%s%s AS %s%s%s,", srcTableAlis, bDelimiter, nameEx, eDelimiter, bDelimiter, key, eDelimiter)).append(separator);
-
-                        // from 中同时增加关联表
-                        sbFrom.append(joinTypeEx).append(srcTableEx);
-
-                        // 关联表的别名
-                        sbFrom.append(" as " + srcTableAlis);
-
-                        sbFrom.append(String.format(" ON %s.%s%s%s = %s.%s%s%s ", srcTableEx, bDelimiter, srcFieldEx, eDelimiter, srcTableAlis, bDelimiter, srcFieldEx, eDelimiter))
-                                .append(separator);
-                    } else {
-                        // 普通属性
-                        sbSelect.append(String.format("%s.%s%s%s AS %s%s%s,", srcTableAlis, bDelimiter, disPlayField, eDelimiter, bDelimiter, key, eDelimiter)).append(separator);
-                    }
-
-                }
-
-            } else if (lookUpType == 4) {
-
-                // 普通引用-引用其他表数据
-                sbSelect.append(String.format("%s.%s%s%s AS %s%s%s,", srcTableAlis, bDelimiter, disPlayField, eDelimiter, bDelimiter, key, eDelimiter)).append(separator);
-
-                // from 中同时增加关联表
-                sbFrom.append(joinType).append(srcTable);
-
-                // 关联表的别名
-                if (srcTableAlisAs != null && !srcTableAlisAs.equals("")) {
-                    sbFrom.append(" as " + srcTableAlisAs);
-                }
-
-                sbFrom.append(String.format(" ON %s.%s%s%s = %s.%s%s%s ", selTable, bDelimiter, sqlColumnName, eDelimiter, srcTableAlis, bDelimiter, srcField, eDelimiter))
-                        .append(separator);
-            } else if (lookUpType == 5) {
-
-                // 普通引用其他表的其他字段-主要为了避免为4即引用他表数据时，需引用多个字段时关联表重复问题。依附于=4时存在,即模板中肯定存在lookUpType=4的字段模板
-
-                sbSelect.append(String.format("%s.%s%s%s AS %s%s%s,", srcTableAlis, bDelimiter, disPlayField, eDelimiter, bDelimiter, key, eDelimiter)).append(separator);
-
-            } else {
-                sbSelect.append(String.format("%s.%s%s%s AS %s%s%s,", selTable, bDelimiter, sqlColumnName, eDelimiter, bDelimiter, key, eDelimiter)).append(separator);
+            if (needSave) {
+                // 不需要保存的字段不需要查询
+                sbSelect.append(String.format("%s.%s%s%s AS %s%s%s,", sbSelect, bDelimiter, sqlColumnName, eDelimiter, bDelimiter, key, eDelimiter)).append(separator);
             }
-        }
 
+        }
 
         String select = sbSelect.toString().trim();
         select = select.substring(0, select.length() - 1);
@@ -1008,7 +891,7 @@ public class TemplateService extends BaseService implements ITemplateService {
      * @return 查询条件
      */
     @SuppressWarnings("unchecked")
-    private Map<String, Object> getWhereStr(Integer classId, List<Condition> conditions) {
+    private Map<String, Object> getWhere(Integer classId, List<Condition> conditions) {
 
         Map<String, Object> ret = new HashMap<String, Object>(16);
 
@@ -1025,20 +908,24 @@ public class TemplateService extends BaseService implements ITemplateService {
         // 主表资料描述信息
         FormClass formClass = (FormClass) templateMap.get("formClass");
         // 子表资料描述信息
-        Map<String, Object> formEntries = (Map<String, Object>) templateMap.get("formEntries");
+        Map<String, Object> formEntries = (Map<String, Object>) templateMap.get("formClassEntry");
 
         if (null == formClass) {
             throw new BusinessLogicRunTimeException("没有模板数据");
         }
 
-        Map<String, String> dbDelimiter = getDBDelimiter();
         // 数据库字段-关键字处理
+        Map<String, String> dbDelimiter = getDBDelimiter();
         String bDelimiter = dbDelimiter.get("bDelimiter");
         String eDelimiter = dbDelimiter.get("eDelimiter");
 
+        // 主表物理表名
         String primaryTableName = formClass.getTableName();
+        // 主表物理表主键
         String primaryKey = formClass.getPrimaryKey();
+        // 第一个子表物理表名(如果有)
         String childTableName = "";
+        // 第一个子表与主表的关联字段在模板中的key(外键)
         String foreignKey = "";
 
         if (!formEntries.isEmpty()) {
@@ -1049,11 +936,12 @@ public class TemplateService extends BaseService implements ITemplateService {
             foreignKey = formEntry.getForeignKey();
 
             if ("".equals(childTableName) || "".equals(foreignKey)) {
-                // 存在子表但子表FormEntries中配置错误
-                throw new BusinessLogicRunTimeException("没有模板数据");
+                // 存在子表但子表formClassEntry中配置错误
+                throw new BusinessLogicRunTimeException(String.format("classId=%s formClassEntry模板数据配置错误", classId));
             }
         }
 
+        // 将所有用户条件包含在AND()中，即所有过滤条件的结果是 WHERE 1=1 AND (用户过滤条件)
         sbWhere.append("WHERE 1=1 AND (");
 
         for (int i = 0; i < conditions.size(); i++) {
@@ -1069,7 +957,7 @@ public class TemplateService extends BaseService implements ITemplateService {
             boolean skip = false;
 
             // AND OR 条件链接符号-默认AND
-            Condition.LinkTypeEnum andOr = condition.getLinkType();
+            Condition.LinkTypeEnum linkType = condition.getLinkType();
 
             // 第一个条件忽略连接关系
             //andOr = i == 0 ? "" : andOr;
@@ -1081,14 +969,14 @@ public class TemplateService extends BaseService implements ITemplateService {
             // 比较字段名
             String fieldKey = condition.getFieldKey();
 
-            if (null == fieldKey || "".equals(fieldKey)) {
+            if (null == fieldKey || fieldKey.trim().isEmpty()) {
                 throw new BusinessLogicRunTimeException("参数错误：condition必须包括fieldKey");
             }
 
             // 比较符号
             Condition.LogicOperatorEnum logicOperator = condition.getLogicOperator();
 
-            if (null == logicOperator || "".equals(logicOperator) || logicOperator == Condition.LogicOperatorEnum.NOT_SUPPORT) {
+            if (logicOperator == Condition.LogicOperatorEnum.NOT_SUPPORT) {
                 throw new BusinessLogicRunTimeException("参数错误：condition必须包含正确的logicOperator");
             }
 
@@ -1102,11 +990,13 @@ public class TemplateService extends BaseService implements ITemplateService {
             // 右括号
             String rightParenTheses = condition.getRightParenTheses();
 
-            // 是否需要转换条件字段，用于传入引用他表字段时过滤，例如传入引用基础资料key是否需要转换为名称条件，用户输入时通常需要转换成名称查询，而代码中调用不需要转换，直接用ID匹配
+            // 是否需要转换条件字段，用于传入引用他表字段时过滤
+            // 例如传入引用基础资料key是否需要转换为名称条件
+            // 用户输入时通常需要转换成名称查询，而代码中调用不需要转换，直接匹配
             boolean needConvert = condition.getNeedConvert();
 
+            // 没有定义模板-忽略
             if (!formFieldsAll.containsKey(fieldKey)) {
-                // 没有定义模板-忽略
                 continue;
             }
 
@@ -1137,9 +1027,11 @@ public class TemplateService extends BaseService implements ITemplateService {
             String tableName = formFieldLinkedTable;
             String fieldName = sqlColumnName;
 
+            // 模板字段的数据类型(数字，本文，日期，布尔)
             DataTypeEnum dataTypeEnum = DataTypeEnum.getTypeEnum(dataType);
 
             if (needConvert && lookUpType > 0) {
+                // 只有引用类型有转换与非转换情况
                 // 需要转换为名称查询的引用类型的查询条件，dataType可能不是文本类型，但条件值是文本，需要文本格式化，此处修正值格式化类型
                 dataTypeEnum = DataTypeEnum.TEXT;
             }
@@ -1152,12 +1044,13 @@ public class TemplateService extends BaseService implements ITemplateService {
                 case TEXT:
 
                     if (logicOperator == Condition.LogicOperatorEnum.LIKE) {
+                        // 不处理，调用者控制左匹配%xxx或右匹配xxx%或全匹配%xxx%
                         //value = "%" + value + "%";
                     } else if (logicOperator == Condition.LogicOperatorEnum.IN) {
                         // 不适用此系统动态查询方式，对于IN，手工拼接脚本
-/*                        preValue = "(";
+                        preValue = "(";
                         sufValue = ")";
-                        skip = true;*/
+                        skip = true;
                     }
                     break;
                 case TIME:
@@ -1166,35 +1059,41 @@ public class TemplateService extends BaseService implements ITemplateService {
                             // 由于数据库中日期可能存储有时分秒，过滤天时过滤到当前23:59:59
                             value = value + " 23:59:59";
                         }
+                    } else if (logicOperator == Condition.LogicOperatorEnum.GREATER_OR_EQUAL) {
+                        if (!Common.isLongDate(String.valueOf(value))) {
+                            value = value + " 00:00:00";
+                        }
                     }
                     break;
                 case BOOLEAN:
                     // boolean b = value.equals("是") ? true : false;
-                    value = value.equals("是") ? "1" : value.equals("否") ? "0" : "2";
+                    // 此类字段数据库中一般要求用bit类型,即非0即1
+                    value = "是".equals(value) ? "1" : "否".equals(value) ? "0" : "2";
                     break;
                 default:
                     break;
             }
 
-            if (lookUpType != null && (lookUpType == 1 || lookUpType == 2)) {
+            if (lookUpType == 1 || lookUpType == 2) {
                 // 基础资料-辅助资料引用类型
-                // 引用字段查询-使用关联表显示字段作为条件
-                tableName = srcTableAlisAs == null || srcTableAlisAs.equals("") ? srcTable : srcTableAlisAs;
+
+                tableName = srcTableAlisAs == null || "".equals(srcTableAlisAs) ? srcTable : srcTableAlisAs;
 
                 if (needConvert) {
+                    // 需要转换则使用关联表显示字段作为条件
                     fieldName = disPlayField;
                 } else {
+                    // 不需要转换，直接使用关联字段匹配
                     fieldName = srcField;
                 }
 
-            } else if (lookUpType > 0 && lookUpType == 3) {
+            } else if (lookUpType == 3) {
 
-                // 引用字段查询-使用关联表显示字段作为条件
-                tableName = srcTableAlisAs == null || srcTableAlisAs.equals("") ? srcTable : srcTableAlisAs;
+                // 引用字段携带属性查询-使用关联表显示字段作为条件
+                tableName = srcTableAlisAs == null || "".equals(srcTableAlisAs) ? srcTable : srcTableAlisAs;
 
                 // 携带基础资料属性的字段过滤
-                // FLookUpType == 3
-                // 即引用基础资料属性的模板中，FDisPlayField的配置统一认为是引用基础资料模板中的key，需要二次验证引用资料模板确认查询字段
+                // 即引用基础资料属性的模板中，disPlayField的配置统一认为是引用基础资料模板中的key，需要二次验证引用资料模板确认查询字段
 
                 FormFields lookUpFormField = getFormField(lookUpClassId, disPlayField);
 
@@ -1219,7 +1118,7 @@ public class TemplateService extends BaseService implements ITemplateService {
                 }
 
             } else if (lookUpType == 4) {
-
+                // 普通表关联查询
                 if (dataType == 2) {
                     // 文本类的关联字段，未防止关联表中无记录，此处取主表字段值-如订单查询FCarNo字段取数
                     tableName = formFieldLinkedTable;
@@ -1234,7 +1133,7 @@ public class TemplateService extends BaseService implements ITemplateService {
                     }
                 }
 
-            } else if (lookUpType > 0 && lookUpType > 4) {
+            } else if (lookUpType > 4) {
 
                 // 引用字段查询-使用关联表显示字段作为条件
                 tableName = srcTableAlisAs == null || "".equals(srcTableAlisAs) ? srcTable : srcTableAlisAs;
@@ -1247,14 +1146,14 @@ public class TemplateService extends BaseService implements ITemplateService {
             }
 
             if (skip) {
-                // 手工脚本
-                sbWhere.append(separator).append(String.format("%s %s %s.%s%s%s %s %s %s %s %s ", andOr, leftParenTheses, tableName, bDelimiter, fieldName, eDelimiter, logicOperator, preValue, value,
+                // 手工脚本-主要是IN过滤类型MyBatis不好格式化参数
+                sbWhere.append(separator).append(String.format("%s %s %s.%s%s%s %s %s %s %s %s ", linkType, leftParenTheses, tableName, bDelimiter, fieldName, eDelimiter, logicOperator, preValue, value,
                         sufValue, rightParenTheses));
             } else {
                 // 动态脚本
-                sbWhere.append(separator).append(String.format("%s %s %s.%s%s%s %s %s %s %s %s ", andOr, leftParenTheses, tableName, bDelimiter, fieldName, eDelimiter, logicOperator, preValue,
+                sbWhere.append(separator).append(String.format("%s %s %s.%s%s%s %s %s %s %s %s ", linkType, leftParenTheses, tableName, bDelimiter, fieldName, eDelimiter, logicOperator, preValue,
                         "#{" + fieldKey + i + "}", sufValue, rightParenTheses));
-
+                // 格式化参数
                 sqlParams.put(fieldKey + i, value);
             }
 
@@ -1262,10 +1161,10 @@ public class TemplateService extends BaseService implements ITemplateService {
         //将所有过滤条件用（）括起来
         sbWhere.append(")");
 
-        String whereStr = sbWhere.toString();
+        String where = sbWhere.toString();
 
-        if (!"WHERE 1=1 AND ()".equals(whereStr)) {
-            ret.put("whereStr", whereStr);
+        if (!"WHERE 1=1 AND ()".equals(where)) {
+            ret.put("whereStr", where);
             ret.put("whereParams", sqlParams);
         }
 
@@ -1273,7 +1172,7 @@ public class TemplateService extends BaseService implements ITemplateService {
     }
 
     @SuppressWarnings("unchecked")
-    private String getOrderByStr(Integer classId, List<Sort> sorts) {
+    private String getSort(Integer classId, List<Sort> sorts) {
 
         StringBuilder sbOrderBy = new StringBuilder();
         String separator = System.getProperty("line.separator");
@@ -1301,13 +1200,11 @@ public class TemplateService extends BaseService implements ITemplateService {
 
         sbOrderBy.append("ORDER BY");
 
-        for (int i = 0; i < sorts.size(); i++) {
-
-            Sort sort = sorts.get(i);
+        for (Sort sort : sorts) {
 
             String fieldKey = sort.getFieldKey();
 
-            if (fieldKey.equals("")) {
+            if ("".equals(fieldKey)) {
                 // 没有传递fieldKey,忽略
                 continue;
             }
@@ -1339,7 +1236,7 @@ public class TemplateService extends BaseService implements ITemplateService {
 
             if (lookUpType > 0) {
                 // 引用类型字段-找到真实的表，字段
-                tableName = srcTableAlisAs == null || srcTableAlisAs.equals("") ? srcTable : srcTableAlisAs;
+                tableName = srcTableAlisAs == null || "".equals(srcTableAlisAs) ? srcTable : srcTableAlisAs;
                 fieldName = disPlayField;
             }
 
@@ -1347,12 +1244,12 @@ public class TemplateService extends BaseService implements ITemplateService {
 
         }
 
-        String orderByStr = sbOrderBy.toString();
-        if (orderByStr.equals("ORDER BY")) {
+        String orderBy = sbOrderBy.toString();
+        if ("ORDER BY".equals(orderBy)) {
             return "";
         }
 
-        return orderByStr.substring(0, orderByStr.length() - 1);
+        return orderBy.substring(0, orderBy.length() - 1);
     }
 
     /**
@@ -1428,12 +1325,25 @@ public class TemplateService extends BaseService implements ITemplateService {
         return null;
     }
 
+    /**
+     * 获取指定classId中指定page的字段模板
+     * 如果page=-1则获取所有
+     *
+     * @param classId 业务类别
+     * @param page    page
+     * @return 指定page的字段模板
+     */
     private Map<String, FormFields> getFormFields(int classId, int page) {
 
         Map<String, FormFields> retMap = new LinkedHashMap<String, FormFields>();
 
-        // 获取单据模板page=0表头
+        // 数据库字段-关键字处理
+        Map<String, String> dbDelimiter = getDBDelimiter();
+        String bDelimiter = dbDelimiter.get("bDelimiter");
+        String eDelimiter = dbDelimiter.get("eDelimiter");
 
+        // 获取单据模板
+        // page=0表头
         FormFieldsMapper fieldsMapper = sqlSession.getMapper(FormFieldsMapper.class);
 
         FormFieldsExample fieldsExample = new FormFieldsExample();
@@ -1444,12 +1354,12 @@ public class TemplateService extends BaseService implements ITemplateService {
         if (page != -1) {
             fieldsCriteria.andPageEqualTo(page);
         }
-
-        fieldsExample.setOrderByClause("page, [index]");
+        // 查询结果按照page index排序
+        fieldsExample.setOrderByClause(String.format("page, %sindex%s", bDelimiter, eDelimiter));
 
         List<FormFields> fieldsByExample = fieldsMapper.selectByExample(fieldsExample);
 
-        // 打包字段模板
+        // 打包字段模板-打包成Map好操作
         for (FormFields item : fieldsByExample) {
             retMap.put(item.getKey(), item);
         }

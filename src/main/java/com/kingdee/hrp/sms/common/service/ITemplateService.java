@@ -11,7 +11,7 @@ public interface ITemplateService {
     /**
      * 查询基础资料/单据模板数据
      *
-     * @param classId 业务类别
+     * @param classId   业务类别
      * @param type    查询方式（0:后端查询 1:前端获取）
      * @return
      */

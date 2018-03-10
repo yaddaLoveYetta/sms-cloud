@@ -16,6 +16,11 @@ public enum DataTypeEnum {
 		this.name = name;
 	}
 
+	/**
+	 * 获取字段数据类型，默认文本
+	 * @param number 类型代码
+	 * @return DataTypeEnum
+	 */
 	public static DataTypeEnum getTypeEnum(int number) {
 
 		for (DataTypeEnum d : DataTypeEnum.values()) {
