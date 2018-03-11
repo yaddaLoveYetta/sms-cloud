@@ -1,5 +1,7 @@
 package com.kingdee.hrp.sms.common.service.impl;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.kingdee.hrp.sms.common.dao.customize.TemplateDaoMapper;
@@ -14,15 +16,22 @@ import com.kingdee.hrp.sms.common.pojo.DataTypeEnum;
 import com.kingdee.hrp.sms.common.pojo.Sort;
 import com.kingdee.hrp.sms.common.service.BaseService;
 import com.kingdee.hrp.sms.common.service.ITemplateService;
+import com.kingdee.hrp.sms.common.service.plugin.PlugInFactory;
+import com.kingdee.hrp.sms.common.service.plugin.PlugInRet;
 import com.kingdee.hrp.sms.util.Common;
 import com.kingdee.hrp.sms.util.SessionUtil;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
+import java.io.IOException;
 import java.util.*;
 
 @Service
 public class TemplateService extends BaseService implements ITemplateService {
+
+    @Resource
+    private PlugInFactory plugInFactory;
 
     /**
      * 查询基础资料/单据模板数据
@@ -181,10 +190,17 @@ public class TemplateService extends BaseService implements ITemplateService {
             throw new BusinessLogicRunTimeException("资料模板不存在");
         }
 
-        // 插件事件 TODO---begin-------
-        //  PlugInFactory factory = new PlugInFactory(classId);
-        //  conditionString = factory.getConditions(classId, template, conditionString);
-        // 插件事件 TODO---begin-------
+        // 插件事件 begin-------
+        List<Condition> pluginConditions = plugInFactory.getConditions(classId, template, conditions);
+        if (pluginConditions != null && pluginConditions.size() > 0) {
+            conditions.addAll(pluginConditions);
+        }
+        PlugInRet plugInRet = plugInFactory.beforeQuery(classId, template, conditions);
+        if (plugInRet.getCode() != 200) {
+            throw new BusinessLogicRunTimeException(plugInRet.getMsg());
+        }
+
+        // 插件事件 end-------
 
         // 主表表名
         String primaryTableName = formClass.getTableName();
@@ -409,7 +425,7 @@ public class TemplateService extends BaseService implements ITemplateService {
             where = " WHERE 1=1 ";
             // 获取客户端传入的查询条件
             if (conditions != null && !conditions.isEmpty()) {
-                whereMap = getWhere(classId, -1, conditions);
+                whereMap = getWhere(classId, 1, conditions);
             }
             if (!whereMap.isEmpty()) {
                 where = whereMap.get("whereStr").toString();
@@ -1019,22 +1035,6 @@ public class TemplateService extends BaseService implements ITemplateService {
             }
         }
 
-/*        for (Iterator<String> it = selFormFields.keySet().iterator(); it.hasNext(); ) {
-
-            String fieldKey = it.next();
-            FormFields formField = selFormFields.get(fieldKey);
-
-            String sqlColumnName = formField.getSqlColumnName();
-            String key = formField.getKey();
-            boolean needSave = formField.getNeedSave();
-
-            if (needSave) {
-                // 不需要保存的字段不需要查询
-                sbSelect.append(String.format("%s.%s%s%s AS %s%s%s,", sbSelect, bDelimiter, sqlColumnName, eDelimiter, bDelimiter, key, eDelimiter)).append(separator);
-            }
-
-        }*/
-
         String select = sbSelect.toString().trim();
         select = select.substring(0, select.length() - 1);
         String from = sbFrom.toString().trim();
@@ -1127,7 +1127,7 @@ public class TemplateService extends BaseService implements ITemplateService {
             Condition.LinkTypeEnum linkType = condition.getLinkType();
 
             // 第一个条件忽略连接关系
-            //andOr = i == 0 ? "" : andOr;
+            linkType = i == 0 ? Condition.LinkTypeEnum.NULL : linkType;
 
 
             // 左括号-可能有多个，如 "(("，甚至"((("等复杂查询,默认"("
@@ -1167,7 +1167,7 @@ public class TemplateService extends BaseService implements ITemplateService {
                 continue;
             }
             // 不是指定page的过滤条件
-            if (pageIndex > 0 && formFieldsAll.get(fieldKey).getPage().equals(pageIndex)) {
+            if (pageIndex > 0 && !formFieldsAll.get(fieldKey).getPage().equals(pageIndex)) {
                 continue;
             }
 
@@ -1318,11 +1318,11 @@ public class TemplateService extends BaseService implements ITemplateService {
 
             if (skip) {
                 // 手工脚本-主要是IN过滤类型MyBatis不好格式化参数
-                sbWhere.append(separator).append(String.format("%s %s %s.%s%s%s %s %s %s %s %s ", linkType, leftParenTheses, tableName, bDelimiter, fieldName, eDelimiter, logicOperator, preValue, value,
+                sbWhere.append(separator).append(String.format("%s %s %s.%s%s%s %s %s %s %s %s ", linkType.getName(), leftParenTheses, tableName, bDelimiter, fieldName, eDelimiter, logicOperator.getOperator(), preValue, value,
                         sufValue, rightParenTheses));
             } else {
                 // 动态脚本
-                sbWhere.append(separator).append(String.format("%s %s %s.%s%s%s %s %s %s %s %s ", linkType, leftParenTheses, tableName, bDelimiter, fieldName, eDelimiter, logicOperator, preValue,
+                sbWhere.append(separator).append(String.format("%s %s %s.%s%s%s %s %s %s %s %s ", linkType.getName(), leftParenTheses, tableName, bDelimiter, fieldName, eDelimiter, logicOperator.getOperator(), preValue,
                         "#{" + fieldKey + i + "}", sufValue, rightParenTheses));
                 // 格式化参数
                 sqlParams.put(fieldKey + i, value);
@@ -1540,21 +1540,23 @@ public class TemplateService extends BaseService implements ITemplateService {
 
     }
 
-    /**
-     * 判断List<Map<String, Object>>中的Map中key为targetKey的元素的值是否为targetValue，是则并返回该元素，否则返回null
-     *
-     * @param list        List<Map<String, Object>>
-     * @param targetKey
-     * @param targetValue
-     * @return
-     */
-    private Map<String, Object> isKeyInList(List<Map<String, Object>> list, String targetKey, Object targetValue) {
 
-        for (Map<String, Object> map : list) {
-            if (map.containsKey(targetKey) && map.get(targetKey).equals(targetValue)) {
-                return map;
+    public static void main(String[] args) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode jsonNode = mapper.readTree("{\"name\":\"yadda\",\"age\":22,\"like\":[\"pingPon\",\"ball\"]}");
+
+        System.out.println(jsonNode.toString());
+        System.out.println(jsonNode.get("name").asText());
+        System.out.println(jsonNode.get("age").asInt());
+        System.out.println(jsonNode.path("like").size());
+        System.out.println(jsonNode.path("like"));
+
+        // 遍历 info 内的 array
+        if (jsonNode.path("like").isArray()) {
+            for (JsonNode objNode : jsonNode.path("like")) {
+                System.out.println(objNode);
             }
         }
-        return null;
+
     }
 }

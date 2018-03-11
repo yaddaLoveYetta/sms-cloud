@@ -104,7 +104,7 @@ public class Condition implements Serializable {
      */
     public enum LinkTypeEnum implements Serializable {
 
-        AND("AND"), OR("OR"), NOT_SUPPORT("NOT_SUPPORT");
+        AND("AND"), OR("OR"), NULL(""), NOT_SUPPORT("NOT_SUPPORT");
 
         private String name;
 
@@ -138,18 +138,29 @@ public class Condition implements Serializable {
      */
     public enum LogicOperatorEnum implements Serializable {
 
-        EQUAL("ET", "等于"), NOT_EQUAL("NET", "不等于"), LESS_THAN("LT", "小于"), LESS_OR_EQUAL("LET", "小于或等于"),
-        GREATER("GT", "大于"), GREATER_OR_EQUAL("GET", "大于或等于"),
-        LIKE("BLT", "LIKE模糊匹配"), IN("IN", "包含于"),
-        NOT_SUPPORT("NOT_SUPPORT", "不支持的比较符号");
+        EQUAL("ET", "=", "等于"), NOT_EQUAL("NET", "!=", "不等于"), LESS_THAN("LT", "<", "小于"), LESS_OR_EQUAL("LET", "<=", "小于或等于"),
+        GREATER("GT", ">", "大于"), GREATER_OR_EQUAL("GET", ">=", "大于或等于"),
+        LIKE("BLT", "LIKE", "LIKE模糊匹配"), IN("IN", "IN", "包含于"),
+        NOT_SUPPORT("NOT_SUPPORT", "NOT_SUPPORT", "不支持的比较符号");
 
         private String name;
+        private String operator;
         private String description;
 
 
-        LogicOperatorEnum(String name, String description) {
+        LogicOperatorEnum(String name, String operator, String description) {
             this.name = name;
+            this.operator = operator;
             this.description = description;
+        }
+
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
         }
 
         /**
@@ -158,12 +169,12 @@ public class Condition implements Serializable {
          * @return
          */
         @JsonValue
-        public String getName() {
-            return name;
+        public String getOperator() {
+            return operator;
         }
 
-        public void setName(String name) {
-            this.name = name;
+        public void setOperator(String operator) {
+            this.operator = operator;
         }
 
         public String getDescription() {

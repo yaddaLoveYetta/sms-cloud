@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -75,17 +76,17 @@ public class TemplateController {
             throw new BusinessLogicRunTimeException("参数错误：必须提交classId");
         }
 
-        List<Condition> conditions = null;
-        List<Sort> sorts = null;
+        List<Condition> conditions = new ArrayList<Condition>();
+        List<Sort> sorts = new ArrayList<Sort>();
 
         // 包装查询条件-方便操作
-        if (null != condition && !condition.equals("")) {
+        if (null != condition && !"".equals(condition)) {
             ObjectMapper objectMapper = new ObjectMapper();
             JavaType javaType = objectMapper.getTypeFactory().constructParametricType(List.class, Condition.class);
             conditions = objectMapper.readValue(condition, javaType);
         }
         // 包装查询结果排序-方便操作
-        if (null != sort && !sort.equals("")) {
+        if (null != sort && !"".equals(sort)) {
             ObjectMapper objectMapper = new ObjectMapper();
             JavaType javaType = objectMapper.getTypeFactory().constructParametricType(List.class, Sort.class);
             sorts = objectMapper.readValue(sort, javaType);
