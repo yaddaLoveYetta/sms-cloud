@@ -11,7 +11,7 @@ public interface ITemplateService {
     /**
      * 查询基础资料/单据模板数据
      *
-     * @param classId   业务类别
+     * @param classId 业务类别
      * @param type    查询方式（0:后端查询 1:前端获取）
      * @return
      */
@@ -50,12 +50,15 @@ public interface ITemplateService {
 
     /**
      * 通过内码集合获取多个业务类型数据
+     *
      * @param classId 业务类型
-     * @param ids 单据内码集合
-     * @param sorts 排序结构
+     * @param ids     单据内码集合
+     * @param conditions   查询条件
+     * @param sorts   排序结构
      * @return 单据集合
      */
-    List<Map<String, Object>> getItemByIds(Integer classId, List<Long> ids, List<Sort> sorts);
+    List<Map<String, Object>> getItemByIds(Integer classId, List<Long> ids, List<Condition> conditions, List<Sort> sorts);
+
     /**
      * 新增数据
      *

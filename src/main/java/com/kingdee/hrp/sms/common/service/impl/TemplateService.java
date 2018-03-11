@@ -223,7 +223,7 @@ public class TemplateService extends BaseService implements ITemplateService {
 
         // 获取客户端传入的查询条件
         if (conditions != null && !conditions.isEmpty()) {
-            whereMap = getWhere(classId, conditions);
+            whereMap = getWhere(classId, -1, conditions);
         }
 
         // 获取客户端传入了排序规则
@@ -288,7 +288,7 @@ public class TemplateService extends BaseService implements ITemplateService {
             List<Map<String, Object>> itemByIds = new ArrayList<Map<String, Object>>();
 
             if (idList.size() > 0) {
-                itemByIds = getItemByIds(classId, idList, sorts);
+                itemByIds = getItemByIds(classId, idList, conditions, sorts);
             }
 
             ret.put("list", itemByIds);
@@ -318,13 +318,12 @@ public class TemplateService extends BaseService implements ITemplateService {
 
     @Override
     @SuppressWarnings("unchecked")
-    public List<Map<String, Object>> getItemByIds(Integer classId, List<Long> idList, List<Sort> sorts) {
-
-        List<Map<String, Object>> ret = new ArrayList<Map<String, Object>>();
+    public List<Map<String, Object>> getItemByIds(Integer classId, List<Long> idList, List<Condition> conditions, List<Sort> sorts) {
 
         if (idList == null || idList.size() == 0) {
             throw new BusinessLogicRunTimeException("请提交单据内码");
         }
+
         String ids = StringUtils.join(idList.toArray(), ",");
 
         // 基础资料模板
@@ -338,6 +337,11 @@ public class TemplateService extends BaseService implements ITemplateService {
         FormClass formClass = (FormClass) template.get("formClass");
         // 子表资料描述信息
         Map<String, Object> formEntries = (Map<String, Object>) template.get("formClassEntry");
+
+        // 查询条件
+        Map<String, Object> whereMap = new HashMap<String, Object>();
+        // 查询条件格式化参数
+        Map<String, Object> whereParams = new HashMap<String, Object>();
 
         if (null == formClass) {
             throw new BusinessLogicRunTimeException("资料模板不存在");
@@ -372,7 +376,8 @@ public class TemplateService extends BaseService implements ITemplateService {
         //String orderBy = orderByStr == null ? "" : orderByStr;
         String orderBy = "";
 
-        Map<String, Object> statement = getStatement(classId);
+        // 首先查询主表记录
+        Map<String, Object> statement = getStatement(classId, 0);
 
         select = (String) statement.get("select");
         from = (String) statement.get("from");
@@ -389,73 +394,81 @@ public class TemplateService extends BaseService implements ITemplateService {
         sqlMap.put("sql", sql);
 
         TemplateDaoMapper templateDaoMapper = sqlSession.getMapper(TemplateDaoMapper.class);
+        // 主表记录
+        List<Map<String, Object>> dataHead = templateDaoMapper.getItems(sqlMap);
 
-        List<Map<String, Object>> data = templateDaoMapper.getItems(sqlMap);
+        if (!formEntries.isEmpty()) {
+            // 存在关联字表-只关联第一个子表查询
 
-        // 将记录转换成返回接口的格式，将主表关联多行子表记录时，子表记录整合到返回结构"entry"中
-        for (Map<String, Object> item : data) {
-            // 循环每一行
-            Map<String, Object> head = new HashMap<String, Object>();// 主表所有字段
-            Map<String, Object> entries = new HashMap<String, Object>(); // 所有子表entry
+            FormClassEntry entry = (FormClassEntry) formEntries.get("1");
+            String entryTableName = entry.getTableName();
+            String foreignKey = entry.getForeignKey();
 
-            List<Map<String, Object>> formEntryRows = new ArrayList<Map<String, Object>>(); // 第一个子表所有行
-            Map<String, Object> formEntryRow = new HashMap<String, Object>();// 子表每一行的元素
+            statement = getStatement(classId, 1);
+            // 清空原过滤条件
+            where = " WHERE 1=1 ";
+            // 获取客户端传入的查询条件
+            if (conditions != null && !conditions.isEmpty()) {
+                whereMap = getWhere(classId, -1, conditions);
+            }
+            if (!whereMap.isEmpty()) {
+                where = whereMap.get("whereStr").toString();
+                whereParams = (Map<String, Object>) whereMap.get("whereParams");
+            }
 
-            for (Iterator<Map.Entry<String, Object>> it = item.entrySet().iterator(); it.hasNext(); ) {
-                // 循环行中的列
-                Map.Entry<String, Object> column = it.next();
+            select = (String) statement.get("select");
+            from = (String) statement.get("from");
 
-                String cName = column.getKey();
-                Object cValue = column.getValue();
-                // 真实的模板key
-                String cNameTrueKey = cName;
+            // 查询条件-直接用传入的主键做子表的外键条件
+            sbWhere = new StringBuilder();
+            sbWhere.append(where).append(System.getProperty("line.separator")).append(String.format(" AND %s.%s%s%s IN (%s)", entryTableName, bDelimiter, foreignKey, eDelimiter, ids));
+            where = sbWhere.toString();
 
-                if (cName.contains("_")) {
-                    // 关联查询字段时携带的_DspName,_NmbName等模板之外的key
-                    //cNameTrueKey = cName.substring(0, cName.indexOf("_"));
+            sqlMap = new HashMap<String, Object>();
+            // 完整的sql(带格式化参数)
+            sql = select + System.getProperty("line.separator") + from + System.getProperty("line.separator") + where + System.getProperty("line.separator") + orderBy
+                    + System.getProperty("line.separator");
+            sqlMap.put("sql", sql);
+
+            // 格式化参数
+            for (Map.Entry<String, Object> whereEntry : whereParams.entrySet()) {
+                sqlMap.put(whereEntry.getKey(), whereEntry.getValue());
+            }
+
+            // 子表记录
+            List<Map<String, Object>> dataEntry = templateDaoMapper.getItems(sqlMap);
+
+            // 迭代子表记录放入主表记录行entry中
+            for (Map<String, Object> entryItem : dataEntry) {
+
+                Long foreignKeyValue = (Long) entryItem.get(foreignKey);
+
+                for (Map<String, Object> dataHeadItem : dataHead) {
+
+                    if (!dataHeadItem.containsKey("entry")) {
+                        // 没有entry先新增entry
+                        Map<String, ArrayList<Map<String, Object>>> headEntry = new HashMap<String, ArrayList<Map<String, Object>>>();
+                        headEntry.put("1", new ArrayList<Map<String, Object>>());
+                        dataHeadItem.put("entry", headEntry);
+                    }
+
+                    Long primaryKeyValue = (Long) dataHeadItem.get(primaryKey);
+
+                    ArrayList<Map<String, Object>> headEntry = ((Map<String, ArrayList<Map<String, Object>>>) dataHeadItem.get("entry")).get("1");
+
+                    if (primaryKeyValue.equals(foreignKeyValue)) {
+                        // 确认了该分录就是该主表分录-家该分录添加到对应主表分录中
+                        headEntry.add(entryItem);
+                        // 为了保证每条数据都有entry结构，此处不退出循环
+                        //break;
+                    }
+
                 }
-
-                if (formFields0.containsKey(cNameTrueKey)) {
-                    // formClass即主表字段
-                    // formClass.put(cNameTrueKey, cValue);
-
-                    // if (!cNameTrueKey.equals(cName)) {
-                    // 关联查询字段时携带的_DspName,_NmbName等模板之外的key
-                    head.put(cName, item.get(cName));
-                    // }
-
-                } else if (isChildTableExist && formFields1.containsKey(cNameTrueKey)) {
-                    // formEntries1即第一个子表字段
-                    // formEntryRow.put(cNameTrueKey, cValue);
-
-                    // if (!cNameTrueKey.equals(cName)) {
-                    // 关联查询字段时携带的_DspName,_NmbName等模板之外的key
-                    formEntryRow.put(cName, item.get(cName));
-                    // }
-                }
             }
 
-            if (isChildTableExist) {
-                // 这里formEntryRows也就一行，为了构造{[]}的结构
-                formEntryRows.add(formEntryRow);
-                // 第一个子表数据
-                entries.put("1", formEntryRows);
-            }
-            // 将子表已关键字"entry"作为key插入到formClass中
-            head.put("entry", entries);
-
-            Map<String, Object> keyInList = isKeyInList(ret, primaryKey, head.get(primaryKey));
-
-            if (keyInList != null) {
-                // 已存在该条记录，增加子表行
-                ((List<Map<String, Object>>) ((Map<String, Object>) keyInList.get("entry")).get("1")).add(formEntryRow);
-            } else {
-                // 不存在该行记录，新增行
-                ret.add(head);
-            }
         }
 
-        return ret;
+        return dataHead;
     }
 
     /**
@@ -666,7 +679,7 @@ public class TemplateService extends BaseService implements ITemplateService {
 
                 // 设置了关联查询表别名时，查询字段应该用别名.字段名
                 // eg: select A.colA, B.colB from table_a AS A inner join table_b AS B on A.id=B.id
-                String srcTableAlis = srcTableAlisAs == null || srcTableAlisAs.equals("") ? srcTable : srcTableAlisAs;
+                String srcTableAlis = srcTableAlisAs == null || "".equals(srcTableAlisAs) ? srcTable : srcTableAlisAs;
 
                 if (lookUpType != null && (lookUpType == 1 || lookUpType == 2)) {
 
@@ -792,14 +805,18 @@ public class TemplateService extends BaseService implements ITemplateService {
     }
 
     /**
-     * 构建查询脚本
+     * 构建指定classId，page的查询脚本
      *
      * @param classId 业务类别
-     * @param page    0主表1第一个子表，-1主表及第一个子表
+     * @param page    0主表1第一个子表
      * @return 查询语句及参数
      */
     @SuppressWarnings("unchecked")
     private Map<String, Object> getStatement(int classId, int page) {
+
+        if (page < 0) {
+            throw new BusinessLogicRunTimeException("page参数错误！");
+        }
 
         // 基础资料模板
         Map<String, Object> template = getFormTemplate(classId, 1);
@@ -848,7 +865,7 @@ public class TemplateService extends BaseService implements ITemplateService {
 
 
         sbSelect.append("SELECT").append(separator);
-        sbFrom.append("FROM " + selTable).append(separator);
+        sbFrom.append("FROM ").append(selTable).append(separator);
 
         for (String fieldKey : selFormFields.keySet()) {
 
@@ -891,9 +908,9 @@ public class TemplateService extends BaseService implements ITemplateService {
 
             // 设置了关联查询表别名时，查询字段应该用别名.字段名
             // eg: select A.colA, B.colB from table_a AS A inner join table_b AS B on A.id=B.id
-            String srcTableAlis = srcTableAlisAs == null || srcTableAlisAs.equals("") ? srcTable : srcTableAlisAs;
+            String srcTableAlis = srcTableAlisAs == null || "".equals(srcTableAlisAs) ? srcTable : srcTableAlisAs;
 
-            if (lookUpType != null && (lookUpType == 1 || lookUpType == 2)) {
+            if (lookUpType == 1 || lookUpType == 2) {
 
                 // eg: select order.number as number_key,item.name as name_DspName,item.number as number_NmbName from
                 // order inner join item on order.item_id=item.id
@@ -925,7 +942,7 @@ public class TemplateService extends BaseService implements ITemplateService {
                     sbFrom.append(filter).append(separator);
                 }
 
-            } else if (lookUpType != null && lookUpType == 3) {
+            } else if (lookUpType == 3) {
 
                 // 引用基础资料的附加属性-依赖lookUpType == 1 || lookUpType == 2 存在,即模板中必须存在该记录lookUpClassId且lookUpType=1/2 的字段模板
                 // 即引用基础资料属性的模板中，disPlayField的配置统一认为是被引用基础资料模板中的key，需要二次验证引用资料模板确认查询字段
@@ -974,7 +991,7 @@ public class TemplateService extends BaseService implements ITemplateService {
 
                 }
 
-            } else if (lookUpType != null && lookUpType == 4) {
+            } else if (lookUpType == 4) {
                 // 普通引用-引用其他表数据
 
                 sbSelect.append(String.format("%s.%s%s%s AS %s%s%s,", srcTableAlis, bDelimiter, disPlayField, eDelimiter, bDelimiter, key, eDelimiter)).append(separator);
@@ -990,7 +1007,7 @@ public class TemplateService extends BaseService implements ITemplateService {
                 sbFrom.append(String.format(" ON %s.%s%s%s = %s.%s%s%s ", selTable, bDelimiter, sqlColumnName, eDelimiter, srcTableAlis, bDelimiter, srcField, eDelimiter))
                         .append(separator);
 
-            } else if (lookUpType != null && lookUpType == 5) {
+            } else if (lookUpType == 5) {
 
                 // 普通引用其他表的其他字段-
                 // 主要为了避免为4即引用他表数据时，需引用多个字段时关联表重复问题。依附于=4时存在,即模板中肯定存在lookUpType=4的字段模板
@@ -1034,13 +1051,16 @@ public class TemplateService extends BaseService implements ITemplateService {
      * 构建查询时的where条件
      *
      * @param classId    业务类别
+     * @param pageIndex  可以获取指定page的条件(-1获取所有page的条件,默认所有)
      * @param conditions 结构化条件信息
      * @return 查询条件
      */
     @SuppressWarnings("unchecked")
-    private Map<String, Object> getWhere(Integer classId, List<Condition> conditions) {
+    private Map<String, Object> getWhere(Integer classId, Integer pageIndex, List<Condition> conditions) {
 
         Map<String, Object> ret = new HashMap<String, Object>(16);
+
+        pageIndex = pageIndex == null ? -1 : pageIndex > 1 ? 1 : pageIndex;
 
         StringBuilder sbWhere = new StringBuilder();
         // 保存sql格式化参数
@@ -1089,7 +1109,7 @@ public class TemplateService extends BaseService implements ITemplateService {
         }
 
         // 将所有用户条件包含在AND()中，即所有过滤条件的结果是 WHERE 1=1 AND (用户过滤条件)
-        sbWhere.append("WHERE 1=1 AND (");
+        String whereStructure = "WHERE 1=1 AND (%s)";
 
         for (int i = 0; i < conditions.size(); i++) {
 
@@ -1144,6 +1164,10 @@ public class TemplateService extends BaseService implements ITemplateService {
 
             // 没有定义模板-忽略
             if (!formFieldsAll.containsKey(fieldKey)) {
+                continue;
+            }
+            // 不是指定page的过滤条件
+            if (pageIndex > 0 && formFieldsAll.get(fieldKey).getPage().equals(pageIndex)) {
                 continue;
             }
 
@@ -1306,12 +1330,13 @@ public class TemplateService extends BaseService implements ITemplateService {
 
         }
         //将所有过滤条件用（）括起来
-        sbWhere.append(")");
 
-        String where = sbWhere.toString();
+        String where = sbWhere.toString().trim();
 
-        if (!"WHERE 1=1 AND ()".equals(where)) {
-            ret.put("whereStr", where);
+        if (!"".equals(where)) {
+
+            whereStructure = String.format(whereStructure, where);
+            ret.put("whereStr", whereStructure);
             ret.put("whereParams", sqlParams);
         }
 
