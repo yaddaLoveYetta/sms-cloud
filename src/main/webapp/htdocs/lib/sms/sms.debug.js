@@ -2077,40 +2077,39 @@
         var defaults = {};
 
         // 模板
-        var samples = Samples.get('ButtonList', [
+        var samples = Samples.get('Bootstrap.ButtonList', [
             {
                 name: 'ul',
                 begin: '#--ul.begin--#',
                 end: '#--ul.end--#',
-                trim: true,
+                trim: true
             },
             {
                 name: 'item',
                 begin: '#--item.begin--#',
                 end: '#--item.end--#',
                 outer: '{items}',
-                trim: true,
+                trim: true
             },
             {
                 name: 'group',
                 begin: '#--group.begin--#',
                 end: '#--group.end--#',
                 outer: '{groups}',
-                trim: true,
+                trim: true
             },
             {
                 name: 'group.item',
                 begin: '#--group.item.begin--#',
                 end: '#--group.item.end--#',
                 outer: '{group.items}',
-                trim: true,
+                trim: true
 
             },
 
         ]);
 
         //console.dir(samples);
-
 
         /**
          * 级联弹出菜单构造器。
@@ -2167,21 +2166,21 @@
                 var autoClose = meta.autoClose;
 
                 // 点击下拉三角形按钮，弹出菜单
-                $container.delegate('li[data-index]>span', 'click', function (event) {
+                /*                $container.delegate('li[data-index]>span', 'click', function (event) {
 
-                    var span = this;
-                    var li = span.parentNode;
+                                    var span = this;
+                                    var li = span.parentNode;
 
-                    var no = +li.getAttribute('data-index');
-                    self.toggle(no);
-                    meta.hasManualOpened = false;
+                                    var no = +li.getAttribute('data-index');
+                                    self.toggle(no);
+                                    meta.hasManualOpened = false;
 
-                    event.stopPropagation();
+                                    event.stopPropagation();
 
-                });
+                                });*/
 
                 // 点击按钮本身
-                $container.delegate('ul>li[data-index]', 'click', function (event) {
+/*                $container.delegate('ul>li[data-index]', 'click', function (event) {
 
                     var li = this;
 
@@ -2208,10 +2207,40 @@
                     event.stopPropagation();
 
 
+                });*/
+
+                // 点击按钮本身
+                $container.delegate('button[data-index]', 'click', function (event) {
+
+                    var btn = this;
+
+                    var index = +btn.getAttribute('data-index');
+                    var item = list[index];
+
+                    var args = [item, index];
+
+                    var fn = item[callbackKey];
+                    if (fn) {
+                        fn.apply(null, args);
+                    }
+
+                    if (routeKey && (routeKey in item)) {
+                        emitter.fire('click:' + item[routeKey], args);
+                    }
+
+                    emitter.fire('click', args);
+
+/*                    if (!meta.hasManualOpened) { // 不是手动打开的，则关闭
+                        hideMenus('fade');
+                    }*/
+
+                    event.stopPropagation();
+
+
                 });
 
                 // 点击弹出的菜单项
-                $container.delegate('ol>li[data-index]', 'click', function (event) {
+/*                $container.delegate('ol>li[data-index]', 'click', function (event) {
 
                     var li = this;
 
@@ -2241,18 +2270,51 @@
                         hideMenus(no, 'fade');
                     }
 
+                });*/
+
+                // 点击弹出的菜单项
+                $container.delegate('ul>li[data-index]', 'click', function (event) {
+
+                    var li = this;
+
+                    var no = +li.getAttribute('data-no');
+                    var index = +li.getAttribute('data-index');
+
+                    var group = list[no];
+                    var items = group[childKey];
+                    var item = items[index];
+
+                    var args = [item, index, no];
+
+                    var fn = item[callbackKey];
+                    if (fn) {
+                        fn.apply(null, args);
+                    }
+
+                    if (routeKey && (routeKey in item)) {
+                        emitter.fire('click:' + item[routeKey], args);
+                    }
+
+                    emitter.fire('click', args);
+
+                    event.stopPropagation();
+
+/*                    if (autoClose) { // 设置了点击后隐藏
+                        hideMenus(no, 'fade');
+                    }*/
+
                 });
 
                 // 点击其他地方，隐藏
-                $(document).on('click', function (event) {
+/*                $(document).on('click', function (event) {
                     hideMenus('slide');
                 });
 
                 $(top.document).on('click', function (event) {
                     hideMenus('fade');
-                });
+                });*/
 
-            };
+            }
 
             function hideMenus(no, type) {
                 if (typeof no == 'string') { // 重载 hideMenus(type)
@@ -2355,9 +2417,9 @@
                             'index': no,
                             'text': item[textKey],
                             'icon': item[iconKey] || 'icon-jibenziliao1',
-                            'ol-id': meta.olId,
+                          /*  'ol-id': meta.olId,
                             'span-id': meta.spanId,
-                            'css-class': item.cssClass || '',
+                            'css-class': item.cssClass || '',*/
 
                             'group.items': $.Array.keep(items, function (item, index) {
 
@@ -2368,7 +2430,7 @@
                                     'icon': item[iconKey] || 'icon-jibenziliao1'
                                 });
 
-                            }).join(''),
+                            }).join('')
                         });
 
                     }).join(''),

@@ -1222,7 +1222,8 @@ label {
     font-size: 12px;
     float: none !important;
 }
-.pagination > li > a{
+
+.pagination > li > a {
     float: none !important;
 }
 
@@ -1744,4 +1745,12 @@ table {
     border: 1px solid #ddd;
     background: url(img/golbal-icons.png) no-repeat right;
     background-size: 16px 16px;
+}
+
+.btn-box {
+    margin-top: 5px;
+}
+
+.btn-box .iconfont {
+    font-size: 14px !important;
 }

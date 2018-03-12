@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Bootstrap 按钮选项</title>
+    <link rel="stylesheet" href="../../css/global.debug.css" type="text/css"/>
+    <link rel="stylesheet" href="../../css/bootstrap.css" type="text/css"/>
+    <link rel="stylesheet" href="../../css/iconfont/iconfont.css">
+</head>
+<body>
+
+<div id="div-button-list" class="btn-box">
+    <ul class="sms-btn-menu&quot;">
+        <li data-index="0" class="sms-btn-item"><i class=" iconfont icon-chakan"></i> 查看</li>
+        <li data-index="1" class="sms-btn-item"><i class=" iconfont icon-icon-xinzeng"></i> 新增</li>
+        <li data-index="2" class="sms-btn-menu">
+            <button class="sms-btn-item"><i class="iconfont icon-xiugaiziliao"></i> 修改</button>
+            <ol id="ol-619F1BDED56B-2" class="btn-more" style="display:none;">
+                <li data-index="0" data-no="2"><a href="javascript:"> <i class="iconfont icon-delete"></i> 删除</a></li>
+            </ol>
+            <span id="span-619F1BDED56B-2" class="bt-dropdown"><i class="icon-dropdown"></i></span></li>
+    </ul>
+</div>
+
+<div id="bootstrapt" class="btn-box">
+    <!-- 标准的按钮 -->
+    <button data-index="0" type="button" class="btn btn-primary">
+        <i class=" iconfont icon-chakan"></i>
+        默认按钮
+    </button>
+    <!-- 提供额外的视觉效果，标识一组按钮中的原始动作 -->
+    <button type="button" class="btn btn-primary">原始按钮</button>
+    <!-- 表示一个成功的或积极的动作 -->
+    <button type="button" class="btn btn-primary">成功按钮</button>
+    <!-- 信息警告消息的上下文按钮 -->
+    <button type="button" class="btn btn-primary">信息按钮</button>
+    <!-- 表示应谨慎采取的动作 -->
+    <button type="button" class="btn btn-primary">警告按钮</button>
+    <!-- 表示一个危险的或潜在的负面动作 -->
+    <button type="button" class="btn btn-primary">危险按钮</button>
+
+    <!-- Split button -->
+    <div class="btn-group">
+        <button data-index="0" type="button" class="btn btn-primary">
+            <i class=" iconfont icon-chakan"></i>
+            Action
+        </button>
+        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                aria-expanded="false">
+            <span class="caret"></span>
+            <span class="sr-only">Toggle Dropdown</span>
+        </button>
+        <ul class="dropdown-menu">
+            <li data-index="0" data-no="0"><a href="javascript:"><i class=" iconfont icon-chakan"></i>Action</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a href="#">Another action</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a href="#">Something else here</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a href="#">Separated link</a></li>
+        </ul>
+    </div>
+</div>
+
+<script src="../../lib/jquery/jquery-1.11.1.debug.js"></script>
+<script src="../../lib/miniquery/miniquery.debug.js"></script>
+<script src="../../lib/sms/sms.debug.js"></script>
+<script src="../../lib/bootstrap/bootstrap.js"></script>
+<script src="../../config.js"></script>
+</body>
+</html>
