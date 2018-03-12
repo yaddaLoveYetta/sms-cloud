@@ -168,7 +168,7 @@
 
         'load': function (item) {
 
-        },
+        }
     });
 
     Iframe.on('open', function (group, index, data) {
