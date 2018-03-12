@@ -75,7 +75,8 @@
         }
     }
 
-    FormAction.create({'classId': classId}, function (config) {
+    // 必须指明获取功能按钮的场景 0:查看(列表)1:(新增)2:(编辑)
+    FormAction.create({'classId': classId, 'type': 0}, function (config) {
 
         if (dialog) {
             // 对话框中不要工具栏
@@ -93,32 +94,28 @@
 
         //支持二级事件，二级事件对应 item 中的 name
         ButtonList.on('click', {
+
             'add': function (item, index) {
 
-                var index = ClassMapping.getIndex(classId);
-                if (index > 0) {
-                    // 有菜单项的跳转
-                    Iframe.open(index.first, index.second, {
-                        query: {}
-                    });
-                } else {
+                var metaData = List.getMetaData();
+                var url = 'html/user/supplier/index.html';
+                var name = metaData.formClass.name || '';
 
-                    var url = ClassMapping.getPage(classId);
-                    var name = ClassMapping.getTabName(classId) || '';
-
-                    if (!url) {
-                        // 没有配置编辑页面或不需要编辑功能
-                        return;
-                    }
-                    Iframe.open({
-                        id: classId + '-add',
-                        name: '新增-' + name,
-                        url: url,
-                        query: {
-                            'classId': classId,
-                        }
-                    });
+                if (!url) {
+                    // 没有配置编辑页面或不需要编辑功能
+                    return;
                 }
+
+                Iframe.open({
+                    id: classId + '-add',
+                    name: '新增-' + name,
+                    url: url,
+                    query: {
+                        'classId': classId,
+                        'operate': 1
+                    }
+                });
+
 
             },
             'edit': function (item, index) {

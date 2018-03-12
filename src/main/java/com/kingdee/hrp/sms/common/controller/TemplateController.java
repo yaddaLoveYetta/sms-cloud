@@ -54,8 +54,13 @@ public class TemplateController {
 
     @RequestMapping(value = "getFormAction")
     @ResponseBody
-    public List getFormAction(Integer classId) {
-        return templateService.getFormAction(classId);
+    public List getFormAction(Integer classId, @RequestParam(defaultValue = "0") Integer type) {
+
+        //0:查看(列表)1:(新增)2:(编辑)
+        if (type < 0 || type > 2) {
+            throw new BusinessLogicRunTimeException("type类型错误!");
+        }
+        return templateService.getFormAction(classId, type);
     }
 
     /**

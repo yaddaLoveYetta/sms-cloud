@@ -6,22 +6,28 @@ define("List", function (require, module, exports) {
     var $ = require("$");
     var MiniQuery = require("MiniQuery");
     var SMS = require("SMS");
-    var API = require("/API");
     // 完整名称为 List/API
-    var Operation = require("/Operation");
-
-    var Iframe = SMS.require('Iframe');
-
-    var dialog = Iframe.getDialog();
+    var API = require("/API");
     // 完整名称为 List/Operation
+    var Operation = require("/Operation");
+    var Iframe = SMS.require('Iframe');
+    var dialog = Iframe.getDialog();
+    // 容器对象
     var div = document.getElementById("div-list");
-    var samples = require("/Samples")(div);
     // 完整名称为 List/Samples
+    var samples = require("/Samples")(div);
+    // 主键
     var primaryKey = "";
+    // 单据模板
+    var metaData = {};
+    // 列表数据
     var list = {};
+    // 事件绑定标识
     var hasBind = false;
     var emitter = MiniQuery.Event.create();
+    // 选中的记录
     var index$selected = {};
+
     // 记录选中的索引
     function load(config, fn) {
 
@@ -117,6 +123,7 @@ define("List", function (require, module, exports) {
             conditions: config.conditions
         }, function (data, total) {
             list = data;
+            metaData = list.metaData;
             primaryKey = list.primaryKey;
             var headItems = data.head.items;
             var bodyItems = data.body.items;
@@ -343,6 +350,10 @@ define("List", function (require, module, exports) {
         Operation.send(classId, list, fn);
     }
 
+    function getMetaData() {
+        return metaData;
+    }
+
     return {
         load: load,
         render: render,
@@ -355,6 +366,7 @@ define("List", function (require, module, exports) {
         review: review,
         unReview: unReview,
         send: send,
+        getMetaData: getMetaData
     };
 })
 ;

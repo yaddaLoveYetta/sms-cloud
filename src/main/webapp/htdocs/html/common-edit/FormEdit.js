@@ -55,14 +55,14 @@ define('FormEdit', function (require, module, exports) {
          * @param fnE 含有表体字段时，暂时通过回调给到调用者呈现
          * @param fnS 含有特殊控件时，特殊控件初始化前回调给调用者做配置
          */
-        function render(classId, id, opt, fnE, fnS, dfValue) {
+        function render(params) {
 
-            formClassId = classId;
-            itemId = id;
-            operate = opt || 0;
-            fnEntry = fnE;
-            fnSelectors = fnS;
-            initValue = dfValue;
+            formClassId = params.classId;
+            itemId = params.id;
+            operate = params.operate || 0;
+            fnEntry = params.fnEntry;
+            fnSelectors = params.fnSelectors;
+            initValue = params.initValue;
             getMetaData();
 
         }

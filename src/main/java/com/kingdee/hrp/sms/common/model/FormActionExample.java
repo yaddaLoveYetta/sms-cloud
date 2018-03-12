@@ -294,6 +294,76 @@ public class FormActionExample {
             return (Criteria) this;
         }
 
+        public Criteria andNameModifyIsNull() {
+            addCriterion("name_modify is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameModifyIsNotNull() {
+            addCriterion("name_modify is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameModifyEqualTo(String value) {
+            addCriterion("name_modify =", value, "nameModify");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameModifyNotEqualTo(String value) {
+            addCriterion("name_modify <>", value, "nameModify");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameModifyGreaterThan(String value) {
+            addCriterion("name_modify >", value, "nameModify");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameModifyGreaterThanOrEqualTo(String value) {
+            addCriterion("name_modify >=", value, "nameModify");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameModifyLessThan(String value) {
+            addCriterion("name_modify <", value, "nameModify");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameModifyLessThanOrEqualTo(String value) {
+            addCriterion("name_modify <=", value, "nameModify");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameModifyLike(String value) {
+            addCriterion("name_modify like", value, "nameModify");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameModifyNotLike(String value) {
+            addCriterion("name_modify not like", value, "nameModify");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameModifyIn(List<String> values) {
+            addCriterion("name_modify in", values, "nameModify");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameModifyNotIn(List<String> values) {
+            addCriterion("name_modify not in", values, "nameModify");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameModifyBetween(String value1, String value2) {
+            addCriterion("name_modify between", value1, value2, "nameModify");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameModifyNotBetween(String value1, String value2) {
+            addCriterion("name_modify not between", value1, value2, "nameModify");
+            return (Criteria) this;
+        }
+
         public Criteria andTextIsNull() {
             addCriterion("`text` is null");
             return (Criteria) this;
@@ -361,6 +431,76 @@ public class FormActionExample {
 
         public Criteria andTextNotBetween(String value1, String value2) {
             addCriterion("`text` not between", value1, value2, "text");
+            return (Criteria) this;
+        }
+
+        public Criteria andTextModifyIsNull() {
+            addCriterion("text_modify is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTextModifyIsNotNull() {
+            addCriterion("text_modify is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTextModifyEqualTo(String value) {
+            addCriterion("text_modify =", value, "textModify");
+            return (Criteria) this;
+        }
+
+        public Criteria andTextModifyNotEqualTo(String value) {
+            addCriterion("text_modify <>", value, "textModify");
+            return (Criteria) this;
+        }
+
+        public Criteria andTextModifyGreaterThan(String value) {
+            addCriterion("text_modify >", value, "textModify");
+            return (Criteria) this;
+        }
+
+        public Criteria andTextModifyGreaterThanOrEqualTo(String value) {
+            addCriterion("text_modify >=", value, "textModify");
+            return (Criteria) this;
+        }
+
+        public Criteria andTextModifyLessThan(String value) {
+            addCriterion("text_modify <", value, "textModify");
+            return (Criteria) this;
+        }
+
+        public Criteria andTextModifyLessThanOrEqualTo(String value) {
+            addCriterion("text_modify <=", value, "textModify");
+            return (Criteria) this;
+        }
+
+        public Criteria andTextModifyLike(String value) {
+            addCriterion("text_modify like", value, "textModify");
+            return (Criteria) this;
+        }
+
+        public Criteria andTextModifyNotLike(String value) {
+            addCriterion("text_modify not like", value, "textModify");
+            return (Criteria) this;
+        }
+
+        public Criteria andTextModifyIn(List<String> values) {
+            addCriterion("text_modify in", values, "textModify");
+            return (Criteria) this;
+        }
+
+        public Criteria andTextModifyNotIn(List<String> values) {
+            addCriterion("text_modify not in", values, "textModify");
+            return (Criteria) this;
+        }
+
+        public Criteria andTextModifyBetween(String value1, String value2) {
+            addCriterion("text_modify between", value1, value2, "textModify");
+            return (Criteria) this;
+        }
+
+        public Criteria andTextModifyNotBetween(String value1, String value2) {
+            addCriterion("text_modify not between", value1, value2, "textModify");
             return (Criteria) this;
         }
 
@@ -481,6 +621,66 @@ public class FormActionExample {
 
         public Criteria andAccessUseNotBetween(Integer value1, Integer value2) {
             addCriterion("access_use not between", value1, value2, "accessUse");
+            return (Criteria) this;
+        }
+
+        public Criteria andDisplayIsNull() {
+            addCriterion("display is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDisplayIsNotNull() {
+            addCriterion("display is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDisplayEqualTo(Integer value) {
+            addCriterion("display =", value, "display");
+            return (Criteria) this;
+        }
+
+        public Criteria andDisplayNotEqualTo(Integer value) {
+            addCriterion("display <>", value, "display");
+            return (Criteria) this;
+        }
+
+        public Criteria andDisplayGreaterThan(Integer value) {
+            addCriterion("display >", value, "display");
+            return (Criteria) this;
+        }
+
+        public Criteria andDisplayGreaterThanOrEqualTo(Integer value) {
+            addCriterion("display >=", value, "display");
+            return (Criteria) this;
+        }
+
+        public Criteria andDisplayLessThan(Integer value) {
+            addCriterion("display <", value, "display");
+            return (Criteria) this;
+        }
+
+        public Criteria andDisplayLessThanOrEqualTo(Integer value) {
+            addCriterion("display <=", value, "display");
+            return (Criteria) this;
+        }
+
+        public Criteria andDisplayIn(List<Integer> values) {
+            addCriterion("display in", values, "display");
+            return (Criteria) this;
+        }
+
+        public Criteria andDisplayNotIn(List<Integer> values) {
+            addCriterion("display not in", values, "display");
+            return (Criteria) this;
+        }
+
+        public Criteria andDisplayBetween(Integer value1, Integer value2) {
+            addCriterion("display between", value1, value2, "display");
+            return (Criteria) this;
+        }
+
+        public Criteria andDisplayNotBetween(Integer value1, Integer value2) {
+            addCriterion("display not between", value1, value2, "display");
             return (Criteria) this;
         }
 

@@ -15,8 +15,10 @@ define('FormAction', function (require, module, exports) {
             text: 'text',
             child: 'items',
             callback: 'click',
-            route: 'name',
+            route: 'name'
         },
+        textKey: 'text',
+        routeKey: 'name',
         autoClose: true,
         items: []
     };
@@ -25,7 +27,8 @@ define('FormAction', function (require, module, exports) {
         var api = new API("template/getFormAction");
 
         api.get({
-            classId: config.classId
+            classId: config.classId,
+            type: config.type
         });
 
         api.on({
@@ -54,11 +57,14 @@ define('FormAction', function (require, module, exports) {
 
             actions = actions || [];
 
+            var routeKey = __default__.routeKey;
+            var textKey = __default__.textKey;
+
             // 处理菜单分组--actions是Object
             actions = $.Array.aggregate(actions, 'group', function (item, index) {
                 return {
-                    text: item.name,
-                    name: item.text,
+                    text: item[routeKey],
+                    name: item[textKey],
                     icon: item.icon
                 };
             });

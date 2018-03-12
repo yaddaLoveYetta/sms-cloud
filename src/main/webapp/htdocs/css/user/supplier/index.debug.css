@@ -1,4 +1,8 @@
 
+.head-content {
+    margin-top: 30px;
+}
+
 .form-horizontal .form-group {
     margin-right: 0px;
     margin-left: 0px;
@@ -39,9 +43,11 @@
 .dn {
     display: none;
 }
-.body-content{
+
+.body-content {
     margin-top: 20px;
 }
+
 /*
     jqgrid 样式覆盖 --begin----------------------------
  */
@@ -86,5 +92,5 @@
  */
 
 /*
- 表体样式  -------------------------------begin------------------------------
+ 表体样式  -------------------------------end------------------------------
 */

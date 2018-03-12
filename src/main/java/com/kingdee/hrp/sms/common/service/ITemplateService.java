@@ -21,10 +21,11 @@ public interface ITemplateService {
      * 获取基础资料/单据定义的功能操作列表
      *
      * @param classId 业务类型
+     * @param type    获取按钮的场景 ( 0:查看(列表)1:(新增)2:(编辑)默认0)
      * @return 功能操作列表
      */
 
-    List getFormAction(Integer classId);
+    List getFormAction(Integer classId, Integer type);
 
     /**
      * 通过模板获取业务数据
@@ -51,10 +52,10 @@ public interface ITemplateService {
     /**
      * 通过内码集合获取多个业务类型数据
      *
-     * @param classId 业务类型
-     * @param ids     单据内码集合
-     * @param conditions   查询条件
-     * @param sorts   排序结构
+     * @param classId    业务类型
+     * @param ids        单据内码集合
+     * @param conditions 查询条件
+     * @param sorts      排序结构
      * @return 单据集合
      */
     List<Map<String, Object>> getItemByIds(Integer classId, List<Long> ids, List<Condition> conditions, List<Sort> sorts);

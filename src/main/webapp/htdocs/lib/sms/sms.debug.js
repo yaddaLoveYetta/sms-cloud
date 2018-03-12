@@ -2104,8 +2104,14 @@
                 end: '#--group.item.end--#',
                 outer: '{group.items}',
                 trim: true
-
             },
+            {
+                name: 'group.item.separator',
+                begin: '#--group.item.separator.begin--#',
+                end: '#--group.item.separator.end--#',
+                outer: '{item.separator}',
+                trim: true
+            }
 
         ]);
 
@@ -2180,34 +2186,34 @@
                                 });*/
 
                 // 点击按钮本身
-/*                $container.delegate('ul>li[data-index]', 'click', function (event) {
+                /*                $container.delegate('ul>li[data-index]', 'click', function (event) {
 
-                    var li = this;
+                                    var li = this;
 
-                    var index = +li.getAttribute('data-index');
-                    var item = list[index];
+                                    var index = +li.getAttribute('data-index');
+                                    var item = list[index];
 
-                    var args = [item, index];
+                                    var args = [item, index];
 
-                    var fn = item[callbackKey];
-                    if (fn) {
-                        fn.apply(null, args);
-                    }
+                                    var fn = item[callbackKey];
+                                    if (fn) {
+                                        fn.apply(null, args);
+                                    }
 
-                    if (routeKey && (routeKey in item)) {
-                        emitter.fire('click:' + item[routeKey], args);
-                    }
+                                    if (routeKey && (routeKey in item)) {
+                                        emitter.fire('click:' + item[routeKey], args);
+                                    }
 
-                    emitter.fire('click', args);
+                                    emitter.fire('click', args);
 
-                    if (!meta.hasManualOpened) { // 不是手动打开的，则关闭
-                        hideMenus('fade');
-                    }
+                                    if (!meta.hasManualOpened) { // 不是手动打开的，则关闭
+                                        hideMenus('fade');
+                                    }
 
-                    event.stopPropagation();
+                                    event.stopPropagation();
 
 
-                });*/
+                                });*/
 
                 // 点击按钮本身
                 $container.delegate('button[data-index]', 'click', function (event) {
@@ -2230,9 +2236,9 @@
 
                     emitter.fire('click', args);
 
-/*                    if (!meta.hasManualOpened) { // 不是手动打开的，则关闭
-                        hideMenus('fade');
-                    }*/
+                    /*                    if (!meta.hasManualOpened) { // 不是手动打开的，则关闭
+                                            hideMenus('fade');
+                                        }*/
 
                     event.stopPropagation();
 
@@ -2240,37 +2246,37 @@
                 });
 
                 // 点击弹出的菜单项
-/*                $container.delegate('ol>li[data-index]', 'click', function (event) {
+                /*                $container.delegate('ol>li[data-index]', 'click', function (event) {
 
-                    var li = this;
+                                    var li = this;
 
-                    var no = +li.getAttribute('data-no');
-                    var index = +li.getAttribute('data-index');
+                                    var no = +li.getAttribute('data-no');
+                                    var index = +li.getAttribute('data-index');
 
-                    var group = list[no];
-                    var items = group[childKey];
-                    var item = items[index];
+                                    var group = list[no];
+                                    var items = group[childKey];
+                                    var item = items[index];
 
-                    var args = [item, index, no];
+                                    var args = [item, index, no];
 
-                    var fn = item[callbackKey];
-                    if (fn) {
-                        fn.apply(null, args);
-                    }
+                                    var fn = item[callbackKey];
+                                    if (fn) {
+                                        fn.apply(null, args);
+                                    }
 
-                    if (routeKey && (routeKey in item)) {
-                        emitter.fire('click:' + item[routeKey], args);
-                    }
+                                    if (routeKey && (routeKey in item)) {
+                                        emitter.fire('click:' + item[routeKey], args);
+                                    }
 
-                    emitter.fire('click', args);
+                                    emitter.fire('click', args);
 
-                    event.stopPropagation();
+                                    event.stopPropagation();
 
-                    if (autoClose) { // 设置了点击后隐藏
-                        hideMenus(no, 'fade');
-                    }
+                                    if (autoClose) { // 设置了点击后隐藏
+                                        hideMenus(no, 'fade');
+                                    }
 
-                });*/
+                                });*/
 
                 // 点击弹出的菜单项
                 $container.delegate('ul>li[data-index]', 'click', function (event) {
@@ -2299,20 +2305,20 @@
 
                     event.stopPropagation();
 
-/*                    if (autoClose) { // 设置了点击后隐藏
-                        hideMenus(no, 'fade');
-                    }*/
+                    /*                    if (autoClose) { // 设置了点击后隐藏
+                                            hideMenus(no, 'fade');
+                                        }*/
 
                 });
 
                 // 点击其他地方，隐藏
-/*                $(document).on('click', function (event) {
-                    hideMenus('slide');
-                });
+                /*                $(document).on('click', function (event) {
+                                    hideMenus('slide');
+                                });
 
-                $(top.document).on('click', function (event) {
-                    hideMenus('fade');
-                });*/
+                                $(top.document).on('click', function (event) {
+                                    hideMenus('fade');
+                                });*/
 
             }
 
@@ -2417,9 +2423,9 @@
                             'index': no,
                             'text': item[textKey],
                             'icon': item[iconKey] || 'icon-jibenziliao1',
-                          /*  'ol-id': meta.olId,
-                            'span-id': meta.spanId,
-                            'css-class': item.cssClass || '',*/
+                            /*  'ol-id': meta.olId,
+                              'span-id': meta.spanId,
+                              'css-class': item.cssClass || '',*/
 
                             'group.items': $.Array.keep(items, function (item, index) {
 
@@ -2427,7 +2433,8 @@
                                     'no': no,
                                     'index': index,
                                     'text': item[textKey],
-                                    'icon': item[iconKey] || 'icon-jibenziliao1'
+                                    'icon': item[iconKey] || 'icon-jibenziliao1',
+                                    'item.separator': index === 0 ? '' : $.String.format(samples['group.item.separator'], {})
                                 });
 
                             }).join('')
@@ -2435,7 +2442,7 @@
 
                     }).join(''),
 
-                    'groups': '', // 这个清空，弹出菜单已在 items 里填充了
+                    'groups': '' // 这个清空，弹出菜单已在 items 里填充了
                 });
 
                 $(meta.container).html(html);

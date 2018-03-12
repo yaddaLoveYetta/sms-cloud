@@ -139,10 +139,77 @@ public class TemplateService extends BaseService implements ITemplateService {
      * 获取基础资料/单据定义的功能操作列表
      *
      * @param classId 业务类型
+     * @param type    获取按钮的场景 ( 0:查看(列表)1:(新增)2:(编辑)默认0)
      * @return 功能操作列表
      */
     @Override
-    public List getFormAction(Integer classId) {
+    public List getFormAction(Integer classId, Integer type) {
+
+        Integer userRoleType = SessionUtil.getUserRoleType();
+        // 按钮可用性
+        //001（1）:系统类别角色可用
+        //010（2）:医院类别角色可用
+        //100（4）:供应商类别角色可用
+        int ownerType = userRoleType == 1 ? 1 : userRoleType == 2 ? 2 : 4;
+        // 按钮显示性
+        int display = 0;
+
+        if (type == 0) {
+            // 查看
+            switch (userRoleType) {
+                case 1:
+                    //系统管理员
+                    display = 1;
+                    break;
+                case 2:
+                    //医院
+                    display = 64;
+                    break;
+                case 3:
+                    //供应商
+                    display = 8;
+                    break;
+                default:
+                    break;
+            }
+        } else if (type == 1) {
+            // 新增
+            switch (userRoleType) {
+                case 1:
+                    //系统管理员
+                    display = 2;
+                    break;
+                case 2:
+                    //医院
+                    display = 128;
+                    break;
+                case 3:
+                    //供应商
+                    display = 16;
+                    break;
+                default:
+                    break;
+            }
+        } else if (type == 2) {
+            // 编辑
+            switch (userRoleType) {
+                case 1:
+                    //系统管理员
+                    display = 4;
+                    break;
+                case 2:
+                    //医院
+                    display = 256;
+                    break;
+                case 3:
+                    //供应商
+                    display = 32;
+                    break;
+                default:
+                    break;
+            }
+        }
+
 
         FormActionMapper formActionMapper = sqlSession.getMapper(FormActionMapper.class);
 
@@ -155,6 +222,19 @@ public class TemplateService extends BaseService implements ITemplateService {
         formActionExample.setOrderByClause("`index`  ,`name` ");
 
         List<FormAction> formActions = formActionMapper.selectByExample(formActionExample);
+
+        Iterator<FormAction> it = formActions.iterator();
+
+        while (it.hasNext()) {
+            FormAction formAction = it.next();
+            Integer actionOwnerType = formAction.getOwnerType();
+            Integer actionDisplay = formAction.getDisplay();
+
+            if (!((actionOwnerType & ownerType) == ownerType && (actionDisplay & display) == display)) {
+                // 不显示或非该角色拥有的功能
+                it.remove();
+            }
+        }
 
         return formActions;
     }

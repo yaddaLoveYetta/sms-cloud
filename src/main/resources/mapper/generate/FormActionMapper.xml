@@ -5,9 +5,12 @@
     <id column="class_id" jdbcType="INTEGER" property="classId" />
     <id column="access_mask" jdbcType="INTEGER" property="accessMask" />
     <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="name_modify" jdbcType="VARCHAR" property="nameModify" />
     <result column="text" jdbcType="VARCHAR" property="text" />
+    <result column="text_modify" jdbcType="VARCHAR" property="textModify" />
     <result column="index" jdbcType="INTEGER" property="index" />
     <result column="access_use" jdbcType="INTEGER" property="accessUse" />
+    <result column="display" jdbcType="INTEGER" property="display" />
     <result column="owner_type" jdbcType="INTEGER" property="ownerType" />
     <result column="group" jdbcType="INTEGER" property="group" />
     <result column="icon" jdbcType="VARCHAR" property="icon" />
@@ -72,8 +75,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    class_id, access_mask, `name`, `text`, `index`, access_use, owner_type, `group`, 
-    icon, `desc`
+    class_id, access_mask, `name`, name_modify, `text`, text_modify, `index`, access_use, 
+    display, owner_type, `group`, icon, `desc`
   </sql>
   <select id="selectByExample" parameterType="com.kingdee.hrp.sms.common.model.FormActionExample" resultMap="BaseResultMap">
     select
@@ -109,11 +112,13 @@
   </delete>
   <insert id="insert" parameterType="com.kingdee.hrp.sms.common.model.FormAction">
     insert into t_form_action (class_id, access_mask, `name`, 
-      `text`, `index`, access_use, 
+      name_modify, `text`, text_modify, 
+      `index`, access_use, display, 
       owner_type, `group`, icon, 
       `desc`)
     values (#{classId,jdbcType=INTEGER}, #{accessMask,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, 
-      #{text,jdbcType=VARCHAR}, #{index,jdbcType=INTEGER}, #{accessUse,jdbcType=INTEGER}, 
+      #{nameModify,jdbcType=VARCHAR}, #{text,jdbcType=VARCHAR}, #{textModify,jdbcType=VARCHAR}, 
+      #{index,jdbcType=INTEGER}, #{accessUse,jdbcType=INTEGER}, #{display,jdbcType=INTEGER}, 
       #{ownerType,jdbcType=INTEGER}, #{group,jdbcType=INTEGER}, #{icon,jdbcType=VARCHAR}, 
       #{desc,jdbcType=VARCHAR})
   </insert>
@@ -129,14 +134,23 @@
       <if test="name != null">
         `name`,
       </if>
+      <if test="nameModify != null">
+        name_modify,
+      </if>
       <if test="text != null">
         `text`,
+      </if>
+      <if test="textModify != null">
+        text_modify,
       </if>
       <if test="index != null">
         `index`,
       </if>
       <if test="accessUse != null">
         access_use,
+      </if>
+      <if test="display != null">
+        display,
       </if>
       <if test="ownerType != null">
         owner_type,
@@ -161,14 +175,23 @@
       <if test="name != null">
         #{name,jdbcType=VARCHAR},
       </if>
+      <if test="nameModify != null">
+        #{nameModify,jdbcType=VARCHAR},
+      </if>
       <if test="text != null">
         #{text,jdbcType=VARCHAR},
+      </if>
+      <if test="textModify != null">
+        #{textModify,jdbcType=VARCHAR},
       </if>
       <if test="index != null">
         #{index,jdbcType=INTEGER},
       </if>
       <if test="accessUse != null">
         #{accessUse,jdbcType=INTEGER},
+      </if>
+      <if test="display != null">
+        #{display,jdbcType=INTEGER},
       </if>
       <if test="ownerType != null">
         #{ownerType,jdbcType=INTEGER},
@@ -202,14 +225,23 @@
       <if test="record.name != null">
         `name` = #{record.name,jdbcType=VARCHAR},
       </if>
+      <if test="record.nameModify != null">
+        name_modify = #{record.nameModify,jdbcType=VARCHAR},
+      </if>
       <if test="record.text != null">
         `text` = #{record.text,jdbcType=VARCHAR},
+      </if>
+      <if test="record.textModify != null">
+        text_modify = #{record.textModify,jdbcType=VARCHAR},
       </if>
       <if test="record.index != null">
         `index` = #{record.index,jdbcType=INTEGER},
       </if>
       <if test="record.accessUse != null">
         access_use = #{record.accessUse,jdbcType=INTEGER},
+      </if>
+      <if test="record.display != null">
+        display = #{record.display,jdbcType=INTEGER},
       </if>
       <if test="record.ownerType != null">
         owner_type = #{record.ownerType,jdbcType=INTEGER},
@@ -233,9 +265,12 @@
     set class_id = #{record.classId,jdbcType=INTEGER},
       access_mask = #{record.accessMask,jdbcType=INTEGER},
       `name` = #{record.name,jdbcType=VARCHAR},
+      name_modify = #{record.nameModify,jdbcType=VARCHAR},
       `text` = #{record.text,jdbcType=VARCHAR},
+      text_modify = #{record.textModify,jdbcType=VARCHAR},
       `index` = #{record.index,jdbcType=INTEGER},
       access_use = #{record.accessUse,jdbcType=INTEGER},
+      display = #{record.display,jdbcType=INTEGER},
       owner_type = #{record.ownerType,jdbcType=INTEGER},
       `group` = #{record.group,jdbcType=INTEGER},
       icon = #{record.icon,jdbcType=VARCHAR},
@@ -250,14 +285,23 @@
       <if test="name != null">
         `name` = #{name,jdbcType=VARCHAR},
       </if>
+      <if test="nameModify != null">
+        name_modify = #{nameModify,jdbcType=VARCHAR},
+      </if>
       <if test="text != null">
         `text` = #{text,jdbcType=VARCHAR},
+      </if>
+      <if test="textModify != null">
+        text_modify = #{textModify,jdbcType=VARCHAR},
       </if>
       <if test="index != null">
         `index` = #{index,jdbcType=INTEGER},
       </if>
       <if test="accessUse != null">
         access_use = #{accessUse,jdbcType=INTEGER},
+      </if>
+      <if test="display != null">
+        display = #{display,jdbcType=INTEGER},
       </if>
       <if test="ownerType != null">
         owner_type = #{ownerType,jdbcType=INTEGER},
@@ -278,9 +322,12 @@
   <update id="updateByPrimaryKey" parameterType="com.kingdee.hrp.sms.common.model.FormAction">
     update t_form_action
     set `name` = #{name,jdbcType=VARCHAR},
+      name_modify = #{nameModify,jdbcType=VARCHAR},
       `text` = #{text,jdbcType=VARCHAR},
+      text_modify = #{textModify,jdbcType=VARCHAR},
       `index` = #{index,jdbcType=INTEGER},
       access_use = #{accessUse,jdbcType=INTEGER},
+      display = #{display,jdbcType=INTEGER},
       owner_type = #{ownerType,jdbcType=INTEGER},
       `group` = #{group,jdbcType=INTEGER},
       icon = #{icon,jdbcType=VARCHAR},
