@@ -1367,15 +1367,15 @@
 
             $.Array.each(list, function (item, index) {
 
-                if (typeof item == 'function') { // 简单情形， item 是 fn，直接调用
-
+                if (typeof item == 'function') {
+                    // 简单情形， item 是 fn，直接调用
                     item(function (data, json) {
                         dones[index] = data;
                         checkReady(dones, done);
                     });
                 }
-                else { // 复杂情形，用于需要传递一些参数给 fn 的情形
-
+                else {
+                    // 复杂情形，用于需要传递一些参数给 fn 的情形
                     var fn = item.fn;
                     var args = item.args || [];
                     var context = item.context || null;

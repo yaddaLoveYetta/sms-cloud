@@ -262,72 +262,101 @@ define('FormEdit', function (require, module, exports) {
                  selectors[keyName].lock();
                  }*/
 
-                // 默认值处理
-                if (!isUpdate) {
+            }
 
-                    //新增时处理默认值-默认值可来自模板配置或者业务传递，业务传递的默认值优先于模板配置
-                    if (defaultValue && defaultValue.trim() != '') {
+        }
 
-                        if (field['ctrlType'] == 1) {
-                            //                  if (element.autoNumeric) {
-                            //                      element.autoNumeric('set', defaultValue);
-                            //                  } else {
-                            element.val(defaultValue);
-                            //                  }
-                        }
-                        if (field["dataType"] == 2) { //数字 文本值
-                            element.val(defaultValue);
-                        }
-                        if (field["dataType"] == 3) { //日期时间
-                            // element.value = defaultValue;
-                        }
-                        if (field["dataType"] == 4) { //布尔
-                            element.prop("checked", defaultValue);
-                        }
-                        if (field["ctrlType"] == 6) { //选择框
-                            setF7Data(defaultValue, field['lookUpClassID'], key);
-                        }
-                    }
+        // 处理字段锁定性
+        function initFieldLock(fn) {
+
+            if (!metaData || !metaData['formFields'] || !metaData['formFields'][0]) {
+                fn && fn(1);
+                SMS.Tips.error('元数据错误，请联系管理员');
+                return;
+            }
+            var fields = metaData['formFields'][0];
+
+            var lockMask = 0;
+            // 用户角色类别
+            //var userRoleType = user.role.type;
+            var userRoleType = (user.roles && user.roles[0] && user.roles[0]['type']) || -1;
+
+            /*
+                1	新增时对于平台用户锁定
+                2	编辑时对于平台用户锁定
+                4	新增时对于供应商用户锁定
+                8	编辑时对于供应商用户锁定
+                16	新增时对于医院用户锁定
+                32	编辑时对于医院用户锁定
+             */
+            if (operate === 1) {
+                // 查看详情时所有字段锁定
+                lockMask = 63;
+            } else if (operate === 1) {
+                // 新增
+                if (userRoleType === 1) {
+                    // 平台用户
+                    lockMask = 1;
+                } else if (userRoleType === 2) {
+                    //供应商用户
+                    lockMask = 4;
+                } else if (userRoleType === 3) {
+                    //医院用户
+                    lockMask = 16;
+                }
+            } else if (operate === 2) {
+                // 编辑
+                if (userRoleType === 1) {
+                    // 平台用户
+                    lockMask = 2;
+                } else if (userRoleType === 2) {
+                    //供应商用户
+                    lockMask = 8;
+                } else if (userRoleType === 3) {
+                    //医院用户
+                    lockMask = 32;
+                }
+            }
+
+            for (var key in fields) {
+
+                var field = fields[key];
+
+                var element = getElements(key);
+                if (!element) {
+                    continue;
                 }
 
-                //移除处理
-                element.parents("tr").hide();
-                if (isRemove) {
-                    element.parents("tr").remove();
-                } else {
-                    element.parents("tr").show();
-                }
-                //必填处理
-                if (isMustFiled(isUpdate, field)) {
-                    //如果是必填需要添加 红色 * 号
-                    var addressCascadePicker = field['key'];
-                    if ($.inArray(addressCascadePicker, addressCascadePickerArray) >= 0) {
-                        element = $('#div-address-picker'); //地址级联必填特殊处理
-                    }
-                    if (element.parents("td").siblings().find(".must-mark").length <= 0) { //如果不存在
-                        var html = element.parents("td").siblings().html();
-                        element.parents("td").siblings().html("<span class=\"must-mark\">*</span>" + html);
+                var fieldLock = field.lock;
+
+                //新增时处理默认值-默认值可来自模板配置或者业务传递，业务传递的默认值优先于模板配置
+                if (!!(fieldLock & lockMask)) {
+                    // 需要锁定该字段
+                    switch (field.ctrlType) {
+                        case 6:
+                            //F7选择框锁定特殊处理
+                            selectors[key].lock();
+                            break;
+                        default:
+                            element.prop("disabled", "disabled");
                     }
                 } else {
-                    if (element.parents("td").siblings().find(".must-mark")) {
-                        element.parents("td").siblings().find(".must-mark").remove();
+                    switch (field.ctrlType) {
+                        case 6:
+                            //F7选择框锁定特殊处理
+                            selectors[key].unlock();
+                            break;
+                        default:
+                            element.prop("disabled", "");
                     }
                 }
             }
 
-            //DOM 元素处理，后台没返回则直接移除掉
-            var fildKeys = $.Object.getKeys(fields);
-            //选择所有 input元素，和 F7
-            $(":input[id^='bd-']:not([type='hidden']),.F7-box[id^='bd-']").each(function (index, item) {
-                var domId = $(item).attr("id").replace("bd-", "");
-                if ($.inArray(domId, fildKeys) < 0) {
-                    $(item).parents("tr").remove();
-                }
-            });
+            fn && fn(1);
         }
 
         /**
-         * 根据模板构建页面控件
+         * 页面DOM渲染,根据模板构建页面控件
          */
         function initPage(fn) {
 
@@ -444,15 +473,12 @@ define('FormEdit', function (require, module, exports) {
             }).join('');
 
             if (!existEntry) {
+                fn && fn(1);
                 return;
             }
             // 子表列表转成数组操作
             var formClassEntry = MiniQuery.Object.toArray(metaData['formClassEntry']);
 
-            if (formClassEntry.length === 0) {
-                fn && fn(1);
-                return;
-            }
             // 构建子表dom结构
             divBody.innerHTML = $.Array.keep(formClassEntry, function (item, no) {
                 return $.String.format(samples["detail"], {
@@ -769,14 +795,16 @@ define('FormEdit', function (require, module, exports) {
         }
 
         // 初始化字段默认值-新增时有效
-        function initDefaultValue() {
+        function initDefaultValue(fn) {
 
             if (operate !== 1) {
                 // 非新增状态不处理-由后台数据填充
+                fn && fn(1);
                 return;
             }
 
             if (!metaData || !metaData['formFields'] || !metaData['formFields'][0]) {
+                fn && fn(1);
                 SMS.Tips.error('元数据错误，请联系管理员');
                 return;
             }
@@ -806,7 +834,7 @@ define('FormEdit', function (require, module, exports) {
                             break;
                         case 6:
                             //F7选择框
-                            setF7Data(defaultValue, field.lookUpClassId, key);
+                            setF7Data(field.lookUpClassId, defaultValue, key);
                             break;
                         case 10:
                             //文本
@@ -826,6 +854,8 @@ define('FormEdit', function (require, module, exports) {
                     }
                 }
             }
+
+            fn && fn(1);
         }
 
         /**
@@ -844,35 +874,9 @@ define('FormEdit', function (require, module, exports) {
 
             emitter.fire('beforeShow', [metaData]);
 
-            var tasks = [initPage];
-
-            // 页面DOM渲染
-            //initPage();
-            Multitask.concurrency(tasks, function () {
-
-                // 页面特殊控件渲染-依赖initPage()结果
-                tasks = [
-                    {
-                        // 初始化selectors
-                        fn: initSelectors
-                    },
-                    {
-                        // 初始化时间控件
-                        fn: initDateTimerPicker
-                    },
-                    {
-                        // 初始化数字控件
-                        fn: initNumeric
-                    }];
-
-                //并行发起请求
-                Multitask.concurrency(tasks, function (data) {
-                    // 默认值处理-只在新增是处理
-                    initDefaultValue();
-                });
-
-            });
-
+            var tasks = [initPage, fixIE, initSelectors, initDateTimerPicker, initNumeric, initDefaultValue, getItemData, initFieldLock];
+            // 串行执行任务
+            Multitask.serial(tasks);
 
             /*        // 初始化selectors
                     initSelectors();
@@ -885,10 +889,17 @@ define('FormEdit', function (require, module, exports) {
             //控件初始化，控制显示隐藏，只读 ,默认值等..
             //initController();
 
-            fixIE();
+            //fixIE();
+
+
+        }
+
+        // 获取单据数据-只在查看/编辑时调用
+        function getItemData(fn) {
 
             if (operate === 1) {
                 // 新增状态-到此就完结了
+                fn && fn(1);
                 return;
             }
 
@@ -906,6 +917,7 @@ define('FormEdit', function (require, module, exports) {
             api.on({
                 'success': function (data, json) {
                     fill(data, fnEntry);
+                    fn && fn(1);
                     SMS.Tips.success('数据加载成功', 1500);
                 },
 
@@ -917,10 +929,11 @@ define('FormEdit', function (require, module, exports) {
                     SMS.Tips.error('网络错误，请稍候再试');
                 }
             });
+
         }
 
         // IE环境下文本框不能获取焦点，不能编辑
-        function fixIE() {
+        function fixIE(fn) {
 
             if (!!window.ActiveXObject || "ActiveXObject" in window) {
                 $("input[type='text']").each(function () {
@@ -934,6 +947,8 @@ define('FormEdit', function (require, module, exports) {
                     });
                 });
             }
+
+            fn && fn(1);
         }
 
         /**
@@ -1101,6 +1116,7 @@ define('FormEdit', function (require, module, exports) {
             }
         }
 
+        // 填充页面数据
         function fill(data, fnEntry) {
 
             if (!metaData || !metaData['formFields']) {
