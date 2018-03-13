@@ -106,15 +106,26 @@ public class TemplateController {
      *
      * @param classId 业务类型
      * @param id      单据内码
-     * @param orderBy 排序结构(json 结构化数据) 查询单据时，单据分录需要排序
+     * @param sort    排序结构(json 结构化数据) 查询单据时，单据分录需要排序
      */
-
-
+    @ResponseBody
     @RequestMapping(value = "getItemById")
-    public Map<String, Object> getItemById(Integer classId, Long id, String orderBy) {
+    public Map<String, Object> getItemById(Integer classId, Long id, String sort) throws IOException {
 
+        if (classId < 0) {
+            throw new BusinessLogicRunTimeException("参数错误：必须提交classId");
+        }
 
-        return null;
+        List<Sort> sorts = new ArrayList<Sort>();
+
+        // 包装查询结果排序-方便操作
+        if (null != sort && !"".equals(sort)) {
+            ObjectMapper objectMapper = new ObjectMapper();
+            JavaType javaType = objectMapper.getTypeFactory().constructParametricType(List.class, Sort.class);
+            sorts = objectMapper.readValue(sort, javaType);
+        }
+
+        return templateService.getItemById(classId, id, sorts);
 
     }
 

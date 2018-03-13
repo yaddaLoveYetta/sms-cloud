@@ -22,6 +22,8 @@
 
     // 业务类别
     var classId = Number(MiniQuery.Url.getQueryString(window.location.href, 'classId'));
+    //  单据内码
+    var id = Number(MiniQuery.Url.getQueryString(window.location.href, 'id') || 0);
     // 操作类别 0：查看 1：新增 2：修改
     var operate = Number(MiniQuery.Url.getQueryString(window.location.href, 'operate'));
     // 用户角色类别
@@ -62,7 +64,7 @@
 
     FormEdit.render({
         classId: classId,
-        id: 0,
+        id: id,
         operate: operate
     });
 

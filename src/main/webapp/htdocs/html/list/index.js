@@ -115,14 +115,12 @@
                         'operate': 1
                     }
                 });
-
-
             },
             'edit': function (item, index) {
 
                 var list = List.getSelectedItems();
 
-                if (list.length == 0) {
+                if (list.length === 0) {
                     SMS.Tips.error('请选择要操作的项', 1000);
                     return;
                 }
@@ -132,8 +130,9 @@
                     return;
                 }
 
-                var url = ClassMapping.getPage(classId);
-                var name = ClassMapping.getTabName(classId) || '';
+                var metaData = List.getMetaData();
+                var url = 'html/user/supplier/index.html';
+                var name = metaData.formClass.name || '';
 
                 if (!url) {
                     // 没有配置编辑页面或不需要编辑功能
@@ -141,12 +140,13 @@
                 }
 
                 Iframe.open({
-                    id: classId + '-edit' + list[0].primaryValue,
+                    id: classId + '-edit-' + list[0].primaryValue,
                     name: '修改-' + name,
                     url: url,
                     query: {
                         'id': list[0].primaryValue,
                         'classId': classId,
+                        'operate': 2
                     }
                 });
 
@@ -155,7 +155,7 @@
 
                 var list = List.getSelectedItems();
 
-                if (list.length == 0) {
+                if (list.length === 0) {
                     SMS.Tips.error('请选择要删除的项', 1500);
                     return;
                 }

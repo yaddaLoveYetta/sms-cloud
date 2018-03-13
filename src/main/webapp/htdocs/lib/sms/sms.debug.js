@@ -6426,7 +6426,7 @@
 
             var self = this;
 
-        };
+        }
 
         function initGrid(cfg, data) {
 
@@ -6846,7 +6846,16 @@
                 meta.inited = true;
                 meta.oldData = meta.snapShot(meta.grid);
             },
-
+            setData: function (data, page) {
+                var meta = mapper.get(this);
+                var bdGrid = meta.grid;
+                bdGrid.jqGrid('setGridParam', {
+                    data: data
+                }).trigger('reloadGrid', [{
+                    page: page
+                }]);
+                meta.oldData = meta.snapShot(meta.grid);
+            },
             clear: function () {
                 var meta = mapper.get(this);
 

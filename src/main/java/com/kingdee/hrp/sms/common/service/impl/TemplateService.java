@@ -405,11 +405,19 @@ public class TemplateService extends BaseService implements ITemplateService {
      *
      * @param classId 业务类型
      * @param id      单据内码
-     * @param orderBy 排序结构(json 结构化数据) 查询单据时，单据分录需要排序
+     * @param sorts   排序结构 查询单据时，单据分录需要排序
      */
     @Override
-    public Map<String, Object> getItemById(Integer classId, Long id, String orderBy) {
-        return null;
+    public Map<String, Object> getItemById(Integer classId, Long id, List<Sort> sorts) {
+
+        List<Long> ids = new ArrayList<Long>();
+        ids.add(id);
+        List<Map<String, Object>> list = getItemByIds(classId, ids, null, sorts);
+
+        if (list != null && list.size() > 0) {
+            return list.get(0);
+        }
+        throw new BusinessLogicRunTimeException(String.format("找不到id为%s的单据", id));
     }
 
     @Override

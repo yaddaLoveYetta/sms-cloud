@@ -26,7 +26,7 @@ define('FormEdit', function (require, module, exports) {
         // 当前单据操作类别 0：查看 1：新增 2：修改
         var operate;
         // 第一个单据体(应设计成集合支持多表体)
-        var billGrid;
+        var billGrids = {};
         // 控制业务是否有修改-有修改关闭时进行提示
         var billChanged = false;
         // 单据元数据
@@ -329,7 +329,7 @@ define('FormEdit', function (require, module, exports) {
         /**
          * 根据模板构建页面控件
          */
-        function initPage() {
+        function initPage(fn) {
 
             // 过滤出显示字段
             var showFields = getShowKeys(metaData['formFields'][0]);
@@ -396,6 +396,7 @@ define('FormEdit', function (require, module, exports) {
                             13	男：女
                             14	密码控件
                             15	是：否
+                            16	单价/金额(两位小数)
                          */
                         switch (ctrlType) {
                             case 1:
@@ -403,6 +404,7 @@ define('FormEdit', function (require, module, exports) {
                             case 8:
                             case 9:
                             case 10:
+                            case 16:
                                 sample = samples["text"];
                                 break;
                             case 3: // checkbox
@@ -447,6 +449,10 @@ define('FormEdit', function (require, module, exports) {
             // 子表列表转成数组操作
             var formClassEntry = MiniQuery.Object.toArray(metaData['formClassEntry']);
 
+            if (formClassEntry.length === 0) {
+                fn && fn(1);
+                return;
+            }
             // 构建子表dom结构
             divBody.innerHTML = $.Array.keep(formClassEntry, function (item, no) {
                 return $.String.format(samples["detail"], {
@@ -459,7 +465,7 @@ define('FormEdit', function (require, module, exports) {
 
                 SMS.use('Grid', function (Grid) {
 
-                    billGrid = new Grid(formClassEntryItem.foreignKey);
+                    var billGrid = new Grid(formClassEntryItem.foreignKey);
 
                     var defaults = GridConfig.getConfig({
                         'fields': metaData['formFields'][entryIndex],
@@ -502,7 +508,10 @@ define('FormEdit', function (require, module, exports) {
 
                         }
                     });
+                    // 将表体控件保存下来(这里用子表tableName做key)
+                    billGrids[formClassEntryItem.tableName] = billGrid;
 
+                    fn && fn(1);
                 });
 
             });
@@ -762,7 +771,7 @@ define('FormEdit', function (require, module, exports) {
         // 初始化字段默认值-新增时有效
         function initDefaultValue() {
 
-            if (operate !== 0) {
+            if (operate !== 1) {
                 // 非新增状态不处理-由后台数据填充
                 return;
             }
@@ -835,25 +844,33 @@ define('FormEdit', function (require, module, exports) {
 
             emitter.fire('beforeShow', [metaData]);
 
+            var tasks = [initPage];
+
             // 页面DOM渲染
-            initPage();
+            //initPage();
+            Multitask.concurrency(tasks, function () {
 
-            // 页面特殊控件渲染-依赖initPage()结果
-            var tasks = [
-                {
-                    fn: initSelectors // 填充页面控件
-                },
-                {
-                    fn: initDateTimerPicker
-                },
-                {
-                    fn: initNumeric
-                }];
+                // 页面特殊控件渲染-依赖initPage()结果
+                tasks = [
+                    {
+                        // 初始化selectors
+                        fn: initSelectors
+                    },
+                    {
+                        // 初始化时间控件
+                        fn: initDateTimerPicker
+                    },
+                    {
+                        // 初始化数字控件
+                        fn: initNumeric
+                    }];
 
-            //并行发起请求
-            Multitask.concurrency(tasks, function (data) {
-                // 默认值处理-只在新增是处理
-                initDefaultValue();
+                //并行发起请求
+                Multitask.concurrency(tasks, function (data) {
+                    // 默认值处理-只在新增是处理
+                    initDefaultValue();
+                });
+
             });
 
 
@@ -870,19 +887,12 @@ define('FormEdit', function (require, module, exports) {
 
             fixIE();
 
-            if (!itemId) {
-                // 初始化子表-调用者处理
-                /*            if (!!fnEntry && !MiniQuery.Object.isEmpty(metaData['formEntries'])) {
-                 fnEntry && fnEntry(null, metaData);
-                 }*/
-                if (!!fnEntry) {
-                    fnEntry && fnEntry(null, metaData);
-                }
-
-                emitter.fire('afterNewBill', [formClassId, metaData]);
+            if (operate === 1) {
+                // 新增状态-到此就完结了
                 return;
             }
 
+            // 查看，修改操作填充单据值
             var api = new API('template/getItemById');
             SMS.Tips.loading('数据加载中..');
 
@@ -1104,71 +1114,105 @@ define('FormEdit', function (require, module, exports) {
             }
 
             var fields = metaData['formFields'][0];
-            // var formClass = metaData['formClass'];
-            // var data = data.items;
-            var data = data;
+
             for (var item in data) {
 
                 var keyName = item;
+                var field = fields[keyName];
                 var element = getValueElement(keyName);
                 var value = data[keyName] || '';
 
-                // 保存内码，用于判断保存时，是新增还是修改
-                // if (keyName == formClass['primaryKey']) {
-                // itemID = value;
-                // continue;
-                // }
-
                 if (!element) {
-                    // todo: 按数据未找到控件，跳过此字段赋值
-                    continue;
-                }
-                if (fields[keyName]['ctrlType'] == 1) { // 数字
-                    var ne = getElements(keyName);
-                    //初始化控件
-                    try {
-                        ne.autoNumeric('set', (value || 0));
-                    } catch (e) {
-                        ne.val((value || 0));
-                    }
-
-                    continue;
-                }
-                if (fields[keyName]['ctrlType'] == 3) { // 多选按钮
-                    element.checked = value;
+                    // TODO: 按key未找到控件，跳过此字段赋值
                     continue;
                 }
 
-                if (fields[keyName]['ctrlType'] == 5) { // 下拉框
-                    element.value = value == null ? '' : Number(value);
-                    continue;
+                /*
+                            1	数字
+                            2	数字带小数
+                            3	选择框
+                            5	下拉列表
+                            6	F7选择框
+                            7	级联选择器
+                            8	手机号码
+                            9	座机电话
+                            10	普通文本
+                            11	多行文本
+                            12	日期时间
+                            13	男：女
+                            14	密码控件
+                            15	是：否
+                            16	单价/金额(两位小数)
+                         */
+
+                var ctrlType = field.ctrlType;
+
+                if (!ctrlType) {
+                    // 默认文本
+                    ctrlType = 10;
                 }
-                if (fields[keyName]['ctrlType'] == 6) { // F7选择框
 
-                    var selectorData = [{
-                        ID: value,
-                        number: data[keyName + '_NmbName'],
-                        name: data[keyName + '_DspName']
-                    }];
+                switch (ctrlType) {
+                    case 1:
+                    case 2:
+                    case 16:
+                        // 数字
+                        var ne = numberFields[keyName];
+                        ne.set(value || 0);
+                        break;
+                    case 8:
+                    case 9:
+                    case 10:
+                    case 11:
+                    case 12:
+                        // 类文本类型
+                        element.value = value || '';
+                        break;
+                    case 3:
+                        // checkbox
+                        element.checked = value;
+                        break;
+                    case 6:
+                        // F7选择框
+                        var selectorData = [{
+                            ID: value,
+                            number: data[keyName + '_NmbName'],
+                            name: data[keyName + '_DspName']
+                        }];
+                        selectors[keyName].setData(selectorData);
+                        break;
 
-                    selectors[keyName].setData(selectorData);
-                    continue;
+                    case 13:
+                        //男：女
+                        element.value = value || 0;
+                        break;
+                    case 14:
+                        // 用户多一个密码字段特殊，蛋疼的处理-写死它，用来判断是否修改-加密
+                        element.value = 'XXXXXXXX';
+                        break;
+                    case 15:
+                        //是：否  后台返回true/false
+                        element.value = value | 0;
+                        break;
+                    default:
+                        element.value = value || '';
                 }
 
-                if (fields[keyName]['ctrlType'] == 99) {
-                    // 用户多一个密码字段特殊，蛋疼的处理-写死它，用来判断是否修改-加密
-                    element.value = 'XXXXXXXX';
-                    continue;
-                }
-
-                element.value = value;
             }
 
             // 存在表体数据时，交给调用者自己处理
             if (data['entry'] && !MiniQuery.Object.isEmpty(data['entry'])) {
-                if (typeof(fnEntry) == 'function') {
-                    fnEntry(data['entry'], metaData);
-                }
+
+                MiniQuery.Object.each(metaData['formClassEntry'], function (entryIndex, formClassEntryItem) {
+
+                    var key = formClassEntryItem.tableName;
+
+                    var grid = billGrids[key];
+
+                    grid.setData(data['entry'][entryIndex], entryIndex);
+
+                });
+
             }
 
             emitter.fire('afterFill', [formClassId, metaData, data]);
