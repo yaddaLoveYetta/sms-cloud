@@ -68,13 +68,27 @@ public class UserController {
 
         if (null != user) {
 
+
+            Long org = user.getOrg();
             // 一个用户可以对应多个角色
             List<Role> roles = userService.getUserRole(user.getId());
+
+            // 获取用户所属的组织信息(医院/供应商)
+            Object userLinkOrg = new Object();
+            if (roles.get(0).getType() == 2) {
+                // 医院角色
+                userLinkOrg = userService.getUserLinkHospital(user.getOrg());
+            }
+            if (roles.get(0).getType() == 3) {
+                // 供应商角色
+                userLinkOrg = userService.getUserLinkSupplier(user.getOrg());
+            }
 
             try {
                 ret = Common.beanToMap(user);
                 // 用户角色信息返回给客户端
                 ret.put("roles", roles);
+                ret.put("org", userLinkOrg);
             } catch (Exception e) {
                 throw new BusinessLogicRunTimeException(e);
             }
@@ -82,6 +96,7 @@ public class UserController {
             // 将用户及用户角色信息放到session中
             request.getSession().setAttribute("user", user);
             request.getSession().setAttribute("roles", roles);
+            request.getSession().setAttribute("userLinkOrg", userLinkOrg);
 
             return ret;
         }

@@ -61,6 +61,6 @@
     return {
         integer: integer,
         mobilePhone: mobilePhone,
-        landlinePhone: landlinePhone
+        phone: phone
     };
 });

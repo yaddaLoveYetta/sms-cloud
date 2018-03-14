@@ -519,7 +519,7 @@ define('FormEdit', function (require, module, exports) {
 
                 SMS.use('Grid', function (Grid) {
 
-                    var billGrid = new Grid(formClassEntryItem.foreignKey);
+                    var billGrid = new Grid(formClassEntryItem.tableName);
 
                     var defaults = GridConfig.getConfig({
                         'fields': metaData['formFields'][entryIndex],
@@ -883,6 +883,8 @@ define('FormEdit', function (require, module, exports) {
                 }
             }
 
+            emitter.fire('initDefaultValue', [metaData]);
+
             fn && fn(1);
         }
 
@@ -990,30 +992,27 @@ define('FormEdit', function (require, module, exports) {
          */
         function save(fn) {
 
-            // 编辑OR新增
-            var isUpdate = !!itemID;
+            /*            verifyFields(isUpdate, function (successData) {
 
-/*            verifyFields(isUpdate, function (successData) {
+                            fnValidate(successData);
 
-                fnValidate(successData);
+                            var data = {};
+                            data['classId'] = metaData['formClass']['classId'];
+                            data['data'] = successData;
 
-                var data = {};
-                data['classId'] = metaData['formClass']['classId'];
-                data['data'] = successData;
+                            if (entryData) {
+                                data['data']['entry'] = entryData;
+                            }
+                            if (itemID) {
+                                data['itemId'] = itemID;
+                            }
+                            submitData(data, fnSuccess);
 
-                if (entryData) {
-                    data['data']['entry'] = entryData;
-                }
-                if (itemID) {
-                    data['itemId'] = itemID;
-                }
-                submitData(data, fnSuccess);
+                        }, function (successData, errorData) {
+                            // errorData.push(entryErrorData);
+                            fnValidate(successData, errorData);
 
-            }, function (successData, errorData) {
-                // errorData.push(entryErrorData);
-                fnValidate(successData, errorData);
-
-            }, customerErrData);*/
+                        }, customerErrData);*/
 
             var tasks = [getHeadData, getEntryData];
 
@@ -1032,7 +1031,7 @@ define('FormEdit', function (require, module, exports) {
                     showHeadValidInfo(headData.successData);
                 }
 
-                if (entryData.errorData) {
+                if (!MiniQuery.Object.isEmpty(entryData.errorData)) {
                     // 表体数据校验不通过
                     showEntryValidInfo(entryData.errorData, metaData['formClassEntry']["1"].tableName);
                     validate = false;
@@ -1376,9 +1375,14 @@ define('FormEdit', function (require, module, exports) {
             }
 
             if (validate) {
-                fn && fn(successData);
+                fn && fn({
+                    successData: successData
+                });
             } else {
-                fn && fn(successData, errorData);
+                fn && fn({
+                    successData: successData,
+                    errorData: errorData
+                });
             }
 
         }
@@ -1405,7 +1409,7 @@ define('FormEdit', function (require, module, exports) {
 
             var gridData = billGrid.getGridDatas(1); // 获取第一个表体数据
             // 校验不通过的错误数据
-            var errorData = gridData["error"] || []
+            var errorData = gridData["error"] || {};
 
             if ((gridData["add"] || []).length === 0 && (gridData["update"] || []).length === 0) {
                 errorData['1'] = ['无有效分录，请在列表界面选择单据操作!'];

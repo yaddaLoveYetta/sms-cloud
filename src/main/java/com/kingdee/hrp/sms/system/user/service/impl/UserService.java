@@ -1,8 +1,6 @@
 package com.kingdee.hrp.sms.system.user.service.impl;
 
-import com.kingdee.hrp.sms.common.dao.generate.RoleMapper;
-import com.kingdee.hrp.sms.common.dao.generate.UserEntryMapper;
-import com.kingdee.hrp.sms.common.dao.generate.UserMapper;
+import com.kingdee.hrp.sms.common.dao.generate.*;
 import com.kingdee.hrp.sms.common.exception.BusinessLogicRunTimeException;
 import com.kingdee.hrp.sms.common.model.*;
 import com.kingdee.hrp.sms.common.service.BaseService;
@@ -119,6 +117,33 @@ public class UserService extends BaseService implements IUserService {
 
 
         return roleMapper.selectByExample(roleExample);
+    }
+
+    /**
+     * 获取当前用户关联的医院信息
+     *
+     * @param id 当前用户所属医院id
+     * @return Hospital
+     */
+    @Override
+    public Hospital getUserLinkHospital(Long id) {
+
+        HospitalMapper hospitalMapper = sqlSession.getMapper(HospitalMapper.class);
+        return hospitalMapper.selectByPrimaryKey(id);
+
+    }
+
+    /**
+     * 获取当前用户关联的供应商信息
+     *
+     * @param id 当前用户所属供应商id
+     * @return Supplier
+     */
+    @Override
+    public Supplier getUserLinkSupplier(Long id) {
+
+        SupplierMapper supplierMapper = sqlSession.getMapper(SupplierMapper.class);
+        return supplierMapper.selectByPrimaryKey(id);
     }
 
     @Override

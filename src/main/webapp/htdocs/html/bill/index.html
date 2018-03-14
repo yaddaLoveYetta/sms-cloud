@@ -40,7 +40,7 @@
                 <label class="col-sm-2 ">{mustInput}{name}</label>
                 <div class="col-sm-2">
                     <input id="{key}" type="text" class="form-control" placeholder="请输入{name}">
-                    <span id="{key}-msg" class="msg"></span>
+                    <span id="{key}-msg" class="error-msg msg"></span>
                 </div>
 
             #--text.end--#
@@ -50,7 +50,7 @@
                 <label class="col-sm-2 ">{mustInput}{name}</label>
                 <div class="col-sm-2">
                     <textarea id="{key}" class="form-control" placeholder="请输入{name}"></textarea>
-                    <span id="{key}-msg" class="msg"></span>
+                    <span id="{key}-msg" class="error-msg msg"></span>
                 </div>
 
             #--textarea.end--#
@@ -61,7 +61,7 @@
                 <div class=" col-sm-2">
                     <span class="iconfont icon-riqixuanze form-control-feedback"></span>
                     <input id="{key}" type="text" class="form-control" placeholder="点击选择{name}">
-                    <span id="{key}-msg" class="msg"></span>
+                    <span id="{key}-msg" class="error-msg msg"></span>
                 </div>
 
             #--datatime.end--#
@@ -71,7 +71,7 @@
                 <label class="col-sm-2 ">{mustInput}{name}</label>
                 <div class="col-sm-2">
                     <input id="{key}" type="checkbox" class="checkbox" >
-                    <span id="{key}-msg" class="msg"></span>
+                    <span id="{key}-msg" class="error-msg msg"></span>
                 </div>
 
             #--checkbox.end--#
@@ -81,7 +81,7 @@
                 <label class="col-sm-2 ">{mustInput}{name}</label>
                 <div class="col-sm-2">
                     <input id="{key}" type="password" class="form-control" placeholder="请输入{name}">
-                    <span id="{key}-msg" class="msg"></span>
+                    <span id="{key}-msg" class="error-msg msg"></span>
                 </div>
 
             #--password.end--#
@@ -129,7 +129,9 @@
                     <div id="{key}-pager"></div>
                 </div>
                 <div class="col-sm-1"></div>
-                <span class="error-msg" id="{key}-msg"></span>
+                <div class="col-sm-12">
+                    <span class="error-msg" id="{key}-msg"></span>
+                </div>
             </div>
             #--detail.end--#
 

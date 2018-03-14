@@ -1,6 +1,8 @@
 package com.kingdee.hrp.sms.system.user.service;
 
+import com.kingdee.hrp.sms.common.model.Hospital;
 import com.kingdee.hrp.sms.common.model.Role;
+import com.kingdee.hrp.sms.common.model.Supplier;
 import com.kingdee.hrp.sms.common.model.User;
 
 import java.io.Serializable;
@@ -35,6 +37,22 @@ public interface IUserService extends Serializable {
      * @return
      */
     List<Role> getUserRole(Long userId);
+
+    /**
+     * 获取当前用户关联的医院信息
+     *
+     * @param id 当前用户所属医院id
+     * @return Hospital
+     */
+    Hospital getUserLinkHospital(Long id);
+
+    /**
+     * 获取当前用户关联的供应商信息
+     *
+     * @param id 当前用户所属供应商id
+     * @return Supplier
+     */
+    Supplier getUserLinkSupplier(Long id);
 
     /**
      * 用户修改密码

@@ -75,6 +75,43 @@
         });
     });
 
+    FormEdit.on({
+        'initDefaultValue': function (meteData) {
+            // 新增单据时填充完单据默认值后触发
+
+            if (classId === 1001) {
+                // 新增用户时-用户所属组织为当前用户的组织
+                var org, selectorData;
+                switch (roleType) {
+
+                    case 1:
+                        // 系统角色
+                        break;
+                    case 2:
+                        // 医院角色
+                        org = FormEdit.getSelectors('org_hospital');
+                        selectorData = [{
+                            ID: user.org.id,
+                            number: user.org_DspNumber || '',
+                            name: user.org_DspName || ''
+                        }];
+                        org.setData(selectorData);
+                        break
+                    case 3:
+                        // 供应商角色
+                        org = FormEdit.getSelectors('org_supplier');
+                        selectorData = [{
+                            ID: user.org.id,
+                            number: user.org.number || '',
+                            name: user.org.name || ''
+                        }];
+                        org.setData(selectorData);
+                        break;
+                }
+            }
+        }
+    });
+
     FormEdit.render({
         classId: classId,
         id: id,

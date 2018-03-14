@@ -30,6 +30,8 @@ define('GridConfig', function (require, module, exports) {
         model.editable = isEditAble;
         model.hidden = !isShow;
         model.tabIndex = field.index;
+        model.align = 'center';
+        model.sortable = false;
 
         // F7选择对话框
         if (field.ctrlType === 6) {
@@ -82,7 +84,8 @@ define('GridConfig', function (require, module, exports) {
 
             function value(elem, operation, value) {
                 if (operation === 'get') {
-                    return $(elem).val();
+                    //return $(elem).val();
+                    return $(elem).children('input').val();
                     //return "";
                 } else if (operation === 'set') {
                     $('input', elem).val(value);
@@ -90,7 +93,7 @@ define('GridConfig', function (require, module, exports) {
             }
 
             function handle() {
-                $('#initCombo').append($('.' + field.key + 'Auto').val(''));
+                // $('#initCombo').append($('.' + field.key + 'Auto').val(''));
             }
 
             var triggerClass = 'ui-icon-ellipsis';

@@ -6505,7 +6505,7 @@
 
                 loadComplete: function (data) {
                     config.fnLoadComplete && config.fnLoadComplete(data);
-                },
+                }
             });
 
             // 添加行
@@ -6568,7 +6568,7 @@
                 var meta = mapper.get(this);
 
                 console.log("ellipsis");
-                var $_comboAuto = $(this).prev();
+                var $_comboAuto = $(this).next();
                 var gridRow = bdGrid.jqGrid('getGridParam');
                 var rowNumb = gridRow.selrow;
                 var colModels = gridRow.colModel;
@@ -6611,8 +6611,8 @@
 
             }
 
-            var formClassID = field.lookUpClassID;
-            var url = $.Url.setQueryString('./html/base/login.html', 'classId', formClassID);
+            var formClassID = field.lookUpClassId;
+            var url = $.Url.setQueryString('./html/list/index.html', 'classId', formClassID);
 
             var condition = cfg.config.getConditions && cfg.config.getConditions(rowNumb, colNumb, colModels) || {};
 
@@ -6640,7 +6640,7 @@
                         hasBreadcrumbs: false,
                         pageSize: 8,
                         conditions: condition
-                    },
+                    }
                 });
 
                 // 默认关闭行为为不提交
