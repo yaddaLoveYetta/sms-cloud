@@ -87,6 +87,10 @@
     right: 0px !important;
 }
 
+.ui-icon-plus, .ui-icon-trash {
+    margin: 2px;
+}
+
 /*
     jqgrid 样式覆盖 --end------------------------------
  */

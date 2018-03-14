@@ -22,11 +22,11 @@ define('List/API/Head', function (require, module, exports) {
         // 平台用户
         display = 1;
     } else if (roleType === 2) {
-        // 供应商用户
-        display = 8;
-    } else if (roleType === 3) {
         // 医院用户
         display = 64;
+    } else if (roleType === 3) {
+        // 供应商用户
+        display = 8;
     } else {
         display = 0;
     }
@@ -109,7 +109,8 @@ define('List/API/Head', function (require, module, exports) {
 
             var headItem = {
                 'text': item.name,
-                'type': item.dataType,
+                //'type': item.dataType,
+                'type': item.ctrlType,
                 'key': item.key,
                 'width': item.showWidth,
                 'visible': !!(mask & display), //转成 boolean--字段按用户类别显示

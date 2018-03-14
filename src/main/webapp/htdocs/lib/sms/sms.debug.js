@@ -6364,7 +6364,7 @@
                     fn && fn();
                 });
 
-            },
+            }
 
         };
 
@@ -6388,6 +6388,21 @@
 
         // 默认配置
         var defaults = {};
+
+        // 调用原始控件的方法
+        function invoke(self, name, $argumetns) {
+
+            var meta = mapper.get(self);
+
+            var bdGrid = meta.grid;
+
+            var args = [].slice.call($argumetns, 0);
+
+            return bdGrid.jqGrid(name, args).trigger('reloadGrid', [{
+                page: 1
+            }]);
+
+        }
 
         /**
          * 表格构造器。
@@ -6856,6 +6871,11 @@
                 }]);
                 meta.oldData = meta.snapShot(meta.grid);
             },
+            setGridParam: function () {
+                return invoke(this, 'setGridParam', arguments).trigger('reloadGrid', [{
+                    page: 1
+                }]);
+            },
             clear: function () {
                 var meta = mapper.get(this);
 
@@ -6867,19 +6887,16 @@
                 });
                 meta.oldData = meta.snapShot(meta.grid);
             },
-
             save: function () {
                 var meta = mapper.get(this);
 
                 meta.saveGrid(meta.grid, meta.curCell);
             },
-
             clearDeleteRows: function () {
                 var meta = mapper.get(this);
 
                 meta.deleteRows.splice(0, meta.deleteRows.length);
             },
-
             getGridDatas: function (entryIndex) {
                 var meta = mapper.get(this);
 
@@ -6952,7 +6969,6 @@
                     'error': errorDatas,
                 };
             },
-
             isGridChanged: function () {
                 var meta = mapper.get(this);
                 var curData = meta.snapShot(meta.grid);
@@ -6970,7 +6986,6 @@
 
                 return false;
             },
-
             tableOperate: function (val, opt, row) {
                 var html_con = '<div class="operating" data-id="' + opt.rowId + '"><span class="ui-icon ui-icon-plus" title="新增行"></span><span class="ui-icon ui-icon-trash" title="删除行"></span></div>';
                 return html_con;

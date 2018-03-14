@@ -60,6 +60,7 @@ public class BaseDataPlugin extends PlugInAdpter implements InitializingBean {
     @Override
     public List<Condition> getConditions(int classId, Map<String, Object> formTemplate, List<Condition> conditons) {
 
+/*        // test
         List<Condition> ret = new ArrayList<Condition>();
 
         if (classId == 1001) {
@@ -70,7 +71,9 @@ public class BaseDataPlugin extends PlugInAdpter implements InitializingBean {
             condition.setValue("yadda");
             ret.add(condition);
         }
-        return ret;
+        return ret;*/
+
+        return null;
     }
 
 

@@ -136,12 +136,21 @@ public class TemplateController {
      * @param data    数据（严格按照单据模板匹配的数据）
      * @return 新增资料的id
      */
-
-
+    @ResponseBody
     @RequestMapping(value = "addItem")
-    public Long addItem(Integer classId, String data) {
+    public Long addItem(Integer classId, String data) throws IOException {
 
-        return null;
+        if (classId < 0) {
+            throw new BusinessLogicRunTimeException("参数错误：必须提交classId");
+        }
+
+        if ("".equals(data.trim())) {
+            throw new BusinessLogicRunTimeException("参数错误：必须提交data");
+        }
+
+        Long id = templateService.addItem(classId, data);
+
+        return id;
     }
 
 

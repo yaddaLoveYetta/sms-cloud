@@ -874,6 +874,76 @@ public class FormActionExample {
             return (Criteria) this;
         }
 
+        public Criteria andIconModifyIsNull() {
+            addCriterion("icon_modify is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIconModifyIsNotNull() {
+            addCriterion("icon_modify is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIconModifyEqualTo(String value) {
+            addCriterion("icon_modify =", value, "iconModify");
+            return (Criteria) this;
+        }
+
+        public Criteria andIconModifyNotEqualTo(String value) {
+            addCriterion("icon_modify <>", value, "iconModify");
+            return (Criteria) this;
+        }
+
+        public Criteria andIconModifyGreaterThan(String value) {
+            addCriterion("icon_modify >", value, "iconModify");
+            return (Criteria) this;
+        }
+
+        public Criteria andIconModifyGreaterThanOrEqualTo(String value) {
+            addCriterion("icon_modify >=", value, "iconModify");
+            return (Criteria) this;
+        }
+
+        public Criteria andIconModifyLessThan(String value) {
+            addCriterion("icon_modify <", value, "iconModify");
+            return (Criteria) this;
+        }
+
+        public Criteria andIconModifyLessThanOrEqualTo(String value) {
+            addCriterion("icon_modify <=", value, "iconModify");
+            return (Criteria) this;
+        }
+
+        public Criteria andIconModifyLike(String value) {
+            addCriterion("icon_modify like", value, "iconModify");
+            return (Criteria) this;
+        }
+
+        public Criteria andIconModifyNotLike(String value) {
+            addCriterion("icon_modify not like", value, "iconModify");
+            return (Criteria) this;
+        }
+
+        public Criteria andIconModifyIn(List<String> values) {
+            addCriterion("icon_modify in", values, "iconModify");
+            return (Criteria) this;
+        }
+
+        public Criteria andIconModifyNotIn(List<String> values) {
+            addCriterion("icon_modify not in", values, "iconModify");
+            return (Criteria) this;
+        }
+
+        public Criteria andIconModifyBetween(String value1, String value2) {
+            addCriterion("icon_modify between", value1, value2, "iconModify");
+            return (Criteria) this;
+        }
+
+        public Criteria andIconModifyNotBetween(String value1, String value2) {
+            addCriterion("icon_modify not between", value1, value2, "iconModify");
+            return (Criteria) this;
+        }
+
         public Criteria andDescIsNull() {
             addCriterion("`desc` is null");
             return (Criteria) this;

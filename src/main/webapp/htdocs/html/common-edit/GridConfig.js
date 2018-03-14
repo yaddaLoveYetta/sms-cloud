@@ -214,7 +214,7 @@ define('GridConfig', function (require, module, exports) {
 
         var model = {};
 
-        if (typeof fields == 'object') {
+        if (typeof fields === 'object') {
             //重载方法
             var params = fields;
 
@@ -228,12 +228,12 @@ define('GridConfig', function (require, module, exports) {
         //控制是否有新增，删除行功能-true：可以添加/删除 false：不出现添加/删除行功能
         var operator = showType === 1 ? 2 : showType === 2 ? 2 : 0;
 
-        //按照单据模板确定显示字段
+        //未显示指定显示的字段则按照单据模板确定显示字段
         if (!showKeys) {
             showKeys = getShowKeys(fields);
         }
 
-        //按照单据模板确定可编辑字段
+        //未显示指定可编辑的字段按照单据模板确定可编辑字段
         if (!editKeys) {
             editKeys = getEditKeys(fields);
         }
@@ -258,25 +258,12 @@ define('GridConfig', function (require, module, exports) {
                 width: 50,
                 fixed: true,
                 formatter: function (val, opt, row) {
+                    // 添加一列 新增，删除按钮
+                    return '<div class="operating" data-id="' + opt.rowId + '"><span class="ui-icon ui-icon-plus iconfont icon-icon-xinzeng" title="新增行"></span><span class="ui-icon ui-icon-trash iconfont icon-delete" title="删除行"></span></div>';
 
-                    var html_con;
-
-                    if (operator === 1) {
-                        // add
-                        html_con = '<div class="operating" data-id="' + opt.rowId + '"><span class="ui-icon ui-icon-plus" title="新增行"></span></div>';
-                    } else if (operator === 2) {
-                        // del
-                        html_con = '<div class="operating" data-id="' + opt.rowId + '"><span class="ui-icon-trash iconfont icon-delete" title="删除行"></span></div>';
-                    } else if (operator === 3) {
-                        // add & del
-                        html_con = '<div class="operating" data-id="' + opt.rowId + '"><span class="ui-icon ui-icon-plus" title="新增行"></span><span class="ui-icon ui-icon-trash" title="删除行"></span></div>';
-                    }
-
-                    html_con = '<div class="operating" data-id="' + opt.rowId + '"><span class="ui-icon ui-icon-plus iconfont icon-icon-xinzeng" title="新增行"></span><span class="ui-icon ui-icon-trash iconfont icon-delete" title="删除行"></span></div>';
-                    return html_con;
                 },
                 align: "center",
-                hidden: !operator,
+                hidden: false
             };
             cModel.push(model);
         }
@@ -289,7 +276,7 @@ define('GridConfig', function (require, module, exports) {
                 continue;
             }
 
-            if (field.ctrlType == 6 && field.lookUpType == 1) {
+            if (field.ctrlType === 6 && field.lookUpType === 1) {
                 // 引用类型增加保存列-不显示-用作表格保存时取数
                 var keyModel = {
                     name: field.key,
@@ -369,11 +356,11 @@ define('GridConfig', function (require, module, exports) {
                 // 平台用户
                 display = 1;
             } else if (userRoleType === 2) {
-                //供应商用户
-                display = 8;
-            } else if (userRoleType === 3) {
                 //医院用户
                 display = 64;
+            } else if (userRoleType === 3) {
+                //供应商用户
+                display = 8;
             }
         } else if (showType === 1) {
             // 新增
@@ -382,24 +369,23 @@ define('GridConfig', function (require, module, exports) {
                 // 平台用户
                 display = 2;
             } else if (userRoleType === 2) {
-                //供应商用户
-                display = 16;
-            } else if (userRoleType === 3) {
                 //医院用户
                 display = 128;
+            } else if (userRoleType === 3) {
+                //供应商用户
+                display = 16;
             }
         } else if (showType === 2) {
             // 编辑
-
             if (userRoleType === 1) {
                 // 平台用户
                 display = 4;
             } else if (userRoleType === 2) {
-                //供应商用户
-                display = 16;
-            } else if (userRoleType === 3) {
                 //医院用户
                 display = 256;
+            } else if (userRoleType === 3) {
+                //供应商用户
+                display = 32;
             }
         }
 
@@ -417,7 +403,7 @@ define('GridConfig', function (require, module, exports) {
 
     }
 
-    //根据用户的角色类别确定模板字段的编辑列
+    //根据用户的角色类别确定模板字段的编辑列-查看时都锁定不可编辑
     function getEditKeys(fields) {
 
         var editKeys = [];
@@ -425,34 +411,38 @@ define('GridConfig', function (require, module, exports) {
 
         // 用户角色类别
         var userRoleType = user.roles && user.roles[0] && user.roles[0]['type'] || -1;
+        /*
+                1	新增时对于平台用户锁定
+                2	编辑时对于平台用户锁定
+                4	新增时对于供应商用户锁定
+                8	编辑时对于供应商用户锁定
+                16	新增时对于医院用户锁定
+                32	编辑时对于医院用户锁定
+                */
 
-        if (showType == 0) {
-            // 查看时都锁定
-            lock = 15;
-        } else if (showType == 1) {
+        if (showType === 1) {
             // 新增
-            //lockMaskDisplay  字段显示权限-后端lock定义 1 编辑时平台用户锁定，4编辑时候供应商用户锁定
             if (userRoleType === 1) {
                 // 平台用户
                 lock = 1;
             } else if (userRoleType === 2) {
+                //医院用户
+                lock = 16;
+            } else if (userRoleType === 3) {
                 //供应商用户
                 lock = 4;
-            } else if (userRoleType === 3) {
-                //医院用户
-                lock = 4;
             }
-        } else if (showType == 2) {
+        } else if (showType === 2) {
             // 编辑
             //lockMaskDisplay  字段显示权限-后端lock定义 2 编辑时平台用户锁定，8编辑时候供应商用户锁定
             if (userRoleType === 1) {
                 // 平台用户
                 lock = 2;
             } else if (userRoleType === 2) {
-                //供应商用户
-                lock = 8;
-            } else if (userRoleType === 3) {
                 //医院用户
+                lock = 32;
+            } else if (userRoleType === 3) {
+                //供应商用户
                 lock = 8;
             }
         }
@@ -463,13 +453,9 @@ define('GridConfig', function (require, module, exports) {
 
             var lockMask = field.lock || 0;
 
-            if (showType == 0) {
-                // 查看锁定所有字段
-                lockMask = 15;
-            }
 
-            if (!(lockMask & lock)) {
-                // 字段可编辑
+            if (showType !== 0 && !(lockMask & lock)) {
+                // 字段可编辑 -查看锁定所有字段
                 editKeys.push(key);
             }
         }

@@ -21,6 +21,8 @@ public class FormAction extends FormActionKey {
 
     private String icon;
 
+    private String iconModify;
+
     private String desc;
 
     public String getName() {
@@ -101,6 +103,14 @@ public class FormAction extends FormActionKey {
 
     public void setIcon(String icon) {
         this.icon = icon == null ? null : icon.trim();
+    }
+
+    public String getIconModify() {
+        return iconModify;
+    }
+
+    public void setIconModify(String iconModify) {
+        this.iconModify = iconModify == null ? null : iconModify.trim();
     }
 
     public String getDesc() {

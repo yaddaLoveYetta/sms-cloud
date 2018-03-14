@@ -76,38 +76,82 @@ define("List", function (require, module, exports) {
 
     }
 
+    // 根据控件类型转换值显示形式 如 是/否类型控件，数据库中保存的是1/0 ，前端显示时应转换成 是/否 字样
+    function getHtml(ctrlType, data) {
 
-    function getHtml(type, data) {
         /*
-         * if ( typeof data == 'boolean') { data = data ? '是' : '否'; }
-         */
-        if (data == null) {
-            data = "";
+                           1	数字
+                           2	数字带小数
+                           3	选择框
+                           5	下拉列表
+                           6	F7选择框
+                           7	级联选择器
+                           8	手机号码
+                           9	座机电话
+                           10	普通文本
+                           11	多行文本
+                           12	日期时间
+                           13	男：女
+                           14	密码控件
+                           15	是：否
+                           16	单价/金额(两位小数)
+                        */
+        switch (ctrlType) {
+            case 1:
+            case 2:
+            case 6:
+            case 8:
+            case 9:
+            case 10:
+            case 11:
+            case 12:
+            case 14:
+            case 16:
+                data = data || '';
+                break;
+            case 3:
+                // checkbox
+                data = data ? "是" : "否";
+                break;
+            case 13:
+                //男：女
+                data = data ? "男" : "女";
+                break;
+            case 15: //是：否
+                data = data ? "是" : "否";
+                break;
+            default:
+                data = data || '';
         }
-        if (type == 4) {
-            // boolean 类型元数据
-            data = data ? "是" : "否";
-        }
-        if (type == 3) {
-            // 日期时间类型
-            console.log(data instanceof Date);
-        }
-        if (type == 98) {
-            // 处理男/女显示
-            data = data ? "女" : "男";
-        }
-        if (type == "entry") {
-            //如果只有一个就不返回下拉框了
-            if (data.length <= 1) {
-                return data[0] || "";
-            }
-            var html = "<select style='border: none;margin-left:-5px;background-color: transparent;'>"
-            $.Array.each(data, function (item, index) { //item.FCarNo
-                html += $.String.format("<option value='{0}'>{0}</option>", item || "");
-            });
-            html += " </select>";
-            return html;
-        }
+
+        /*        if (data == null) {
+                    data = "";
+                }
+                if (type == 4) {
+                    // boolean 类型元数据
+                    data = data ? "是" : "否";
+                }
+                if (type == 3) {
+                    // 日期时间类型
+                    console.log(data instanceof Date);
+                }
+                if (type == 98) {
+                    // 处理男/女显示
+                    data = data ? "女" : "男";
+                }
+                if (type == "entry") {
+                    //如果只有一个就不返回下拉框了
+                    if (data.length <= 1) {
+                        return data[0] || "";
+                    }
+                    var html = "<select style='border: none;margin-left:-5px;background-color: transparent;'>"
+                    $.Array.each(data, function (item, index) { //item.FCarNo
+                        html += $.String.format("<option value='{0}'>{0}</option>", item || "");
+                    });
+                    html += " </select>";
+                    return html;
+                }*/
+
         return data;
     }
 
@@ -122,13 +166,22 @@ define("List", function (require, module, exports) {
             pageSize: config.pageSize,
             conditions: config.conditions
         }, function (data, total) {
+
             list = data;
+            // 将单据模板缓存下来
             metaData = list.metaData;
+            // 单据主键值
             primaryKey = list.primaryKey;
+            // 处理过的字段模板
             var headItems = data.head.items;
+            // 单据数据
             var bodyItems = data.body.items;
+
+            // 填充列表
             div.innerHTML = $.String.format(samples["table"], {
+
                 checkbox: data.checkbox ? samples["th.checkbox"] : "",
+
                 ths: $.Array.keep(headItems, function (field, index) {
                     return $.String.format(samples["th"], {
                         index: index,
@@ -136,16 +189,21 @@ define("List", function (require, module, exports) {
                         width: field.width
                     });
                 }).join(""),
+
                 trs: $.Array.keep(bodyItems, function (item, no) {
 
                     // 行
                     return $.String.format(samples["tr"], {
+
                         index: no,
+
                         //"disabled-class": item.disabled ? "disabled" : "",
                         "disabled-class": "",
+
                         checkbox: data.checkbox ? $.String.format(samples["td.checkbox"], {
                             index: no
                         }) : "",
+
                         tds: $.Array.keep(item.items, function (item, index) {
                             // 列
                             var field = headItems[index];
@@ -154,32 +212,27 @@ define("List", function (require, module, exports) {
                                 index: index,
                                 key: field.key,
                                 "number-class": field.key == "number" ? "number" : "",
-                                td: field.isEntry ? getTableHtml(field, item.value) : getHtml(field.type, item.value),
+                                text: field.isEntry ? getTableHtml(field, item.value) : getHtml(field.type, item.value),
                                 title: field.isEntry ? '' : getHtml(field.type, item.value),
                             });
                         }).join("")
                     });
-                }).join(""),
-                emptys: data.checkbox ? samples["emptytd"] : "",
-                tdtotals: $.Array.keep(headItems, function (field, index) {
-                    return $.String.format(samples["tdtotal"], {
-                        index: index,
-                        key: field.key,
-                        needTotal: field.isCount == "1",//(field.type == 1 && field.lookupType == 0),
-                        width: field.width
-                    });
                 }).join("")
+
             });
-            sumTdTotal(data);
+
             if (!hasBind) {
                 bindEvents(config.multiSelect);
                 hasBind = true;
             }
+
             if (!config.multiSelect) {
                 // 处理刷新全选按钮出来的问题
                 $('[data-check="all"]').hide();
             }
+
             fn && fn(total, config.pageSize);
+
         });
     }
 
@@ -208,23 +261,33 @@ define("List", function (require, module, exports) {
     }
 
     function bindEvents(multiSelect) {
+
         if (multiSelect) {
+            // 支持多选-checkbox事件
             $(div).delegate('[data-check="all"]', "click", function (event) {
+                // 全选
                 var chk = this;
                 var checked = chk.checked;
                 $('[data-check="item"]').each(function () {
                     var chk = this;
                     check(chk, checked);
                 });
+
             }).delegate('[data-check="item"]', "click", function (event) {
+
+                // 选择单挑记录
                 var chk = this;
                 check(chk);
                 event.stopPropagation();
+
             });
         } else {
+
+            // 不支持多选-checkbox事件
             $('[data-check="all"]').hide();
+
             $(div).delegate("[data-check=item]", "click", function (event) {
-                // var item = this;
+
                 var item = this;
                 var checked = item.checked;
                 $('[data-check="item"]').each(function () {
@@ -233,6 +296,7 @@ define("List", function (require, module, exports) {
                 });
                 check(item, checked);
                 event.stopPropagation();
+
             });
         }
 
@@ -264,7 +328,9 @@ define("List", function (require, module, exports) {
             emitter.fire("click:" + no + "-" + index, args);
             emitter.fire("click:" + field.key, args);
             emitter.fire("cell.click", args);
+
         });
+
         //主表行单击事件
         $(div).delegate("tr[data-index]", "click", function (event) {
             var tr = this;
@@ -300,8 +366,8 @@ define("List", function (require, module, exports) {
 
     }
 
-
     function check(chk, checked) {
+
         checked = chk.checked = typeof checked == "boolean" ? checked : chk.checked;
         var tr = chk.parentNode.parentNode;
         $(tr).toggleClass("selected", checked);
@@ -355,7 +421,6 @@ define("List", function (require, module, exports) {
     }
 
     return {
-        load: load,
         render: render,
         on: emitter.on.bind(emitter),
         getSelectedItems: getSelectedItems,

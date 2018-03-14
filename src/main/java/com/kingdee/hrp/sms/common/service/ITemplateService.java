@@ -3,6 +3,7 @@ package com.kingdee.hrp.sms.common.service;
 import com.kingdee.hrp.sms.common.pojo.Condition;
 import com.kingdee.hrp.sms.common.pojo.Sort;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -68,7 +69,7 @@ public interface ITemplateService {
      * @return 新增资料的id
      */
 
-    Long addItem(Integer classId, String data);
+    Long addItem(Integer classId, String data) throws IOException;
 
     /**
      * 修改业务数据

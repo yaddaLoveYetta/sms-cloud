@@ -95,10 +95,44 @@
         //支持二级事件，二级事件对应 item 中的 name
         ButtonList.on('click', {
 
+            'view': function (item, index) {
+                // 查看详情
+                var list = List.getSelectedItems();
+
+                if (list.length === 0) {
+                    SMS.Tips.error('请选择要操作的项', 1000);
+                    return;
+                }
+
+                if (list.length > 1) {
+                    SMS.Tips.error('一次只能对一条记录进行操作', 1000);
+                    return;
+                }
+
+                var metaData = List.getMetaData();
+                var url = 'html/bill/index.html';
+                var name = metaData.formClass.name || '';
+
+                if (!url) {
+                    // 没有配置编辑页面或不需要编辑功能
+                    return;
+                }
+
+                Iframe.open({
+                    id: classId + '-view-' + list[0].primaryValue,
+                    name: '查看详情-' + name,
+                    url: url,
+                    query: {
+                        'id': list[0].primaryValue,
+                        'classId': classId,
+                        'operate': 0
+                    }
+                });
+            },
             'add': function (item, index) {
 
                 var metaData = List.getMetaData();
-                var url = 'html/user/supplier/index.html';
+                var url = 'html/bill/index.html';
                 var name = metaData.formClass.name || '';
 
                 if (!url) {
@@ -131,7 +165,7 @@
                 }
 
                 var metaData = List.getMetaData();
-                var url = 'html/user/supplier/index.html';
+                var url = 'html/bill/index.html';
                 var name = metaData.formClass.name || '';
 
                 if (!url) {

@@ -113,7 +113,7 @@ public class PlugInFactory implements IPlugIn, InitializingBean, ApplicationCont
      * @return
      */
     @Override
-    public PlugInRet afterSave(int classId, String id, JsonNode data) {
+    public PlugInRet afterSave(int classId, Long id, JsonNode data) {
 
         PlugInRet plugInRet = new PlugInRet();
 

@@ -19,6 +19,7 @@ define('FormAction', function (require, module, exports) {
         },
         textKey: 'text',
         routeKey: 'name',
+        iconKey: 'icon',
         autoClose: true,
         items: []
     };
@@ -59,13 +60,14 @@ define('FormAction', function (require, module, exports) {
 
             var routeKey = __default__.routeKey;
             var textKey = __default__.textKey;
+            var iconKey = __default__.iconKey;
 
             // 处理菜单分组--actions是Object
             actions = $.Array.aggregate(actions, 'group', function (item, index) {
                 return {
                     text: item[routeKey],
                     name: item[textKey],
-                    icon: item.icon
+                    icon: item[iconKey]
                 };
             });
             // 处理菜单分组--转换成Array结构

@@ -147,33 +147,61 @@ define('FormEdit', function (require, module, exports) {
             }
         };
 
-        //------是否必填校验逻辑(因多地方使用所以抽出来) BEGIN-----//
-        var isMustFiled = function (isUpdate, field) {
+        /**
+         * 判断表头字段是否是必填字段
+         * @param key 字段模板key
+         * @returns {boolean}
+         */
+        function isMustFiled(key) {
+
+            var fields = metaData['formFields'][0];
+
+            var field = fields[key];
+            // 模板中配置的mustInput
             var mustInput = field['mustInput'] || 0;
-            var mustInputMask = 0; //是否必填掩码
-            if (isUpdate) {
-                //FMustInput  字段显示权限-后端mustInput定义 4 编辑时平台用户必填，8编辑时候物业用户必填
-                if (user.type == 'QpXq24FxxE6c3lvHMPyYCxACEAI=') {
-                    // 平台用户
-                    mustInputMask = 2;
-                } else if (user.type == 'B3sMo22ZLkWApjO/oEeDOxACEAI=') {
-                    //供应商用户
-                    mustInputMask = 8;
-                }
-            } else {
-                //FMustInput  字段显示权限-后端mustInput定义 4 编辑时平台用户必填，8编辑时候物业用户必填
-                if (user.type == 'QpXq24FxxE6c3lvHMPyYCxACEAI=') {
+            //是否必填掩码
+            var mustInputMask = 0;
+            // 角色类别 1:系统管理员 2:医院 3:供应商
+            var userRoleType = (user.roles && user.roles[0] && user.roles[0]['type']) || -1;
+
+            /*
+                        1	新增时对于平台用户必填
+                        2	编辑时对于平台用户必填
+                        4	新增时对于供应商用户必填
+                        8	编辑时对于供应商用户必填
+                        16	新增时对于医院用户必填
+                        32	编辑时对于医院用户必填
+                        */
+
+            if (operate === 1) {
+                // 新增
+                if (userRoleType === 1) {
                     // 平台用户
                     mustInputMask = 1;
-                } else if (user.type == 'B3sMo22ZLkWApjO/oEeDOxACEAI=') {
+                } else if (userRoleType === 2) {
+                    //医院用户
+                    mustInputMask = 16;
+                } else if (userRoleType === 3) {
                     //供应商用户
                     mustInputMask = 4;
                 }
+            } else if (operate === 2) {
+                // 修改
+                if (userRoleType === 1) {
+                    // 平台用户
+                    mustInputMask = 2;
+                } else if (userRoleType === 2) {
+                    //医院用户
+                    mustInputMask = 32;
+                } else if (userRoleType === 3) {
+                    //供应商用户
+                    mustInputMask = 8;
+                }
             }
-            return !!(mustInputMask & mustInput); //是否必填
-        }
 
-        //------是否必填校验逻辑 END-----//
+            //是否必填
+            return !(mustInputMask & mustInput);
+        }
 
         // 控件初始化
         function initController() {
@@ -289,7 +317,7 @@ define('FormEdit', function (require, module, exports) {
                 16	新增时对于医院用户锁定
                 32	编辑时对于医院用户锁定
              */
-            if (operate === 1) {
+            if (operate === 0) {
                 // 查看详情时所有字段锁定
                 lockMask = 63;
             } else if (operate === 1) {
@@ -330,8 +358,8 @@ define('FormEdit', function (require, module, exports) {
                 var fieldLock = field.lock;
 
                 //新增时处理默认值-默认值可来自模板配置或者业务传递，业务传递的默认值优先于模板配置
-                if (!!(fieldLock & lockMask)) {
-                    // 需要锁定该字段
+                if (operate === 0 || !!(fieldLock & lockMask)) {
+                    // 需要锁定该字段 --查看时所有字段锁定
                     switch (field.ctrlType) {
                         case 6:
                             //F7选择框锁定特殊处理
@@ -482,7 +510,7 @@ define('FormEdit', function (require, module, exports) {
             // 构建子表dom结构
             divBody.innerHTML = $.Array.keep(formClassEntry, function (item, no) {
                 return $.String.format(samples["detail"], {
-                    key: item.foreignKey
+                    key: item.tableName
                 });
             }).join('');
 
@@ -502,7 +530,7 @@ define('FormEdit', function (require, module, exports) {
                             height: 'auto',
                             classId: formClassId,
                         },
-                        'showType': 1// 新增时有添加删除按钮，编辑时有删除按钮,查看时无按钮
+                        'showType': operate // 新增时有添加删除按钮，编辑时有删除按钮,查看时无按钮
                     });
 
 
@@ -960,12 +988,12 @@ define('FormEdit', function (require, module, exports) {
          * @param {} customerErrData  //自定义错误消息
          * @returns {}
          */
-        function save(itemID, fnValidate, fnSuccess, entryData, customerErrData) {
+        function save(fn) {
 
             // 编辑OR新增
             var isUpdate = !!itemID;
 
-            verifyFields(isUpdate, function (successData) {
+/*            verifyFields(isUpdate, function (successData) {
 
                 fnValidate(successData);
 
@@ -985,7 +1013,102 @@ define('FormEdit', function (require, module, exports) {
                 // errorData.push(entryErrorData);
                 fnValidate(successData, errorData);
 
-            }, customerErrData);
+            }, customerErrData);*/
+
+            var tasks = [getHeadData, getEntryData];
+
+            Multitask.concurrency(tasks, function (data) {
+
+                var validate = true;
+
+                var headData = data[0];
+                var entryData = data[1];
+
+                if (headData.errorData) {
+                    // 表头数据校验不通过
+                    showHeadValidInfo(headData.successData, headData.errorData);
+                    validate = false;
+                } else {
+                    showHeadValidInfo(headData.successData);
+                }
+
+                if (entryData.errorData) {
+                    // 表体数据校验不通过
+                    showEntryValidInfo(entryData.errorData, metaData['formClassEntry']["1"].tableName);
+                    validate = false;
+                } else {
+                    showEntryValidInfo(null, metaData['formClassEntry']["1"].tableName);
+                }
+
+                if (validate) {
+                    // 校验通过-提交数据
+
+                    var data = {};
+                    data['classId'] = metaData['formClass']['classId'];
+                    data['data'] = headData.successData;
+
+                    if (entryData.successData) {
+                        data['data']['entry'] = entryData.successData;
+                    }
+                    if (operate === 2) {
+                        // 编辑
+                        data['id'] = itemId;
+                    }
+                    submitData(data, fn);
+
+                }
+
+            });
+        }
+
+        // 表头校验信息处理
+        function showHeadValidInfo(successData, errorData) {
+
+            for (var item in successData) {
+                // 去掉错误提示
+                var msgElement = document.getElementById(item + '-msg');
+
+                if ($(msgElement).hasClass('show')) {
+                    $(msgElement).toggleClass('show');
+                }
+                $(msgElement).html('');
+            }
+            if (errorData) {
+                // 显示错误提示
+                for (var item in errorData) {
+
+                    var msgElement = document.getElementById(item + '-msg');
+                    if (!$(msgElement).hasClass('show')) {
+                        $(msgElement).toggleClass('show');
+                    }
+                    $(msgElement).html(errorData[item]);
+                }
+            }
+        }
+
+        // 子表校验信息处理
+        function showEntryValidInfo(errorData, msgContentId) {
+
+            var msgElement = document.getElementById(msgContentId + '-msg');
+
+            $(msgElement).html('');
+
+            if (errorData) {
+
+                var errors = '';
+
+                // 显示错误提示
+                for (var item in errorData) {
+                    errors = errors + '<br/>第' + item + '行[' + errorData[item].join('-') + ']是必录项';
+                }
+
+                $(msgElement).html(errors);
+
+                if (!$(msgElement).hasClass('show')) {
+                    $(msgElement).toggleClass('show');
+                }
+
+            }
         }
 
         /**
@@ -1001,7 +1124,7 @@ define('FormEdit', function (require, module, exports) {
                 alert('元数据错误，请联系管理员');
                 return;
             }
-            // var formClass = metaData['formClass'];
+
             var fields = metaData['formFields'][0];
             var validate = true;
             var successData = {};
@@ -1116,6 +1239,225 @@ define('FormEdit', function (require, module, exports) {
             }
         }
 
+        // 获取表头数据
+        function getHeadData(fn) {
+
+            // 保存校验通过的数据
+            var successData = {};
+            // 保存校验失败的数据
+            var errorData = {};
+            // 默认校验通过
+            var validate = true;
+
+            var fields = metaData['formFields'][0];
+
+            for (var fieldKey in fields) {
+
+                var field = fields[fieldKey];
+
+                var element = getValueElement(fieldKey);
+
+                if (!element) {
+                    // 按元数据未找到控件，跳过此字段
+                    continue;
+                }
+
+                var domValue;
+                var msg;
+                var ctrlType = field.ctrlType;
+
+                if (!ctrlType) {
+                    // 默认文本
+                    ctrlType = 10;
+                }
+
+                /*
+                    1	数字
+                    2	数字带小数
+                    3	选择框
+                    5	下拉列表
+                    6	F7选择框
+                    7	级联选择器
+                    8	手机号码
+                    9	座机电话
+                    10	普通文本
+                    11	多行文本
+                    12	日期时间
+                    13	男：女
+                    14	密码控件
+                    15	是：否
+                    16	单价/金额(两位小数)
+                 */
+                switch (ctrlType) {
+                    case 1:
+                    case 2:
+                    case 16:
+                        // 数字
+                        var ne = numberFields[fieldKey];
+                        domValue = ne.get();
+
+                        var minValue = field.minValue;
+                        var maxValue = field.maxValue;
+
+                        if (domValue < minValue) {
+
+                            msg = field['name'] + '必须大于' + minValue;
+                            errorData[fieldKey] = msg;
+                            validate = false;
+
+                        } else if (domValue > maxValue) {
+
+                            msg = field['name'] + '必须小于' + maxValue;
+                            errorData[fieldKey] = msg;
+                            validate = false;
+
+                        } else {
+                            successData[fieldKey] = domValue;
+                        }
+                        break;
+                    case 3:
+                        // 多选按钮，无需校验
+                        successData[fieldKey] = element.checked;
+                        break;
+                    case 6:
+                        //F7选择框
+                        var selector = selectors[fieldKey];
+                        var selectorID = selector.getData()[0]['ID'];
+
+                        if (!selectorID) {
+                            if (isMustFiled(fieldKey)) {
+                                msg = field['name'] + '为必填项';
+                                errorData[fieldKey] = msg;
+                                validate = false;
+                            } else {
+                                successData[fieldKey] = 0;
+                            }
+                        } else {
+                            successData[fieldKey] = selectorID;
+                        }
+                        break;
+                    case 14:
+                        // 密码控件
+                        if (!element.value && isMustFiled(fieldKey)) {
+                            msg = field['name'] + '为必填项';
+                            errorData[fieldKey] = msg;
+                            validate = false;
+                        } else {
+                            if (element.value !== 'XXXXXXXX') {
+                                successData[fieldKey] = MD5.encrypt(element.value);
+                            }
+                        }
+                        break;
+                    default:
+                        // 默认处理
+                        if (!element.value) {
+                            if (isMustFiled(fieldKey)) {
+                                msg = field['name'] + '为必填项';
+                                errorData[fieldKey] = msg;
+                                validate = false;
+                            } else {
+                                // 给空字符串
+                                successData[fieldKey] = element.value || '';
+                            }
+                        } else {
+
+                            var result = validateField(element.value, fieldKey);
+
+                            if (!result) {
+                                msg = field['name'] + '输入内容不合法';
+                                errorData[fieldKey] = msg;
+                                validate = false;
+                            } else {
+                                successData[fieldKey] = element.value;
+                            }
+                        }
+                }
+
+            }
+
+            if (validate) {
+                fn && fn(successData);
+            } else {
+                fn && fn(successData, errorData);
+            }
+
+        }
+
+        // 获取表体数据-只取第一个子表数据(test)
+        function getEntryData(fn) {
+
+            /*
+             'flag':'1' 0删除, 1新增，2修改
+             */
+
+            var entry = [];
+
+            // 是否有子表
+            var existEntry = !MiniQuery.Object.isEmpty(metaData['formClassEntry']);
+
+            if (!existEntry) {
+                fn && fn({});
+                return;
+            }
+
+            // 只获取第一个子表数据(test)
+            var billGrid = billGrids[metaData['formClassEntry']["1"].tableName];
+
+            var gridData = billGrid.getGridDatas(1); // 获取第一个表体数据
+            // 校验不通过的错误数据
+            var errorData = gridData["error"] || []
+
+            if ((gridData["add"] || []).length === 0 && (gridData["update"] || []).length === 0) {
+                errorData['1'] = ['无有效分录，请在列表界面选择单据操作!'];
+            }
+
+            //新增数据
+            $.Array.each(gridData["add"] || [], function (item, index) {
+
+                var addData = {
+                    data: $.Object.grep(item, function (key, value) {
+                        return !(value === null);
+                    }),
+                    flag: '1'
+                };
+                entry.push(addData);
+            });
+
+            //修改数据
+            $.Array.each(gridData["update"] || [], function (item, index) {
+
+                var addData = {
+                    data: $.Object.grep(item, function (key, value) {
+                        return !(value === null);
+                    }),
+                    flag: '2'
+                };
+                entry.push(addData);
+            });
+
+            //删除数据
+            $.Array.each(gridData["delete"] || [], function (item, index) {
+
+                var addData = {
+                    data: $.Object.grep(item, function (key, value) {
+                        return !(value === null);
+                    }),
+                    flag: '0'
+                };
+                entry.push(addData);
+            });
+
+            var entryData = {
+                1: entry
+            };
+
+            fn && fn({
+                errorData: errorData,
+                entryData: entryData,
+            });
+
+        }
+
         // 填充页面数据
         function fill(data, fnEntry) {
 
@@ -1216,7 +1558,7 @@ define('FormEdit', function (require, module, exports) {
 
             }
 
-            // 存在表体数据时，交给调用者自己处理
+            // 存在表体数据时，填充表体数据
             if (data['entry'] && !MiniQuery.Object.isEmpty(data['entry'])) {
 
                 MiniQuery.Object.each(metaData['formClassEntry'], function (entryIndex, formClassEntryItem) {
@@ -1314,49 +1656,56 @@ define('FormEdit', function (require, module, exports) {
             };
         }
 
-        // value:待校验值
-        // valueType:规定类型
-        // length:规定长度
-        // scale: 规定小数位
-        //ctrlType:控件类型
-        function validateField(value, valueType, length, scale, ctrlType) {
-            if (valueType == "1") { // 数值
-                //return Validate.integer(value);
-            }
-            if (valueType == "2") { // 文本
-                if (ctrlType == "8") {
-                    //手机号码验证
-                    return Validate.mobilePhone(value);
-                }
-                if (ctrlType == "9") {
-                    //电话验证
-                    return Validate.landlinePhone(value);
-                }
-            }
-            if (valueType == "3") { // 日期型
+        /**
+         * 校验字段值合法性
+         * @param value
+         * @param key
+         * @returns {boolean}
+         */
+        function validateField(value, key) {
 
+            var fields = metaData['formFields'][0];
+
+            var field = fields[key];
+
+            var dataType = field.dataType;
+
+            var ctrlType = field.ctrlType;
+
+            if (ctrlType === 1 || ctrlType === 2 || ctrlType === 16) {
+                // 数值-单价金额
+                return Validate.numeric(value);
             }
+            if (ctrlType === 8) {
+                // 手机号码
+                return Validate.mobilePhone(value);
+            }
+            if (ctrlType === 9) {
+                // 座机号码
+                return Validate.phone(value);
+            }
+            if (ctrlType === 12) {
+                // 日期时间型
+                return Validate.isDate(value);
+            }
+
             return true;
         }
 
+        // 新增/修改单据时的提交功能
         function submitData(data, fnSuccess) {
 
             var action = 'template/addItem';
 
-            if (data['itemId']) {
+            if (operate === 2) {
                 action = 'template/editItem';
-            }
-
-            if (formClassId == 3020 && metaData.formFields["1"]["material"]) {
-                // 物料证件批量新增特殊处理
-                action = 'template/batchAddItemLicense';
             }
 
             var api = new API(action);
 
             api.post({
                 classId: data.classId,
-                itemId: data.itemId,
+                id: data.id,
                 data: data.data
             });
 
@@ -1482,11 +1831,11 @@ define('FormEdit', function (require, module, exports) {
                     // 平台用户
                     displayMask = 1;
                 } else if (userRoleType === 2) {
-                    //供应商用户
-                    displayMask = 8;
-                } else if (userRoleType === 3) {
                     //医院用户
                     displayMask = 64;
+                } else if (userRoleType === 3) {
+                    //供应商用户
+                    displayMask = 8;
                 }
             } else if (operate === 1) {
                 // 新增
@@ -1495,11 +1844,11 @@ define('FormEdit', function (require, module, exports) {
                     // 平台用户
                     displayMask = 2;
                 } else if (userRoleType === 2) {
-                    //供应商用户
-                    displayMask = 16;
-                } else if (userRoleType === 3) {
                     //医院用户
                     displayMask = 128;
+                } else if (userRoleType === 3) {
+                    //供应商用户
+                    displayMask = 16;
                 }
             } else if (operate === 2) {
                 // 编辑
@@ -1508,11 +1857,11 @@ define('FormEdit', function (require, module, exports) {
                     // 平台用户
                     displayMask = 4;
                 } else if (userRoleType === 2) {
-                    //供应商用户
-                    displayMask = 16;
-                } else if (userRoleType === 3) {
                     //医院用户
                     displayMask = 256;
+                } else if (userRoleType === 3) {
+                    //供应商用户
+                    displayMask = 16;
                 }
             }
 

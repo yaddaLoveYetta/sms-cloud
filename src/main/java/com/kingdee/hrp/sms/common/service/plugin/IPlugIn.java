@@ -47,7 +47,7 @@ public interface IPlugIn {
      * @param data    业务数据
      * @return
      */
-    public PlugInRet afterSave(int classId, String id, JsonNode data);
+    public PlugInRet afterSave(int classId, Long id, JsonNode data);
 
     /**
      * 基础资料修改前操作
