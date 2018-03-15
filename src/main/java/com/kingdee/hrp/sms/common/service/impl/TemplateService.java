@@ -588,7 +588,7 @@ public class TemplateService extends BaseService implements ITemplateService {
      */
     @Override
     @SuppressWarnings("unchecked")
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public Long addItem(Integer classId, String data) throws IOException {
 
         Integer userRoleType = SessionUtil.getUserRoleType();
@@ -697,12 +697,16 @@ public class TemplateService extends BaseService implements ITemplateService {
                 continue;
             }
             // 值
-            String value = data.findValue(key).asText();
+            JsonNode dataNode = data.findValue(key);
 
-            if (value == null || "".equals(value)) {
+            String dataValueStr = dataNode.asText().trim();
+            // 目标转义值(默认String)
+            Object value = dataValueStr;
+
+/*            if ("".equals(dataValueStr)) {
                 // null值不处理
                 continue;
-            }
+            }*/
 
             String fieldName = formField.getSqlColumnName();
 
@@ -712,18 +716,20 @@ public class TemplateService extends BaseService implements ITemplateService {
 
             switch (typeEnum) {
                 case NUMBER:
+                    value = dataNode.asDouble();
                     break;
                 case TEXT:
                     break;
-                case BOOLEAN:
-                    if (!("0".equals(value) || "1".equals(value))) {
-                        boolean b = Boolean.valueOf(value);
-                        value = b ? "1" : "0";
+                case TIME:
+                    if (dataValueStr.isEmpty()) {
+                        dataValueStr = null;
                     }
                     break;
-                case TIME:
-                    if (value.isEmpty()) {
-                        value = null;
+                case BOOLEAN:
+                    if (!("0".equals(dataValueStr) || "1".equals(dataValueStr))) {
+                        value = dataNode.asInt();
+                    } else {
+                        value = 0;
                     }
                     break;
                 default:

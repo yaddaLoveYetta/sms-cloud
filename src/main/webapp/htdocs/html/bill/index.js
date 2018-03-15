@@ -59,7 +59,21 @@
         ButtonList.on('click', {
             'add': function (item, index) {
                 // 新增
-                FormEdit.save(function () {
+                FormEdit.save(function (ret) {
+                    id = ret.value;
+                    operate = 2;
+                    FormEdit.render({
+                        classId: classId,
+                        id: id,
+                        operate: operate
+                    });
+                    // 向主控台跑出一个单据新增成功事件
+                    Iframe.raise({
+                        'eventName': 'addSuccess',
+                        // 修改iframe信息
+                        'data': Iframe.setInfos('id', classId + '-edit-' + id)
+                    });
+
                     SMS.Tips.success("保存成功!", 1500);
                 });
                 console.log(item);

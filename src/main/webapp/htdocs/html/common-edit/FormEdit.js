@@ -890,9 +890,6 @@ define('FormEdit', function (require, module, exports) {
 
         /**
          * 界面渲染
-         * @param formClassId
-         * @param itemId
-         * @param fnEntry
          */
         function show() {
 
@@ -983,36 +980,10 @@ define('FormEdit', function (require, module, exports) {
 
         /**
          * 保存
-         * @param {} itemID 项目ID
-         * @param {} fnValidate  验证错误回调函数-处理页面显示的错误提示
-         * @param {} fnSuccess  成功回调函数
-         * @param {} entryData //子表数据
-         * @param {} customerErrData  //自定义错误消息
+         * @param  fn  成功回调函数
          * @returns {}
          */
         function save(fn) {
-
-            /*            verifyFields(isUpdate, function (successData) {
-
-                            fnValidate(successData);
-
-                            var data = {};
-                            data['classId'] = metaData['formClass']['classId'];
-                            data['data'] = successData;
-
-                            if (entryData) {
-                                data['data']['entry'] = entryData;
-                            }
-                            if (itemID) {
-                                data['itemId'] = itemID;
-                            }
-                            submitData(data, fnSuccess);
-
-                        }, function (successData, errorData) {
-                            // errorData.push(entryErrorData);
-                            fnValidate(successData, errorData);
-
-                        }, customerErrData);*/
 
             var tasks = [getHeadData, getEntryData];
 
@@ -1053,7 +1024,16 @@ define('FormEdit', function (require, module, exports) {
                         // 编辑
                         data['id'] = itemId;
                     }
-                    submitData(data, fn);
+                    submitData(data, function (ret) {
+                        if (operate === 1) {
+                            // 新增单据提交成功后将新增状态转变为编辑状态
+                            // 记录下单据内码
+                            itemId = ret.value;
+                            // 状态变为编辑
+                            operate = 2;
+                        }
+                        fn && fn(ret);
+                    });
 
                 }
 
@@ -1451,13 +1431,13 @@ define('FormEdit', function (require, module, exports) {
                 entry.push(addData);
             });
 
-            var entryData = {
+            var successData = {
                 1: entry
             };
 
             fn && fn({
                 errorData: errorData,
-                entryData: entryData,
+                entryData: successData,
             });
 
         }

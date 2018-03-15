@@ -161,14 +161,13 @@
             Tips.active(item);
             Iframe.fire(item.id, 'active', [item]);
         },
-
         'non-active': function (item) {
             Iframe.fire(item.id, 'non-active', [item]);
         },
-
         'load': function (item) {
 
         }
+
     });
 
     Iframe.on('open', function (group, index, data) {
@@ -200,7 +199,7 @@
             open(group);
             return;
         }
-
+        // 内部使用
         function open(item) {
             if (!item.id) {
                 item.id = $.String.random();
@@ -225,6 +224,18 @@
         }
     });
 
+    Iframe.on({
+        'addSuccess': function (sn, text) {
+            // 单据新增-保存成功后会抛出此事件
+            var name = PageTabs.getTabName(sn);
+            text = name.replace('新增', '修改');
+            PageTabs.changeTitle(sn, text);
+            PageList.changeTitle(sn, text);
+        },
+        'editSuccess': function (sn, data) {
+
+        }
+    });
     // 加载顶级菜单
     Sidebar.render();
     // 导航栏按钮

@@ -13,12 +13,29 @@
                <property name="tokenHandler" ref="defaultTokenServiceImpl"/>
            </bean>-->
 
-    <bean id="customerObjectMapper" class="com.kingdee.hrp.sms.common.CustomerObjectMapper"/>
+    <bean id="customerObjectMapper" class="com.kingdee.hrp.sms.common.CustomerObjectMapper">
+        <property name="dateFormat">
+            <!--对日期进行转化的-->
+            <bean class="java.text.SimpleDateFormat">
+                <constructor-arg type="java.lang.String" value="yyyy-MM-dd HH:mm:ss"/>
+            </bean>
+        </property>
+    </bean>
 
-    <bean id="converter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+    <bean id="mappingJackson2HttpMessageConverter"
+          class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
         <property name="objectMapper" ref="customerObjectMapper"/>
         <property name="supportedMediaTypes">
             <list>
+                <value>text/plain;charset=UTF-8</value>
+            </list>
+        </property>
+    </bean>
+    <bean id="stringHttpMessageConverter" class="org.springframework.http.converter.StringHttpMessageConverter">
+        <constructor-arg index="0" value="utf-8"/>
+        <property name="supportedMediaTypes">
+            <list>
+                <value>application/json;charset=UTF-8</value>
                 <value>text/plain;charset=UTF-8</value>
             </list>
         </property>

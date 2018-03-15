@@ -16,7 +16,6 @@
     http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
 
-
     <bean id="securityInterceptor" class="com.kingdee.hrp.sms.common.filter.SecurityInterceptor">
         <property name="allowUrls">
             <map key-type="java.lang.String">
@@ -43,7 +42,8 @@
     <!-- 添加注解驱动 -->
     <mvc:annotation-driven>
         <mvc:message-converters>
-            <ref bean="converter"/>
+            <ref bean="mappingJackson2HttpMessageConverter"/>
+            <ref bean="stringHttpMessageConverter"/>
         </mvc:message-converters>
     </mvc:annotation-driven>
 

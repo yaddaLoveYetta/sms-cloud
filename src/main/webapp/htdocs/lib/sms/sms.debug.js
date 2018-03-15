@@ -3903,6 +3903,58 @@
 
         }
 
+        /**
+         * 更改iframe的信息
+         * 如单据新增后需要变更单据状态(新增-->修改),此时应改变iframe id 来确保不会阻止新的单据新增操作
+         * @param key
+         * @param value
+         * @returns {*}
+         */
+        function setInfos(key, value) {
+
+            var iframe = get();
+            if (!iframe) {
+                return null;
+            }
+
+            var src = iframe.src;
+
+            if (infos) { // 读缓存
+
+                infos[key] = value;
+                // 这两个字段在运行后可能会发生变化，需重新获取。
+                return $.Object.extend(infos, {
+                    'hash': $.Url.getHash(src),
+                    'actived': $(iframe).hasClass('actived'),
+                });
+            }
+
+
+            var location = iframe.contentDocument.location;
+            var url = location.origin + location.pathname;
+
+            var originalSrc = iframe.getAttribute('src');
+
+            infos = {
+                'type': iframe.getAttribute('data-type'), // iframe 的类型
+                'id': iframe.id,
+                'index': iframe.getAttribute('data-index'),
+                'src': src,
+                'originalSrc': originalSrc, // 原始的 src，即在 DOM 查看器中看到的值
+                'path': originalSrc.split('?')[0],
+                'url': url,
+                'sn': iframe.getAttribute('data-sn'),
+                'query': $.Url.getQueryString(src),
+                'hash': $.Url.getHash(src),
+                'actived': $(iframe).hasClass('actived'),
+
+            };
+
+            infos[key] = value;
+
+            return infos;
+
+        }
 
         function open(no, index, data) {
             IframeManager.open(no, index, data);
@@ -3974,6 +4026,7 @@
         return {
             get: get,
             getInfos: getInfos,
+            setInfos: setInfos,
             getData: getData,
             setData: setData,
             removeData: removeData,
