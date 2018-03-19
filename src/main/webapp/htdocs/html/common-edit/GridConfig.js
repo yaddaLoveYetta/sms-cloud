@@ -155,12 +155,10 @@ define('GridConfig', function (require, module, exports) {
                 required: false,
                 number: true
             };
-            model.formatter = 'number';
+            model.formatter = 'integer';
             model.formatoptions = {
-                decimalSeparator: ".",
-                thousandsSeparator: " ",
-                decimalPlaces: 0,
-                defaulValue: ''
+                thousandsSeparator: '',
+                defaulValue: 0
             };
         }
         // 数字-两位小数
@@ -188,10 +186,12 @@ define('GridConfig', function (require, module, exports) {
                 required: false,
                 number: true
             };
-            model.formatter = 'number';
+            model.formatter = 'currency';
             model.formatoptions = {
                 decimalSeparator: ".",
                 thousandsSeparator: " ",
+                prefix: "",
+                suffix: "",
                 decimalPlaces: 2,
                 defaulValue: 0
             };

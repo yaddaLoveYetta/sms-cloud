@@ -148,9 +148,8 @@ public class TemplateController {
             throw new BusinessLogicRunTimeException("参数错误：必须提交data");
         }
 
-        Long id = templateService.addItem(classId, data);
+        return templateService.addItem(classId, data);
 
-        return id;
     }
 
 
@@ -162,12 +161,23 @@ public class TemplateController {
      * @param data    修改数据内容（严格按照单据模板匹配的数据）
      * @return 是否成功
      */
-
-
+    @ResponseBody
     @RequestMapping(value = "editItem")
-    public Boolean editItem(Integer classId, Long id, String data) {
+    public Boolean editItem(Integer classId, Long id, String data) throws IOException {
 
-        return null;
+        if (classId <= 0) {
+            throw new BusinessLogicRunTimeException("参数错误：必须提交classId");
+        }
+
+        if (id <= 0) {
+            throw new BusinessLogicRunTimeException("参数错误：必须提交classId");
+        }
+
+        if ("".equals(data.trim())) {
+            throw new BusinessLogicRunTimeException("参数错误：必须提交data");
+        }
+
+        return templateService.editItem(classId, id, data);
     }
 
     /**

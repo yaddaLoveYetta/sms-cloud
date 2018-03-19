@@ -22,14 +22,14 @@
 
     // 业务类别
     var classId = Number(MiniQuery.Url.getQueryString(window.location.href, 'classId'));
-    //  单据内码
-    var id = Number(MiniQuery.Url.getQueryString(window.location.href, 'id') || 0);
+    //  单据内码-后台用18位Long数字存储，js中Number保存不下这个长度，转用String处理
+    var id = MiniQuery.Url.getQueryString(window.location.href, 'id') || 0;
     // 操作类别 0：查看 1：新增 2：修改
     var operate = Number(MiniQuery.Url.getQueryString(window.location.href, 'operate'));
     // 用户角色类别
     var roleType = Number((user.roles && user.roles[0] && user.roles[0]['type']) || -1);
-    // 用户id
-    var userId = Number(user.id);
+    // 用户id-后台用18位Long数字存储，js中Number保存不下这个长度，转用String处理
+    var userId = user.id;
 
     var ButtonList;
 
@@ -38,7 +38,7 @@
         'type': operate,
         'textKey': 'textModify',
         'routeKey': 'nameModify',
-        'iconKey': 'iconModify',
+        'iconKey': 'iconModify'
     }, function (config) {
 
         if (operate === 0) {
@@ -57,8 +57,8 @@
 
         // 自定义事件
         ButtonList.on('click', {
-            'add': function (item, index) {
-                // 新增
+            'save': function (item, index) {
+                // 新增、修改时保存
                 FormEdit.save(function (ret) {
                     id = ret.value;
                     operate = 2;
@@ -70,21 +70,20 @@
                     // 向主控台跑出一个单据新增成功事件
                     Iframe.raise({
                         'eventName': 'addSuccess',
-                        // 修改iframe信息
-                        'data': Iframe.setInfos('id', classId + '-edit-' + id)
+                        'data': Iframe.getInfos()
                     });
 
                     SMS.Tips.success("保存成功!", 1500);
                 });
                 console.log(item);
             },
-            'edit': function (item, index) {
-                // 编辑
-                console.log(index);
-                console.log(item);
-            },
             'refresh': function (item, index) {
                 // 刷新
+                FormEdit.render({
+                    classId: classId,
+                    id: id,
+                    operate: operate
+                });
             }
         });
     });

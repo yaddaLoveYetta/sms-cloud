@@ -139,7 +139,7 @@ public class PlugInFactory implements IPlugIn, InitializingBean, ApplicationCont
      * @param data         业务数据  @return
      */
     @Override
-    public PlugInRet beforeModify(int classId, String id, Map<String, Object> formTemplate, JsonNode data) {
+    public PlugInRet beforeModify(int classId, Long id, Map<String, Object> formTemplate, JsonNode data) {
 
         PlugInRet plugInRet = new PlugInRet();
 
@@ -187,20 +187,22 @@ public class PlugInFactory implements IPlugIn, InitializingBean, ApplicationCont
     }
 
     /**
-     * 基础资料修改后操作
+     * 单据修改后操作
      *
-     * @param classId 业务类型
-     * @param data    业务数据
-     * @return
+     * @param classId      业务类型
+     * @param id           单据内码
+     * @param formTemplate 模板
+     * @param data         业务数据
+     * @return PlugInRet
      */
     @Override
-    public PlugInRet afterModify(int classId, JsonNode data) {
+    public PlugInRet afterModify(int classId, Long id, Map<String, Object> formTemplate, JsonNode data) {
 
         PlugInRet plugInRet = new PlugInRet();
 
         for (IPlugIn plugIn : plugIns) {
             if (plugIn.getClassId() != null && plugIn.getClassId().contains(classId)) {
-                plugInRet = plugIn.afterModify(classId, data);
+                plugInRet = plugIn.afterModify(classId, id, formTemplate, data);
                 if (plugInRet.getCode() != 200) {
                     // 插件返回了阻止继续运行的情况--返回不继续执行后续插件
                     return plugInRet;

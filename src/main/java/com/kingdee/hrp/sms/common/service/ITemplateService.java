@@ -80,7 +80,7 @@ public interface ITemplateService {
      * @return 是否成功
      */
 
-    Boolean editItem(Integer classId, Long id, String data);
+    Boolean editItem(Integer classId, Long id, String data) throws IOException;
 
     /**
      * 删除基础资料

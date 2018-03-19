@@ -58,12 +58,13 @@ public abstract class PlugInAdpter implements IPlugIn {
      * 基础资料修改前操作
      *
      * @param classId      业务类型
-     * @param id
-     * @param formTemplate
-     * @param data         业务数据  @return
+     * @param id           单据内码
+     * @param formTemplate 模板
+     * @param data         业务数据
+     * @return PlugInRet
      */
     @Override
-    public PlugInRet beforeModify(int classId, String id, Map<String, Object> formTemplate, JsonNode data) {
+    public PlugInRet beforeModify(int classId, Long id, Map<String, Object> formTemplate, JsonNode data) {
         return result;
     }
 
@@ -85,14 +86,16 @@ public abstract class PlugInAdpter implements IPlugIn {
     }
 
     /**
-     * 基础资料修改后操作
+     * 修改后操作
      *
-     * @param classId 业务类型
-     * @param data    业务数据
-     * @return
+     * @param classId      业务类型
+     * @param id           单据内码
+     * @param formTemplate 模板
+     * @param data         业务数据
+     * @return PlugInRet
      */
     @Override
-    public PlugInRet afterModify(int classId, JsonNode data) {
+    public PlugInRet afterModify(int classId, Long id, Map<String, Object> formTemplate, JsonNode data) {
         return result;
     }
 

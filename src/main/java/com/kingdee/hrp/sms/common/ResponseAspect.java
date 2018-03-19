@@ -121,7 +121,7 @@ public class ResponseAspect {
 
         if (result == null || Integer.class.equals(result.getClass()) || Long.class.equals(result.getClass()) || Float.class.equals(result.getClass()) || Double.class.equals(result.getClass())
                 || Date.class.equals(result.getClass()) || Character.class.equals(result.getClass()) || Byte.class.equals(result.getClass())
-                || Short.class.equals(result.getClass()) || String.class.equals(result.getClass())) {
+                || Short.class.equals(result.getClass()) || String.class.equals(result.getClass()) || Boolean.class.equals(result.getClass())) {
 
             result = new NoJsonWarp(result);
         }

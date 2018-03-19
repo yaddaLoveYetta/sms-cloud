@@ -3895,7 +3895,7 @@
                 'sn': iframe.getAttribute('data-sn'),
                 'query': $.Url.getQueryString(src),
                 'hash': $.Url.getHash(src),
-                'actived': $(iframe).hasClass('actived'),
+                'actived': $(iframe).hasClass('actived')
 
             };
 
@@ -6973,11 +6973,13 @@
                     // updateDatas.push(deleteData);
                     deleteDatas.push(row);
                 }
+
                 /* 错误数据验证 */
                 for (var index in gridData) {
                     var row = gridData[index];
                     console.log(row);
                     if (row.bos_mustInput === 'true') {
+                        // 有必录项未赋值
                         var errorData = [];
                         for (var captionIndex in row.bos_mustInputCaptions) {
                             if (!$.Array.contains(errorDatas, row.bos_mustInputCaptions[captionIndex])) {
@@ -6986,17 +6988,14 @@
                         }
                         errorDatas[++index] = errorData;
                     }
-                    /* 添加数据获取 [entryId] 为空表示新增数据 */
 
-                    /*
-                     * if (!row['entryId']) { addDatas.push(row); }
-                     */
-                    // 行数据主键为空表示新增数据
-                    if (!row[primaryKey]) {
+                    // 添加数据获取 [primaryKey]数据主键为空或为0(主键用long)表示新增数据
+                    if (!row[primaryKey] || parseInt(row[primaryKey]) === 0) {
                         addDatas.push(row);
                     }
+
                     /* 修改数据获取 [primaryKey]不为空表示修改数据 */
-                    if (!!row[primaryKey]) {
+                    if (!!row[primaryKey] && parseInt(row[primaryKey]) > 0) {
                         updateDatas.push(row);
                     }
                     // var addData = $.Object.grep(row, function(key, value) {

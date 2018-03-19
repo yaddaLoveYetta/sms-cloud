@@ -12,7 +12,7 @@ import com.kingdee.hrp.sms.common.dao.generate.FormFieldsMapper;
 import com.kingdee.hrp.sms.common.exception.BusinessLogicRunTimeException;
 import com.kingdee.hrp.sms.common.model.*;
 import com.kingdee.hrp.sms.common.pojo.Condition;
-import com.kingdee.hrp.sms.common.pojo.DataTypeEnum;
+import com.kingdee.hrp.sms.common.pojo.CtrlTypeEnum;
 import com.kingdee.hrp.sms.common.pojo.Sort;
 import com.kingdee.hrp.sms.common.pojo.StatusCode;
 import com.kingdee.hrp.sms.common.service.BaseService;
@@ -662,8 +662,26 @@ public class TemplateService extends BaseService implements ITemplateService {
      */
     private Map<String, Object> prepareAddMap(JsonNode data, Map<String, FormFields> formFields, String tableName, String primaryKey, Long primaryValue) {
 
-        Map<String, Object> ret = new HashMap<String, Object>();
-        Map<String, Object> fieldValuesParams = new HashMap<String, Object>();
+        return prepareAddMap(data, formFields, tableName, primaryKey, primaryValue, null, null);
+
+    }
+
+    /**
+     * 获取单据子表插入脚本结构
+     *
+     * @param data         数据包
+     * @param formFields   模板
+     * @param tableName    表名
+     * @param primaryKey   表主键
+     * @param primaryValue 主键值
+     * @param foreignKey   子表外键key
+     * @param foreignValue 子表外键value(主表主键值)
+     * @return Map<String, Object>
+     */
+    private Map<String, Object> prepareAddMap(JsonNode data, Map<String, FormFields> formFields, String tableName, String primaryKey, Long primaryValue, String foreignKey, Long foreignValue) {
+
+        Map<String, Object> ret = new HashMap<String, Object>(8);
+        Map<String, Object> fieldValuesParams = new HashMap<String, Object>(16);
 
         StringBuilder fieldNames = new StringBuilder("");
         StringBuilder fieldValues = new StringBuilder("");
@@ -682,6 +700,11 @@ public class TemplateService extends BaseService implements ITemplateService {
                 continue;
             }
 
+            if (key.equalsIgnoreCase(primaryKey)) {
+                // 新增时因为主键在后端生成，前端不需要提交主键key
+                continue;
+            }
+
             FormFields formField = formFields.get(key);
 
             if (formField == null) {
@@ -696,46 +719,19 @@ public class TemplateService extends BaseService implements ITemplateService {
                 // 无需保存字段不处理
                 continue;
             }
-            // 值
-            JsonNode dataNode = data.findValue(key);
-
-            String dataValueStr = dataNode.asText().trim();
-            // 目标转义值(默认String)
-            Object value = dataValueStr;
-
-/*            if ("".equals(dataValueStr)) {
-                // null值不处理
-                continue;
-            }*/
 
             String fieldName = formField.getSqlColumnName();
 
-            int dataType = formField.getDataType();
-            // 转成枚举好操作
-            DataTypeEnum typeEnum = DataTypeEnum.getTypeEnum(dataType);
+            // 值
+            JsonNode dataNode = data.findValue(key);
+            // 目标转义值(默认String)
+            Object value = transformValue(dataNode, CtrlTypeEnum.getTypeEnum(formField.getCtrlType()));
 
-            switch (typeEnum) {
-                case NUMBER:
-                    value = dataNode.asDouble();
-                    break;
-                case TEXT:
-                    break;
-                case TIME:
-                    if (dataValueStr.isEmpty()) {
-                        dataValueStr = null;
-                    }
-                    break;
-                case BOOLEAN:
-                    if (!("0".equals(dataValueStr) || "1".equals(dataValueStr))) {
-                        value = dataNode.asInt();
-                    } else {
-                        value = 0;
-                    }
-                    break;
-                default:
-                    break;
-
+            // 子表的外键值为主表主键值，有后台生成
+            if (key.equalsIgnoreCase(foreignKey)) {
+                value = foreignValue;
             }
+
             // insert into 字段列表
             fieldNames.append(",").append(String.format("%s%s%s", bDelimiter, fieldName, eDelimiter));
             // mybatis格式化参数占位符 #{value}
@@ -760,7 +756,6 @@ public class TemplateService extends BaseService implements ITemplateService {
 
         return ret;
     }
-
 
     /**
      * 保存或修改表体数据
@@ -846,7 +841,7 @@ public class TemplateService extends BaseService implements ITemplateService {
                 Long entryId = getId();
 
                 // 准备保存模板
-                Map<String, Object> statement = prepareAddMap(data, formFields, entryTableName, primaryKey, entryId);
+                Map<String, Object> statement = prepareAddMap(data, formFields, entryTableName, primaryKey, entryId, foreignKey, id);
 
                 Map<String, Object> sqlMap = new HashMap<String, Object>();
 
@@ -858,10 +853,9 @@ public class TemplateService extends BaseService implements ITemplateService {
 
                 if (!"".equals(fieldStr)) {
 
-                    if (!fieldStr.contains("," + foreignKey)) {
-
+                    if (!fieldStr.contains(foreignKey)) {
                         // 外键：模板配置中不需要配置该外键，因为该外键的值在前端时无法获取，只有主表保存后才能在后台获取
-
+                        // 模板中配置的外键key mustInput不能设置为true
                         fieldStr += "," + foreignKey;
                         valueStr += ",#{" + foreignKey + "}";
                         sqlMap.put(foreignKey, id);
@@ -873,9 +867,8 @@ public class TemplateService extends BaseService implements ITemplateService {
                     // 格式化参数
                     sqlMap.putAll(sqlParams);
 
-                    // 插入基础资料分录
+                    // 插入分录-循环中执行脚本不优雅
                     templateDaoMapper.add(sqlMap);
-
                 }
             } else if (flag == 2) {
                 // 修改
@@ -945,7 +938,7 @@ public class TemplateService extends BaseService implements ITemplateService {
 
         Map<String, Object> sqlParams = new HashMap<String, Object>();
 
-        StringBuffer kvBuffer = new StringBuffer("");
+        StringBuilder sb = new StringBuilder("");
 
         for (Iterator<String> iterator = data.fieldNames(); iterator.hasNext(); ) {
 
@@ -959,6 +952,11 @@ public class TemplateService extends BaseService implements ITemplateService {
                 continue;
             }
 
+            if (primaryKey.equalsIgnoreCase(key)) {
+                // 主键更新忽略
+                continue;
+            }
+
             Integer lookUpType = formField.getLookUpType();
             Boolean needSave = formField.getNeedSave();
 
@@ -967,57 +965,101 @@ public class TemplateService extends BaseService implements ITemplateService {
                 continue;
             }
 
-            String value = data.path(key).asText();
-
             String fieldName = formField.getSqlColumnName();
 
-            if (null == fieldName || fieldName.isEmpty()) {
+            // 值
+            JsonNode dataNode = data.findValue(key);
+            // 目标转义值(默认String)
+            Object value = transformValue(dataNode, CtrlTypeEnum.getTypeEnum(formField.getCtrlType()));
+
+            if (!StringUtils.isNotBlank(fieldName)) {
                 // 理论上不应该出现，执行到此可能是模板配置错误
                 continue;
             }
 
-            kvBuffer.append(",").append(fieldName).append("=").append("#{").append(key).append("}");
+            sb.append(",").append(fieldName).append("=").append("#{").append(key).append("}");
 
-            if (value == null) {
-                sqlParams.put(key, "");
-            } else {
-                int dataType = formField.getDataType();
-                DataTypeEnum typeEnum = DataTypeEnum.getTypeEnum(dataType);
-                switch (typeEnum) {
-                    case NUMBER:
-                        break;
-                    case TEXT:
-                        break;
-                    case BOOLEAN:
-                        if (!("0".equals(value) || "1".equals(value))) {
-                            boolean b = Boolean.valueOf(value);
-                            value = b ? "1" : "0";
-                        }
-                        break;
-                    case TIME:
-                        if (value.isEmpty()) {
-                            value = null;
-                        }
-                        break;
-                    default:
-                        break;
-                }
-                sqlParams.put(key, value);
-            }
+            sqlParams.put(key, value);
         }
 
-        String kvStr = kvBuffer.length() > 0 ? kvBuffer.toString().substring(1) : "";
+        String kvStr = sb.length() > 0 ? sb.toString().substring(1) : "";
 
-        Map<String, Object> ret = new HashMap<String, Object>();
+        Map<String, Object> ret = new HashMap<String, Object>(6);
 
         ret.put("tableName", primaryTableName);
         ret.put("kvStr", kvStr);
-
         sqlParams.put(primaryKey, id);
-
         ret.put("sqlParams", sqlParams);
 
         return ret;
+    }
+
+    /**
+     * 根据模板配置的字段类型，将前端传入的值转换成对应的类型
+     *
+     * @param dataNode 原始值
+     * @param ctrlType 字段类型
+     * @return 转换后的类型
+     */
+    private Object transformValue(JsonNode dataNode, CtrlTypeEnum ctrlType) {
+
+
+        Object value;
+
+        switch (ctrlType) {
+
+            case INTEGER:
+                value = dataNode.asLong();
+                break;
+            case DECIMAL:
+                value = dataNode.asDouble(0.00D);
+                break;
+            case CHECKBOX:
+                value = dataNode.asInt(0);
+                break;
+            case SELECT:
+                value = dataNode.asInt(0);
+                break;
+            case F7:
+                value = dataNode.asLong();
+                break;
+            case CASCADE:
+                value = dataNode.asLong();
+                break;
+            case MOBILE:
+                value = dataNode.asText("");
+                break;
+            case PHONE:
+                value = dataNode.asText("");
+                break;
+            case TEXT:
+                value = dataNode.asText("");
+                break;
+            case TEXTAREA:
+                value = dataNode.asText("");
+                break;
+            case DATETIME:
+                value = dataNode.asText("");
+                break;
+            case SEX:
+                value = dataNode.asInt(0);
+                break;
+            case PASSWORD:
+                value = dataNode.asText("");
+                break;
+            case WHETHER:
+                value = dataNode.asInt(0);
+                break;
+            case MONEY:
+                value = dataNode.asDouble(0.00D);
+                break;
+            default:
+                // 默认文本
+                value = dataNode.asText("");
+                break;
+        }
+
+        return value;
     }
 
     /**
@@ -1029,8 +1071,67 @@ public class TemplateService extends BaseService implements ITemplateService {
      * @return 是否成功
      */
     @Override
-    public Boolean editItem(Integer classId, Long id, String data) {
-        return null;
+    @SuppressWarnings("unchecked")
+    @Transactional(rollbackFor = Exception.class)
+    public Boolean editItem(Integer classId, Long id, String data) throws IOException {
+
+        // 基础资料模板
+        Map<String, Object> template = getFormTemplate(classId, 1);
+
+        // 主表的字段模板
+        Map<String, FormFields> formFields = (Map<String, FormFields>) ((Map<String, Object>) template.get("formFields")).get("0");
+
+        // 主表资料描述信息
+        FormClass formClass = (FormClass) template.get("formClass");
+
+        // 转成json便于操作
+        ObjectMapper mapper = Environ.getBean(ObjectMapper.class);
+        JsonNode jsonNode = mapper.readTree(data);
+
+
+        // 修改前插件事件
+        PlugInRet plugInRet = plugInFactory.beforeModify(classId, id, template, jsonNode);
+        if (plugInRet.getCode() != StatusCode.SUCCESS) {
+            throw new PluginException(plugInRet.getMsg());
+        }
+
+        String primaryTableName = formClass.getTableName();
+        String primaryKey = formClass.getPrimaryKey();
+        String primaryColumnName = formFields.get(primaryKey).getSqlColumnName();
+
+        // 准备保存模板
+        Map<String, Object> statement = prepareEditMap(jsonNode, formFields, primaryTableName, primaryKey, id);
+
+        // 修改基础资料
+        if (!"".equals(statement.get("kvStr")) && (statement.get("kvStr") != null)) {
+
+            String tableName = statement.get("tableName").toString();
+            String kvStr = statement.get("kvStr").toString();
+
+            Map<String, Object> sqlParams = (Map<String, Object>) statement.get("sqlParams");
+
+            Map<String, Object> sqlMap = new HashMap<String, Object>();
+
+            String sql = "update " + tableName + " set " + kvStr + " where " + primaryColumnName + "= #{" + primaryKey + "}";
+            // 完整带参数的sql
+            sqlMap.put("sql", sql);
+            // --格式化参数列表
+            sqlMap.putAll(sqlParams);
+
+            TemplateDaoMapper templateDaoMapper = sqlSession.getMapper(TemplateDaoMapper.class);
+            templateDaoMapper.edit(sqlMap);
+        }
+
+        // 处理分录数据
+        handleEntryData(classId, id, jsonNode);
+
+        // 修改后 插件事件
+        plugInRet = plugInFactory.afterModify(classId, id, template, jsonNode);
+        if (plugInRet.getCode() != StatusCode.SUCCESS) {
+            throw new PluginException(plugInRet.getMsg());
+        }
+
+        return true;
     }
 
     /**
@@ -1702,6 +1803,7 @@ public class TemplateService extends BaseService implements ITemplateService {
             String srcTableAlisAs = formField.getSrcTableAlis();
             String disPlayField = formField.getDisplayField();
             String srcField = formField.getSrcField();
+            Integer ctrlType = formField.getCtrlType();
             Integer dataType = formField.getDataType();
 
             // 确定当前字段是属于哪个表
@@ -1720,17 +1822,74 @@ public class TemplateService extends BaseService implements ITemplateService {
             String fieldName = sqlColumnName;
 
             // 模板字段的数据类型(数字，本文，日期，布尔)
-            DataTypeEnum dataTypeEnum = DataTypeEnum.getTypeEnum(dataType);
+            CtrlTypeEnum ctrlTypeEnum = CtrlTypeEnum.getTypeEnum(ctrlType);
 
             if (needConvert && lookUpType > 0) {
                 // 只有引用类型有转换与非转换情况
                 // 需要转换为名称查询的引用类型的查询条件，dataType可能不是文本类型，但条件值是文本，需要文本格式化，此处修正值格式化类型
-                dataTypeEnum = DataTypeEnum.TEXT;
+                ctrlTypeEnum = CtrlTypeEnum.TEXT;
             }
 
-            switch (dataTypeEnum) {
+            switch (ctrlTypeEnum) {
 
-                case NUMBER:
+                case INTEGER:
+                    break;
+                case DECIMAL:
+                    break;
+                case CHECKBOX:
+                    break;
+                case SELECT:
+                    break;
+                case F7:
+                    break;
+                case CASCADE:
+                    break;
+                case MOBILE:
+                    break;
+                case PHONE:
+                    break;
+                case TEXT:
+                case TEXTAREA:
+                    if (logicOperator == Condition.LogicOperatorEnum.LIKE) {
+                        // 不处理，调用者控制左匹配%xxx或右匹配xxx%或全匹配%xxx%
+                        //value = "%" + value + "%";
+                    } else if (logicOperator == Condition.LogicOperatorEnum.IN) {
+                        // 不适用此系统动态查询方式，对于IN，手工拼接脚本
+                        preValue = "(";
+                        sufValue = ")";
+                        skip = true;
+                    }
+                    break;
+                case DATETIME:
+                    if (logicOperator == Condition.LogicOperatorEnum.LESS_OR_EQUAL) {
+                        if (!Common.isLongDate(String.valueOf(value))) {
+                            // 由于数据库中日期可能存储有时分秒，过滤天时过滤到当前23:59:59
+                            value = value + " 23:59:59";
+                        }
+                    } else if (logicOperator == Condition.LogicOperatorEnum.GREATER_OR_EQUAL) {
+                        if (!Common.isLongDate(String.valueOf(value))) {
+                            value = value + " 00:00:00";
+                        }
+                    }
+                    break;
+                case SEX:
+                    break;
+                case PASSWORD:
+                    break;
+                case WHETHER:
+                    // boolean b = value.equals("是") ? true : false;
+                    // 此类字段数据库中一般要求用bit类型,即非0即1
+                    value = "是".equals(value) ? "1" : "否".equals(value) ? "0" : "2";
+                    break;
+                case MONEY:
+                    break;
+                default:
+                    break;
+            }
+            /*
+            switch (ctrlTypeEnum) {
+
+               case NUMBER:
                     // 一般数字类型的不可能用like
                     break;
                 case TEXT:
@@ -1765,7 +1924,7 @@ public class TemplateService extends BaseService implements ITemplateService {
                 default:
                     break;
             }
-
+*/
             if (lookUpType == 1 || lookUpType == 2) {
                 // 基础资料-辅助资料引用类型
 

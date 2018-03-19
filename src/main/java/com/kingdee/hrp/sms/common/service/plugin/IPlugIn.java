@@ -50,13 +50,15 @@ public interface IPlugIn {
     public PlugInRet afterSave(int classId, Long id, JsonNode data);
 
     /**
-     * 基础资料修改前操作
+     * 单据修改前操作
      *
-     * @param classId 业务类型
-     * @param data    业务数据
-     * @return
+     * @param classId      业务类型
+     * @param id           单据内码
+     * @param formTemplate 模板
+     * @param data         业务数据
+     * @return PlugInRet
      */
-    public PlugInRet beforeModify(int classId, String id, Map<String, Object> formTemplate, JsonNode data);
+    public PlugInRet beforeModify(int classId, Long id, Map<String, Object> formTemplate, JsonNode data);
 
     /**
      * 单据/基础资料修改分录数据前事件
@@ -71,15 +73,17 @@ public interface IPlugIn {
      * @date 2017-07-12 09:05:42 星期三
      */
     public PlugInRet beforeEntryModify(int classId, String primaryId, String entryId, Map<String, Object> formTemplate, JsonNode data);
-
+    
     /**
-     * 基础资料修改后操作
+     * 单据修改后操作
      *
-     * @param classId 业务类型
-     * @param data    业务数据
-     * @return
+     * @param classId      业务类型
+     * @param id           单据内码
+     * @param formTemplate 模板
+     * @param data         业务数据
+     * @return PlugInRet
      */
-    public PlugInRet afterModify(int classId, JsonNode data);
+    public PlugInRet afterModify(int classId, Long id, Map<String, Object> formTemplate, JsonNode data);
 
     /**
      * 基础资料删除前操作

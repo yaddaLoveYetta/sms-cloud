@@ -1437,7 +1437,7 @@ define('FormEdit', function (require, module, exports) {
 
             fn && fn({
                 errorData: errorData,
-                entryData: successData,
+                successData: successData,
             });
 
         }
@@ -1845,7 +1845,7 @@ define('FormEdit', function (require, module, exports) {
                     displayMask = 256;
                 } else if (userRoleType === 3) {
                     //供应商用户
-                    displayMask = 16;
+                    displayMask = 32;
                 }
             }
 
