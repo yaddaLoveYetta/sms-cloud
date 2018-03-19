@@ -100,7 +100,7 @@ public interface ITemplateService {
      * @return 是否成功
      */
 
-    Boolean checkItem(Integer classId, List<Long> ids);
+    Boolean check(Integer classId, List<Long> ids);
 
     /**
      * 反审核资料
@@ -110,5 +110,5 @@ public interface ITemplateService {
      * @return 是否成功
      */
 
-    Boolean unCheckItem(Integer classId, List<Long> ids);
+    Boolean unCheck(Integer classId, List<Long> ids);
 }

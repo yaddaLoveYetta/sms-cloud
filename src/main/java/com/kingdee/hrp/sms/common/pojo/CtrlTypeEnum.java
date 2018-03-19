@@ -2,7 +2,6 @@ package com.kingdee.hrp.sms.common.pojo;
 
 /**
  * @author : yadda(silenceisok@163.com)
- * @Title : CtrlTypeEnum
  * @date : 2018/3/19 11:25
  */
 public enum CtrlTypeEnum {

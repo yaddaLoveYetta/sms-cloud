@@ -64,9 +64,7 @@ public class TemplateService extends BaseService implements ITemplateService {
             throw new BusinessLogicRunTimeException("模板不存在或不唯一,请联系管理员!");
         }
 
-
         // 获取单据模板page=0表头
-
         FormFieldsMapper formFieldsMapper = sqlSession.getMapper(FormFieldsMapper.class);
 
         FormFieldsExample fieldsExample = new FormFieldsExample();
@@ -150,10 +148,7 @@ public class TemplateService extends BaseService implements ITemplateService {
     public List getFormAction(Integer classId, Integer type) {
 
         Integer userRoleType = SessionUtil.getUserRoleType();
-        // 按钮可用性
-        //001（1）:系统类别角色可用
-        //010（2）:医院类别角色可用
-        //100（4）:供应商类别角色可用
+        // 按钮可用性-跟FormFields 模板中display字段配置规则一致
         int ownerType = userRoleType == 1 ? 1 : userRoleType == 2 ? 2 : 4;
         // 按钮显示性
         int display = 0;
@@ -213,7 +208,6 @@ public class TemplateService extends BaseService implements ITemplateService {
                     break;
             }
         }
-
 
         FormActionMapper formActionMapper = sqlSession.getMapper(FormActionMapper.class);
 
@@ -650,417 +644,6 @@ public class TemplateService extends BaseService implements ITemplateService {
 
     }
 
-    /**
-     * 获取单据主表插入脚本结构
-     *
-     * @param data         数据包
-     * @param formFields   模板
-     * @param tableName    表名
-     * @param primaryKey   表主键
-     * @param primaryValue 主键值
-     * @return Map<String, Object>
-     */
-    private Map<String, Object> prepareAddMap(JsonNode data, Map<String, FormFields> formFields, String tableName, String primaryKey, Long primaryValue) {
-
-        return prepareAddMap(data, formFields, tableName, primaryKey, primaryValue, null, null);
-
-    }
-
-    /**
-     * 获取单据子表插入脚本结构
-     *
-     * @param data         数据包
-     * @param formFields   模板
-     * @param tableName    表名
-     * @param primaryKey   表主键
-     * @param primaryValue 主键值
-     * @param foreignKey   子表外键key
-     * @param foreignValue 子表外键value(主表主键值)
-     * @return Map<String, Object>
-     */
-    private Map<String, Object> prepareAddMap(JsonNode data, Map<String, FormFields> formFields, String tableName, String primaryKey, Long primaryValue, String foreignKey, Long foreignValue) {
-
-        Map<String, Object> ret = new HashMap<String, Object>(8);
-        Map<String, Object> fieldValuesParams = new HashMap<String, Object>(16);
-
-        StringBuilder fieldNames = new StringBuilder("");
-        StringBuilder fieldValues = new StringBuilder("");
-
-        // 数据库字段-关键字处理
-        Map<String, String> dbDelimiter = getDBDelimiter();
-        String bDelimiter = dbDelimiter.get("bDelimiter");
-        String eDelimiter = dbDelimiter.get("eDelimiter");
-
-        for (Iterator<String> iterator = data.fieldNames(); iterator.hasNext(); ) {
-
-            String key = iterator.next();
-
-            if ("entry".equals(key)) {
-                // 子表数据不在此处理
-                continue;
-            }
-
-            if (key.equalsIgnoreCase(primaryKey)) {
-                // 新增时因为主键在后端生成，前端不需要提交主键key
-                continue;
-            }
-
-            FormFields formField = formFields.get(key);
-
-            if (formField == null) {
-                // 不存在的字段-忽略
-                continue;
-            }
-
-            Integer lookUpType = formField.getLookUpType();
-            Boolean needSave = formField.getNeedSave();
-
-            if (!needSave) {
-                // 无需保存字段不处理
-                continue;
-            }
-
-            String fieldName = formField.getSqlColumnName();
-
-            // 值
-            JsonNode dataNode = data.findValue(key);
-            // 目标转义值(默认String)
-            Object value = transformValue(dataNode, CtrlTypeEnum.getTypeEnum(formField.getCtrlType()));
-
-            // 子表的外键值为主表主键值，有后台生成
-            if (key.equalsIgnoreCase(foreignKey)) {
-                value = foreignValue;
-            }
-
-            // insert into 字段列表
-            fieldNames.append(",").append(String.format("%s%s%s", bDelimiter, fieldName, eDelimiter));
-            // mybatis格式化参数占位符 #{value}
-            fieldValues.append(",").append("#{").append(fieldName).append("}");
-            // 参数
-            fieldValuesParams.put(fieldName, value);
-        }
-
-        // 加上主键值-同样格式化参数形式
-        fieldNames.append(",").append(formFields.get(primaryKey).getSqlColumnName());
-        fieldValues.append(",").append("#{").append(primaryKey).append("}");
-        fieldValuesParams.put(primaryKey, primaryValue);
-
-
-        String fieldStr = fieldNames.length() > 0 ? fieldNames.toString().substring(1) : "";
-        String valueStr = fieldValues.length() > 0 ? fieldValues.toString().substring(1) : "";
-
-        ret.put("tableName", tableName);
-        ret.put("fieldStr", fieldStr);
-        ret.put("valueStr", valueStr);
-        ret.put("sqlParams", fieldValuesParams);
-
-        return ret;
-    }
-
-    /**
-     * 保存或修改表体数据
-     *
-     * @param classId
-     * @param id
-     * @param data    void
-     * @Title handleEntryData
-     * @date 2017-04-27 14:51:05 星期四
-     */
-    @SuppressWarnings("unchecked")
-    private void handleEntryData(int classId, Long id, JsonNode data) {
-
-        if (!data.has("entry") || data.path("entry").size() == 0) {
-            // 没有子表数据
-            return;
-        }
-
-        // 基础资料模板
-        Map<String, Object> template = getFormTemplate(classId, 1);
-
-        JsonNode jsonEntry = data.path("entry");
-
-        Map<String, Object> formEntries = (Map<String, Object>) template.get("formClassEntry");
-
-        for (Iterator<String> it = formEntries.keySet().iterator(); it.hasNext(); ) {
-
-            // key 等于1或2或3...
-            String key = it.next();
-
-            Map<String, FormFields> formFields = (Map<String, FormFields>) ((Map<String, Object>) template.get("formFields")).get(key);
-
-            JsonNode entryData = jsonEntry.path(key);
-
-            FormClassEntry formEntry = (FormClassEntry) formEntries.get(key);
-
-            // 保存或删除分录数据
-            saveEntry(entryData, formEntry, formFields, id);
-
-        }
-
-    }
-
-
-    /**
-     * 保存或删除分录数据
-     *
-     * @param entryData  分录数据 如：[{ 'data':{parkID:3},'flag':'1'},{'data':{entryID:4,parkID:11} ,'flag':'2'},{'data':{entryID:3
-     *                   , parkId : 1 } , ' flag ' : ' 0 ' } ]
-     * @param formEntry  分录表描述 { "entryIndex": 1, "primaryKey": "entryID", "foreignKey": "FID", "classID": 13001, "tableName":
-     *                   "t_PropertyCompanyEntry" }
-     * @param formFields 分录表配置的字段
-     * @param id         分录表外键值，关联主表的主键
-     */
-    @SuppressWarnings("unchecked")
-    private void saveEntry(JsonNode entryData, FormClassEntry formEntry, Map<String, FormFields> formFields, Long id) {
-
-        String entryTableName = formEntry.getTableName();
-        String primaryKey = formEntry.getPrimaryKey();
-        String foreignKey = formEntry.getForeignKey();
-
-        // 记录删除id，一次性删除
-        String delItems = "-1";
-
-        TemplateDaoMapper templateDaoMapper = sqlSession.getMapper(TemplateDaoMapper.class);
-
-        for (int i = 0; i < entryData.size(); i++) {
-
-            // 一条待操作分录数据
-            JsonNode entry = entryData.path(i);
-            //分录真实数据
-            JsonNode data = entry.path("data");
-            // 该分录操作标识flag: 0：删除1：新增 2：修改
-            int flag = entry.path("flag").asInt();
-
-            if (flag == 1) {
-                // 新增分录
-
-                // 检查字段
-                // checkFields(formFields, data, primaryKey, flag, userType);
-
-                // 产生记录主键
-                Long entryId = getId();
-
-                // 准备保存模板
-                Map<String, Object> statement = prepareAddMap(data, formFields, entryTableName, primaryKey, entryId, foreignKey, id);
-
-                Map<String, Object> sqlMap = new HashMap<String, Object>();
-
-                String tableName = statement.get("tableName").toString();
-                String fieldStr = statement.get("fieldStr").toString();
-                String valueStr = statement.get("valueStr").toString();
-                Map<String, Object> sqlParams = (Map<String, Object>) statement.get("sqlParams");
-
-
-                if (!"".equals(fieldStr)) {
-
-                    if (!fieldStr.contains(foreignKey)) {
-                        // 外键：模板配置中不需要配置该外键，因为该外键的值在前端时无法获取，只有主表保存后才能在后台获取
-                        // 模板中配置的外键key mustInput不能设置为true
-                        fieldStr += "," + foreignKey;
-                        valueStr += ",#{" + foreignKey + "}";
-                        sqlMap.put(foreignKey, id);
-                    }
-
-                    String sql = "insert into " + tableName + " ( " + fieldStr + " ) values ( " + valueStr + " )";
-                    // 完整带参数的sql
-                    sqlMap.put("sql", sql);
-                    // 格式化参数
-                    sqlMap.putAll(sqlParams);
-
-                    // 插入分录-循环中执行脚本不优雅
-                    templateDaoMapper.add(sqlMap);
-                }
-            } else if (flag == 2) {
-                // 修改
-
-                // 检查字段
-                // checkFields(formFields, data, primaryKey, flag, userType);
-                // 模板参数
-
-                // 主键值
-                Long entryId = data.path(primaryKey).asLong();
-
-                String primaryColumnName = formFields.get(primaryKey).getSqlColumnName();
-
-                // 准备保存模板
-                Map<String, Object> statement = prepareEditMap(data, formFields, entryTableName, primaryKey, entryId);
-
-                String tableName = statement.get("tableName").toString();
-                String kvStr = statement.get("kvStr").toString();
-                // String primaryKey=statement.get("primaryKey").toString();
-                // String id=statement.get("id").toString();
-                Map<String, Object> sqlParams = (Map<String, Object>) statement.get("sqlParams");
-
-                Map<String, Object> sqlMap = new HashMap<String, Object>();
-
-                String sql = "update " + tableName + " set " + kvStr + " where " + primaryColumnName + "= #{" + primaryKey + "}";
-
-                // 完整带参数的sql
-                sqlMap.put("sql", sql);
-                // 格式化参数
-                sqlMap.putAll(sqlParams);
-
-                // 修改基础资料分录
-                templateDaoMapper.edit(sqlMap);
-
-            } else if (flag == 0) {
-                // 删除，组装items
-
-                Long delId = data.path(primaryKey).asLong();
-
-                delItems += String.format(",%s", delId);
-
-            }
-        }
-
-        if (!"-1".equals(delItems)) {
-            // items不为空，则执行删除
-            Map<String, Object> statement = new HashMap<String, Object>();
-            statement.put("tableName", entryTableName);
-            statement.put("primaryKey", formFields.get(primaryKey).getSqlColumnName());
-            // 去掉delItems最开头的 -1,
-            statement.put("items", delItems.substring(3));
-            templateDaoMapper.del(statement);
-        }
-    }
-
-    /**
-     * 根据模板构建更新表数据脚本
-     *
-     * @param data             数据包
-     * @param formFields       模板
-     * @param primaryTableName 表名
-     * @param primaryKey       表主键
-     * @param id               主键值
-     * @return Map<String, Object>
-     */
-    private Map<String, Object> prepareEditMap(JsonNode data, Map<String, FormFields> formFields, String primaryTableName, String primaryKey, Long id) {
-
-        Map<String, Object> sqlParams = new HashMap<String, Object>();
-
-        StringBuilder sb = new StringBuilder("");
-
-        for (Iterator<String> iterator = data.fieldNames(); iterator.hasNext(); ) {
-
-            String key = iterator.next();
-            if ("entry".equals(key)) {
-                continue;
-            }
-
-            FormFields formField = formFields.get(key);
-            if (formField == null) {
-                continue;
-            }
-
-            if (primaryKey.equalsIgnoreCase(key)) {
-                // 主键更新忽略
-                continue;
-            }
-
-            Integer lookUpType = formField.getLookUpType();
-            Boolean needSave = formField.getNeedSave();
-
-            if (!needSave) {
-                // 引用基础资料的附加属性OR关联普通表携带字段，无需保存
-                continue;
-            }
-
-            String fieldName = formField.getSqlColumnName();
-
-            // 值
-            JsonNode dataNode = data.findValue(key);
-            // 目标转义值(默认String)
-            Object value = transformValue(dataNode, CtrlTypeEnum.getTypeEnum(formField.getCtrlType()));
-
-            if (!StringUtils.isNotBlank(fieldName)) {
-                // 理论上不应该出现，执行到此可能是模板配置错误
-                continue;
-            }
-
-            sb.append(",").append(fieldName).append("=").append("#{").append(key).append("}");
-
-            sqlParams.put(key, value);
-        }
-
-        String kvStr = sb.length() > 0 ? sb.toString().substring(1) : "";
-
-        Map<String, Object> ret = new HashMap<String, Object>(6);
-
-        ret.put("tableName", primaryTableName);
-        ret.put("kvStr", kvStr);
-        sqlParams.put(primaryKey, id);
-        ret.put("sqlParams", sqlParams);
-
-        return ret;
-    }
-
-    /**
-     * 根据模板配置的字段类型，将前端传入的值转换成对应的类型
-     *
-     * @param dataNode 原始值
-     * @param ctrlType 字段类型
-     * @return 转换后的类型
-     */
-    private Object transformValue(JsonNode dataNode, CtrlTypeEnum ctrlType) {
-
-
-        Object value;
-
-        switch (ctrlType) {
-
-            case INTEGER:
-                value = dataNode.asLong();
-                break;
-            case DECIMAL:
-                value = dataNode.asDouble(0.00D);
-                break;
-            case CHECKBOX:
-                value = dataNode.asInt(0);
-                break;
-            case SELECT:
-                value = dataNode.asInt(0);
-                break;
-            case F7:
-                value = dataNode.asLong();
-                break;
-            case CASCADE:
-                value = dataNode.asLong();
-                break;
-            case MOBILE:
-                value = dataNode.asText("");
-                break;
-            case PHONE:
-                value = dataNode.asText("");
-                break;
-            case TEXT:
-                value = dataNode.asText("");
-                break;
-            case TEXTAREA:
-                value = dataNode.asText("");
-                break;
-            case DATETIME:
-                value = dataNode.asText("");
-                break;
-            case SEX:
-                value = dataNode.asInt(0);
-                break;
-            case PASSWORD:
-                value = dataNode.asText("");
-                break;
-            case WHETHER:
-                value = dataNode.asInt(0);
-                break;
-            case MONEY:
-                value = dataNode.asDouble(0.00D);
-                break;
-            default:
-                // 默认文本
-                value = dataNode.asText("");
-                break;
-        }
-
-        return value;
-    }
 
     /**
      * 修改业务数据
@@ -1154,7 +737,7 @@ public class TemplateService extends BaseService implements ITemplateService {
      * @return 是否成功
      */
     @Override
-    public Boolean checkItem(Integer classId, List<Long> ids) {
+    public Boolean check(Integer classId, List<Long> ids) {
         return null;
     }
 
@@ -1166,7 +749,7 @@ public class TemplateService extends BaseService implements ITemplateService {
      * @return 是否成功
      */
     @Override
-    public Boolean unCheckItem(Integer classId, List<Long> ids) {
+    public Boolean unCheck(Integer classId, List<Long> ids) {
         return null;
     }
 
@@ -2220,6 +1803,417 @@ public class TemplateService extends BaseService implements ITemplateService {
 
     }
 
+    /**
+     * 获取单据主表插入脚本结构
+     *
+     * @param data         数据包
+     * @param formFields   模板
+     * @param tableName    表名
+     * @param primaryKey   表主键
+     * @param primaryValue 主键值
+     * @return Map<String, Object>
+     */
+    private Map<String, Object> prepareAddMap(JsonNode data, Map<String, FormFields> formFields, String tableName, String primaryKey, Long primaryValue) {
+
+        return prepareAddMap(data, formFields, tableName, primaryKey, primaryValue, null, null);
+
+    }
+
+    /**
+     * 获取单据子表插入脚本结构
+     *
+     * @param data         数据包
+     * @param formFields   模板
+     * @param tableName    表名
+     * @param primaryKey   表主键
+     * @param primaryValue 主键值
+     * @param foreignKey   子表外键key
+     * @param foreignValue 子表外键value(主表主键值)
+     * @return Map<String, Object>
+     */
+    private Map<String, Object> prepareAddMap(JsonNode data, Map<String, FormFields> formFields, String tableName, String primaryKey, Long primaryValue, String foreignKey, Long foreignValue) {
+
+        Map<String, Object> ret = new HashMap<String, Object>(8);
+        Map<String, Object> fieldValuesParams = new HashMap<String, Object>(16);
+
+        StringBuilder fieldNames = new StringBuilder("");
+        StringBuilder fieldValues = new StringBuilder("");
+
+        // 数据库字段-关键字处理
+        Map<String, String> dbDelimiter = getDBDelimiter();
+        String bDelimiter = dbDelimiter.get("bDelimiter");
+        String eDelimiter = dbDelimiter.get("eDelimiter");
+
+        for (Iterator<String> iterator = data.fieldNames(); iterator.hasNext(); ) {
+
+            String key = iterator.next();
+
+            if ("entry".equals(key)) {
+                // 子表数据不在此处理
+                continue;
+            }
+
+            if (key.equalsIgnoreCase(primaryKey)) {
+                // 新增时因为主键在后端生成，前端不需要提交主键key
+                continue;
+            }
+
+            FormFields formField = formFields.get(key);
+
+            if (formField == null) {
+                // 不存在的字段-忽略
+                continue;
+            }
+
+            Integer lookUpType = formField.getLookUpType();
+            Boolean needSave = formField.getNeedSave();
+
+            if (!needSave) {
+                // 无需保存字段不处理
+                continue;
+            }
+
+            String fieldName = formField.getSqlColumnName();
+
+            // 值
+            JsonNode dataNode = data.findValue(key);
+            // 目标转义值(默认String)
+            Object value = transformValue(dataNode, CtrlTypeEnum.getTypeEnum(formField.getCtrlType()));
+
+            // 子表的外键值为主表主键值，有后台生成
+            if (key.equalsIgnoreCase(foreignKey)) {
+                value = foreignValue;
+            }
+
+            // insert into 字段列表
+            fieldNames.append(",").append(String.format("%s%s%s", bDelimiter, fieldName, eDelimiter));
+            // mybatis格式化参数占位符 #{value}
+            fieldValues.append(",").append("#{").append(fieldName).append("}");
+            // 参数
+            fieldValuesParams.put(fieldName, value);
+        }
+
+        // 加上主键值-同样格式化参数形式
+        fieldNames.append(",").append(formFields.get(primaryKey).getSqlColumnName());
+        fieldValues.append(",").append("#{").append(primaryKey).append("}");
+        fieldValuesParams.put(primaryKey, primaryValue);
+
+
+        String fieldStr = fieldNames.length() > 0 ? fieldNames.toString().substring(1) : "";
+        String valueStr = fieldValues.length() > 0 ? fieldValues.toString().substring(1) : "";
+
+        ret.put("tableName", tableName);
+        ret.put("fieldStr", fieldStr);
+        ret.put("valueStr", valueStr);
+        ret.put("sqlParams", fieldValuesParams);
+
+        return ret;
+    }
+
+    /**
+     * 保存或修改表体数据
+     *
+     * @param classId
+     * @param id
+     * @param data    void
+     * @Title handleEntryData
+     * @date 2017-04-27 14:51:05 星期四
+     */
+    @SuppressWarnings("unchecked")
+    private void handleEntryData(int classId, Long id, JsonNode data) {
+
+        if (!data.has("entry") || data.path("entry").size() == 0) {
+            // 没有子表数据
+            return;
+        }
+
+        // 基础资料模板
+        Map<String, Object> template = getFormTemplate(classId, 1);
+
+        JsonNode jsonEntry = data.path("entry");
+
+        Map<String, Object> formEntries = (Map<String, Object>) template.get("formClassEntry");
+
+        for (Iterator<String> it = formEntries.keySet().iterator(); it.hasNext(); ) {
+
+            // key 等于1或2或3...
+            String key = it.next();
+
+            Map<String, FormFields> formFields = (Map<String, FormFields>) ((Map<String, Object>) template.get("formFields")).get(key);
+
+            JsonNode entryData = jsonEntry.path(key);
+
+            FormClassEntry formEntry = (FormClassEntry) formEntries.get(key);
+
+            // 保存或删除分录数据
+            saveEntry(entryData, formEntry, formFields, id);
+
+        }
+
+    }
+
+
+    /**
+     * 保存或删除分录数据
+     *
+     * @param entryData  分录数据 如：[{ 'data':{parkID:3},'flag':'1'},{'data':{entryID:4,parkID:11} ,'flag':'2'},{'data':{entryID:3
+     *                   , parkId : 1 } , ' flag ' : ' 0 ' } ]
+     * @param formEntry  分录表描述 { "entryIndex": 1, "primaryKey": "entryID", "foreignKey": "FID", "classID": 13001, "tableName":
+     *                   "t_PropertyCompanyEntry" }
+     * @param formFields 分录表配置的字段
+     * @param id         分录表外键值，关联主表的主键
+     */
+    @SuppressWarnings("unchecked")
+    private void saveEntry(JsonNode entryData, FormClassEntry formEntry, Map<String, FormFields> formFields, Long id) {
+
+        String entryTableName = formEntry.getTableName();
+        String primaryKey = formEntry.getPrimaryKey();
+        String foreignKey = formEntry.getForeignKey();
+
+        // 记录删除id，一次性删除
+        String delItems = "-1";
+
+        TemplateDaoMapper templateDaoMapper = sqlSession.getMapper(TemplateDaoMapper.class);
+
+        for (int i = 0; i < entryData.size(); i++) {
+
+            // 一条待操作分录数据
+            JsonNode entry = entryData.path(i);
+            //分录真实数据
+            JsonNode data = entry.path("data");
+            // 该分录操作标识flag: 0：删除1：新增 2：修改
+            int flag = entry.path("flag").asInt();
+
+            if (flag == 1) {
+                // 新增分录
+
+                // 检查字段
+                // checkFields(formFields, data, primaryKey, flag, userType);
+
+                // 产生记录主键
+                Long entryId = getId();
+
+                // 准备保存模板
+                Map<String, Object> statement = prepareAddMap(data, formFields, entryTableName, primaryKey, entryId, foreignKey, id);
+
+                Map<String, Object> sqlMap = new HashMap<String, Object>();
+
+                String tableName = statement.get("tableName").toString();
+                String fieldStr = statement.get("fieldStr").toString();
+                String valueStr = statement.get("valueStr").toString();
+                Map<String, Object> sqlParams = (Map<String, Object>) statement.get("sqlParams");
+
+
+                if (!"".equals(fieldStr)) {
+
+                    if (!fieldStr.contains(foreignKey)) {
+                        // 外键：模板配置中不需要配置该外键，因为该外键的值在前端时无法获取，只有主表保存后才能在后台获取
+                        // 模板中配置的外键key mustInput不能设置为true
+                        fieldStr += "," + foreignKey;
+                        valueStr += ",#{" + foreignKey + "}";
+                        sqlMap.put(foreignKey, id);
+                    }
+
+                    String sql = "insert into " + tableName + " ( " + fieldStr + " ) values ( " + valueStr + " )";
+                    // 完整带参数的sql
+                    sqlMap.put("sql", sql);
+                    // 格式化参数
+                    sqlMap.putAll(sqlParams);
+
+                    // 插入分录-循环中执行脚本不优雅
+                    templateDaoMapper.add(sqlMap);
+                }
+            } else if (flag == 2) {
+                // 修改
+
+                // 检查字段
+                // checkFields(formFields, data, primaryKey, flag, userType);
+                // 模板参数
+
+                // 主键值
+                Long entryId = data.path(primaryKey).asLong();
+
+                String primaryColumnName = formFields.get(primaryKey).getSqlColumnName();
+
+                // 准备保存模板
+                Map<String, Object> statement = prepareEditMap(data, formFields, entryTableName, primaryKey, entryId);
+
+                String tableName = statement.get("tableName").toString();
+                String kvStr = statement.get("kvStr").toString();
+                // String primaryKey=statement.get("primaryKey").toString();
+                // String id=statement.get("id").toString();
+                Map<String, Object> sqlParams = (Map<String, Object>) statement.get("sqlParams");
+
+                Map<String, Object> sqlMap = new HashMap<String, Object>();
+
+                String sql = "update " + tableName + " set " + kvStr + " where " + primaryColumnName + "= #{" + primaryKey + "}";
+
+                // 完整带参数的sql
+                sqlMap.put("sql", sql);
+                // 格式化参数
+                sqlMap.putAll(sqlParams);
+
+                // 修改基础资料分录
+                templateDaoMapper.edit(sqlMap);
+
+            } else if (flag == 0) {
+                // 删除，组装items
+
+                Long delId = data.path(primaryKey).asLong();
+
+                delItems += String.format(",%s", delId);
+
+            }
+        }
+
+        if (!"-1".equals(delItems)) {
+            // items不为空，则执行删除
+            Map<String, Object> statement = new HashMap<String, Object>();
+            statement.put("tableName", entryTableName);
+            statement.put("primaryKey", formFields.get(primaryKey).getSqlColumnName());
+            // 去掉delItems最开头的 -1,
+            statement.put("items", delItems.substring(3));
+            templateDaoMapper.del(statement);
+        }
+    }
+
+    /**
+     * 根据模板构建更新表数据脚本
+     *
+     * @param data             数据包
+     * @param formFields       模板
+     * @param primaryTableName 表名
+     * @param primaryKey       表主键
+     * @param id               主键值
+     * @return Map<String, Object>
+     */
+    private Map<String, Object> prepareEditMap(JsonNode data, Map<String, FormFields> formFields, String primaryTableName, String primaryKey, Long id) {
+
+        Map<String, Object> sqlParams = new HashMap<String, Object>();
+
+        StringBuilder sb = new StringBuilder("");
+
+        for (Iterator<String> iterator = data.fieldNames(); iterator.hasNext(); ) {
+
+            String key = iterator.next();
+            if ("entry".equals(key)) {
+                continue;
+            }
+
+            FormFields formField = formFields.get(key);
+            if (formField == null) {
+                continue;
+            }
+
+            if (primaryKey.equalsIgnoreCase(key)) {
+                // 主键更新忽略
+                continue;
+            }
+
+            Integer lookUpType = formField.getLookUpType();
+            Boolean needSave = formField.getNeedSave();
+
+            if (!needSave) {
+                // 引用基础资料的附加属性OR关联普通表携带字段，无需保存
+                continue;
+            }
+
+            String fieldName = formField.getSqlColumnName();
+
+            // 值
+            JsonNode dataNode = data.findValue(key);
+            // 目标转义值(默认String)
+            Object value = transformValue(dataNode, CtrlTypeEnum.getTypeEnum(formField.getCtrlType()));
+
+            if (!StringUtils.isNotBlank(fieldName)) {
+                // 理论上不应该出现，执行到此可能是模板配置错误
+                continue;
+            }
+
+            sb.append(",").append(fieldName).append("=").append("#{").append(key).append("}");
+
+            sqlParams.put(key, value);
+        }
+
+        String kvStr = sb.length() > 0 ? sb.toString().substring(1) : "";
+
+        Map<String, Object> ret = new HashMap<String, Object>(6);
+
+        ret.put("tableName", primaryTableName);
+        ret.put("kvStr", kvStr);
+        sqlParams.put(primaryKey, id);
+        ret.put("sqlParams", sqlParams);
+
+        return ret;
+    }
+
+    /**
+     * 根据模板配置的字段类型，将前端传入的值转换成对应的类型
+     *
+     * @param dataNode 原始值
+     * @param ctrlType 字段类型
+     * @return 转换后的类型
+     */
+    private Object transformValue(JsonNode dataNode, CtrlTypeEnum ctrlType) {
+
+
+        Object value;
+
+        switch (ctrlType) {
+
+            case INTEGER:
+                value = dataNode.asLong();
+                break;
+            case DECIMAL:
+                value = dataNode.asDouble(0.00D);
+                break;
+            case CHECKBOX:
+                value = dataNode.asInt(0);
+                break;
+            case SELECT:
+                value = dataNode.asInt(0);
+                break;
+            case F7:
+                value = dataNode.asLong();
+                break;
+            case CASCADE:
+                value = dataNode.asLong();
+                break;
+            case MOBILE:
+                value = dataNode.asText("");
+                break;
+            case PHONE:
+                value = dataNode.asText("");
+                break;
+            case TEXT:
+                value = dataNode.asText("");
+                break;
+            case TEXTAREA:
+                value = dataNode.asText("");
+                break;
+            case DATETIME:
+                value = dataNode.asText("");
+                break;
+            case SEX:
+                value = dataNode.asInt(0);
+                break;
+            case PASSWORD:
+                value = dataNode.asText("");
+                break;
+            case WHETHER:
+                value = dataNode.asInt(0);
+                break;
+            case MONEY:
+                value = dataNode.asDouble(0.00D);
+                break;
+            default:
+                // 默认文本
+                value = dataNode.asText("");
+                break;
+        }
+
+        return value;
+    }
 
     public static void main(String[] args) throws IOException {
         ObjectMapper mapper = new ObjectMapper();

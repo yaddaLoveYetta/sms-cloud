@@ -404,12 +404,12 @@ define("List", function (require, module, exports) {
         Operation.del(classId, list, fn);
     }
 
-    function review(classId, list, fn) {
-        Operation.review(classId, list, fn);
+    function check(classId, list, fn) {
+        Operation.check(classId, list, fn);
     }
 
-    function unReview(classId, list, fn) {
-        Operation.unReview(classId, list, fn);
+    function unCheck(classId, list, fn) {
+        Operation.unCheck(classId, list, fn);
     }
 
     function send(classId, list, fn) {
@@ -428,8 +428,8 @@ define("List", function (require, module, exports) {
         del: del,
         getFilterItems: getFilterItems,
         forbid: forbid,
-        review: review,
-        unReview: unReview,
+        check: check,
+        unCheck: unCheck,
         send: send,
         getMetaData: getMetaData
     };

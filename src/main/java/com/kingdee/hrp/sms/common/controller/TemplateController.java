@@ -204,8 +204,8 @@ public class TemplateController {
      */
 
 
-    @RequestMapping(value = "checkItem")
-    public Boolean checkItem(Integer classId, List<Long> ids) {
+    @RequestMapping(value = "check")
+    public Boolean check(Integer classId, List<Long> ids) {
         return null;
     }
 
@@ -216,8 +216,8 @@ public class TemplateController {
      * @param ids     内码集合
      * @return 是否成功
      */
-    @RequestMapping(value = "unCheckItem")
-    public Boolean unCheckItem(Integer classId, List<Long> ids) {
+    @RequestMapping(value = "unCheck")
+    public Boolean unCheck(Integer classId, List<Long> ids) {
         return null;
     }
 

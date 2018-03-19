@@ -1,5 +1,7 @@
 /**
- * 供应商用户公司信息维护控制器
+ * 单据详情/新增/编辑页面控制器
+ * @author : yadda(silenceisok@163.com)
+ * @date : 2018/3/11 11:25
  */
 ;(function ($, MiniQuery, sms) {
 
@@ -60,19 +62,21 @@
             'save': function (item, index) {
                 // 新增、修改时保存
                 FormEdit.save(function (ret) {
-                    id = ret.value;
-                    operate = 2;
-                    FormEdit.render({
-                        classId: classId,
-                        id: id,
-                        operate: operate
-                    });
-                    // 向主控台跑出一个单据新增成功事件
-                    Iframe.raise({
-                        'eventName': 'addSuccess',
-                        'data': Iframe.getInfos()
-                    });
 
+                    if (operate === 1) {
+                        id = ret.value;
+                        operate = 2;
+                        FormEdit.render({
+                            classId: classId,
+                            id: id,
+                            operate: operate
+                        });
+                        // 向主控台跑出一个单据新增成功事件
+                        Iframe.raise({
+                            'eventName': 'addSuccess',
+                            'data': Iframe.getInfos()
+                        });
+                    }
                     SMS.Tips.success("保存成功!", 1500);
                 });
                 console.log(item);

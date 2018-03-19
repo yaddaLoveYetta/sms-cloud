@@ -1,3 +1,8 @@
+/**
+ * 单据列表页面控制器
+ * @author : yadda(silenceisok@163.com)
+ * @date : 2018/3/09 11:25
+ */
 ;(function () {
 
     var $ = require('$');
@@ -94,9 +99,9 @@
 
         //支持二级事件，二级事件对应 item 中的 name
         ButtonList.on('click', {
-
+            // 查看详情
             'view': function (item, index) {
-                // 查看详情
+
                 var list = List.getSelectedItems();
 
                 if (list.length === 0) {
@@ -129,6 +134,7 @@
                     }
                 });
             },
+            // 新增
             'add': function (item, index) {
 
                 var metaData = List.getMetaData();
@@ -150,6 +156,7 @@
                     }
                 });
             },
+            // 修改
             'edit': function (item, index) {
 
                 var list = List.getSelectedItems();
@@ -185,6 +192,7 @@
                 });
 
             },
+            // 删除
             'delete': function (item, index) {
 
                 var list = List.getSelectedItems();
@@ -202,17 +210,20 @@
                 });
 
             },
+            // 刷新
             'refresh': function (item, index) {
                 refresh();
             },
+            // 更多菜单
             'more': function (item, index) {
                 ButtonList.toggle(index);
             },
+            // 审核
             'check': function (item, index) {
 
                 var list = List.getSelectedItems();
 
-                if (list.length == 0) {
+                if (list.length === 0) {
                     SMS.Tips.error('请选择要操作的项', 1500);
                     return;
                 }
@@ -220,18 +231,19 @@
                     SMS.Tips.error('一次只能对一条记录进行操作', 1500);
                     return;
                 }
-                List.review(classId, list, function () {
+                List.check(classId, list, function () {
                     SMS.Tips.success('审核成功', 2000);
                     refresh();
                 });
 
 
             },
+            // 反审核
             'unCheck': function (item, index) {
 
                 var list = List.getSelectedItems();
 
-                if (list.length == 0) {
+                if (list.length === 0) {
                     SMS.Tips.error('请选择要操作的项', 1500);
                     return;
                 }
@@ -240,11 +252,12 @@
                     return;
                 }
 
-                List.unReview(classId, list, function () {
+                List.unCheck(classId, list, function () {
                     SMS.Tips.success('反审核成功', 2000);
                     refresh();
                 });
             },
+            // 发送到医院
             'send': function (item, index) {
                 // 发送到HRP
                 if (!(classId == 1005 || classId == 1007 || classId == 1023)) {
@@ -283,6 +296,7 @@
                 });
 
             },
+            // 过滤
             'filter': function (item, index) {
                 var items = List.getFilterItems();
                 SMS.use('Dialog', function (Dialog) {
@@ -314,8 +328,8 @@
                     dialog.showModal();
                 });
             },
+            // 导出
             'export': function (item, index) {
-
 
                 var conditions = getCondition();
                 var conditionArray = new Array();
@@ -334,17 +348,24 @@
                     condition: $.Object.toJson(conditionArray),
                 })
 
-
-                var form = $("<form>");//定义一个form表单
+                //定义一个form表单
+                var form = $("<form>");
                 form.attr("style", "display:none");
                 form.attr("target", "");
-                form.attr("method", "post");//请求类型
-                form.attr("action", url);//请求地址
-                $("body").append(form);//将表单放置在web中
-
-                form.submit();//表单提交
+                //请求类型
+                form.attr("method", "post");
+                //请求地址
+                form.attr("action", url);
+                //将表单放置在DOM中
+                $("body").append(form);
+                //表单提交
+                form.submit();
                 $(form).remove();
             },
+            // 导入
+            'import': function (item, index) {
+
+            }
         });
     });
 

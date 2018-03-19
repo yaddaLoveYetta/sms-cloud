@@ -67,7 +67,7 @@ define('List/Operation', function (require, module, exports) {
         }
         items = items.substr(1);
 
-        if (items == '') {
+        if (items === '') {
             return;
         }
 
@@ -79,7 +79,7 @@ define('List/Operation', function (require, module, exports) {
 
     }
 
-    function review(classId, list, fn) {
+    function check(classId, list, fn) {
 
         var items = '';
         for (var item in list) {
@@ -90,13 +90,13 @@ define('List/Operation', function (require, module, exports) {
 
         items = items.substr(1);
 
-        post('template/checkItem', {
+        post('template/check', {
             'classId': classId,
             'items': items
         }, fn);
     }
 
-    function unReview(classId, list, fn) {
+    function unCheck(classId, list, fn) {
 
         var items = '';
         for (var item in list) {
@@ -107,7 +107,7 @@ define('List/Operation', function (require, module, exports) {
 
         items = items.substr(1);
 
-        post('template/unCheckItem', {
+        post('template/unCheck', {
             'classId': classId,
             'items': items
         }, fn);
@@ -133,9 +133,9 @@ define('List/Operation', function (require, module, exports) {
     return {
         del: del,
         forbid: forbid,
-        review: review,
-        unReview: unReview,
-        send: send,
+        review: check,
+        unReview: unCheck,
+        send: send
     };
 
 });
