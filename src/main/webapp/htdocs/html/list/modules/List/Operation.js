@@ -44,31 +44,27 @@ define('List/Operation', function (require, module, exports) {
     }
 
     function del(classId, list, fn) {
-        var items = '';
+
+        var items = new Array();
         for (var item in list) {
             if (list[item]) {
-                items += (',' + list[item].primaryValue);
+                items.push(list[item].primaryValue);
             }
         }
 
-        items = items.substr(1);
         post('template/delItem', {
             'classId': classId,
-            'items': items,
+            'items': items
         }, fn);
     }
 
     function forbid(classId, list, operateType, fn) {
-        var items = '';
+
+        var items = new Array();
         for (var item in list) {
             if (list[item]) {
-                items += (',' + list[item].primaryValue);
+                items.push(list[item].primaryValue);
             }
-        }
-        items = items.substr(1);
-
-        if (items === '') {
-            return;
         }
 
         post('template/forbid', {
@@ -81,14 +77,12 @@ define('List/Operation', function (require, module, exports) {
 
     function check(classId, list, fn) {
 
-        var items = '';
+        var items = new Array();
         for (var item in list) {
             if (list[item]) {
-                items += (',' + list[item].primaryValue);
+                items.push(list[item].primaryValue);
             }
         }
-
-        items = items.substr(1);
 
         post('template/check', {
             'classId': classId,
@@ -98,14 +92,12 @@ define('List/Operation', function (require, module, exports) {
 
     function unCheck(classId, list, fn) {
 
-        var items = '';
+        var items = new Array();
         for (var item in list) {
             if (list[item]) {
-                items += (',' + list[item].primaryValue);
+                items.push(list[item].primaryValue);
             }
         }
-
-        items = items.substr(1);
 
         post('template/unCheck', {
             'classId': classId,
@@ -133,8 +125,8 @@ define('List/Operation', function (require, module, exports) {
     return {
         del: del,
         forbid: forbid,
-        review: check,
-        unReview: unCheck,
+        check: check,
+        unCheck: unCheck,
         send: send
     };
 

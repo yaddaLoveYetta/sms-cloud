@@ -155,6 +155,44 @@ define("List", function (require, module, exports) {
         return data;
     }
 
+    // 根据控件类型确定蚊子显示位置
+    function getTextAlign(ctrlType) {
+
+        /*
+                   1	数字
+                   2	数字带小数
+                   3	选择框
+                   5	下拉列表
+                   6	F7选择框
+                   7	级联选择器
+                   8	手机号码
+                   9	座机电话
+                   10	普通文本
+                   11	多行文本
+                   12	日期时间
+                   13	男：女
+                   14	密码控件
+                   15	是：否
+                   16	单价/金额(两位小数)
+                */
+        switch (ctrlType) {
+            case 1:
+            case 2:
+            case 16:
+                return 'text-align-right';
+                break;
+            case 12:
+            case 13:
+            case 15:
+                return 'text-align-center';
+                break;
+            default:
+                return 'text-align-left';
+                break;
+        }
+
+    }
+
     function render(config, fn) {
 
         // 清空已选择项
@@ -212,8 +250,9 @@ define("List", function (require, module, exports) {
                                 index: index,
                                 key: field.key,
                                 "number-class": field.key == "number" ? "number" : "",
+                                'text-align': getTextAlign(field.type),
                                 text: field.isEntry ? getTableHtml(field, item.value) : getHtml(field.type, item.value),
-                                title: field.isEntry ? '' : getHtml(field.type, item.value),
+                                title: field.isEntry ? '' : getHtml(field.type, item.value)
                             });
                         }).join("")
                     });
@@ -404,11 +443,11 @@ define("List", function (require, module, exports) {
         Operation.del(classId, list, fn);
     }
 
-    function check(classId, list, fn) {
+    function review(classId, list, fn) {
         Operation.check(classId, list, fn);
     }
 
-    function unCheck(classId, list, fn) {
+    function unReview(classId, list, fn) {
         Operation.unCheck(classId, list, fn);
     }
 
@@ -428,8 +467,8 @@ define("List", function (require, module, exports) {
         del: del,
         getFilterItems: getFilterItems,
         forbid: forbid,
-        check: check,
-        unCheck: unCheck,
+        check: review,
+        unCheck: unReview,
         send: send,
         getMetaData: getMetaData
     };

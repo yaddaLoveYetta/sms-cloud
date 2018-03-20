@@ -73,7 +73,7 @@ public interface IPlugIn {
      * @date 2017-07-12 09:05:42 星期三
      */
     public PlugInRet beforeEntryModify(int classId, String primaryId, String entryId, Map<String, Object> formTemplate, JsonNode data);
-    
+
     /**
      * 单据修改后操作
      *
@@ -86,13 +86,14 @@ public interface IPlugIn {
     public PlugInRet afterModify(int classId, Long id, Map<String, Object> formTemplate, JsonNode data);
 
     /**
-     * 基础资料删除前操作
+     * 删除前操作
      *
-     * @param classId 业务类型
-     * @param data    删除的内码集合
-     * @return
+     * @param classId      业务类型
+     * @param formTemplate 模板
+     * @param ids          删除的内码集合
+     * @return PlugInRet
      */
-    public PlugInRet beforeDelete(int classId, Map<String, Object> formTemplate, JsonNode data);
+    public PlugInRet beforeDelete(int classId, Map<String, Object> formTemplate, List<Long> ids);
 
     /**
      * 单据/基础资料分录删除前事件
@@ -108,14 +109,14 @@ public interface IPlugIn {
     public PlugInRet beforeEntryDelete(int classId, String primaryId, String entryId, Map<String, Object> formTemplate);
 
     /**
-     * 基础资料删除后操作
+     * 删除后操作
      *
-     * @param classId 业务类型
-     * @param delData 待删除的数据明细集合
-     * @param items   删除的内码集合
-     * @return
+     * @param classId      业务类型
+     * @param formTemplate 模板
+     * @param ids          删除的内码集合
+     * @return PlugInRet
      */
-    public PlugInRet afterDelete(int classId, List<Map<String, Object>> delData, String items);
+    public PlugInRet afterDelete(int classId, Map<String, Object> formTemplate, List<Long> ids);
 
     /**
      * 基础资料查询前操作
@@ -146,5 +147,25 @@ public interface IPlugIn {
      */
     public List<Condition> getConditions(int classId, Map<String, Object> formTemplate, List<Condition> conditons);
 
+    /**
+     * 禁用/反禁用前置事件（基础资料用）
+     *
+     * @param classId     业务类别
+     * @param template    单据模板
+     * @param ids         内码集合
+     * @param operateType 1：禁用 2：反禁用
+     * @return PlugInRet
+     */
+    PlugInRet beforeForbid(Integer classId, Map<String, Object> template, List<Long> ids, Integer operateType);
 
+    /**
+     * 禁用/反禁用后置事件（基础资料用）
+     *
+     * @param classId     业务类别
+     * @param template    单据模板
+     * @param ids         内码集合
+     * @param operateType 1：禁用 2：反禁用
+     * @return PlugInRet
+     */
+    PlugInRet afterForbid(Integer classId, Map<String, Object> template, List<Long> ids, Integer operateType);
 }

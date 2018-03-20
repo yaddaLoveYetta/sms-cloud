@@ -6,6 +6,7 @@ import com.kingdee.hrp.sms.common.exception.BusinessLogicRunTimeException;
 import com.kingdee.hrp.sms.common.pojo.Condition;
 import com.kingdee.hrp.sms.common.pojo.Sort;
 import com.kingdee.hrp.sms.common.service.ITemplateService;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -85,16 +86,12 @@ public class TemplateController {
         List<Sort> sorts = new ArrayList<Sort>();
 
         // 包装查询条件-方便操作
-        if (null != condition && !"".equals(condition)) {
-            ObjectMapper objectMapper = new ObjectMapper();
-            JavaType javaType = objectMapper.getTypeFactory().constructParametricType(List.class, Condition.class);
-            conditions = objectMapper.readValue(condition, javaType);
+        if (StringUtils.isNotBlank(condition)) {
+            conditions = stringToList(condition, Condition.class);
         }
         // 包装查询结果排序-方便操作
-        if (null != sort && !"".equals(sort)) {
-            ObjectMapper objectMapper = new ObjectMapper();
-            JavaType javaType = objectMapper.getTypeFactory().constructParametricType(List.class, Sort.class);
-            sorts = objectMapper.readValue(sort, javaType);
+        if (StringUtils.isNotBlank(sort)) {
+            sorts = stringToList(sort, Sort.class);
         }
 
         return templateService.getItems(classId, conditions, sorts, pageSize, pageNo);
@@ -170,7 +167,7 @@ public class TemplateController {
         }
 
         if (id <= 0) {
-            throw new BusinessLogicRunTimeException("参数错误：必须提交classId");
+            throw new BusinessLogicRunTimeException("参数错误：必须提交id");
         }
 
         if ("".equals(data.trim())) {
@@ -184,15 +181,44 @@ public class TemplateController {
      * 删除基础资料
      *
      * @param classId 业务类型
-     * @param ids     删除的内码集合
+     * @param items   删除的内码集合
      * @return 是否成功
      */
 
-
+    @ResponseBody
     @RequestMapping(value = "delItem")
-    public Boolean delItem(Integer classId, List<Long> ids) {
+    public Boolean delItem(Integer classId, String items) {
 
-        return null;
+        if (classId <= 0) {
+            throw new BusinessLogicRunTimeException("参数错误：必须提交classId!");
+        }
+
+        if (!StringUtils.isNotBlank(items)) {
+            throw new BusinessLogicRunTimeException("参数错误：必须指定删除的项!");
+        }
+
+        List<Long> ids = stringToList(items, Long.class);
+
+        return templateService.delItem(classId, ids);
+    }
+
+
+    @ResponseBody
+    @RequestMapping(value = "forbid")
+    public Boolean forbid(Integer classId, String items, Integer operateType) {
+
+        if (classId <= 0) {
+            throw new BusinessLogicRunTimeException("参数错误：必须提交classId!");
+        }
+
+        if (!StringUtils.isNotBlank(items)) {
+            throw new BusinessLogicRunTimeException("参数错误：必须指定操作的项!");
+        }
+
+        List<Long> ids = stringToList(items, Long.class);
+
+        return templateService.forbid(classId, ids, operateType);
+
     }
 
     /**
@@ -203,7 +229,7 @@ public class TemplateController {
      * @return 是否成功
      */
 
-
+    @ResponseBody
     @RequestMapping(value = "check")
     public Boolean check(Integer classId, List<Long> ids) {
         return null;
@@ -216,10 +242,37 @@ public class TemplateController {
      * @param ids     内码集合
      * @return 是否成功
      */
+    @ResponseBody
     @RequestMapping(value = "unCheck")
     public Boolean unCheck(Integer classId, List<Long> ids) {
         return null;
     }
 
+    /**
+     * 将String转成List
+     *
+     * @param str 待转化字符串，必须符合list格式
+     * @param t   List泛型类型
+     * @param <T> List<T>
+     * @return List<T>
+     * @throws IOException
+     */
+    private <T> List<T> stringToList(String str, Class<T> t) {
 
+        List<T> target = new ArrayList<T>();
+
+        if (!StringUtils.isNotBlank(str)) {
+            return new ArrayList<T>();
+        }
+
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            JavaType javaType = objectMapper.getTypeFactory().constructParametricType(List.class, t);
+            target = objectMapper.readValue(str, javaType);
+        } catch (IOException e) {
+            throw new BusinessLogicRunTimeException(e.getMessage(), e);
+        }
+
+        return target;
+    }
 }

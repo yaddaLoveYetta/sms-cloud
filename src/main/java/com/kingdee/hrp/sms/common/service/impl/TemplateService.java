@@ -725,8 +725,149 @@ public class TemplateService extends BaseService implements ITemplateService {
      * @return 是否成功
      */
     @Override
+    @SuppressWarnings("unchecked")
+    @Transactional(rollbackFor = Exception.class)
     public Boolean delItem(Integer classId, List<Long> ids) {
-        return null;
+
+        if (ids.isEmpty()) {
+            throw new BusinessLogicRunTimeException("没有待删除的数据!");
+        }
+
+        // 基础资料模板
+        Map<String, Object> template = getFormTemplate(classId, 1);
+        // 主表资料描述信息
+        FormClass formClass = (FormClass) template.get("formClass");
+        // 主表字段模板
+        Map<String, FormFields> formFields = (Map<String, FormFields>) ((Map<String, Object>) template.get("formFields")).get("0");
+
+        String primaryTableName = formClass.getTableName();
+        String primaryKey = formClass.getPrimaryKey();
+        FormFields ff = formFields.get(primaryKey);
+
+        // 删除前插件事件
+        PlugInRet plugInRet = plugInFactory.beforeDelete(classId, template, ids);
+        if (plugInRet.getCode() != StatusCode.SUCCESS) {
+            throw new PluginException(plugInRet.getMsg());
+        }
+        // 子表资料描述信息
+        Map<String, Object> formEntries = (Map<String, Object>) template.get("formClassEntry");
+
+        // 先删除分录数据（子表）
+        delEntryData(formEntries, ids);
+        // 再删除基础资料（主表）
+        // 准备删除模板
+        Map<String, Object> statement = prepareStatement(ids, primaryTableName, primaryKey);
+
+        TemplateDaoMapper templateDaoMapper = sqlSession.getMapper(TemplateDaoMapper.class);
+
+        if (!statement.isEmpty()) {
+            templateDaoMapper.del(statement);
+        }
+        // 删除后插件事件
+        plugInRet = plugInFactory.afterDelete(classId, template, ids);
+        if (plugInRet.getCode() != StatusCode.SUCCESS) {
+            throw new PluginException(plugInRet.getMsg());
+        }
+
+        return true;
+    }
+
+
+    /**
+     * 禁用/反禁用(基础资料用)
+     *
+     * @param classId     业务类型
+     * @param ids         内码集合
+     * @param operateType 1：禁用 2：反禁用
+     * @return 是否成功
+     */
+    @Override
+    @SuppressWarnings("unchecked")
+    @Transactional(rollbackFor = Exception.class)
+    public Boolean forbid(Integer classId, List<Long> ids, Integer operateType) {
+
+        if (ids.isEmpty()) {
+            throw new BusinessLogicRunTimeException("没有待操作的数据!");
+        }
+
+        // 基础资料模板
+        Map<String, Object> template = getFormTemplate(classId, 1);
+        // 主表资料描述信息
+        FormClass formClass = (FormClass) template.get("formClass");
+        // 主表字段模板
+        Map<String, FormFields> formFields = (Map<String, FormFields>) ((Map<String, Object>) template.get("formFields")).get("0");
+
+        String primaryTableName = formClass.getTableName();
+        String primaryKey = formClass.getPrimaryKey();
+
+        // 禁用/反禁用前插件事件
+        PlugInRet plugInRet = plugInFactory.beforeForbid(classId, template, ids, operateType);
+        if (plugInRet.getCode() != StatusCode.SUCCESS) {
+            throw new PluginException(plugInRet.getMsg());
+        }
+
+        // 准备模板
+        Map<String, Object> statement = prepareStatement(ids, primaryTableName, primaryKey);
+
+        TemplateDaoMapper templateDaoMapper = sqlSession.getMapper(TemplateDaoMapper.class);
+
+        if (!statement.isEmpty()) {
+            statement.put("operateType", operateType == 1 ? 1 : 0);
+            templateDaoMapper.forbid(statement);
+        }
+        // 禁用/反禁用后插件事件
+        plugInRet = plugInFactory.afterForbid(classId, template, ids, operateType);
+        if (plugInRet.getCode() != StatusCode.SUCCESS) {
+            throw new PluginException(plugInRet.getMsg());
+        }
+
+        return true;
+
+    }
+
+    /**
+     * 处理分录数据
+     *
+     * @param formEntries Entry集合
+     * @param items       主表id值
+     */
+    private void delEntryData(Map<String, Object> formEntries, List<Long> items) {
+
+        TemplateDaoMapper templateDaoMapper = sqlSession.getMapper(TemplateDaoMapper.class);
+
+        for (String key : formEntries.keySet()) {
+
+            FormClassEntry formEntry = (FormClassEntry) formEntries.get(key);
+
+            String tableName = formEntry.getTableName();
+            String foreignKey = formEntry.getForeignKey();
+
+            Map<String, Object> statement = prepareStatement(items, tableName, foreignKey);
+
+            templateDaoMapper.del(statement);
+        }
+    }
+
+    private Map<String, Object> prepareStatement(List<Long> ids, String primaryTableName, String primaryKey) {
+
+        Map<String, Object> map = new HashMap<String, Object>();
+
+        StringBuilder sb = new StringBuilder();
+
+        for (Long id : ids) {
+            sb.append(id).append(",");
+        }
+
+        if (sb.length() != 0) {
+
+            sb.deleteCharAt(sb.length() - 1);
+            map.put("tableName", primaryTableName);
+            map.put("primaryKey", primaryKey);
+            map.put("items", sb);
+
+        }
+
+        return map;
     }
 
     /**
@@ -737,6 +878,7 @@ public class TemplateService extends BaseService implements ITemplateService {
      * @return 是否成功
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public Boolean check(Integer classId, List<Long> ids) {
         return null;
     }
@@ -749,6 +891,7 @@ public class TemplateService extends BaseService implements ITemplateService {
      * @return 是否成功
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public Boolean unCheck(Integer classId, List<Long> ids) {
         return null;
     }
@@ -1913,11 +2056,10 @@ public class TemplateService extends BaseService implements ITemplateService {
     /**
      * 保存或修改表体数据
      *
-     * @param classId
-     * @param id
-     * @param data    void
-     * @Title handleEntryData
-     * @date 2017-04-27 14:51:05 星期四
+     * @param classId 业务类型
+     * @param id      主键
+     * @param data    单据数据
+     * @date 2018-02-27 14:51:05 星期四
      */
     @SuppressWarnings("unchecked")
     private void handleEntryData(int classId, Long id, JsonNode data) {
@@ -1934,11 +2076,9 @@ public class TemplateService extends BaseService implements ITemplateService {
 
         Map<String, Object> formEntries = (Map<String, Object>) template.get("formClassEntry");
 
-        for (Iterator<String> it = formEntries.keySet().iterator(); it.hasNext(); ) {
+        for (String key : formEntries.keySet()) {
 
             // key 等于1或2或3...
-            String key = it.next();
-
             Map<String, FormFields> formFields = (Map<String, FormFields>) ((Map<String, Object>) template.get("formFields")).get(key);
 
             JsonNode entryData = jsonEntry.path(key);

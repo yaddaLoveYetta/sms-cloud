@@ -111,4 +111,14 @@ public interface ITemplateService {
      */
 
     Boolean unCheck(Integer classId, List<Long> ids);
+
+    /**
+     * 禁用/反禁用(基础资料用)
+     *
+     * @param classId     业务类型
+     * @param ids         内码集合
+     * @param operateType 1：禁用 2：反禁用
+     * @return 是否成功
+     */
+    Boolean forbid(Integer classId, List<Long> ids, Integer operateType);
 }

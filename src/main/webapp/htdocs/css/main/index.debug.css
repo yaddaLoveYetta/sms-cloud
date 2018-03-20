@@ -3036,7 +3036,7 @@ fieldset[disabled] .i-checks input + i:before {
 
 .bg-dark {
     color: #a6a8b1;
-    background-color: #3a3f51;
+    background-color: #272930;
 }
 
 .bg-dark.lt,
@@ -3051,7 +3051,7 @@ fieldset[disabled] .i-checks input + i:before {
 
 .bg-dark.dk,
 .bg-dark .dk {
-    background-color: #2e3344;
+    background-color: #272930;
 }
 
 .bg-dark.dker,
@@ -4037,6 +4037,7 @@ a.text-#000000:hover {
     margin: 10px 0;
     overflow: hidden;
     font-size: 0;
+    background-color: #141721;
 }
 
 .line-xs {

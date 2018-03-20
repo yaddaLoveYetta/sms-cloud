@@ -214,11 +214,46 @@
             'refresh': function (item, index) {
                 refresh();
             },
+            // 禁用
+            'forbid': function (item, index) {
+
+                var list = List.getSelectedItems();
+
+                if (list.length === 0) {
+                    SMS.Tips.error('请选择要禁用的项', 1500);
+                    return;
+                }
+                MessageBox.confirm('确定禁用选择的项?', function (result) {
+                    if (result) {
+                        List.forbid(classId, list, 1, function () {
+                            refresh();
+                        });
+                    }
+                });
+            },
+            // 启用
+            'enable': function (item, index) {
+
+                var list = List.getSelectedItems();
+
+                if (list.length === 0) {
+                    SMS.Tips.error('请选择要启用的项', 1500);
+                    return;
+                }
+                MessageBox.confirm('确定启用选择的项?', function (result) {
+                    if (result) {
+                        List.forbid(classId, list, 2, function () {
+                            refresh();
+                        });
+                    }
+                });
+
+            },
             // 更多菜单
             'more': function (item, index) {
                 ButtonList.toggle(index);
             },
-            // 审核
+            // 审核 TODO
             'check': function (item, index) {
 
                 var list = List.getSelectedItems();
@@ -238,7 +273,7 @@
 
 
             },
-            // 反审核
+            // 反审核 TODO
             'unCheck': function (item, index) {
 
                 var list = List.getSelectedItems();
