@@ -13,7 +13,8 @@
     position: relative;
     background-color: #FFF;
     /*border: 1px solid #999;*/
-    border-radius: 6px;
+    border-radius: 4px;
+    overflow: hidden;
     outline: 0;
     background-clip: padding-box;
     font-family: Helvetica, arial, sans-serif;

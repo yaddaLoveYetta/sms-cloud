@@ -311,6 +311,7 @@ define("List", function (require, module, exports) {
                     var chk = this;
                     check(chk, checked);
                 });
+                event.stopPropagation();
 
             }).delegate('[data-check="item"]', "click", function (event) {
 

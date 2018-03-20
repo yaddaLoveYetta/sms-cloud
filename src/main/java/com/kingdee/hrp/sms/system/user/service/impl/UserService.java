@@ -48,7 +48,7 @@ public class UserService extends BaseService implements IUserService {
      * @param user 用户pojo
      */
     @Override
-    @Transactional(rollbackFor = {RuntimeException.class})
+    @Transactional(rollbackFor = {Exception.class})
     public void register(User user) {
 
         UserMapper userMapper = sqlSession.getMapper(UserMapper.class);

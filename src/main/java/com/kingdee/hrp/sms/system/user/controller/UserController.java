@@ -35,6 +35,10 @@ public class UserController {
 
     /**
      * 用户注册
+     * <p>
+     * 1:根据注册用户类别新增一基础资料，eg：对于供应商类别，新增一供应商信息，对于医院类别，新增一医院信息
+     * 2:根据注册用户类别新增一角色(顶级角色)，eg对于供应商类别，新增一供应商角色并绑定给此用户，对于医院类别，新增一医院角色并绑定给此用户
+     * 3:新增注册用户,将1步中新增组织，2步中新增角色绑定到此用户
      *
      * @param user
      */
@@ -47,12 +51,11 @@ public class UserController {
 
     }
 
-
     /**
      * 用户登录
      *
-     * @param userName
-     * @param password
+     * @param userName 用户名
+     * @param password 密码
      */
     @RequestMapping("/login")
     @ResponseBody
