@@ -10,10 +10,18 @@
 
 <div id="smartwizard">
     <ul>
-        <li><a href="#step-1">Step Title<br /><small>Step description</small></a></li>
-        <li><a href="#step-2">Step Title<br /><small>Step description</small></a></li>
-        <li><a href="#step-3">Step Title<br /><small>Step description</small></a></li>
-        <li><a href="#step-4">Step Title<br /><small>Step description</small></a></li>
+        <li><a href="#step-1">Step Title<br/>
+            <small>Step description</small>
+        </a></li>
+        <li><a href="#step-2">Step Title<br/>
+            <small>Step description</small>
+        </a></li>
+        <li><a href="#step-3">Step Title<br/>
+            <small>Step description</small>
+        </a></li>
+        <li><a href="#step-4">Step Title<br/>
+            <small>Step description</small>
+        </a></li>
     </ul>
 
     <div>
@@ -42,16 +50,16 @@
 <script>
     (function () {
 
+        // Smart Wizard
         $('#smartwizard').smartWizard({
-
             selected: 0,  // Initial selected step, 0 = first step
-            keyNavigation:false, // Enable/Disable keyboard navigation(left and right keys are used if enabled)
-            autoAdjustHeight:true, // Automatically adjust content height
+            keyNavigation: true, // Enable/Disable keyboard navigation(left and right keys are used if enabled)
+            autoAdjustHeight: true, // Automatically adjust content height
             cycleSteps: false, // Allows to cycle the navigation of steps
-            backButtonSupport: false, // Enable the back button support
-            useURLhash: false, // Enable selection of the step based on url hash
+            backButtonSupport: true, // Enable the back button support
+            useURLhash: true, // Enable selection of the step based on url hash
             lang: {  // Language variables
-                next: '下一步',
+                next: 'Next',
                 previous: 'Previous'
             },
             toolbarSettings: {
@@ -62,29 +70,31 @@
                 toolbarExtraButtons: [
                     $('<button></button>').text('Finish')
                         .addClass('btn btn-info')
-                        .on('click', function(){
+                        .on('click', function () {
                             alert('Finsih button click');
                         }),
                     $('<button></button>').text('Cancel')
                         .addClass('btn btn-danger')
-                        .on('click', function(){
+                        .on('click', function () {
                             alert('Cancel button click');
                         })
                 ]
             },
             anchorSettings: {
-                anchorClickable: false, // Enable/Disable anchor navigation
+                anchorClickable: true, // Enable/Disable anchor navigation
                 enableAllAnchors: false, // Activates all anchors clickable all times
-                markDoneStep: false, // add done css
-                enableAnchorOnDoneStep: false // Enable/Disable the done steps navigation
+                markDoneStep: true, // add done css
+                enableAnchorOnDoneStep: true // Enable/Disable the done steps navigation
             },
             contentURL: null, // content url, Enables Ajax content loading. can set as data data-content-url on anchor
             disabledSteps: [],    // Array Steps disabled
             errorSteps: [],    // Highlight step with errors
             theme: 'dots',
             transitionEffect: 'fade', // Effect on navigation, none/slide/fade
-            transitionSpeed: '400'
+            transitionSpeed: '400',
+            showStepURLhash: false,
         });
+
 
     })();
 

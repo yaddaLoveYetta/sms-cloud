@@ -193,3 +193,43 @@ input, textarea {
     text-align: left;
 
 }
+
+.modal-header {
+    min-height: 16.42857143px;
+    padding: 15px;
+    border-bottom: 1px solid #e5e5e5;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    /* display: flex; */
+    -webkit-box-align: start;
+    -ms-flex-align: start;
+    align-items: flex-start;
+    -webkit-box-pack: justify;
+}
+
+.modal {
+    top: 10% !important;
+}
+
+.tab-content > .tab-pane {
+    visibility: unset !important;
+    /*    margin-top: 30px;
+        margin-bottom: 30px;*/
+}
+
+.step-container {
+    height: 300px;
+    width: auto;
+}
+.step-container .step-content-container{
+    margin: 10px;
+}
+.error-msg {
+    color: #ea542a;
+}
+
+.justify-content-end {
+    -webkit-box-pack: end!important;
+    -ms-flex-pack: end!important;
+    justify-content: flex-end!important;
+}
