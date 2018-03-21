@@ -207,9 +207,9 @@ input, textarea {
     -webkit-box-pack: justify;
 }
 
-.modal {
+/*.modal {
     top: 10% !important;
-}
+}*/
 
 .tab-content > .tab-pane {
     visibility: unset !important;

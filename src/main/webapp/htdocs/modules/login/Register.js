@@ -160,6 +160,12 @@ define('Register', function (require, module, exports) {
             alert("Theme changed. New theme name: " + theme);
         });
 
+        //为模态对话框添加拖拽
+        $(model).draggable({
+            handle: ".modal-header"
+        });
+        //禁止模态对话框的半透明背景滚动
+        $(model).css("overflow", "hidden");
 
         hasBind = true;
     }

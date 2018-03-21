@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
@@ -40,13 +41,13 @@ public class UserController {
      * 2:根据注册用户类别新增一角色(顶级角色)，eg对于供应商类别，新增一供应商角色并绑定给此用户，对于医院类别，新增一医院角色并绑定给此用户
      * 3:新增注册用户,将1步中新增组织，2步中新增角色绑定到此用户
      *
-     * @param user
+     * @param registerInfo
      */
     @RequestMapping("/register")
     @ResponseBody
-    public Boolean register(User user) {
+    public Boolean register(@RequestParam Map<String, Object> registerInfo) {
 
-        userService.register(user);
+        userService.register(new User());
         return true;
 
     }
