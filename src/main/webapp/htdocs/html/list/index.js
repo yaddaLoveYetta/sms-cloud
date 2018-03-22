@@ -15,11 +15,12 @@
 
     var List = require('List');
     var Pager = require('Pager');
+    var Search = require('Search');
     var FormAction = require('FormAction');
     // 菜单按钮
     var ButtonList;
     // var CascadeNavigator = require('CascadeNavigator');
-    var ClassMapping = require('ClassMapping');
+    // var ClassMapping = require('ClassMapping');
     // 业务类别
     var classId = MiniQuery.Url.getQueryString(window.location.href, 'classId');
 
@@ -452,6 +453,8 @@
             conditions: conditionAll,
             multiSelect: defaults.multiSelect
         }, function (total, pageSize) {
+
+            Search.render(List.getFilterItems());
 
             Pager.render({
                 size: pageSize,

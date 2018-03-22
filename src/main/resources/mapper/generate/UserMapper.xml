@@ -9,6 +9,7 @@
     <result column="mobile" jdbcType="VARCHAR" property="mobile" />
     <result column="is_admin" jdbcType="BIT" property="isAdmin" />
     <result column="org" jdbcType="BIGINT" property="org" />
+    <result column="status" jdbcType="BIT" property="status" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -69,7 +70,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, `name`, user_name, `password`, mobile, is_admin, org
+    id, `name`, user_name, `password`, mobile, is_admin, org, `status`
   </sql>
   <select id="selectByExample" parameterType="com.kingdee.hrp.sms.common.model.UserExample" resultMap="BaseResultMap">
     select
@@ -104,10 +105,10 @@
   <insert id="insert" parameterType="com.kingdee.hrp.sms.common.model.User">
     insert into t_user (id, `name`, user_name, 
       `password`, mobile, is_admin, 
-      org)
+      org, `status`)
     values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, 
       #{password,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, #{isAdmin,jdbcType=BIT}, 
-      #{org,jdbcType=BIGINT})
+      #{org,jdbcType=BIGINT}, #{status,jdbcType=BIT})
   </insert>
   <insert id="insertSelective" parameterType="com.kingdee.hrp.sms.common.model.User">
     insert into t_user
@@ -133,6 +134,9 @@
       <if test="org != null">
         org,
       </if>
+      <if test="status != null">
+        `status`,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -155,6 +159,9 @@
       </if>
       <if test="org != null">
         #{org,jdbcType=BIGINT},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=BIT},
       </if>
     </trim>
   </insert>
@@ -188,6 +195,9 @@
       <if test="record.org != null">
         org = #{record.org,jdbcType=BIGINT},
       </if>
+      <if test="record.status != null">
+        `status` = #{record.status,jdbcType=BIT},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -201,7 +211,8 @@
       `password` = #{record.password,jdbcType=VARCHAR},
       mobile = #{record.mobile,jdbcType=VARCHAR},
       is_admin = #{record.isAdmin,jdbcType=BIT},
-      org = #{record.org,jdbcType=BIGINT}
+      org = #{record.org,jdbcType=BIGINT},
+      `status` = #{record.status,jdbcType=BIT}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -227,6 +238,9 @@
       <if test="org != null">
         org = #{org,jdbcType=BIGINT},
       </if>
+      <if test="status != null">
+        `status` = #{status,jdbcType=BIT},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -237,7 +251,8 @@
       `password` = #{password,jdbcType=VARCHAR},
       mobile = #{mobile,jdbcType=VARCHAR},
       is_admin = #{isAdmin,jdbcType=BIT},
-      org = #{org,jdbcType=BIGINT}
+      org = #{org,jdbcType=BIGINT},
+      `status` = #{status,jdbcType=BIT}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

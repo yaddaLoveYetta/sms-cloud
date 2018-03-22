@@ -373,6 +373,146 @@ public class HospitalExample {
             addCriterion("business_license not between", value1, value2, "businessLicense");
             return (Criteria) this;
         }
+
+        public Criteria andAddressIsNull() {
+            addCriterion("address is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAddressIsNotNull() {
+            addCriterion("address is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAddressEqualTo(String value) {
+            addCriterion("address =", value, "address");
+            return (Criteria) this;
+        }
+
+        public Criteria andAddressNotEqualTo(String value) {
+            addCriterion("address <>", value, "address");
+            return (Criteria) this;
+        }
+
+        public Criteria andAddressGreaterThan(String value) {
+            addCriterion("address >", value, "address");
+            return (Criteria) this;
+        }
+
+        public Criteria andAddressGreaterThanOrEqualTo(String value) {
+            addCriterion("address >=", value, "address");
+            return (Criteria) this;
+        }
+
+        public Criteria andAddressLessThan(String value) {
+            addCriterion("address <", value, "address");
+            return (Criteria) this;
+        }
+
+        public Criteria andAddressLessThanOrEqualTo(String value) {
+            addCriterion("address <=", value, "address");
+            return (Criteria) this;
+        }
+
+        public Criteria andAddressLike(String value) {
+            addCriterion("address like", value, "address");
+            return (Criteria) this;
+        }
+
+        public Criteria andAddressNotLike(String value) {
+            addCriterion("address not like", value, "address");
+            return (Criteria) this;
+        }
+
+        public Criteria andAddressIn(List<String> values) {
+            addCriterion("address in", values, "address");
+            return (Criteria) this;
+        }
+
+        public Criteria andAddressNotIn(List<String> values) {
+            addCriterion("address not in", values, "address");
+            return (Criteria) this;
+        }
+
+        public Criteria andAddressBetween(String value1, String value2) {
+            addCriterion("address between", value1, value2, "address");
+            return (Criteria) this;
+        }
+
+        public Criteria andAddressNotBetween(String value1, String value2) {
+            addCriterion("address not between", value1, value2, "address");
+            return (Criteria) this;
+        }
+
+        public Criteria andTaxIdIsNull() {
+            addCriterion("tax_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTaxIdIsNotNull() {
+            addCriterion("tax_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTaxIdEqualTo(String value) {
+            addCriterion("tax_id =", value, "taxId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTaxIdNotEqualTo(String value) {
+            addCriterion("tax_id <>", value, "taxId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTaxIdGreaterThan(String value) {
+            addCriterion("tax_id >", value, "taxId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTaxIdGreaterThanOrEqualTo(String value) {
+            addCriterion("tax_id >=", value, "taxId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTaxIdLessThan(String value) {
+            addCriterion("tax_id <", value, "taxId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTaxIdLessThanOrEqualTo(String value) {
+            addCriterion("tax_id <=", value, "taxId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTaxIdLike(String value) {
+            addCriterion("tax_id like", value, "taxId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTaxIdNotLike(String value) {
+            addCriterion("tax_id not like", value, "taxId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTaxIdIn(List<String> values) {
+            addCriterion("tax_id in", values, "taxId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTaxIdNotIn(List<String> values) {
+            addCriterion("tax_id not in", values, "taxId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTaxIdBetween(String value1, String value2) {
+            addCriterion("tax_id between", value1, value2, "taxId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTaxIdNotBetween(String value1, String value2) {
+            addCriterion("tax_id not between", value1, value2, "taxId");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

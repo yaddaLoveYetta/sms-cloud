@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Login</title>
+    <title>易供应-云端上的供应链管理平台</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link rel="stylesheet" href="css/global.debug.css" type="text/css"/>
@@ -97,11 +97,11 @@
                         <div class="step-container">
                             <div id="step-1" style=" height:200px;" class="step-content-container">
                                 <label class="radio-inline col-sm-2">
-                                    <input type="radio" name="user_type" id="supplier" value="2">
+                                    <input type="radio" name="user_type" id="supplier" value="3">
                                     我是供应商
                                 </label>
                                 <label class="radio-inline col-sm-2">
-                                    <input type="radio" name="user_type" id="hospital" value="1">
+                                    <input type="radio" name="user_type" id="hospital" value="2">
                                     我是医院
                                 </label>
                             </div>
@@ -153,6 +153,17 @@
                             <div id="step-3" style=" height:200px;" class="step-content-container">
 
                                 <div class="container-fluid">
+
+                                    <div class="row form-group">
+                                        <label class="col-sm-2 ">
+                                            <span class="must-mark">*</span>
+                                            企业名称</label>
+                                        <div class="col-sm-3">
+                                            <input id="orgName" type="text" class="form-control"
+                                                   placeholder="请输入企业名称">
+                                            <span id="orgName-msg" class="error-msg msg"></span>
+                                        </div>
+                                    </div>
 
                                     <div class="row form-group">
                                         <label class="col-sm-2 ">

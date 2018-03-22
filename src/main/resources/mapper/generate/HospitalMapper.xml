@@ -6,6 +6,8 @@
     <result column="number" jdbcType="VARCHAR" property="number" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="business_license" jdbcType="VARCHAR" property="businessLicense" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="tax_id" jdbcType="VARCHAR" property="taxId" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -66,7 +68,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, `number`, `name`, business_license
+    id, `number`, `name`, business_license, address, tax_id
   </sql>
   <select id="selectByExample" parameterType="com.kingdee.hrp.sms.common.model.HospitalExample" resultMap="BaseResultMap">
     select
@@ -100,9 +102,11 @@
   </delete>
   <insert id="insert" parameterType="com.kingdee.hrp.sms.common.model.Hospital">
     insert into t_hospital (id, `number`, `name`, 
-      business_license)
+      business_license, address, tax_id
+      )
     values (#{id,jdbcType=BIGINT}, #{number,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
-      #{businessLicense,jdbcType=VARCHAR})
+      #{businessLicense,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{taxId,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.kingdee.hrp.sms.common.model.Hospital">
     insert into t_hospital
@@ -119,6 +123,12 @@
       <if test="businessLicense != null">
         business_license,
       </if>
+      <if test="address != null">
+        address,
+      </if>
+      <if test="taxId != null">
+        tax_id,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -132,6 +142,12 @@
       </if>
       <if test="businessLicense != null">
         #{businessLicense,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="taxId != null">
+        #{taxId,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -156,6 +172,12 @@
       <if test="record.businessLicense != null">
         business_license = #{record.businessLicense,jdbcType=VARCHAR},
       </if>
+      <if test="record.address != null">
+        address = #{record.address,jdbcType=VARCHAR},
+      </if>
+      <if test="record.taxId != null">
+        tax_id = #{record.taxId,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -166,7 +188,9 @@
     set id = #{record.id,jdbcType=BIGINT},
       `number` = #{record.number,jdbcType=VARCHAR},
       `name` = #{record.name,jdbcType=VARCHAR},
-      business_license = #{record.businessLicense,jdbcType=VARCHAR}
+      business_license = #{record.businessLicense,jdbcType=VARCHAR},
+      address = #{record.address,jdbcType=VARCHAR},
+      tax_id = #{record.taxId,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -183,6 +207,12 @@
       <if test="businessLicense != null">
         business_license = #{businessLicense,jdbcType=VARCHAR},
       </if>
+      <if test="address != null">
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="taxId != null">
+        tax_id = #{taxId,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -190,7 +220,9 @@
     update t_hospital
     set `number` = #{number,jdbcType=VARCHAR},
       `name` = #{name,jdbcType=VARCHAR},
-      business_license = #{businessLicense,jdbcType=VARCHAR}
+      business_license = #{businessLicense,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      tax_id = #{taxId,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

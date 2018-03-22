@@ -33,6 +33,7 @@
         <jsqlparser.version>0.9.5</jsqlparser.version>
 
         <guava.version>22.0</guava.version>
+        <pinyin4j.version>2.5.1</pinyin4j.version>
 
     </properties>
 
@@ -181,6 +182,13 @@
             <artifactId>log4j-web</artifactId>
             <version>${log4j2.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.belerweb</groupId>
+            <artifactId>pinyin4j</artifactId>
+            <version>${pinyin4j.version}</version>
+        </dependency>
+
 
     </dependencies>
 

@@ -991,6 +991,8 @@ define('FormEdit', function (require, module, exports) {
 
                 var validate = true;
 
+                var existEntry = !MiniQuery.Object.isEmpty(metaData['formClassEntry']);
+
                 var headData = data[0];
                 var entryData = data[1];
 
@@ -1002,12 +1004,14 @@ define('FormEdit', function (require, module, exports) {
                     showHeadValidInfo(headData.successData);
                 }
 
-                if (!MiniQuery.Object.isEmpty(entryData.errorData)) {
-                    // 表体数据校验不通过
-                    showEntryValidInfo(entryData.errorData, metaData['formClassEntry']["1"].tableName);
-                    validate = false;
-                } else {
-                    showEntryValidInfo(null, metaData['formClassEntry']["1"].tableName);
+                if (existEntry) {
+                    if (!MiniQuery.Object.isEmpty(entryData.errorData)) {
+                        // 表体数据校验不通过
+                        showEntryValidInfo(entryData.errorData, metaData['formClassEntry']["1"].tableName);
+                        validate = false;
+                    } else {
+                        showEntryValidInfo(null, metaData['formClassEntry']["1"].tableName);
+                    }
                 }
 
                 if (validate) {

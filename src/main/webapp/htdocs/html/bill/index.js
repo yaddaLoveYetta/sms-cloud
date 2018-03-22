@@ -30,8 +30,6 @@
     var operate = Number(MiniQuery.Url.getQueryString(window.location.href, 'operate'));
     // 用户角色类别
     var roleType = Number((user.roles && user.roles[0] && user.roles[0]['type']) || -1);
-    // 用户id-后台用18位Long数字存储，js中Number保存不下这个长度，转用String处理
-    var userId = user.id;
 
     var ButtonList;
 

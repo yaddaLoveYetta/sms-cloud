@@ -17,6 +17,8 @@ public class User extends RootModel {
 
     private Long org;
 
+    private Boolean status;
+
     public Long getId() {
         return id;
     }
@@ -71,5 +73,13 @@ public class User extends RootModel {
 
     public void setOrg(Long org) {
         this.org = org;
+    }
+
+    public Boolean getStatus() {
+        return status;
+    }
+
+    public void setStatus(Boolean status) {
+        this.status = status;
     }
 }

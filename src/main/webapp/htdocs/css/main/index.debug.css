@@ -329,6 +329,10 @@ a.list-group-item.hover {
     background-color: #19a9d5;
 }
 
+.nav .iconfont {
+    font-size: 18px !important;
+}
+
 .nav > li > a:hover,
 .nav > li > a:focus {
     background-color: #f6f8f8;

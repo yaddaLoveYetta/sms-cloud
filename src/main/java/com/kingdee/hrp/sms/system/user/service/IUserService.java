@@ -1,12 +1,15 @@
 package com.kingdee.hrp.sms.system.user.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.kingdee.hrp.sms.common.model.Hospital;
 import com.kingdee.hrp.sms.common.model.Role;
 import com.kingdee.hrp.sms.common.model.Supplier;
 import com.kingdee.hrp.sms.common.model.User;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author yadda<silenceisok@163.com>
@@ -17,16 +20,16 @@ public interface IUserService extends Serializable {
     /**
      * 用户注册
      *
-     * @param user 用户pojo
+     * @param registerInfo 用户注册信息
      */
-    void register(User user);
+    void register(Map<String,Object> registerInfo) throws JsonProcessingException, IOException;
 
     /**
      * 用户登录
      *
      * @param userName 用户名
      * @param password 密码 (MD5)
-     * @return
+     * @return User
      */
     User login(String userName, String password);
 

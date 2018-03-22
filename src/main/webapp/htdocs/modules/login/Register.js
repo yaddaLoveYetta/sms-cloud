@@ -10,6 +10,7 @@ define('Register', function (require, module, exports) {
     var MiniQuery = require('MiniQuery');
     var SMS = require('SMS');
     var API = SMS.require('API');
+    var MD5 = SMS.require('MD5');
 
     var hasBind = false;
 
@@ -176,8 +177,10 @@ define('Register', function (require, module, exports) {
 
         var data = {};
 
-        if ($('input[name=user_type]:checked').val() > 0) {
-            data.type = $('input[name=user_type]:checked').val();
+        var type = $('input[name=user_type]:checked').val();
+
+        if (type > 0) {
+            data.userType = type;
         }
         else {
             validate = false;
@@ -185,7 +188,7 @@ define('Register', function (require, module, exports) {
         }
 
 
-        var validate_list = ['userName', 'password', 'name', 'mobile', 'businessLicense', 'taxId', 'address'];
+        var validate_list = ['userName', 'password', 'name', 'mobile', 'orgName', 'businessLicense', 'taxId', 'address'];
 
         $.Array.keep(validate_list, function (fieldName, index) {
 
@@ -204,7 +207,11 @@ define('Register', function (require, module, exports) {
 
             } else {
 
-                data[fieldName] = v;
+                if (fieldName === 'password') {
+                    data[fieldName] = MD5.encrypt(v);
+                } else {
+                    data[fieldName] = v;
+                }
 
                 $(msgElement).html('');
                 if ($(msgElement).hasClass('show')) {
@@ -231,8 +238,8 @@ define('Register', function (require, module, exports) {
                 data: registerInfo,
 
                 'success': function (data, json) {
-                    fn && fn(data, json);
-
+                    SMS.Tips.success('注册成功', 1000);
+                    $(model).modal('hide')
                 },
 
                 'fail': function (code, msg, json) {

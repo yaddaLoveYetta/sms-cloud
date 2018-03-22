@@ -55,7 +55,7 @@ define('UserInfos', function (require, module, exports) {
 
             editProfile();
 
-        })
+        });
         // 修改面
         $('#btn-change-password').on('click', function (e) {
             e.preventDefault();
@@ -129,7 +129,7 @@ define('UserInfos', function (require, module, exports) {
                 });*/
 
         emitter.fire('edit-profile', []);
-    };
+    }
 
     function changePwd() {
 
@@ -168,12 +168,12 @@ define('UserInfos', function (require, module, exports) {
                 }, {
                     value: '关闭',
                     className: 'sms-cancel-btn'
-                }],
+                }]
             });
 
             dialog.showModal();
         });
-    };
+    }
 
     function doChangePwd(config, fn) {
 

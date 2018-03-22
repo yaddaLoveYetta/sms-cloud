@@ -115,7 +115,6 @@
         'edit-profile': function () {
             // 修改个人信息
             var user = SMS.Login.get();
-            console.log(user);
 
             var url, classId;
             var roleType = user.roles && user.roles[0] && user.roles[0]['type'];
@@ -130,8 +129,8 @@
                 classId = 1012;
             } else if (roleType === 3) {
                 // 供应商角色类别
-                url = './html/bill/index.html?classId=1011'
-                classId = 1011;
+                url = './html/bill/index.html?classId=1013';
+                classId = 1013;
             }
             Iframe.open({
                 id: 'editProfile-' + classId,
@@ -139,8 +138,8 @@
                 url: url,
                 query: {
                     'roleType': roleType,
-                    'user': user.id,
-                    'operate': 0   // 0：查看 1：新增 2：修改
+                    'id': user.org.id,
+                    'operate': 2   // 0：查看 1：新增 2：修改
                 }
             });
 
@@ -199,6 +198,7 @@
             open(group);
             return;
         }
+
         // 内部使用
         function open(item) {
             if (!item.id) {

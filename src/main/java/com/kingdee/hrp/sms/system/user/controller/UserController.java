@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,9 +46,10 @@ public class UserController {
      */
     @RequestMapping("/register")
     @ResponseBody
-    public Boolean register(@RequestParam Map<String, Object> registerInfo) {
+    public Boolean register(@RequestParam Map<String, Object> registerInfo) throws IOException {
 
-        userService.register(new User());
+        //var validate_list = ['userName', 'password', 'name', 'mobile', 'businessLicense', 'taxId', 'address'];
+        userService.register(registerInfo);
         return true;
 
     }

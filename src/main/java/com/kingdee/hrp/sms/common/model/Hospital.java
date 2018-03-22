@@ -11,6 +11,10 @@ public class Hospital extends RootModel {
 
     private String businessLicense;
 
+    private String address;
+
+    private String taxId;
+
     public Long getId() {
         return id;
     }
@@ -41,5 +45,21 @@ public class Hospital extends RootModel {
 
     public void setBusinessLicense(String businessLicense) {
         this.businessLicense = businessLicense == null ? null : businessLicense.trim();
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address == null ? null : address.trim();
+    }
+
+    public String getTaxId() {
+        return taxId;
+    }
+
+    public void setTaxId(String taxId) {
+        this.taxId = taxId == null ? null : taxId.trim();
     }
 }

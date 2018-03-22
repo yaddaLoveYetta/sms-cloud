@@ -10,3 +10,40 @@
 .text-align-right {
     text-align: right;
 }
+
+/*搜索框样式========begin =====*/
+.search-box .table > tbody > tr > td {
+    border-top: none !important;
+    padding: 4px !important;
+}
+
+.search-box table {
+    margin-bottom: 10px !important;
+}
+
+.search-box table .iconfont {
+    font-size: 14px !important;
+}
+
+.search-box .hidden {
+    display: none !important;
+    visibility: hidden !important;
+}
+
+.search-box .show-more .search-more {
+    display: none;
+}
+
+.search-box .show-more .search-lite {
+    display: inline-block;
+}
+
+.search-box .search-more {
+    display: inline-block;
+}
+
+.search-box .search-lite {
+    display: none;
+}
+
+/*搜索框样式========end =======*/
