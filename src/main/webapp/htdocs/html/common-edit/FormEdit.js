@@ -641,7 +641,7 @@ define('FormEdit', function (require, module, exports) {
                         container: document.getElementById(field.key),
                         title: field.name,
                         defaults: {
-                            pageSize: 8
+                            pageSize: 10
                         }
                     };
 

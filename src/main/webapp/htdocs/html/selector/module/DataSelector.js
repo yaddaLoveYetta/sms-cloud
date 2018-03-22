@@ -10,8 +10,8 @@
 
     var defaults = {
         multiSelect: false,
-        width: 800,
-        height: 450,
+        width: 1000,
+        height: 550,
         pageSize: 10,
         targetList: {
             1: './html/base/index.html',

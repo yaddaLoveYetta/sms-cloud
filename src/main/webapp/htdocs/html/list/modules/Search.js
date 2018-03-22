@@ -59,15 +59,15 @@ define("Search", function (require, module, exports) {
         //3	选择框
         3: [{name: "等于", value: "ET"}, {name: "不等于", value: "NET"}],
         //下拉框
-        5: [{name: "包含", value: "like"}, {name: "等于", value: "ET"}, {name: "不等于", value: "NET"}],
+        5: [ {name: "等于", value: "ET"}, {name: "不等于", value: "NET"},{name: "包含", value: "like"}],
         //F7选择框
         6: [{name: "等于", value: "="}, {name: "不等于", value: "NET"}],
         //级联选择器
-        7: [{name: "包含", value: "BLT"}, {name: "等于", value: "ET"}],
+        7: [ {name: "等于", value: "ET"},{name: "包含", value: "BLT"}],
         //手机号码
-        8: [{name: "包含", value: "BLT"}, {name: "等于", value: "="}, {name: "不等于", value: "NET"}],
+        8: [{name: "等于", value: "="}, {name: "不等于", value: "NET"},{name: "包含", value: "BLT"}],
         //座机电话
-        9: [{name: "包含", value: "BLT"}, {name: "等于", value: "="}, {name: "不等于", value: "NET"}],
+        9: [ {name: "等于", value: "="}, {name: "不等于", value: "NET"},{name: "包含", value: "BLT"}],
         //普通文本
         10: [{name: "等于", value: "="}, {name: "不等于", value: "NET"}, {name: "包含", value: "BLT"}],
         //多行文本

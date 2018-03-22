@@ -6675,8 +6675,8 @@
                 var dialog = new Dialog({
                     title: title,
                     url: url,
-                    width: 800,
-                    height: 450,
+                    width: 1000,
+                    height: 550,
                     button: [{
                         value: '取消',
                         className: 'sms-cancel-btn'
@@ -6691,7 +6691,7 @@
                     data: {
                         multiSelect: false,
                         hasBreadcrumbs: false,
-                        pageSize: 8,
+                        pageSize: 10,
                         conditions: condition
                     }
                 });
