@@ -17,7 +17,6 @@
 <!--按钮区-->
 <div class="container-fluid options">
     <div id="div-button-list" class="btn-box"></div>
-    <div id="div-pager-simple" class="pager-box pull-right"></div>
 </div>
 <!--过滤条件 -->
 <div class="container-fluid search-box">
@@ -25,7 +24,6 @@
     <table class="table">
         <tbody>
         <tr>
-
             <td class="col-sm-5">
 
                 <table class="table">
@@ -38,20 +36,10 @@
                         </td>
                         <td class="col-sm-4">
                             <select name="field-name" class="form-control field-name">
-                                <option data-index="{index}" value="{value}" data-ctrlType="{ctrlType}" >{name}</option>
-                                <option value="title" data-keys="xuqiumingcheng xqmc">需求名称</option>
-                                <option value="id" selected="selected" data-keys="bianhao bh">编号</option>
                             </select>
                         </td>
                         <td class="col-sm-2">
                             <select name="operator" class="form-control operator">
-                                <option value="=" selected="selected" data-keys=" ">=</option>
-                                <option value="!=" data-keys="! !">!=</option>
-                                <option value=">" data-keys=" ">&gt;</option>
-                                <option value=">=" data-keys=" ">&gt;=</option>
-                                <option value="<" data-keys=" ">&lt;</option>
-                                <option value="<=" data-keys=" ">&lt;=</option>
-                                <option value="include" data-keys="baohan bh">包含</option>
                             </select>
                         </td>
                         <td class="col-sm-4" style="overflow:visible">
@@ -61,66 +49,43 @@
                     </tr>
                     <tr class="search-line hidden">
                         <td class="col-sm-2">
-                            <select name="andOr2" class="form-control">
+                            <select name="LinkType" class="form-control">
                                 <option value="and" selected="selected" data-keys="bingqie bq">并且</option>
                                 <option value="or" data-keys="huozhe hz">或者</option>
                             </select>
                         </td>
                         <td class="col-sm-4">
-                            <select name="field2" class="form-control field-name">
-                                <option value="title" data-keys="xuqiumingcheng xqmc">需求名称</option>
-                                <option value="id" selected="selected" data-keys="bianhao bh">编号</option>
+                            <select name="field-name" class="form-control field-name">
                             </select>
                         </td>
                         <td class="col-sm-2">
-                            <select name="operator2" class="form-control operator">
-                                <option value="=" selected="selected" data-keys=" ">=</option>
-                                <option value="!=" data-keys="! !">!=</option>
-                                <option value=">" data-keys=" ">&gt;</option>
-                                <option value=">=" data-keys=" ">&gt;=</option>
-                                <option value="<" data-keys=" ">&lt;</option>
-                                <option value="<=" data-keys=" ">&lt;=</option>
-                                <option value="include" data-keys="baohan bh">包含</option>
-                                <option value="between" data-keys="jieyu jy">介于</option>
-                                <option value="notinclude" data-keys="bubaohan bbh">不包含</option>
-                                <option value="belong" data-keys="congshuyu csy">从属于</option>
+                            <select name="operator" class="form-control operator">
                             </select>
                         </td>
                         <td class="col-sm-4" style="overflow:visible">
-                            <input type="text" name="value2" value="" class="form-control  searchInput"
+                            <input type="text" name="value" value="" class="form-control  searchInput"
                                    autocomplete="off">
                         </td>
                     </tr>
                     </tbody>
                 </table>
-
             </td>
-
             <td class="col-sm-5">
                 <table class="table">
                     <tbody>
                     <tr class="search-line search-line-first">
                         <td class="col-sm-2">
-                            <select name="andOr" class="form-control">
+                            <select name="LinkType" class="form-control">
                                 <option value="and" selected="selected" data-keys="bingqie bq">并且</option>
                                 <option value="or" data-keys="huozhe hz">或者</option>
                             </select>
                         </td>
                         <td class="col-sm-4">
-                            <select name="field2" class="form-control">
-                                <option value="title" data-keys="xuqiumingcheng xqmc">需求名称</option>
-                                <option value="id" selected="selected" data-keys="bianhao bh">编号</option>
+                            <select name="field-name" class="form-control field-name">
                             </select>
                         </td>
                         <td class="col-sm-2">
                             <select name="operator" class="form-control operator">
-                                <option value="=" selected="selected" data-keys=" ">=</option>
-                                <option value="!=" data-keys="! !">!=</option>
-                                <option value=">" data-keys=" ">&gt;</option>
-                                <option value=">=" data-keys=" ">&gt;=</option>
-                                <option value="<" data-keys=" ">&lt;</option>
-                                <option value="<=" data-keys=" ">&lt;=</option>
-                                <option value="include" data-keys="baohan bh">包含</option>
                             </select>
                         </td>
                         <td class="col-sm-4" style="overflow:visible">
@@ -130,38 +95,26 @@
                     </tr>
                     <tr class="search-line hidden">
                         <td class="col-sm-2">
-                            <select name="andOr2" id="andOr2" class="form-control">
+                            <select name="LinkType" class="form-control">
                                 <option value="and" selected="selected" data-keys="bingqie bq">并且</option>
                                 <option value="or" data-keys="huozhe hz">或者</option>
                             </select>
                         </td>
                         <td class="col-sm-4">
-                            <select name="field2" class="form-control">
-                                <option value="title" data-keys="xuqiumingcheng xqmc">需求名称</option>
-                                <option value="id" selected="selected" data-keys="bianhao bh">编号</option>
+                            <select name="field-name" class="form-control field-name">
                             </select>
                         </td>
-                        <td class="col-sm-2"><select name="operator2" class="form-control">
-                            <option value="=" selected="selected" data-keys=" ">=</option>
-                            <option value="!=" data-keys="! !">!=</option>
-                            <option value=">" data-keys=" ">&gt;</option>
-                            <option value=">=" data-keys=" ">&gt;=</option>
-                            <option value="<" data-keys=" ">&lt;</option>
-                            <option value="<=" data-keys=" ">&lt;=</option>
-                            <option value="include" data-keys="baohan bh">包含</option>
-                            <option value="between" data-keys="jieyu jy">介于</option>
-                            <option value="notinclude" data-keys="bubaohan bbh">不包含</option>
-                            <option value="belong" data-keys="congshuyu csy">从属于</option>
-                        </select></td>
+                        <td class="col-sm-2">
+                            <select name="operator" class="form-control">
+                            </select></td>
                         <td class="col-sm-4" style="overflow:visible">
-                            <input type="text" name="value2" value="" class="form-control  searchInput"
+                            <input type="text" name="value" value="" class="form-control  searchInput"
                                    autocomplete="off">
                         </td>
                     </tr>
                     </tbody>
                 </table>
             </td>
-
             <!--搜索按钮 -->
             <td class="col-sm-1" style="text-align: center;vertical-align: middle;padding-bottom: 10px !important;">
 
@@ -184,15 +137,12 @@
         </tbody>
     </table>
 
-    <div id="filter-template">
-        <!--
-            #--option.begin--#
-            <option data-index="{index}" value="{value}" data-ctrlType="{ctrlType}" >{name}</option>
-            #--option.end--#
-        -->
-    </div>
 </div>
 
+<!-- 简易分页控件 -->
+<div class="container-fluid">
+    <div id="div-pager-simple" class="pull-right"></div>
+</div>
 <!--主显示区-->
 <div id="div-list" class="container-fluid table-responsive">
     <!--
@@ -240,8 +190,16 @@
     </table>
     -->
 </div>
-<!--分页控件 -->
+<!--标准分页控件 -->
 <div id="div-pager-normal" class="container-fluid pull-right page-panel"></div>
+
+<div id="filter-template" style="display: none">
+    <!--
+        #--option.begin--#
+        <option data-index="{index}" value="{value}" data-ctrltype="{ctrlType}" >{name}</option>
+        #--option.end--#
+    -->
+</div>
 
 <script src="../../lib/jquery/jquery-1.11.1.debug.js"></script>
 <script src="../../lib/miniquery/miniquery.debug.js"></script>
