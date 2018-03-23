@@ -25,10 +25,7 @@
     var classId = MiniQuery.Url.getQueryString(window.location.href, 'classId');
 
     // 界面设置的过滤条件
-    var conditions = {};
-    // 高级过滤条件
-    var conditionExt = {};
-
+    var conditions = [];
 
     //检查登录
     if (!SMS.Login.check(true)) {
@@ -93,7 +90,7 @@
 
         // 总事件，最后触发
         ButtonList.on('click', function (item, index) {
-            console.dir(item);
+            //console.dir(item);
         });
 
         ButtonList.render();
@@ -332,38 +329,6 @@
                 });
 
             },
-            // 过滤
-            'filter': function (item, index) {
-                var items = List.getFilterItems();
-                SMS.use('Dialog', function (Dialog) {
-                    var dialog = new Dialog({
-                        title: '高级过滤',
-                        url: 'html/base-filter/index.html',
-                        data: items,
-                        conditionExt: conditionExt,
-                        width: 550,
-                        button: [{
-                            className: 'sms-cancel-btn',
-                            value: '取消',
-                            callback: function () {
-                            }
-                        }, {
-                            value: '确定',
-                            className: 'sms-submit-btn',
-                            autofocus: true,
-                            callback: function () {
-                                this.isSubmit = true;
-                                dialog.__dispatchEvent('get');
-                                var dialogData = dialog.getData();
-                                conditionExt = dialogData;
-                                refresh();
-                            }
-                        }]
-                    });
-
-                    dialog.showModal();
-                });
-            },
             // 导出
             'export': function (item, index) {
 
@@ -436,26 +401,22 @@
         }
     });
 
-    function getCondition() {
-        return conditions;
-    }
+    Search.on('doSearch', function (userConditions) {
+        conditions = userConditions;
+        refresh();
+    });
 
     function refresh() {
-
-        conditions = getCondition();
-
-        var conditionAll = $.extend({}, conditions, conditionExt);
 
         List.render({
             classId: classId,
             pageNo: 1,
             pageSize: defaults.pageSize,
-            conditions: conditionAll,
+            conditions: conditions,
             multiSelect: defaults.multiSelect
         }, function (total, pageSize) {
-
+            // 渲染过滤条件控件
             Search.render(List.getFilterItems());
-
             Pager.render({
                 size: pageSize,
                 sizes: defaults.sizes,

@@ -44,10 +44,11 @@
 
 .search-box .search-more {
     display: inline-block;
+    text-decoration: none;
 }
-
 .search-box .search-lite {
     display: none;
+    text-decoration: none;
 }
 
 /*搜索框样式========end =======*/

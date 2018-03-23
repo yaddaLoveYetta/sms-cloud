@@ -174,11 +174,10 @@ define('List/API/Head', function (require, module, exports) {
         for (var index in formFields) {
             var fields = formFields[index];
             $.Object.each(fields, function (key, item) {
-                //				var mask = item.FDisplay || 0;
-                //				if (!!(mask & display)) {
-                //					filterItems.push(item)
-                //				}
-                if (item.isCondition == 1) { //表示过滤字段
+
+                var mask = item.display || 0;
+
+                if (item.isCondition === 1 && !!(mask & display)) { //表示过滤字段
                     filterItems.push(item);
                 }
             })
