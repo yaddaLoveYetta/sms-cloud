@@ -10,11 +10,11 @@
 
     var defaults = {
         multiSelect: false,
-        width: 1000,
-        height: 550,
+        width: 1100,
+        height: 600,
         pageSize: 10,
         targetList: {
-            1: './html/base/index.html',
+            1: './html/list/index.html',
             2: './html/support-data/index.html',
         }
     };

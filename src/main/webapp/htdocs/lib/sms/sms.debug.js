@@ -6233,7 +6233,12 @@
             update: function () {
                 invoke(this, 'update', arguments);
             },
-
+            getDate: function () {
+                return invoke(this, 'getDate', arguments);
+            },
+            getFormattedDate: function () {
+                return invoke(this, 'getFormattedDate', arguments);
+            },
             setStartDate: function () {
                 invoke(this, 'setStartDate', arguments);
             },
@@ -6675,8 +6680,8 @@
                 var dialog = new Dialog({
                     title: title,
                     url: url,
-                    width: 1000,
-                    height: 550,
+                    width: 1100,
+                    height: 600,
                     button: [{
                         value: '取消',
                         className: 'sms-cancel-btn'

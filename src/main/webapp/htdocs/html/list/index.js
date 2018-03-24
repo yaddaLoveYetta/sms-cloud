@@ -417,6 +417,8 @@
         }, function (total, pageSize) {
             // 渲染过滤条件控件
             Search.render(List.getFilterItems());
+            primaryKey = List.getPrimaryKey();
+
             Pager.render({
                 size: pageSize,
                 sizes: defaults.sizes,
@@ -432,8 +434,6 @@
                     });
                 }
             });
-
-            primaryKey = List.getPrimaryKey();
 
         });
     }

@@ -38,7 +38,7 @@
         <listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>
     </listener>
 
-    <!-- 字符编码过滤器,只对post请求有效，get请求到达之前已经被TomCat用ISO-8859-1 编码 -->
+    <!-- 字符编码过滤器,只对post请求有效 -->
     <filter>
         <filter-name>encodingFilter</filter-name>
         <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>

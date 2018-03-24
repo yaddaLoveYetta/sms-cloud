@@ -11,20 +11,45 @@ define("Search", function (require, module, exports) {
     var MiniQuery = require("MiniQuery");
     var SMS = require("SMS");
     var emitter = MiniQuery.Event.create();
+    var DataSelector = require('DataSelector');
 
     // 事件绑定标识
     var hasBind = false;
     // 过来条件
     var conditions = [];
+    // F7选择控件集合
+    var selectors = {};
+    // 日期控件集合
+    var dateTimePickers = {};
+    // 数字控件集合
+    var numberFields = {};
+    // 过滤字段模板
+    var filterKeyFormFields = {};
+
     var div = document.getElementById('filter-template');
 
     var samples = $.String.getTemplates(div.innerHTML, [
-        {
-            name: 'select-option',
-            begin: '#--option.begin--#',
-            end: '#--option.end--#',
-            outer: '{option}'
-        }]);
+            {
+                name: 'all',
+                begin: '<!--',
+                end: '-->'
+            },
+            {
+                name: 'select-option',
+                begin: '#--option.begin--#',
+                end: '#--option.end--#',
+            }, {
+                name: 'text-value',
+                begin: '#--value.text.begin--#',
+                end: '#--value.text.end--#'
+            },
+            {
+                name: 'f7-value',
+                begin: '#--value.f7.begin--#',
+                end: '#--value.f7.end--#'
+            }
+        ])
+    ;
 
     /* ctrlType
     1	数字
@@ -94,6 +119,10 @@ define("Search", function (require, module, exports) {
 
         bindEvents();
 
+        filterKeyFormFields = $.Array.toObject(filterItems, function (item, index) {
+            return [item.key, item];
+        });
+
         // 根据模板填充过滤字段
         $('.field-key').each(function (index, selector) {
 
@@ -132,14 +161,20 @@ define("Search", function (require, module, exports) {
             $(this).closest('table').removeClass('show-more');
 
         });
-        // 比较字段变化事件
+        // 比较字段变化事件-动态填充比较符号及值控件类型
         $('.field-key').on("change", function (ev) {
 
+            var self = this;
+
+            var trIndex = $(this).data('index');
+
             var $selected = $(this).find("option:selected");
-            var value = $selected.val();
+
+            var fieldKey = $selected.val();
             var ctrlType = $selected.data('ctrltype');
 
-            if (!ctrlType && !value) {
+
+            if (!ctrlType && !fieldKey) {
                 return;
             }
 
@@ -156,8 +191,147 @@ define("Search", function (require, module, exports) {
             }).join("");
             // 比较操作符呈现
             $(this).parent('td').parent("tr").find("select[name='operator']").html(html)
+
+            // 值控件类型呈现-主要针对引用类型及数字，日期等特殊类型
+            initValueController(self, trIndex, fieldKey, ctrlType);
+
+            switch (ctrlType) {
+                case 1:
+                case 2:
+                case 16:
+                    break;
+                case 6:
+                    break;
+                case 12:
+                    break;
+                case 13:
+                    // 男女
+                    break;
+                case 15:
+                    // 是否
+                    break;
+                default:
+                    break;
+            }
             ev.stopPropagation();
         });
+
+        function initValueController(container, trIndex, fieldKey, ctrlType) {
+
+            var key = trIndex + '-' + fieldKey;
+            // 获取旧条件值
+            var $targetInput = $(container).parent('td').parent("tr").find("input[name='value']");
+            var oldValue = $targetInput.val() || '';
+            // 重新填充值默认控件
+            var $targetTd = $(container).parent('td').parent("tr").find("td[data-name='value']");
+            $targetTd.html(samples['text-value']);
+
+            var target = $(container).parent('td').parent("tr").find("input[name='value']")[0];
+
+            // 清空dateTimePickers numberFields 实例
+            $.Object.each(dateTimePickers, function (key, value) {
+                dateTimePickers[key].remove();
+                delete dateTimePickers[key];
+            });
+
+            $.Object.each(numberFields, function (key, value) {
+                numberFields[key].destroy();
+                delete numberFields[key];
+            });
+
+
+            if (ctrlType === 1 || ctrlType === 2 || ctrlType === 16) {
+
+                if (ctrlType === 1) {
+                    // 数字-无小数
+                    config = {
+                        decimalCount: 0,
+                        empty: 'zero'
+                    };
+                } else if (ctrlType === 2) {
+                    // 数字-两位小数
+                    config = {
+                        decimalCount: 2,
+                        empty: 'zero'
+                    };
+                } else if (ctrlType === 16) {
+                    // 单价金额-两位小数
+                    config = {
+                        decimalCount: 2,
+                        empty: '',
+                        currencySign: '¥'
+                    };
+                }
+                SMS.use('NumberField', function (NumberField) {
+
+                    var numberField = new NumberField(target, config);
+
+                    // 控件对象缓存下来，设置获取值时使用
+                    numberFields[key] = numberField;
+
+                    $(target).focusout(function () {
+
+                        /*var id = $(this).attr('id')
+                        var v = id && numberFields[id].get();
+                        console.log(v);*/
+                    }).focusin(function () {
+                        //debugger;
+                        var id = $(this).attr('id')
+                        var v = id && numberFields[id].get();
+                        console.log(v);
+                    });
+
+                });
+
+            }
+
+            else if (ctrlType === 12) {
+                // 日期控件
+                SMS.use('DateTimePicker', function (DateTimePicker) {
+
+                    var dateTimePicker = new DateTimePicker(target, {
+                        format: 'yyyy-mm-dd',
+                        autoclose: true,
+                        todayBtn: true,
+                        todayHighlight: true,
+                        timepicker: false,
+                        startView: 'month',
+                        minView: 2
+                    });
+
+                    // 控件对象缓存下来，设置获取值时使用
+                    dateTimePickers[key] = dateTimePicker;
+                });
+
+            }
+
+            else if (ctrlType === 6) {
+                // F7
+                $targetTd.html('');
+                $targetTd.html(samples['f7-value']);
+
+                var field = filterKeyFormFields[fieldKey];
+                var config = {
+                    targetType: 1, //跳转方案
+                    classID: field.lookUpClassId,
+                    destClassId: field.classId,
+                    hasBreadcrumbs: true,
+                    fieldKey: field.key,
+                    container: $targetTd.find("div[data-name='lookUp']")[0],
+                    title: field.name,
+                    defaults: {
+                        pageSize: 10
+                    }
+                };
+
+                selectors[key] = DataSelector.create(config);
+            }
+
+            else {
+                $(container).parent('td').parent("tr").find("input[name='value']").val(oldValue);
+            }
+
+        }
 
         // 搜索按钮
         $('#search').on('click', function (e) {
@@ -171,7 +345,37 @@ define("Search", function (require, module, exports) {
                 // 比较符号
                 var operator = $(item).find("select[name='operator']").val();
                 // 比较值
-                var value = $(item).find("input[name='value']").val();
+                var value;
+
+                // 根据控件类型获取比较值
+                /*                var $selected = $(item).find("select[name='fieldKey']").find("option:selected");
+
+                                var fieldIndex = $selected.data('index');
+
+                                var ctrlType = $selected.data('ctrltype');*/
+                var trIndex = $(item).find("select[name='fieldKey']").data('index');
+                var ctrlType = $(item).find("select[name='fieldKey']").find("option:selected").data('ctrltype');
+
+                var key = trIndex + '-' + fieldKey;
+
+                if (ctrlType === 1 || ctrlType === 2 || ctrlType === 16) {
+                    value = numberFields[key] && numberFields[key].get();
+                }
+
+                else if (ctrlType === 12) {
+                    // 日期控件
+                    value = dateTimePickers[key] && dateTimePickers[key].getFormattedDate();
+                }
+
+                else if (ctrlType === 6) {
+                    // F7
+                    value = selectors[key] && selectors[key].getData()[0]['ID'];
+                }
+
+                else {
+                    value = $(item).find("input[name='value']").val();
+                }
+
 
                 if (!fieldKey) {
                     return true;
@@ -187,24 +391,24 @@ define("Search", function (require, module, exports) {
                     'logicOperator': operator,
                     'value': value.trim(),
                     'rightParenTheses': ')',
-                    // 不处理一弄类型的条件，同意用名称查询
-                    'needConvert': true
+                    'needConvert': ctrlType !== 6
                 });
 
             });
             emitter.fire('doSearch', [conditions]);
         });
 
+        $(document).bind('keypress', function (event) {
+            if (event.keyCode == 13) {
+                $('#search').trigger("click");
+            }
+        });
+
         hasBind = true;
-    }
-
-    function getConditions() {
-
     }
 
     return {
         render: render,
-        getConditions: getConditions,
         on: emitter.on.bind(emitter)
     }
 });

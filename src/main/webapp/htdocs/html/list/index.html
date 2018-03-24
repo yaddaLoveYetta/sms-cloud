@@ -35,14 +35,14 @@
                             </span>
                         </td>
                         <td class="col-sm-3">
-                            <select name="fieldKey" class="form-control field-key">
+                            <select name="fieldKey" data-index="1" class="form-control field-key">
                             </select>
                         </td>
                         <td class="col-sm-2">
                             <select name="operator" class="form-control operator">
                             </select>
                         </td>
-                        <td class="col-sm-3" style="overflow:visible">
+                        <td class="col-sm-3" data-name="value" style="overflow:visible">
                             <input type="text" name="value" value="" class="form-control  searchInput"
                                    autocomplete="off">
                         </td>
@@ -55,14 +55,14 @@
                             </select>
                         </td>
                         <td class="col-sm-3">
-                            <select name="fieldKey" class="form-control field-key">
+                            <select name="fieldKey" data-index="2" class="form-control field-key">
                             </select>
                         </td>
                         <td class="col-sm-2">
                             <select name="operator" class="form-control operator">
                             </select>
                         </td>
-                        <td class="col-sm-3" style="overflow:visible">
+                        <td class="col-sm-3" data-name="value" style="overflow:visible">
                             <input type="text" name="value" value="" class="form-control  searchInput"
                                    autocomplete="off">
                         </td>
@@ -81,15 +81,15 @@
                             </select>
                         </td>
                         <td class="col-sm-3">
-                            <select name="fieldKey" class="form-control field-key">
+                            <select name="fieldKey" data-index="3" class="form-control field-key">
                             </select>
                         </td>
                         <td class="col-sm-2">
                             <select name="operator" class="form-control operator">
                             </select>
                         </td>
-                        <td class="col-sm-3" style="overflow:visible">
-                            <input type="text" name="value" value="" class="form-control  searchInput"
+                        <td class="col-sm-3"  data-name="value" style="overflow:visible">
+                            <input type="text" name="value" value=""  class="form-control  searchInput"
                                    autocomplete="off">
                         </td>
                     </tr>
@@ -101,13 +101,13 @@
                             </select>
                         </td>
                         <td class="col-sm-3">
-                            <select name="fieldKey" class="form-control field-key">
+                            <select name="fieldKey"data-index="4" class="form-control field-key">
                             </select>
                         </td>
                         <td class="col-sm-2">
                             <select name="operator" class="form-control">
                             </select></td>
-                        <td class="col-sm-3" style="overflow:visible">
+                        <td class="col-sm-3" data-name="value" style="overflow:visible">
                             <input type="text" name="value" value="" class="form-control  searchInput"
                                    autocomplete="off">
                         </td>
@@ -118,13 +118,12 @@
             <!--搜索按钮 -->
             <td class="col-sm-1" style="text-align: center;vertical-align: middle;padding-bottom: 10px !important;">
 
-                <div class="btn-group">
+                <div class="btn-group col-sm-8">
                     <button type="button" id="search" class="btn btn-primary" data-loading="稍候...">
                         <i class=" iconfont icon-chaxun"></i>
                         搜索
                     </button>
                 </div>
-
             </td>
             <!--更多条件 -->
             <td class="col-sm-1" style="text-align: center;vertical-align: middle;padding-bottom: 10px !important;">
@@ -193,11 +192,18 @@
 <!--标准分页控件 -->
 <div id="div-pager-normal" class="container-fluid pull-right page-panel"></div>
 
-<div id="filter-template" style="display: none">
+<div id="filter-template"  style="display: none">
     <!--
         #--option.begin--#
         <option data-index="{index}" value="{value}" data-ctrltype="{ctrlType}" >{name}</option>
         #--option.end--#
+        #--value.text.begin--#
+        <input type="text" name="value" value="" class="form-control  searchInput" autocomplete="off">
+        #--value.text.end--#
+        #--value.f7.begin--#
+         <div class="col-sm-12" data-name="lookUp"></div>
+        #--value.f7.end--#
+
     -->
 </div>
 
@@ -208,6 +214,7 @@
 <script src="../../config.js"></script>
 
 <!--grunt.js.begin-->
+<script src="../selector/module/DataSelector.js"></script>
 <script src="../common-edit/FormAction.js"></script>
 <script src="modules/ButtonList.js"></script>
 <script src="modules/ButtonListOption.js"></script>

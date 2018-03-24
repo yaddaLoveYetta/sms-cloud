@@ -45,10 +45,21 @@
 .search-box .search-more {
     display: inline-block;
     text-decoration: none;
+    line-height: 34px;
 }
+
 .search-box .search-lite {
     display: none;
     text-decoration: none;
+    line-height: 34px;
+}
+
+.search-box .col-sm-12 {
+    padding-right: 0px !important;
+    padding-left: 0px !important;
+}
+.search-box .form-control-feedback{
+    pointer-events: auto !important;
 }
 
 /*搜索框样式========end =======*/
