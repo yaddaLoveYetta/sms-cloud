@@ -61,6 +61,7 @@
     return {
         integer: integer,
         mobilePhone: mobilePhone,
-        phone: phone
+        phone: phone,
+        isDate:isDate
     };
 });

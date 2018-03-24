@@ -59,7 +59,7 @@ define('GridConfig', function (require, module, exports) {
 
                 var el = $("<input>", {
                     type: 'text',
-                    class: 'form-control',
+                    class: 'form-control f7-icon-ellipsis',
                     val: value,
                     onclick: function () {
                         this.focus();

@@ -228,7 +228,7 @@
             todayHighlight: true,
             timepicker: false,
             startView: 'month',
-            minView: 'hour',
+            minView: 'hour'
         },
 
         Module: {},

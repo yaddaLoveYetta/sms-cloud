@@ -200,7 +200,7 @@ define('FormEdit', function (require, module, exports) {
             }
 
             //是否必填
-            return !(mustInputMask & mustInput);
+            return !!(mustInputMask & mustInput);
         }
 
         // 控件初始化
@@ -1279,8 +1279,8 @@ define('FormEdit', function (require, module, exports) {
                         var ne = numberFields[fieldKey];
                         domValue = ne.get();
 
-                        var minValue = field.minValue;
-                        var maxValue = field.maxValue;
+                        var minValue = field.minValue.trim() === '' ? 0 : field.minValue;
+                        var maxValue = field.maxValue.trim() === '' ? 99999999.99 : field.maxValue;
 
                         if (domValue < minValue) {
 
@@ -1319,6 +1319,26 @@ define('FormEdit', function (require, module, exports) {
                             successData[fieldKey] = selectorID;
                         }
                         break;
+                    /*
+                case 12:
+                // 日期时间
+                // 不要从dateTimePicker控件取值，控件有默认值当前日期
+                                      var dateTimePicker = dateTimePickers[fieldKey];
+                                        domValue = dateTimePicker.getFormattedDate();
+                                        if (!domValue && isMustFiled(fieldKey)) {
+                                            msg = field['name'] + '为必填项';
+                                            errorData[fieldKey] = msg;
+                                            validate = false;
+                                        } else {
+                                            if (!validateField(domValue, fieldKey)) {
+                                                msg = field['name'] + '输入内容不合法';
+                                                errorData[fieldKey] = msg;
+                                                validate = false;
+                                            } else {
+                                                successData[fieldKey] = domValue;
+                                            }
+                                        }
+                                        break;*/
                     case 14:
                         // 密码控件
                         if (!element.value && isMustFiled(fieldKey)) {

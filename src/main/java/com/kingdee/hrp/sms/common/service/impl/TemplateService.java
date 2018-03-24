@@ -1160,7 +1160,7 @@ public class TemplateService extends BaseService implements ITemplateService {
         select = select.substring(0, select.length() - 1);
         String from = sbFrom.toString().trim();
 
-        Map<String, Object> statement = new HashMap<String, Object>(6);
+        Map<String, Object> statement = new HashMap<String, Object>(8);
 
         statement.put("select", select);
         statement.put("from", from);
@@ -1387,7 +1387,7 @@ public class TemplateService extends BaseService implements ITemplateService {
         select = select.substring(0, select.length() - 1);
         String from = sbFrom.toString().trim();
 
-        Map<String, Object> statement = new HashMap<String, Object>(6);
+        Map<String, Object> statement = new HashMap<String, Object>(8);
 
         statement.put("select", select);
         statement.put("from", from);
@@ -1406,7 +1406,7 @@ public class TemplateService extends BaseService implements ITemplateService {
     @SuppressWarnings("unchecked")
     private Map<String, Object> getWhere(Integer classId, Integer pageIndex, List<Condition> conditions) {
 
-        Map<String, Object> ret = new HashMap<String, Object>(16);
+        Map<String, Object> ret = new HashMap<String, Object>(8);
 
         pageIndex = pageIndex == null ? -1 : pageIndex > 1 ? 1 : pageIndex;
 

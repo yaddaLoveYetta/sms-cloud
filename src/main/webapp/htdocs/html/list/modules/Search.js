@@ -364,7 +364,9 @@ define("Search", function (require, module, exports) {
 
                 else if (ctrlType === 12) {
                     // 日期控件
-                    value = dateTimePickers[key] && dateTimePickers[key].getFormattedDate();
+                    // 不要从控件取值，控件有默认值当前日期
+                    //value = dateTimePickers[key] && dateTimePickers[key].getFormattedDate();
+                    value = $(item).find("input[name='value']").val()
                 }
 
                 else if (ctrlType === 6) {

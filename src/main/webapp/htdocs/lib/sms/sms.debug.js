@@ -6617,9 +6617,9 @@
                 if (!$(e.target).closest(".ui-jqgrid-bdiv").length > 0) {
                     saveGrid(bdGrid, cfg.curCell);
                 }
-                ;
             });
 
+            // F7 按钮-选择资料 ui-icon-ellipsis
             // $('.grid-wrap').on('click', '.ui-icon-ellipsis', function (e) {
             bdGrid.on('click', '.ui-icon-ellipsis', function (e) {
 
@@ -6645,6 +6645,13 @@
                     colModels: colModels,
                 });
 
+            });
+
+            bdGrid.on('keyup', '.f7-icon-ellipsis', function (e) {
+                if (e.keyCode === 118) {
+                    // F7
+                    $(bdGrid).parent().find('.ui-icon-ellipsis').trigger("click");
+                }
             });
 
             bdGrid.on('click', '.ui-icon-triangle-1-s', function (e) {

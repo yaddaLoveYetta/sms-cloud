@@ -235,6 +235,12 @@
                             self.value = meta.data[0].name;
                         }
                     }
+                },
+                'keyup': function (event) {
+                    if (event.keyCode === 118) {
+                        // F7
+                        $(meta.container).find('[data-role="btn"]').trigger("click");
+                    }
                 }
             });
 
