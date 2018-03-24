@@ -139,7 +139,7 @@ public class Condition implements Serializable {
     public enum LogicOperatorEnum implements Serializable {
 
         EQUAL("ET", "=", "等于"), NOT_EQUAL("NET", "!=", "不等于"), LESS_THAN("LT", "<", "小于"), LESS_OR_EQUAL("LET", "<=", "小于或等于"),
-        GREATER("GT", ">", "大于"), GREATER_OR_EQUAL("GET", ">=", "大于或等于"),
+        GREATER("GT", ">", "大于"), GREATER_OR_EQUAL("GET", ">=", "大于或等于"),NULL("BN","IS NULL","为空"),NOT_NULL("NBN","IS NOT NULL","不为空"),
         LIKE("BLT", "LIKE", "LIKE模糊匹配"), IN("IN", "IN", "包含于"),
         NOT_SUPPORT("NOT_SUPPORT", "NOT_SUPPORT", "不支持的比较符号");
 

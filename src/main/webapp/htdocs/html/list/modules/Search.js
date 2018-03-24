@@ -88,20 +88,28 @@ define("Search", function (require, module, exports) {
         //下拉框
         5: [{name: "等于", value: "ET"}, {name: "不等于", value: "NET"}, {name: "包含", value: "BLT"}],
         //F7选择框
-        6: [{name: "等于", value: "ET"}, {name: "不等于", value: "NET"}],
+        6: [{name: "等于", value: "ET"}, {name: "不等于", value: "NET"}, {name: "是空", value: "BN"}, {
+            name: "不是空",
+            value: "NBN"
+        }],
         //级联选择器
         7: [{name: "等于", value: "ET"}, {name: "包含", value: "BLT"}],
         //手机号码
-        8: [{name: "等于", value: "ET"}, {name: "不等于", value: "NET"}, {name: "包含", value: "BLT"}],
+        8: [{name: "等于", value: "ET"}, {name: "不等于", value: "NET"}, {name: "包含", value: "BLT"},
+            {name: "是空", value: "BN"}, {name: "不是空", value: "NBN"}],
         //座机电话
-        9: [{name: "等于", value: "ET"}, {name: "不等于", value: "NET"}, {name: "包含", value: "BLT"}],
+        9: [{name: "等于", value: "ET"}, {name: "不等于", value: "NET"}, {name: "包含", value: "BLT"},
+            {name: "是空", value: "BN"}, {name: "不是空", value: "NBN"}],
         //普通文本
-        10: [{name: "等于", value: "ET"}, {name: "不等于", value: "NET"}, {name: "包含", value: "BLT"}],
+        10: [{name: "等于", value: "ET"}, {name: "不等于", value: "NET"}, {name: "包含", value: "BLT"},
+            {name: "是空", value: "BN"}, {name: "不是空", value: "NBN"}],
         //多行文本
-        11: [{name: "等于", value: "ET"}, {name: "不等于", value: "NET"}, {name: "包含", value: "BLT"}],
+        11: [{name: "等于", value: "ET"}, {name: "不等于", value: "NET"}, {name: "包含", value: "BLT"},
+            {name: "是空", value: "BN"}, {name: "不是空", value: "NBN"}],
         // 日期
         12: [{name: "等于", value: "ET"}, {name: "不等于", value: "NET"}, {name: "小于", value: "LT"},
-            {name: "小于等于", value: "LET"}, {name: "大于", value: "GT"}, {name: "大于等于", value: "GET"}],
+            {name: "小于等于", value: "LET"}, {name: "大于", value: "GT"}, {name: "大于等于", value: "GET"},
+            {name: "是空", value: "BN"}, {name: "不是空", value: "NBN"}],
         //男：女
         13: [{name: "等于", value: "ET"}, {name: "不等于", value: "NET"}],
         //密码控件
@@ -382,7 +390,7 @@ define("Search", function (require, module, exports) {
                 if (!fieldKey) {
                     return true;
                 }
-                if (value.trim() === '') {
+                if (operator !== 'BN' && operator !== 'NBN' && value.trim() === '') {
                     return true;
                 }
                 // 查询条件

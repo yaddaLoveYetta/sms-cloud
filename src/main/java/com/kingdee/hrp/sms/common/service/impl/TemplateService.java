@@ -1728,10 +1728,16 @@ public class TemplateService extends BaseService implements ITemplateService {
                         sufValue, rightParenTheses));
             } else {
                 // 动态脚本
-                sbWhere.append(separator).append(String.format("%s %s %s.%s%s%s %s %s %s %s %s ", linkType.getName(), leftParenTheses, tableName, bDelimiter, fieldName, eDelimiter, logicOperator.getOperator(), preValue,
-                        "#{" + fieldKey + i + "}", sufValue, rightParenTheses));
-                // 格式化参数
-                sqlParams.put(fieldKey + i, value);
+
+                if (logicOperator == Condition.LogicOperatorEnum.NULL || logicOperator == Condition.LogicOperatorEnum.NOT_NULL) {
+                    // is null || is not null 不需要比较值
+                    sbWhere.append(separator).append(String.format("%s %s %s.%s%s%s %s %s", linkType.getName(), leftParenTheses, tableName, bDelimiter, fieldName, eDelimiter, logicOperator.getOperator(), rightParenTheses));
+                } else {
+                    sbWhere.append(separator).append(String.format("%s %s %s.%s%s%s %s %s %s %s %s ", linkType.getName(), leftParenTheses, tableName, bDelimiter, fieldName, eDelimiter, logicOperator.getOperator(), preValue,
+                            "#{" + fieldKey + i + "}", sufValue, rightParenTheses));
+                    // 格式化参数
+                    sqlParams.put(fieldKey + i, value);
+                }
             }
 
         }
