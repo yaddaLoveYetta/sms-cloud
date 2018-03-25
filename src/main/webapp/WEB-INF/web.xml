@@ -109,6 +109,8 @@
         <url-pattern>*.mp3</url-pattern>
         <url-pattern>*.properties</url-pattern>
         <url-pattern>*.pdf</url-pattern>
+        <url-pattern>*.json</url-pattern>
+        <url-pattern>*.md</url-pattern>
     </servlet-mapping>
 
     <!-- 30分钟无操作,session失效 -->
