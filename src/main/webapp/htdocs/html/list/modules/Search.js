@@ -356,11 +356,6 @@ define("Search", function (require, module, exports) {
                 var value;
 
                 // 根据控件类型获取比较值
-                /*                var $selected = $(item).find("select[name='fieldKey']").find("option:selected");
-
-                                var fieldIndex = $selected.data('index');
-
-                                var ctrlType = $selected.data('ctrltype');*/
                 var trIndex = $(item).find("select[name='fieldKey']").data('index');
                 var ctrlType = $(item).find("select[name='fieldKey']").find("option:selected").data('ctrltype');
 
