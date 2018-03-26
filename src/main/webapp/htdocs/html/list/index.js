@@ -429,7 +429,7 @@
                         classId: classId,
                         pageNo: no,
                         pageSize: defaults.pageSize,
-                        conditions: conditionAll,
+                        conditions: conditions,
                         multiSelect: defaults.multiSelect
                     });
                 }

@@ -4346,8 +4346,8 @@
 
                     }, function (data, json) {
                         Tips.success('登录成功', 1500);
-                        dialog.close();
-
+                        //dialog.close();
+                        dialog.remove();
                     }, function (code, msg, json) {
                         span.html(msg).show();
                         btn.html(html).attr('disabled', false);
@@ -4959,6 +4959,11 @@
             final: function (fireEvent) {
                 var meta = mapper.get(this);
                 this.to(meta.count, fireEvent);
+            },
+
+            focus: function () {
+                var meta = mapper.get(this);
+                $(meta.container).find("input.page-number").get(0).focus();
             },
 
             refresh: function (fireEvent) {
@@ -6647,6 +6652,10 @@
                     // F7
                     $(bdGrid).parent().find('.ui-icon-ellipsis').trigger("click");
                 }
+            });
+            bdGrid.on('dblclick', '.f7-icon-ellipsis', function (e){
+                //F7 双击
+                $(bdGrid).parent().find('.ui-icon-ellipsis').trigger("click");
             });
 
             bdGrid.on('click', '.ui-icon-triangle-1-s', function (e) {

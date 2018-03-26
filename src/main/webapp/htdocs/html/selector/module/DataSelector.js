@@ -241,6 +241,10 @@
                         // F7
                         $(meta.container).find('[data-role="btn"]').trigger("click");
                     }
+                },
+                'dblclick': function (event) {
+                    //F7 双击
+                    $(meta.container).find('[data-role="btn"]').trigger("click");
                 }
             });
 
