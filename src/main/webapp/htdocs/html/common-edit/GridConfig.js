@@ -12,6 +12,11 @@ define('GridConfig', function (require, module, exports) {
 
     var showType = 0; // 0:1:2-查看/新增/编辑
 
+    //检查登录
+    if (!SMS.Login.check(true)) {
+        return;
+    }
+
     /**
      * 构建grid model
      * @param field 字段模板

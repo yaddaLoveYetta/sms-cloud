@@ -13,6 +13,10 @@ define("Search", function (require, module, exports) {
     var emitter = MiniQuery.Event.create();
     var DataSelector = require('DataSelector');
 
+    //检查登录
+    if (!SMS.Login.check(true)) {
+        return;
+    }
     // 事件绑定标识
     var hasBind = false;
     // 过来条件

@@ -12,6 +12,11 @@ define('ButtonList', function (require, module, exports) {
     var Iframe = SMS.require('Iframe');
     var API = SMS.require('API');
 
+    //检查登录
+    if (!SMS.Login.check(true)) {
+        return;
+    }
+
     var config = {
         container: '#div-button-list',
         fields: {

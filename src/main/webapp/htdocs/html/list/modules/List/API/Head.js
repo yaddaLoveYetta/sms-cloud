@@ -15,6 +15,10 @@ define('List/API/Head', function (require, module, exports) {
     // 字段显示权限-后端disPlay定义:系统用户显示||医院用户显示||供应商用户显示
     var display;
 
+    //检查登录
+    if (!SMS.Login.check(true)) {
+        return;
+    }
 
     var roleType = user.roles && user.roles[0] && user.roles[0]['type'];
 

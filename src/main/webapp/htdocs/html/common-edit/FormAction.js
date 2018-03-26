@@ -25,6 +25,7 @@ define('FormAction', function (require, module, exports) {
     };
 
     function loadFormAction(config, fn) {
+
         var api = new API("template/getFormAction");
 
         api.get({

@@ -8,6 +8,11 @@ define('Pager', function(require, module, exports) {
 	var MiniQuery = require('MiniQuery');
 	var SMS = require('SMS');
 
+    //检查登录
+    if (!SMS.Login.check(true)) {
+        return;
+    }
+
 	function render(config) {
 
 		config = $.Object.extend({

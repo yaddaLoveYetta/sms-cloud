@@ -359,9 +359,11 @@
                     var fnSuccess = config.success;
                     fnSuccess && fnSuccess(json['data'] || {}, json, xhr);
                 } else if (code == sessionLostCode) {
-                    $.SessionStorage.remove('SMS.Login.user.F5F2BA55218E'); // 只移除会话级的
-                    // SMS.Login.show();
-                    SMS.Login.check(true);
+                    // 只移除会话级的
+                    $.SessionStorage.remove('SMS.Login.user.F5F2BA55218E');
+                    // 重新登录
+                    SMS.Login.show();
+                    //SMS.Login.check(true);
                     return;
                 }
                 else {
@@ -4279,7 +4281,6 @@
         var key = 'SMS.Login.user.F5F2BA55218E';
         var sample = Samples.get('Login');
 
-
         // 默认配置
         var defaults = {};
 
@@ -4340,13 +4341,11 @@
                     var span = dialog.find('[data-field="msg"]').hide();
 
                     login({
-                        'user': txtUser.value,
+                        'userName': txtUser.value,
                         'password': txtPassword.value
 
                     }, function (data, json) {
-
-
-                        Tips.success('登录成功', 2000);
+                        Tips.success('登录成功', 1500);
                         dialog.close();
 
                     }, function (code, msg, json) {
@@ -4365,12 +4364,14 @@
 
                 var dialog = new Dialog({
 
-                    width: 240,
-                    height: 100,
+                    /*      width: 240,
+                          height: 100,*/
+                    // 可能有多个请求被后端判定session超时，不需要弹出多个登录界面,设置固定id
+                    id:'login-dialog',
                     skin: 'login-box',
-                    title: '重新登录',
+                    title: '会话结束请重新登录',
                     content: $.String.format(sample, {
-                        user: user ? user['number'] || '' : ''
+                        user: user ? user['userName'] || '' : ''
                     }),
 
                     okValue: '立即登录',
@@ -4388,13 +4389,13 @@
                         txtPassword = this.find('[data-field="password"]').get(0);
 
                         $(txtUser).on('keydown', function (event) {
-                            if (event.keyCode == 13) {
+                            if (event.keyCode === 13) {
                                 submit(self);
                             }
                         });
 
                         $(txtPassword).on('keydown', function (event) {
-                            if (event.keyCode == 13) {
+                            if (event.keyCode === 13) {
                                 submit(self);
                             }
                         });
@@ -4409,7 +4410,7 @@
                                 txtUser.focus();
                             }
                         }, 100);
-                    }
+                    },
                 });
 
                 dialog.showModal();
@@ -4445,10 +4446,6 @@
             api.get({
                 userName: data.userName,
                 password: MD5.encrypt(data.password)
-
-                /*                'user': data.user,
-                                'pwd': MD5.encrypt(data.password),
-                                'type': data.type,*/
             });
 
             api.on('success', function (data, json) { // 成功
@@ -4458,13 +4455,11 @@
                     messageCount: data.messageCount || 0,
                     companyList: [
                         // { name: '蓝海机电有限公司' },
-                        // { name: '蓝海机电有限公司演示账套' },
                         // { name: '金蝶国际有限公司' },
-                        // { name: 'KIS 移动应用产品' }
                     ]
                 });
-
-                $.SessionStorage.set(key, user); // 把用户信息存起来，以便跨页使用
+                // 把用户信息存起来，以便跨页使用
+                $.SessionStorage.set(key, user);
                 $.LocalStorage.set(key, user);
 
                 fnSuccess && fnSuccess(user, data, json);
@@ -4514,7 +4509,7 @@
             logout: logout,
             config: function (obj) {
                 $.Object.extend(defaults, obj);
-            },
+            }
         };
 
 
@@ -7152,7 +7147,7 @@
                     'jqgrid-all-js',
                     'ui.jqgrid-bootstrap-ui-css',
                     'ui.jqgrid-bootstrap-css',
-                    'ui.jqgrid-css',
+                    'ui.jqgrid-css'
                 ], function () {
                     fn && fn(Grid);
                 });

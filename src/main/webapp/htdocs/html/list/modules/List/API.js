@@ -14,7 +14,6 @@ define('List/API', function (require, module, exports) {
     //完整名称为 List/API/Body
     var Body = require('/Body');
 
-
     function get(config, fn) {
 
         var tasks = [

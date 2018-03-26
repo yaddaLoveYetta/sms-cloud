@@ -18,6 +18,11 @@ define('FormEdit', function (require, module, exports) {
 
         var user = SMS.Login.get();
 
+        //检查登录
+        if (!SMS.Login.check(true)) {
+            return;
+        }
+
         var divHead = document.getElementById("div-head-content");
         var divBody = document.getElementById("div-body-content");
 
@@ -1898,5 +1903,4 @@ define('FormEdit', function (require, module, exports) {
             initController: initController,
             on: emitter.on.bind(emitter)
         };
-    }
-);
+    });
