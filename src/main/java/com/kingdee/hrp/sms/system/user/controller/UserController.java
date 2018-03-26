@@ -5,6 +5,7 @@ import com.kingdee.hrp.sms.common.model.Role;
 import com.kingdee.hrp.sms.common.model.User;
 import com.kingdee.hrp.sms.system.user.service.IUserService;
 import com.kingdee.hrp.sms.util.Common;
+import com.kingdee.hrp.sms.util.SessionUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -26,7 +27,7 @@ import java.util.Map;
  * @since 2018/1/24
  */
 @Controller
-@RequestMapping("/user")
+@RequestMapping("/user/")
 public class UserController {
 
     private static Logger logger = LoggerFactory.getLogger(UserController.class);
@@ -44,7 +45,7 @@ public class UserController {
      *
      * @param registerInfo
      */
-    @RequestMapping("/register")
+    @RequestMapping("register")
     @ResponseBody
     public Boolean register(@RequestParam Map<String, Object> registerInfo) throws IOException {
 
@@ -60,7 +61,7 @@ public class UserController {
      * @param userName 用户名
      * @param password 密码
      */
-    @RequestMapping("/login")
+    @RequestMapping("login")
     @ResponseBody
     public Map<String, Object> login(String userName, String password, HttpServletRequest request) {
 
@@ -115,7 +116,7 @@ public class UserController {
      *
      * @return
      */
-    @RequestMapping("/logout")
+    @RequestMapping("logout")
     @ResponseBody
     public Boolean logout(HttpServletRequest request) {
         request.getSession().removeAttribute("user");
@@ -131,7 +132,7 @@ public class UserController {
      * @param newpwd 新密码
      * @return
      */
-    @RequestMapping("/editpwd")
+    @RequestMapping("editpwd")
     @ResponseBody
     public Boolean editpwd(Long userId, String oldpwd, String newpwd) {
 
@@ -142,5 +143,31 @@ public class UserController {
             logger.info("密码修改失败");
             return false;
         }
+    }
+
+    /**
+     * 获取用户关联角色的可用权限
+     *
+     * @return List
+     */
+    @RequestMapping(value = "getRolePermissions")
+    @ResponseBody
+    public List<Map<String, Object>> getRolePermissions() {
+
+        List<Role> roles = SessionUtil.getUserRole();
+        return null;
+    }
+
+    /**
+     * 保存角色权限
+     *
+     * @param roleId      角色id
+     * @param perMissions 权限设置
+     * @return Boolean
+     */
+    @RequestMapping(value = "saveRolePerMissions")
+    @ResponseBody
+    public Boolean saveRolePerMissions(Long roleId, String perMissions) {
+        return true;
     }
 }

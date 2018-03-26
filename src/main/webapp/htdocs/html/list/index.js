@@ -370,37 +370,6 @@
         });
     });
 
-    List.on({
-        'click:number': function (data, event) {
-            // 单据列表代码字段打开编辑页面
-            if (dialog) {
-                // 选择界面不触发
-                return;
-            }
-
-            var url = ClassMapping.getPage(classId);
-            var name = ClassMapping.getTabName(classId) || '';
-
-            if (!url) {
-                // 没有配置编辑页面或不需要编辑功能
-                return;
-            }
-
-            var body = data.body;
-
-            Iframe.open({
-                id: classId + '-edit' + body.primaryValue,
-                name: '修改-' + name,
-                url: url,
-                query: {
-                    'id': body.primaryValue,
-                    'classId': classId
-                }
-            });
-
-        }
-    });
-
     Search.on('doSearch', function (userConditions) {
         conditions = userConditions;
         refresh();
