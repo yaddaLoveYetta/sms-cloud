@@ -47,7 +47,7 @@ define('Sidebar', function (require, module, exports) {
         var api = new API('menu/getMenu');
 
         api.get({
-            'parentId': -1,
+            'parentId': -1 // 获取全部菜单数据
         });
 
         api.on({
@@ -178,7 +178,7 @@ define('Sidebar', function (require, module, exports) {
         var tree = [];
         var temp;
         for (var i = 0; i < list.length; i++) {
-            if (list[i].parentId == parentId) {
+            if (list[i].parentId === parentId) {
                 var obj = list[i];
                 temp = toTree(list, list[i].id);
                 if (temp.length > 0) {

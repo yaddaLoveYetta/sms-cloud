@@ -4275,7 +4275,6 @@
         var API = require('API');
         var MD5 = require('MD5');
         var Dialog = require('Dialog');
-        var Tips = require('Tips');
         var Samples = require('Samples');
 
         var key = 'SMS.Login.user.F5F2BA55218E';
@@ -4345,9 +4344,15 @@
                         'password': txtPassword.value
 
                     }, function (data, json) {
-                        Tips.success('登录成功', 1500);
-                        //dialog.close();
-                        dialog.remove();
+
+                        if (window.self === window.top) {
+                            top.SMS.Tips.add(window, 'success', '登录成功');
+                        } else {
+                            SMS.Tips.success('登录成功', 1500);
+                        }
+                        dialog.close();
+                        // 刷新当前创窗口
+                        location.href = location.href;
                     }, function (code, msg, json) {
                         span.html(msg).show();
                         btn.html(html).attr('disabled', false);
@@ -4367,7 +4372,7 @@
                     /*      width: 240,
                           height: 100,*/
                     // 可能有多个请求被后端判定session超时，不需要弹出多个登录界面,设置固定id
-                    id:'login-dialog',
+                    id: 'login-dialog',
                     skin: 'login-box',
                     title: '会话结束请重新登录',
                     content: $.String.format(sample, {
@@ -6653,7 +6658,7 @@
                     $(bdGrid).parent().find('.ui-icon-ellipsis').trigger("click");
                 }
             });
-            bdGrid.on('dblclick', '.f7-icon-ellipsis', function (e){
+            bdGrid.on('dblclick', '.f7-icon-ellipsis', function (e) {
                 //F7 双击
                 $(bdGrid).parent().find('.ui-icon-ellipsis').trigger("click");
             });

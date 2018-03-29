@@ -366,17 +366,17 @@ define("Search", function (require, module, exports) {
                 var key = trIndex + '-' + fieldKey;
 
                 if (ctrlType === 1 || ctrlType === 2 || ctrlType === 16) {
-                    value = numberFields[key] && numberFields[key].get();
-                }
 
-                else if (ctrlType === 12) {
+                    value = numberFields[key] && numberFields[key].get();
+
+                } else if (ctrlType === 12) {
+
                     // 日期控件
                     // 不要从控件取值，控件有默认值当前日期
                     //value = dateTimePickers[key] && dateTimePickers[key].getFormattedDate();
                     value = $(item).find("input[name='value']").val()
-                }
 
-                else if (ctrlType === 6) {
+                } else if (ctrlType === 6) {
                     // F7
                     value = selectors[key] && selectors[key].getData()[0]['ID'];
                 }
@@ -389,16 +389,31 @@ define("Search", function (require, module, exports) {
                 if (!fieldKey) {
                     return true;
                 }
-                if (operator !== 'BN' && operator !== 'NBN' && value.trim() === '') {
-                    return true;
+
+                if (operator !== 'BN' && operator !== 'NBN') {
+                    // is Null || is not null 条件不需要传比较值-其他比较类型如果没有值则忽略此条件
+
+                    if (typeof value === 'string' && value.trim() === '') {
+                        return true;
+                    }
+
+                    if (typeof value === 'number' && value === 0) {
+                        return true;
+                    }
+
                 }
+
+                if (typeof value === 'string') {
+                    value = value.trim();
+                }
+
                 // 查询条件
                 conditions.push({
                     'linkType': linkType,
                     'leftParenTheses': '(',
                     'fieldKey': fieldKey,
                     'logicOperator': operator,
-                    'value': value.trim(),
+                    'value': value,
                     'rightParenTheses': ')',
                     'needConvert': ctrlType !== 6
                 });

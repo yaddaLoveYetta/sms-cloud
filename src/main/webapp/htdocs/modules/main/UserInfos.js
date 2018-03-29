@@ -181,8 +181,8 @@ define('UserInfos', function (require, module, exports) {
 
         api.post({
             'userId': config.userId,
-            'oldpwd': MD5.encrypt(config.oldPwd),
-            'newpwd': MD5.encrypt(config.newPwd)
+            'oldPwd': MD5.encrypt(config.oldPwd),
+            'newPwd': MD5.encrypt(config.newPwd)
         });
 
         api.on({
