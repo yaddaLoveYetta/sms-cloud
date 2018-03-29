@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kingdee.hrp.sms.common.dao.generate.AccessControlMapper">
+  <resultMap id="BaseResultMap" type="com.kingdee.hrp.sms.common.model.AccessControl">
+    <id column="class_id" jdbcType="INTEGER" property="classId" />
+    <id column="role_id" jdbcType="BIGINT" property="roleId" />
+    <result column="access_mask" jdbcType="INTEGER" property="accessMask" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    class_id, role_id, access_mask
+  </sql>
+  <select id="selectByExample" parameterType="com.kingdee.hrp.sms.common.model.AccessControlExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_access_control
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="com.kingdee.hrp.sms.common.model.AccessControlKey" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_access_control
+    where class_id = #{classId,jdbcType=INTEGER}
+      and role_id = #{roleId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="com.kingdee.hrp.sms.common.model.AccessControlKey">
+    delete from t_access_control
+    where class_id = #{classId,jdbcType=INTEGER}
+      and role_id = #{roleId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.kingdee.hrp.sms.common.model.AccessControlExample">
+    delete from t_access_control
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.kingdee.hrp.sms.common.model.AccessControl">
+    insert into t_access_control (class_id, role_id, access_mask
+      )
+    values (#{classId,jdbcType=INTEGER}, #{roleId,jdbcType=BIGINT}, #{accessMask,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.kingdee.hrp.sms.common.model.AccessControl">
+    insert into t_access_control
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="classId != null">
+        class_id,
+      </if>
+      <if test="roleId != null">
+        role_id,
+      </if>
+      <if test="accessMask != null">
+        access_mask,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="classId != null">
+        #{classId,jdbcType=INTEGER},
+      </if>
+      <if test="roleId != null">
+        #{roleId,jdbcType=BIGINT},
+      </if>
+      <if test="accessMask != null">
+        #{accessMask,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.kingdee.hrp.sms.common.model.AccessControlExample" resultType="java.lang.Long">
+    select count(*) from t_access_control
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update t_access_control
+    <set>
+      <if test="record.classId != null">
+        class_id = #{record.classId,jdbcType=INTEGER},
+      </if>
+      <if test="record.roleId != null">
+        role_id = #{record.roleId,jdbcType=BIGINT},
+      </if>
+      <if test="record.accessMask != null">
+        access_mask = #{record.accessMask,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update t_access_control
+    set class_id = #{record.classId,jdbcType=INTEGER},
+      role_id = #{record.roleId,jdbcType=BIGINT},
+      access_mask = #{record.accessMask,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.kingdee.hrp.sms.common.model.AccessControl">
+    update t_access_control
+    <set>
+      <if test="accessMask != null">
+        access_mask = #{accessMask,jdbcType=INTEGER},
+      </if>
+    </set>
+    where class_id = #{classId,jdbcType=INTEGER}
+      and role_id = #{roleId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.kingdee.hrp.sms.common.model.AccessControl">
+    update t_access_control
+    set access_mask = #{accessMask,jdbcType=INTEGER}
+    where class_id = #{classId,jdbcType=INTEGER}
+      and role_id = #{roleId,jdbcType=BIGINT}
+  </update>
+</mapper>

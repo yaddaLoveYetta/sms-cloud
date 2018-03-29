@@ -19,6 +19,8 @@ public class Menu extends RootModel {
 
     private Boolean visible;
 
+    private Integer formActionId;
+
     public Integer getId() {
         return id;
     }
@@ -81,5 +83,13 @@ public class Menu extends RootModel {
 
     public void setVisible(Boolean visible) {
         this.visible = visible;
+    }
+
+    public Integer getFormActionId() {
+        return formActionId;
+    }
+
+    public void setFormActionId(Integer formActionId) {
+        this.formActionId = formActionId;
     }
 }

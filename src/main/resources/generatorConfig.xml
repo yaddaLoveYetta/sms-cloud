@@ -27,8 +27,8 @@
             <property name="suppressAllComments" value="true"/>
         </commentGenerator>
 
-        <jdbcConnection driverClass="com.mysql.jdbc.Driver" connectionURL="jdbc:mysql://10.0.0.180:3306/hrp-sms"
-                        userId="root" password="root">
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver" connectionURL="jdbc:mysql://127.0.0.1:3306/hrp-sms"
+                        userId="root" password="775885">
         </jdbcConnection>
         <!-- <jdbcConnection driverClass="com.microsoft.sqlserver.jdbc.SQLServerDriver" connectionURL="jdbc:sqlserver://127.0.0.1:52663;database=hrp-sms" -->
         <!-- userId="sa" password="yadda0925"> -->
@@ -133,6 +133,11 @@
         </table>
 
         <table tableName="t_assistance" domainObjectName="Assistance">
+            <property name="useActualColumnNames" value="false"/>
+            <property name="rootClass" value="com.kingdee.hrp.sms.common.RootModel"/>
+        </table>
+
+        <table tableName="t_access_control" domainObjectName="AccessControl">
             <property name="useActualColumnNames" value="false"/>
             <property name="rootClass" value="com.kingdee.hrp.sms.common.RootModel"/>
         </table>

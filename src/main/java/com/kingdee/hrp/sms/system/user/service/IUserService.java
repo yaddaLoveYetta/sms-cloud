@@ -22,7 +22,7 @@ public interface IUserService extends Serializable {
      *
      * @param registerInfo 用户注册信息
      */
-    void register(Map<String,Object> registerInfo) throws JsonProcessingException, IOException;
+    void register(Map<String, Object> registerInfo) throws JsonProcessingException, IOException;
 
     /**
      * 用户登录
@@ -61,10 +61,17 @@ public interface IUserService extends Serializable {
      * 用户修改密码
      *
      * @param userId 用户ID
-     * @param oldpwd 原密码
-     * @param newpwd 新密码
+     * @param oldPwd 原密码
+     * @param newPwd 新密码
      * @return
      */
-    boolean editpwd(Long userId, String oldpwd, String newpwd);
+    boolean editPwd(Long userId, String oldPwd, String newPwd);
 
+    /**
+     * 获取角色所有权限
+     *
+     * @param roleId 角色id
+     * @return
+     */
+    List<Map<String, Object>> getRolePermissions(Long roleId);
 }

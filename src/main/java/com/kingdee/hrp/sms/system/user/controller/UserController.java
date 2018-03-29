@@ -5,7 +5,6 @@ import com.kingdee.hrp.sms.common.model.Role;
 import com.kingdee.hrp.sms.common.model.User;
 import com.kingdee.hrp.sms.system.user.service.IUserService;
 import com.kingdee.hrp.sms.util.Common;
-import com.kingdee.hrp.sms.util.SessionUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -128,15 +127,15 @@ public class UserController {
      * 用户修改密码
      *
      * @param userId 用户ID
-     * @param oldpwd 原密码
-     * @param newpwd 新密码
+     * @param oldPwd 原密码
+     * @param newPwd 新密码
      * @return
      */
-    @RequestMapping("editpwd")
+    @RequestMapping("editPwd")
     @ResponseBody
-    public Boolean editpwd(Long userId, String oldpwd, String newpwd) {
+    public Boolean editPwd(Long userId, String oldPwd, String newPwd) {
 
-        if (userService.editpwd(userId, oldpwd, newpwd)) {
+        if (userService.editPwd(userId, oldPwd, newPwd)) {
             logger.info("密码修改成功");
             return true;
         } else {
@@ -152,10 +151,13 @@ public class UserController {
      */
     @RequestMapping(value = "getRolePermissions")
     @ResponseBody
-    public List<Map<String, Object>> getRolePermissions() {
+    public List<Map<String, Object>> getRolePermissions(Long role) {
 
-        List<Role> roles = SessionUtil.getUserRole();
-        return null;
+        if (null == role || role <= 0) {
+            throw new BusinessLogicRunTimeException("角色id不能为空!");
+        }
+
+        return  userService.getRolePermissions(role);
     }
 
     /**

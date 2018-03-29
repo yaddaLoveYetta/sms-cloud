@@ -1,6 +1,7 @@
 package com.kingdee.hrp.sms.common.model;
 
 import com.kingdee.hrp.sms.common.RootModel;
+import java.util.Date;
 
 public class User extends RootModel {
     private Long id;
@@ -18,6 +19,10 @@ public class User extends RootModel {
     private Long org;
 
     private Boolean status;
+
+    private Long price;
+
+    private Date testDate;
 
     public Long getId() {
         return id;
@@ -81,5 +86,21 @@ public class User extends RootModel {
 
     public void setStatus(Boolean status) {
         this.status = status;
+    }
+
+    public Long getPrice() {
+        return price;
+    }
+
+    public void setPrice(Long price) {
+        this.price = price;
+    }
+
+    public Date getTestDate() {
+        return testDate;
+    }
+
+    public void setTestDate(Date testDate) {
+        this.testDate = testDate;
     }
 }

@@ -14,9 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author yadda<silenceisok@163.com>
@@ -289,8 +287,8 @@ public class UserService extends BaseService implements IUserService {
     }
 
     @Override
-    @Transactional(rollbackFor = {RuntimeException.class})
-    public boolean editpwd(Long userId, String oldpwd, String newpwd) {
+    @Transactional(rollbackFor = {Exception.class})
+    public boolean editPwd(Long userId, String oldPwd, String newPwd) {
 
         User user = null;
         UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
@@ -299,7 +297,7 @@ public class UserService extends BaseService implements IUserService {
         UserExample example = new UserExample();
         UserExample.Criteria criteria = example.createCriteria();
 
-        criteria.andPasswordEqualTo(oldpwd);
+        criteria.andPasswordEqualTo(oldPwd);
         criteria.andIdEqualTo(userId);
 
         List<User> list = userMapper.selectByExample(example);
@@ -310,10 +308,10 @@ public class UserService extends BaseService implements IUserService {
         if (null == user) {
             throw new BusinessLogicRunTimeException("输入的原密码错误");
         }
-        if (user.getPassword().equals(newpwd)) {
+        if (user.getPassword().equals(newPwd)) {
             throw new BusinessLogicRunTimeException("修改密码的新密码不能与原密码相同");
         }
-        user.setPassword(newpwd);
+        user.setPassword(newPwd);
         userMapper.updateByPrimaryKey(user);
         return true;
     }
@@ -338,6 +336,157 @@ public class UserService extends BaseService implements IUserService {
         criteria.andUserNameEqualTo(userName);
         return userMapper.countByExample(userExample) > 0;
 
+    }
+
+    /**
+     * 获取角色所有权限
+     *
+     * @param roleId 角色id
+     * @return List<Map<String, Object>>
+     */
+    @Override
+    public List<Map<String, Object>> getRolePermissions(Long roleId) {
+
+        RoleMapper roleMapper = sqlSession.getMapper(RoleMapper.class);
+        Role role = roleMapper.selectByPrimaryKey(roleId);
+
+        if (null == role) {
+            throw new BusinessLogicRunTimeException("该角色不存在！");
+        }
+
+        //1：获取菜单数据
+        MenuMapper menuMapper = sqlSession.getMapper(MenuMapper.class);
+
+        // --condition for test
+/*        MenuExample menuExample = new MenuExample();
+        MenuExample.Criteria criteria = menuExample.createCriteria();
+        criteria.andIdEqualTo(8);
+        MenuExample.Criteria criteria2 = menuExample.createCriteria();
+        criteria2.andParentIdEqualTo(8);
+        menuExample.or(criteria2);*/
+
+
+        List<Menu> menus = menuMapper.selectByExample(null);
+
+        // 2：获取功能权限数据
+        FormActionMapper formActionMapper = sqlSession.getMapper(FormActionMapper.class);
+
+        // --condition for test
+/*        FormActionExample formActionExample = new FormActionExample();
+        FormActionExample.Criteria formActionExampleCriteria = formActionExample.createCriteria();
+        formActionExampleCriteria.andClassIdEqualTo(1001);*/
+        List<FormAction> formActions = formActionMapper.selectByExample(null);
+
+        // 3：获取该角色所有功能授权结果
+        AccessControlMapper accessControlMapper = sqlSession.getMapper(AccessControlMapper.class);
+        AccessControlExample accessControlExample = new AccessControlExample();
+        AccessControlExample.Criteria accessControlExampleCriteria = accessControlExample.createCriteria();
+        accessControlExampleCriteria.andRoleIdEqualTo(roleId);
+
+        List<AccessControl> accessControls = accessControlMapper.selectByExample(accessControlExample);
+        // 授权结果转成Map好操作
+        Map<Integer, AccessControl> accessControlsMap = new HashMap<Integer, AccessControl>(32);
+        for (AccessControl accessControl : accessControls) {
+            accessControlsMap.put(accessControl.getClassId(), accessControl);
+        }
+
+        // 4：根据-菜单数据-权限数据-功能授权结果 构建当前角色功能授权数据结构
+        List<Map<String, Object>> ret = toTree(menus, formActions, accessControlsMap, 0, role);
+
+        return ret;
+    }
+
+    /**
+     * 菜单权限打包成树形结构数据
+     *
+     * @param menus             菜单数据
+     * @param formActions       功能权限数据
+     * @param accessControlsMap 角色对各模块的授权结果
+     * @param parentId          菜单父节点id(传0)
+     * @return list
+     */
+    private List<Map<String, Object>> toTree(List<Menu> menus, List<FormAction> formActions, Map<Integer, AccessControl> accessControlsMap, int parentId, Role role) {
+
+        List<Map<String, Object>> ret = new ArrayList<>();
+
+        /*
+        001（1）:系统类别角色可用
+        010（2）:医院类别角色可用
+        100（4）:供应商类别角色可用*/
+
+        int roleTypeControl = role.getType() == 1 ? 1 : role.getType() == 2 ? 2 : 4;
+
+        for (Menu menu : menus) {
+
+            if (menu.getParentId() == parentId) {
+
+                Map<String, Object> menuItem = new LinkedHashMap<>();
+
+                String name = menu.getName();
+                Integer id = menu.getId();
+                Integer formActionId = menu.getFormActionId();
+
+                menuItem.put("id", id);
+                menuItem.put("name", name);
+                menuItem.put("formActionId", formActionId);
+
+                List<Map<String, Object>> items = toTree(menus, formActions, accessControlsMap, id, role);
+
+                if (items.size() == 0) {
+                    // 明细菜单获取对应权限项
+                    List<Map<String, Object>> accessList = new ArrayList<>();
+
+                    for (FormAction formAction : formActions) {
+
+                        if (formAction.getClassId().equals(formActionId)) {
+
+                            Integer accessMask = formAction.getAccessMask();
+                            Integer accessUse = formAction.getAccessUse();
+                            String accessName = formAction.getName();
+                            Integer accessOwnerType = formAction.getOwnerType();
+
+                            Integer currentRoleMask = 0;
+                            if (accessControlsMap.containsKey(formActionId)) {
+                                currentRoleMask = accessControlsMap.get(formActionId).getAccessMask();
+                            }
+                            // 判断是否该角色类别可用的权限，如果是，获取该权限对当前角色的设置
+                            if ((accessOwnerType & roleTypeControl) == roleTypeControl) {
+                                // 是该角色类别可用的权限
+
+/*                                if ((currentRoleMask & accessMask) == accessMask) {
+                                    // 当前角色对该权限项有权限(已授权)
+                                }else {
+                                    // 当前角色对该权限项没有权限(未授权)
+                                }*/
+
+                                Map<String, Object> accessItem = new HashMap<>(8);
+                                accessItem.put("accessMask", accessMask);
+                                accessItem.put("accessUse", accessUse);
+                                accessItem.put("accessName", accessName);
+                                accessItem.put("enable", (currentRoleMask & accessMask) == accessMask);
+                                accessList.add(accessItem);
+                            }
+                        }
+                    }
+
+                    if (accessList.size() > 0) {
+                        menuItem.put("accessList", accessList);
+                    }
+
+                } else {
+
+                    if (items.size() > 0) {
+                        menuItem.put("items", items);
+                    }
+                }
+
+                if (menuItem.get("items") != null || menuItem.get("accessList") != null) {
+                    ret.add(menuItem);
+                }
+            }
+        }
+
+        return ret;
     }
 
 }

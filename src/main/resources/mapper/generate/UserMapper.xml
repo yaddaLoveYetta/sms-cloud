@@ -10,6 +10,8 @@
     <result column="is_admin" jdbcType="BIT" property="isAdmin" />
     <result column="org" jdbcType="BIGINT" property="org" />
     <result column="status" jdbcType="BIT" property="status" />
+    <result column="price" jdbcType="DECIMAL" property="price" />
+    <result column="test_date" jdbcType="TIMESTAMP" property="testDate" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -70,7 +72,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, `name`, user_name, `password`, mobile, is_admin, org, `status`
+    id, `name`, user_name, `password`, mobile, is_admin, org, `status`, price, test_date
   </sql>
   <select id="selectByExample" parameterType="com.kingdee.hrp.sms.common.model.UserExample" resultMap="BaseResultMap">
     select
@@ -105,10 +107,12 @@
   <insert id="insert" parameterType="com.kingdee.hrp.sms.common.model.User">
     insert into t_user (id, `name`, user_name, 
       `password`, mobile, is_admin, 
-      org, `status`)
+      org, `status`, price, test_date
+      )
     values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, 
       #{password,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, #{isAdmin,jdbcType=BIT}, 
-      #{org,jdbcType=BIGINT}, #{status,jdbcType=BIT})
+      #{org,jdbcType=BIGINT}, #{status,jdbcType=BIT}, #{price,jdbcType=DECIMAL}, #{testDate,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.kingdee.hrp.sms.common.model.User">
     insert into t_user
@@ -137,6 +141,12 @@
       <if test="status != null">
         `status`,
       </if>
+      <if test="price != null">
+        price,
+      </if>
+      <if test="testDate != null">
+        test_date,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -162,6 +172,12 @@
       </if>
       <if test="status != null">
         #{status,jdbcType=BIT},
+      </if>
+      <if test="price != null">
+        #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="testDate != null">
+        #{testDate,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -198,6 +214,12 @@
       <if test="record.status != null">
         `status` = #{record.status,jdbcType=BIT},
       </if>
+      <if test="record.price != null">
+        price = #{record.price,jdbcType=DECIMAL},
+      </if>
+      <if test="record.testDate != null">
+        test_date = #{record.testDate,jdbcType=TIMESTAMP},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -212,7 +234,9 @@
       mobile = #{record.mobile,jdbcType=VARCHAR},
       is_admin = #{record.isAdmin,jdbcType=BIT},
       org = #{record.org,jdbcType=BIGINT},
-      `status` = #{record.status,jdbcType=BIT}
+      `status` = #{record.status,jdbcType=BIT},
+      price = #{record.price,jdbcType=DECIMAL},
+      test_date = #{record.testDate,jdbcType=TIMESTAMP}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -241,6 +265,12 @@
       <if test="status != null">
         `status` = #{status,jdbcType=BIT},
       </if>
+      <if test="price != null">
+        price = #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="testDate != null">
+        test_date = #{testDate,jdbcType=TIMESTAMP},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -252,7 +282,9 @@
       mobile = #{mobile,jdbcType=VARCHAR},
       is_admin = #{isAdmin,jdbcType=BIT},
       org = #{org,jdbcType=BIGINT},
-      `status` = #{status,jdbcType=BIT}
+      `status` = #{status,jdbcType=BIT},
+      price = #{price,jdbcType=DECIMAL},
+      test_date = #{testDate,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

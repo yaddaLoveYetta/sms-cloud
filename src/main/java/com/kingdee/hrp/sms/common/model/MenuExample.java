@@ -623,6 +623,66 @@ public class MenuExample {
             addCriterion("visible not between", value1, value2, "visible");
             return (Criteria) this;
         }
+
+        public Criteria andFormActionIdIsNull() {
+            addCriterion("form_action_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFormActionIdIsNotNull() {
+            addCriterion("form_action_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFormActionIdEqualTo(Integer value) {
+            addCriterion("form_action_id =", value, "formActionId");
+            return (Criteria) this;
+        }
+
+        public Criteria andFormActionIdNotEqualTo(Integer value) {
+            addCriterion("form_action_id <>", value, "formActionId");
+            return (Criteria) this;
+        }
+
+        public Criteria andFormActionIdGreaterThan(Integer value) {
+            addCriterion("form_action_id >", value, "formActionId");
+            return (Criteria) this;
+        }
+
+        public Criteria andFormActionIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("form_action_id >=", value, "formActionId");
+            return (Criteria) this;
+        }
+
+        public Criteria andFormActionIdLessThan(Integer value) {
+            addCriterion("form_action_id <", value, "formActionId");
+            return (Criteria) this;
+        }
+
+        public Criteria andFormActionIdLessThanOrEqualTo(Integer value) {
+            addCriterion("form_action_id <=", value, "formActionId");
+            return (Criteria) this;
+        }
+
+        public Criteria andFormActionIdIn(List<Integer> values) {
+            addCriterion("form_action_id in", values, "formActionId");
+            return (Criteria) this;
+        }
+
+        public Criteria andFormActionIdNotIn(List<Integer> values) {
+            addCriterion("form_action_id not in", values, "formActionId");
+            return (Criteria) this;
+        }
+
+        public Criteria andFormActionIdBetween(Integer value1, Integer value2) {
+            addCriterion("form_action_id between", value1, value2, "formActionId");
+            return (Criteria) this;
+        }
+
+        public Criteria andFormActionIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("form_action_id not between", value1, value2, "formActionId");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {
