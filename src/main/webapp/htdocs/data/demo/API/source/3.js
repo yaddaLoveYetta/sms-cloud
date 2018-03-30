@@ -1,5 +1,4 @@
-﻿
-var api = SMS.API('demo/3', {
+﻿var api = new SMS.API('demo/3', {
 
     pageSize: 10,
     pageNo: 1,

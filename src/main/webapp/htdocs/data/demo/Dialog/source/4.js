@@ -12,7 +12,7 @@
             a: 1111,
             b: 2222,
             c: {
-                name: 'micty',
+                name: 'yadda',
                 value: 'test',
             },
         },

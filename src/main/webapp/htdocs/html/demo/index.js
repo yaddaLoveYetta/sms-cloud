@@ -24,17 +24,9 @@
         Readme.render(name, json.readme);
         Demos.render(json.demos, Tabs, Panels);
 
-        
-
     });
 
-
-    
-
-    
-
-
-    $(document).on('dblclick', function () {
+   /* $(document).on('dblclick', function () {
 
         SMS.use('Dialog', function (Dialog) {
 
@@ -83,8 +75,6 @@
 
         });
         
-    });
-
-
+    });*/
 
 })();
