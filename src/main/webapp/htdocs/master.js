@@ -121,7 +121,7 @@
 
             if (roleType === 1) {
                 // 系统管理员-暂时没有资料维护
-                MessageBox.show('系统管理员无可维护信息！');
+                MessageBox.show('系统管理员无可维护信息！', '金蝶提示', true);
                 return;
             } else if (roleType === 2) {
                 //  医院角色类别

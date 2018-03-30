@@ -48,7 +48,6 @@ public class UserController {
     @ResponseBody
     public Boolean register(@RequestParam Map<String, Object> registerInfo) throws IOException {
 
-        //var validate_list = ['userName', 'password', 'name', 'mobile', 'businessLicense', 'taxId', 'address'];
         userService.register(registerInfo);
         return true;
 
@@ -80,7 +79,7 @@ public class UserController {
             List<Role> roles = userService.getUserRole(user.getId());
 
             // 获取用户所属的组织信息(医院/供应商)
-            Object userLinkOrg = new Object();
+            Object userLinkOrg = null;
             if (roles.get(0).getType() == 2) {
                 // 医院角色
                 userLinkOrg = userService.getUserLinkHospital(user.getOrg());
@@ -94,7 +93,7 @@ public class UserController {
                 ret = Common.beanToMap(user);
                 // 用户角色信息返回给客户端
                 ret.put("roles", roles);
-                ret.put("org", userLinkOrg);
+                ret.put("org", null == userLinkOrg ? "" : userLinkOrg);
             } catch (Exception e) {
                 throw new BusinessLogicRunTimeException(e);
             }
@@ -102,7 +101,7 @@ public class UserController {
             // 将用户及用户角色信息放到session中
             request.getSession().setAttribute("user", user);
             request.getSession().setAttribute("roles", roles);
-            request.getSession().setAttribute("userLinkOrg", userLinkOrg);
+            request.getSession().setAttribute("userLinkOrg", null == userLinkOrg ? "" : userLinkOrg);
 
             return ret;
         }
@@ -157,7 +156,7 @@ public class UserController {
             throw new BusinessLogicRunTimeException("角色id不能为空!");
         }
 
-        return  userService.getRolePermissions(role);
+        return userService.getRolePermissions(role);
     }
 
     /**

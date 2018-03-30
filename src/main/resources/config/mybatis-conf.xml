@@ -36,7 +36,7 @@
 
     <plugins>
 
-        <!-- com.github.pagehelper为PageHelper类所在包名 -->
+        <!--分页插件 com.github.pagehelper为PageHelper类所在包名 -->
         <plugin interceptor="com.github.pagehelper.PageInterceptor">
 
             <!-- 增加dialect属性，使用时必须指定该属性，可选值为 oracle,mysql,mariadb,sqlite,hsqldb,postgresql,没有默认值，必须指定该 属性 -->
@@ -73,6 +73,7 @@
         <mapper resource="mapper/generate/RoleMapper.xml"/>
         <mapper resource="mapper/generate/RoleTypeMapper.xml"/>
         <mapper resource="mapper/generate/MenuMapper.xml"/>
+        <mapper resource="mapper/generate/AccessControlMapper.xml"/>
 
         <mapper resource="mapper/generate/FormClassMapper.xml"/>
         <mapper resource="mapper/generate/FormClassEntryMapper.xml"/>

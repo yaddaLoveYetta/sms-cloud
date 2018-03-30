@@ -8,14 +8,14 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * 
- * @ClassName: SMSHandlerExceptionResolver
+ * @ClassName: SmsHandlerExceptionResolver
  * @Description: 异常统一处理类
  * @author yadda
  * @date 2017年4月13日 下午2:14:39
  *
  */
 
-public class SMSHandlerExceptionResolver implements HandlerExceptionResolver {
+public class SmsHandlerExceptionResolver implements HandlerExceptionResolver {
 
 	@Override
 	public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {

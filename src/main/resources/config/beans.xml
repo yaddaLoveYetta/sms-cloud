@@ -6,7 +6,7 @@
 
     <!-- 异常处理器 -->
     <!--
-      <bean class="com.kingdee.hrp.sms.common.exception.SMSHandlerExceptionResolver"/>
+      <bean class="com.kingdee.hrp.sms.common.exception.SmsHandlerExceptionResolver"/>
 
            <bean id="apiHandler" class="com.yadda.api.core.ApiHandler">
                <property name="tokenService" ref="defaultTokenServiceImpl"/>

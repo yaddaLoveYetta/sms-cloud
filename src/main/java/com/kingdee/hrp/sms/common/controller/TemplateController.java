@@ -116,10 +116,8 @@ public class TemplateController {
         List<Sort> sorts = new ArrayList<Sort>();
 
         // 包装查询结果排序-方便操作
-        if (null != sort && !"".equals(sort)) {
-            ObjectMapper objectMapper = new ObjectMapper();
-            JavaType javaType = objectMapper.getTypeFactory().constructParametricType(List.class, Sort.class);
-            sorts = objectMapper.readValue(sort, javaType);
+        if (StringUtils.isNotBlank(sort)) {
+            sorts = stringToList(sort, Sort.class);
         }
 
         return templateService.getItemById(classId, id, sorts);

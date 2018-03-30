@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kingdee.hrp.sms.common.dao.generate.*;
 import com.kingdee.hrp.sms.common.exception.BusinessLogicRunTimeException;
+import com.kingdee.hrp.sms.common.filter.SmsPropertyPlaceholderConfigurer;
 import com.kingdee.hrp.sms.common.model.*;
 import com.kingdee.hrp.sms.common.service.BaseService;
 import com.kingdee.hrp.sms.system.user.service.IUserService;
@@ -138,7 +139,7 @@ public class UserService extends BaseService implements IUserService {
             hospital.setBusinessLicense(businessLicense);
             hospital.setTaxId(taxId);
             hospital.setAddress(address);
-            hospital.setId(getId());
+            hospital.setId(org);
 
             hospitalMapper.insert(hospital);
         } else if (userType == 3) {
@@ -152,7 +153,7 @@ public class UserService extends BaseService implements IUserService {
             supplier.setBusinessLicense(businessLicense);
             supplier.setTaxId(taxId);
             supplier.setAddress(address);
-            supplier.setId(getId());
+            supplier.setId(org);
 
             supplierMapper.insert(supplier);
         } else {
@@ -170,13 +171,13 @@ public class UserService extends BaseService implements IUserService {
         role.setNumber(Pinyin4jUtil.converterToFirstSpell(orgName));
         role.setOrg(org);
         role.setType(userType);
-        role.setUserDefine(false);
+        role.setUserDefine(true);
 
         roleMapper.insert(role);
+        // 给生成的角色授默认权限(角色类别的全部可用权限)
+        setDefaultPermission(role);
 
-        // 角色授权 TODO
         // 3:新增注册用户,将1步中新增组织，2步中新增角色绑定到此用户
-
         UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
         // 保存下用户id，生成用户角色子表时用
         Long userId = getId();
@@ -202,6 +203,70 @@ public class UserService extends BaseService implements IUserService {
         userEntry.setRole(roleId);
 
         userEntryMapper.insertSelective(userEntry);
+
+    }
+
+    /**
+     * 根据角色的类别设置角色默认授权结果
+     * 只支持贵供应商与医院角色类别的默认权限设置，其他角色类别跑出异常
+     *
+     * @param role 角色
+     */
+    private void setDefaultPermission(Role role) throws IOException {
+
+        String roleTypeName = "";
+
+        if (role.getType() == 2) {
+            roleTypeName = "hospital";
+        } else if (role.getType() == 3) {
+            roleTypeName = "supplier";
+        } else {
+            //return;
+            throw new BusinessLogicRunTimeException("不支持该类别角色默认权限设置");
+        }
+
+        String defaultPermission = SmsPropertyPlaceholderConfigurer.getContextProperty(roleTypeName);
+
+        if (defaultPermission == null || "".equals(defaultPermission.trim())) {
+            throw new BusinessLogicRunTimeException(String.format("不存在[%s]默认权限配置，请检查权限配置文件!", roleTypeName));
+        }
+
+        ObjectMapper mapper = Environ.getBean(ObjectMapper.class);
+        JsonNode defaultPermissions = mapper.readTree(defaultPermission);
+
+/*        JavaType javaType = objectMapper.getTypeFactory().constructParametricType(List.class, HashMap.class);
+        List<Map<String, Object>> defaultPermissionList = objectMapper.readValue(defaultPermission, javaType);*/
+
+        if (!defaultPermissions.isArray()) {
+            throw new BusinessLogicRunTimeException(String.format("[%s]默认权限配置错误，请检查权限配置文件!", roleTypeName));
+        }
+
+        List<AccessControl> accessControlList = new ArrayList<AccessControl>();
+
+        for (JsonNode permission : defaultPermissions) {
+
+            int classId = permission.path("classId").asInt(0);
+            int accessMask = permission.path("accessMask").asInt(0);
+
+            if (classId <= 0) {
+                // ignore error conf
+                continue;
+            }
+
+            AccessControl accessControl = new AccessControl();
+            accessControl.setRoleId(role.getId());
+            accessControl.setClassId(classId);
+            accessControl.setAccessMask(accessMask);
+
+            accessControlList.add(accessControl);
+        }
+
+        AccessControlMapper accessControlMapper = sqlSession.getMapper(AccessControlMapper.class);
+        // 授权结果插入数据库--暂时走单条循环插入，应该自写mapper批量插入
+        for (AccessControl accessControl : accessControlList) {
+            accessControlMapper.insertSelective(accessControl);
+        }
+       // accessControlMapper.batchInsert(accessControlList);
 
     }
 

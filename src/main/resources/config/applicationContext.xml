@@ -13,11 +13,12 @@
 		http://www.springframework.org/schema/tx/spring-tx.xsd">
 
 	<!-- 将多个配置文件读取到容器中，交给Spring管理 -->
-	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+	<bean id="propertyConfigurer" class="com.kingdee.hrp.sms.common.filter.SmsPropertyPlaceholderConfigurer">
 		<property name="locations">
 			<list>
 				<!-- 这里支持多种寻址方式：classpath和file -->
 				<value>classpath:/config/jdbc-mysql.properties</value>
+				<value>classpath:/config/default-permissions.properties</value>
 			</list>
 		</property>
 	</bean>
