@@ -228,6 +228,7 @@
                     <encoding>UTF-8</encoding>
                     <skip>true</skip>
                     <compilerArguments>
+                        <!-- 将第三方jar(中央仓库中没有的)放到构建路径中-->
                         <extdirs>${basedir}\src\main\webapp\WEB-INF\lib</extdirs>
                     </compilerArguments>
                 </configuration>

@@ -347,8 +347,9 @@ define("List", function (require, module, exports) {
             if (td.getAttribute("child")) {
                 // 子表列单击
                 //td = td.parentNode.parentNode.parentNode.parentNode; // 转换成主表列
-                return; // 不触发,猫婆触发上级td事件
+                return; // 不触发,触发上级td事件
             }
+
             var tr = td.parentNode;
             var index = +td.getAttribute("data-index");
             // 列号
@@ -402,6 +403,22 @@ define("List", function (require, module, exports) {
                 index$selected = {};
             }
             check(chk, checked);
+        });
+
+        //主表行双击事件
+        $(div).delegate("tr[data-index]", "dblclick", function (event) {
+
+            var tr = this;
+            var no = +tr.getAttribute("data-index");
+            // 行号
+            var bodyItems = list.body.items;
+            var args = [{
+                row: no,
+                body: bodyItems[no]
+            }, event];
+
+            emitter.fire("row.dblclick", args);
+
         });
 
     }

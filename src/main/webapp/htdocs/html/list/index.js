@@ -375,6 +375,37 @@
         refresh();
     });
 
+    List.on({
+        'row.dblclick': function (data, event) {
+            // 编辑
+            if (dialog) {
+                // 选择界面不触发
+                return;
+            }
+
+            var metaData = List.getMetaData();
+            var url = 'html/bill/index.html';
+            var name = metaData.formClass.name || '';
+
+            if (!url) {
+                // 没有配置编辑页面或不需要编辑功能
+                return;
+            }
+
+            Iframe.open({
+                id: classId + '-view-' + data.body.primaryValue,
+                name: '修改-' + name,
+                url: url,
+                query: {
+                    'id': data.body.primaryValue,
+                    'classId': classId,
+                    'operate': 2
+                }
+            });
+
+        }
+    });
+
     function refresh() {
 
         List.render({
