@@ -33,7 +33,7 @@ define("List", function (require, module, exports) {
 
         //SMS.Tips.loading("数据加载中...");
         SMS.Tips.loading({
-            text: '数据加载中...',
+            text: '数据加载中，请稍候...',
             delay: 200
         });
 

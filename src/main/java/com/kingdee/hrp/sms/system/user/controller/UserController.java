@@ -73,7 +73,6 @@ public class UserController {
 
         if (null != user) {
 
-
             Long org = user.getOrg();
             // 一个用户可以对应多个角色
             List<Role> roles = userService.getUserRole(user.getId());

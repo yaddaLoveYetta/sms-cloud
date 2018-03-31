@@ -5,7 +5,7 @@
 
     <display-name>Archetype Created Web Application</display-name>
 
-
+    <!-- Log4j2配置 推荐tomcat8，tomcat8以下需要变更配置-->
     <context-param>
         <param-name>log4jConfiguration</param-name>
         <param-value>classpath:/config/log4j2.xml</param-value>
@@ -58,7 +58,7 @@
     </filter-mapping>
 
     <servlet>
-        <servlet-name>spring</servlet-name>
+        <servlet-name>sms</servlet-name>
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
         <init-param>
             <param-name>contextConfigLocation</param-name>
@@ -68,7 +68,7 @@
       <!--  <async-supported>true</async-supported>-->
     </servlet>
     <servlet-mapping>
-        <servlet-name>spring</servlet-name>
+        <servlet-name>sms</servlet-name>
         <url-pattern>/manager/*</url-pattern>
     </servlet-mapping>
 

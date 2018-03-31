@@ -53,6 +53,7 @@ public class SecurityInterceptor extends HandlerInterceptorAdapter {
      * @return
      * @throws Exception
      */
+    @SuppressWarnings("unchecked")
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
@@ -84,6 +85,7 @@ public class SecurityInterceptor extends HandlerInterceptorAdapter {
         List<Role> roles = (List<Role>) request.getSession().getAttribute("roles");
 
         if (user == null) {
+
             // ResponseWriteUtil.output(response, StatusCode.SESSION_LOST, "会话结束请重新登陆!");
             //return false;
             //throw new SessionLostRuntimeException("会话结束请重新登陆!");
