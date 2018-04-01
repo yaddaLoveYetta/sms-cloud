@@ -290,7 +290,7 @@
                     refresh();
                 });
             },
-            // 发送到医院
+            // 发送到医院 TODO
             'send': function (item, index) {
                 // 发送到HRP
                 if (!(classId == 1005 || classId == 1007 || classId == 1023)) {
@@ -329,7 +329,7 @@
                 });
 
             },
-            // 导出
+            // 导出 TODO
             'export': function (item, index) {
 
                 var conditions = getCondition();
@@ -363,7 +363,7 @@
                 form.submit();
                 $(form).remove();
             },
-            // 导入
+            // 导入 TODO
             'import': function (item, index) {
 
             }

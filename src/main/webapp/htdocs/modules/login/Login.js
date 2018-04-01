@@ -24,6 +24,7 @@ define('Login', function (require, module, exports) {
 
         var user = txtUser.value;
         if (!user) {
+            txtUser.focus();
             WarnTip.show('请输入用户名');
             return false;
         }
@@ -31,6 +32,7 @@ define('Login', function (require, module, exports) {
         var password = txtPassword.value;
 
         if (!password) {
+            txtPassword.focus();
             WarnTip.show('请输入密码');
             return false;
         }
@@ -50,7 +52,6 @@ define('Login', function (require, module, exports) {
             WarnTip.show(msg);
 
         }, function () { //错误
-
             reset();
             WarnTip.show('网络错误，请稍候再试');
         });
