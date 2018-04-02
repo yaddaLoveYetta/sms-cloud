@@ -131,10 +131,10 @@
                 'ui.jqgrid-bootstrap-css': 'jqGrid-5.1.0/jqGrid-master/css/ui.jqgrid-bootstrap.css',
                 'ui.jqgrid-css': 'jqGrid-5.1.0/jqGrid-master/css/ui.jqgrid.css',
 
-                'jquery-barcode': 'jquery-barcode-2.0.3/jquery/jquery-barcode.{@}.js',
-                'jquery.jqprint': 'jquery.jqprint/jquery.jqprint-0.3.js',
                 'jquery-migrate': 'jquery.jqprint/jquery-migrate-1.2.1.min.js',
-                'easy-tabs': 'jspkg-archive/lib/jquery.easytabs.{@}.js'
+                'easy-tabs': 'jspkg-archive/lib/jquery.easytabs.{@}.js',
+                'bootstrap-treeview-js': 'bootstrap-treeview/dist/bootstrap-treeview.min.js',
+                'bootstrap-treeview-css': 'bootstrap-treeview/dist/bootstrap-treeview.min.css'
             }
         },
 

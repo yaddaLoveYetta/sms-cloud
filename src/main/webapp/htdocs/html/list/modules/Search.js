@@ -201,33 +201,37 @@ define("Search", function (require, module, exports) {
                     'ctrlType': ctrlType
                 })
             }).join("");
-            // 比较操作符呈现
-            $(this).parent('td').parent("tr").find("select[name='operator']").html(html)
 
+            // 比较操作符呈现
+            var $operator = $(this).parent('td').parent("tr").find("select[name='operator']");
+            $operator.html(html);
             // 值控件类型呈现-主要针对引用类型及数字，日期等特殊类型
             initValueController(self, trIndex, fieldKey, ctrlType);
+            $operator.trigger('change');
 
-            switch (ctrlType) {
-                case 1:
-                case 2:
-                case 16:
-                    break;
-                case 6:
-                    break;
-                case 12:
-                    break;
-                case 13:
-                    // 男女
-                    break;
-                case 15:
-                    // 是否
-                    break;
-                default:
-                    break;
-            }
             ev.stopPropagation();
         });
 
+        // 比较符号变化后-处理值控件类型
+        $('.operator').on("change", function (ev) {
+
+            var self = this;
+            var $selected = $(this).find("option:selected");
+            var operator = $selected.val();
+
+            if (!operator) {
+                return;
+            }
+
+            if (operator === 'BN' || operator === 'NBN') {
+                $(this).parent('td').parent("tr").find("input[name='value']").attr("disabled",true).val('');
+            }else {
+                $(this).parent('td').parent("tr").find("input[name='value']").attr("disabled",false);
+            }
+
+        });
+
+        // 根据比较字段类型构建比较值呈现形式 eg:date,number,price,f7
         function initValueController(container, trIndex, fieldKey, ctrlType) {
 
             var key = trIndex + '-' + fieldKey;

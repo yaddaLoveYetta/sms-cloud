@@ -377,7 +377,7 @@
 
     List.on({
         'row.dblclick': function (data, event) {
-            // 编辑
+            // 双击查看详情
             if (dialog) {
                 // 选择界面不触发
                 return;
@@ -394,12 +394,12 @@
 
             Iframe.open({
                 id: classId + '-view-' + data.body.primaryValue,
-                name: '修改-' + name,
+                name: '查看详情-' + name,
                 url: url,
                 query: {
                     'id': data.body.primaryValue,
                     'classId': classId,
-                    'operate': 2
+                    'operate': 0
                 }
             });
 

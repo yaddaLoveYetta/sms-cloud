@@ -6433,7 +6433,119 @@
 
     });
 
+    /**
+     * bootstrap-treeview
+     *
+     * @author yadda
+     */
+    define('TreeView', function (require, exports, module) {
 
+        var $ = require('$');
+        var Seajs = require('Seajs');
+
+        var mapper = new $.Mapper();
+
+        // 默认配置
+        var defaults = {};
+
+        // 调用原始控件的方法
+        function invoke(self, name, $argumetns) {
+
+            var meta = mapper.get(self);
+            var $selector = meta.$selector;
+
+            var args = [].slice.call($argumetns, 0);
+
+            return $selector.treeview(name, args);
+
+        }
+
+
+        /**
+         * 构造函数。
+         */
+        function TreeView(selector, config) {
+
+            if ($.Object.isPlain(selector)) { // 重载 ( config )
+                config = selector;
+                selector = config.selector;
+                delete config.selector; // 删除，避免对原始造成不可知的副作用
+            }
+
+            config = $.Object.extend({}, defaults, config);
+
+            var $this = $(selector).treeview(config);
+
+            var meta = {
+                $this: $this,
+                $selector: $(selector)
+            };
+
+            mapper.set(this, meta);
+
+        }
+
+
+        TreeView.prototype = { // 实例方法
+
+            constructor: TreeView,
+
+            on: function (name, fn) {
+                var meta = mapper.get(this);
+                var $selector = meta.$selector;
+
+                if ($.Object.isPlain(name)) {
+                    for (var item in name) {
+                        $selector.on(item.key, item.value);
+                    }
+                    return;
+                }
+
+                $selector.on(name, fn);
+            },
+
+            getTrueZTree: function () {
+                // 获取原始控件
+                var meta = mapper.get(this);
+                return meta.$this;
+            },
+            getNodeByParam: function () {
+                return invoke(this, 'getNodeByParam', arguments);
+            },
+            getSelectedNodes: function () {
+                return invoke(this, 'getSelectedNodes', arguments);
+            },
+            selectNode: function () {
+                return invoke(this, 'selectNode', arguments);
+            },
+        };
+
+
+        return {
+
+            use: function (fn) {
+
+                Seajs.use([
+                    'bootstrap-treeview-js'
+                ], function () {
+                    fn && fn(TreeView);
+                });
+
+            },
+
+
+            config: function (obj) {
+                // get
+                if (arguments.length == 0) {
+                    return defaults;
+                }
+                // set
+                $.Object.extend(defaults, obj);
+            },
+
+        };
+
+    });
     /**
      * 表体数据模块
      *
