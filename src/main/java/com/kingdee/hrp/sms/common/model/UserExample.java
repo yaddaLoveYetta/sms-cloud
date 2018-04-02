@@ -1,7 +1,6 @@
 package com.kingdee.hrp.sms.common.model;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class UserExample {
@@ -622,126 +621,6 @@ public class UserExample {
 
         public Criteria andStatusNotBetween(Boolean value1, Boolean value2) {
             addCriterion("`status` not between", value1, value2, "status");
-            return (Criteria) this;
-        }
-
-        public Criteria andPriceIsNull() {
-            addCriterion("price is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andPriceIsNotNull() {
-            addCriterion("price is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andPriceEqualTo(Long value) {
-            addCriterion("price =", value, "price");
-            return (Criteria) this;
-        }
-
-        public Criteria andPriceNotEqualTo(Long value) {
-            addCriterion("price <>", value, "price");
-            return (Criteria) this;
-        }
-
-        public Criteria andPriceGreaterThan(Long value) {
-            addCriterion("price >", value, "price");
-            return (Criteria) this;
-        }
-
-        public Criteria andPriceGreaterThanOrEqualTo(Long value) {
-            addCriterion("price >=", value, "price");
-            return (Criteria) this;
-        }
-
-        public Criteria andPriceLessThan(Long value) {
-            addCriterion("price <", value, "price");
-            return (Criteria) this;
-        }
-
-        public Criteria andPriceLessThanOrEqualTo(Long value) {
-            addCriterion("price <=", value, "price");
-            return (Criteria) this;
-        }
-
-        public Criteria andPriceIn(List<Long> values) {
-            addCriterion("price in", values, "price");
-            return (Criteria) this;
-        }
-
-        public Criteria andPriceNotIn(List<Long> values) {
-            addCriterion("price not in", values, "price");
-            return (Criteria) this;
-        }
-
-        public Criteria andPriceBetween(Long value1, Long value2) {
-            addCriterion("price between", value1, value2, "price");
-            return (Criteria) this;
-        }
-
-        public Criteria andPriceNotBetween(Long value1, Long value2) {
-            addCriterion("price not between", value1, value2, "price");
-            return (Criteria) this;
-        }
-
-        public Criteria andTestDateIsNull() {
-            addCriterion("test_date is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andTestDateIsNotNull() {
-            addCriterion("test_date is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andTestDateEqualTo(Date value) {
-            addCriterion("test_date =", value, "testDate");
-            return (Criteria) this;
-        }
-
-        public Criteria andTestDateNotEqualTo(Date value) {
-            addCriterion("test_date <>", value, "testDate");
-            return (Criteria) this;
-        }
-
-        public Criteria andTestDateGreaterThan(Date value) {
-            addCriterion("test_date >", value, "testDate");
-            return (Criteria) this;
-        }
-
-        public Criteria andTestDateGreaterThanOrEqualTo(Date value) {
-            addCriterion("test_date >=", value, "testDate");
-            return (Criteria) this;
-        }
-
-        public Criteria andTestDateLessThan(Date value) {
-            addCriterion("test_date <", value, "testDate");
-            return (Criteria) this;
-        }
-
-        public Criteria andTestDateLessThanOrEqualTo(Date value) {
-            addCriterion("test_date <=", value, "testDate");
-            return (Criteria) this;
-        }
-
-        public Criteria andTestDateIn(List<Date> values) {
-            addCriterion("test_date in", values, "testDate");
-            return (Criteria) this;
-        }
-
-        public Criteria andTestDateNotIn(List<Date> values) {
-            addCriterion("test_date not in", values, "testDate");
-            return (Criteria) this;
-        }
-
-        public Criteria andTestDateBetween(Date value1, Date value2) {
-            addCriterion("test_date between", value1, value2, "testDate");
-            return (Criteria) this;
-        }
-
-        public Criteria andTestDateNotBetween(Date value1, Date value2) {
-            addCriterion("test_date not between", value1, value2, "testDate");
             return (Criteria) this;
         }
     }
