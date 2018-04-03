@@ -1,0 +1,10 @@
+
+/*将末极权限项节点横排*/
+ul.level1 > li.level2 {
+    /* display: inline-block;*/
+    float: left;
+}
+
+ul.level0 > li.level1 {
+    display: table;
+}

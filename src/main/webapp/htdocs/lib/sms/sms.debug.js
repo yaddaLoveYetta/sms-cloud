@@ -6375,7 +6375,7 @@
             },
             selectNode: function () {
                 return invoke(this, 'selectNode', arguments);
-            },
+            }
         };
 
 
@@ -6385,7 +6385,8 @@
 
                 Seajs.use([
                     'zTree-js',
-                    'zTree-css',
+                   // 'zTree-css',
+                    'zTreeMetro-css'
                 ], function () {
                     fn && fn(ZTree);
                 });
@@ -6477,8 +6478,7 @@
             var $this = $(selector).treeview(config);
 
             var meta = {
-                $this: $this,
-                $selector: $(selector)
+                $this: $this
             };
 
             mapper.set(this, meta);
@@ -6492,16 +6492,16 @@
 
             on: function (name, fn) {
                 var meta = mapper.get(this);
-                var $selector = meta.$selector;
+                var $this = meta.$this;
 
                 if ($.Object.isPlain(name)) {
                     for (var item in name) {
-                        $selector.on(item.key, item.value);
+                        $this.on(item.key, item.value);
                     }
                     return;
                 }
 
-                $selector.on(name, fn);
+                $this.on(name, fn);
             },
 
             getTrueZTree: function () {
@@ -7343,6 +7343,7 @@
         'ZTree': true,
         'Grid': true,
         'BarCode': true,
+        'TreeView':true
     });
 
 
@@ -7400,8 +7401,7 @@
         'MessageBox': require('Tips'),
         'Pagers': require('Pagers'),
         'Grid': require('Grid'),
-
-
+        'TreeView':require('TreeView')
     };
 
 

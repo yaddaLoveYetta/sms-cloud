@@ -113,7 +113,8 @@
                 'datetimepicker-css': 'datetimepicker/css/datetimepicker.mod.{@}.css#',
                 'datetimepicker-js': 'datetimepicker/js/datetimepicker.mod.{@}.js',
                 'zTree-js': 'ztree/js/jquery.ztree.all-3.5.js?r=' + Math.random(),
-                'zTree-css': 'ztree/css/zTreeStyle/zTreeStyle.css#',
+                'zTree-css': 'ztree/css/zTreeStyle/zTreeStyle.css',
+                'zTreeMetro-css': 'ztree/css/metroStyle/metroStyle.css',
 
                 'grid-base-js': 'jqgrid/grid.base.js?r=' + Math.random(),
                 'grid-celledit-js': 'jqgrid/grid.celledit.js',
@@ -133,8 +134,8 @@
 
                 'jquery-migrate': 'jquery.jqprint/jquery-migrate-1.2.1.min.js',
                 'easy-tabs': 'jspkg-archive/lib/jquery.easytabs.{@}.js',
-                'bootstrap-treeview-js': 'bootstrap-treeview/dist/bootstrap-treeview.min.js',
-                'bootstrap-treeview-css': 'bootstrap-treeview/dist/bootstrap-treeview.min.css'
+                'bootstrap-treeview-js': 'bootstrap-treeview-1.2.0/dist/bootstrap-treeview.min.js',
+                'bootstrap-treeview-css': 'bootstrap-treeview-1.2.0/dist/bootstrap-treeview.min.css'
             }
         },
 
@@ -196,7 +197,6 @@
                 dblClickExpand: true,//双击展开
                 selectedMulti: false,//是否允许多选
                 addDiyDom: function (treeId, treeNode) {
-
                     var text = $("#" + treeNode.tId + "_span").html();
                     if (text.length > 15) {
                         text = text.substring(0, 15) + "...";
@@ -209,14 +209,14 @@
                     enable: true,
                     idKey: "id",
                     pIdKey: "pId",
-                    rootPId: 0,
+                    rootPId: 0
                 }
             },
             check: {
-                enable: false,
+                enable: true,
                 chkStyle: "checkbox",
-                chkboxType: {"Y": "p", "N": "s"},
-            },
+                chkboxType: {"Y": "ps", "N": "ps"},
+            }
 
         },
 
@@ -230,7 +230,21 @@
             startView: 'month',
             minView: 'hour'
         },
-
+        // bootstrap-treeView配置
+        TreeView: {
+            multiSelect: false, // 是否可以多选
+            levels: 2,           // 设置继承树默认展开的级别
+            showCheckbox: true,  // 是否在节点上显示checkboxes
+            showBorder: true,   // 是否在节点上显示边框
+            showIcon: false,    // 是否显示节点图标
+            checkedIcon: 'iconfont icon-fangxingxuanzhong',//设置处于checked状态的复选框图标。
+            uncheckedIcon: 'iconfont icon-weixuanzhongkuang', // 设置图标为未选择状态的checkbox图标
+            collapseIcon: 'iconfont icon-zoomin', // 设置列表树可收缩节点的图标
+            expandIcon: ' iconfont icon-jia', // 设置列表树可展开节点的图标
+            emptyIcon: '', // 设置列表树中没有子节点的节点的图标
+            //selectedColor: 'red', // 设置列表树选择节点的背景颜色
+            //selectedBackColor: '#3071a9'// 设置被选择节点的背景颜色
+        },
         Module: {},
 
         Login: {

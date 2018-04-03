@@ -6,6 +6,28 @@
 
 (function () {
 
+
+    var $ = require('$');
+    var MiniQuery = require('MiniQuery');
+    var SMS = require('SMS');
+
+    var setting = {
+        check: {
+            enable: true,
+            chkboxType: {"Y": 'ps', "N": 'ps'}
+        },
+        data: {
+            simpleData: {
+                enable: true,
+                idKey: "id",
+                pIdKey: "pId",
+                rootPId: 0
+            }
+        }, callback: {
+            //onCheck: zTreeOnCheck // checkbox / radio 被勾选 或 取消勾选的事件回调函数
+        }
+    };
+
     function getTree() {
 
         var tree = [
@@ -103,31 +125,132 @@
         return tree;
     }
 
-    var view = $('#tree').treeview({
-        data: getTree(),
-        multiSelect: true,
-        levels: 4,
-        showCheckbox: true,
-        showBorder: true,
-        showIcon: false,
-        checkedIcon: 'iconfont icon-chakan',
-        uncheckedIcon: 'iconfont icon-jinyong',
-        collapseIcon: 'iconfont icon-chakan',
-        expandIcon: ' iconfont icon-icon-xinzeng',
-        selectedColor: 'red',
-        selectedBackColor: '#3071a9'
+    function getZTree() {
+
+        return [
+            {
+                id: 1,
+                name: "1",
+                pId: 0,
+                checked: false,
+                open: true
+            },
+            {
+                id: 2,
+                name: "101",
+                pId: 1,
+                checked: true,
+                open: true
+            },
+            {
+                id: 3,
+                name: "10101",
+                pId: 2,
+                checked: true,
+                open: true
+            },
+            {
+                id: 4,
+                name: "10102",
+                pId: 2,
+                checked: true,
+                open: true
+            },
+            {
+                id: 5,
+                name: "102",
+                pId: 1,
+                checked: true,
+                open: true
+            }
+            ,
+            {
+                id: 6,
+                name: "103",
+                pId: 1,
+                checked: true,
+                open: true
+            },
+            {
+                id: 7,
+                name: "10103",
+                pId: 2,
+                checked: true,
+                open: true
+            },
+            {
+                id: 8,
+                name: "10104",
+                pId: 2,
+                checked: true,
+                open: true
+            },
+            {
+                id: 9,
+                name: "10105",
+                pId: 2,
+                checked: true,
+                open: true
+            },
+            {
+                id: 10,
+                name: "10106",
+                pId: 2,
+                checked: true,
+                open: true
+            },
+            {
+                id: 11,
+                name: "10107",
+                pId: 2,
+                checked: true,
+                open: true
+            }
+
+        ];
+
+    }
+
+    /*SMS.use('TreeView', function (TreeView) {
+
+        var treeView = new TreeView({
+            selector: '#tree',
+            data: getTree()
+        });
+
+        treeView.on('nodeSelected', function (event, data) {
+            console.log(data);
+            console.log($('.list-group-item').find('span.indent').length);
+        });
+        treeView.on('nodeChecked', function (event, data) {
+            console.log(data);
+        });
+        treeView.on('nodeUnchecked', function (event, data) {
+            console.log(data);
+        });
+
+    });*/
+
+    //$.fn.zTree.init($("#tree"), setting, getZTree());
+    SMS.use('ZTree', function (ZTree) {
+
+        var zTree = new ZTree({
+            selector: '#tree',
+            //config: setting,
+            data: getZTree()
+        });
+
+        /*        treeView.on('nodeSelected', function (event, data) {
+                    console.log(data);
+                    console.log($('.list-group-item').find('span.indent').length);
+                });
+                treeView.on('nodeChecked', function (event, data) {
+                    console.log(data);
+                });
+                treeView.on('nodeUnchecked', function (event, data) {
+                    console.log(data);
+                });*/
+
     });
 
-    $('#tree').treeview('checkAll', {silent: true});
-
-    $('#tree').on('nodeSelected', function (event, data) {
-        console.log(data);
-        console.log($('.list-group-item').find('span.indent').length);
-    });
-    $('#tree').on('nodeChecked', function (event, data) {
-        console.log(data);
-    });
-    $('#tree').on('nodeUnchecked', function (event, data) {
-        console.log(data);
-    });
 })();
