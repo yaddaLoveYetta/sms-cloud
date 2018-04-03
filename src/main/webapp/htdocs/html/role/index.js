@@ -12,18 +12,7 @@
     var SMS = require('SMS');
 
     var setting = {
-        check: {
-            enable: true,
-            chkboxType: {"Y": 'ps', "N": 'ps'}
-        },
-        data: {
-            simpleData: {
-                enable: true,
-                idKey: "id",
-                pIdKey: "pId",
-                rootPId: 0
-            }
-        }, callback: {
+        callback: {
             //onCheck: zTreeOnCheck // checkbox / radio 被勾选 或 取消勾选的事件回调函数
         }
     };
