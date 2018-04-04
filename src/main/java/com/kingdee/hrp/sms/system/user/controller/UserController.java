@@ -149,13 +149,13 @@ public class UserController {
      */
     @RequestMapping(value = "getRolePermissions")
     @ResponseBody
-    public List<Map<String, Object>> getRolePermissions(Long role) {
+    public List<Map<String, Object>> getRolePermissions(Long roleId) {
 
-        if (null == role || role <= 0) {
+        if (null == roleId || roleId <= 0) {
             throw new BusinessLogicRunTimeException("角色id不能为空!");
         }
 
-        return userService.getRolePermissions(role);
+        return userService.getRolePermissions(roleId);
     }
 
     /**

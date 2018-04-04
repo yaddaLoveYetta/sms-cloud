@@ -10,6 +10,30 @@
     var $ = require('$');
     var MiniQuery = require('MiniQuery');
     var SMS = require('SMS');
+    var Iframe = SMS.require('Iframe');
+    var Tree = require('Tree');
+    var Edit = require('Edit');
+
+    var dialog = Iframe.getDialog();
+    var roleId = MiniQuery.Url.getQueryString(window.location.href, 'roleId');
+
+    if (dialog) {
+
+        var data = dialog.getData();
+        roleId = data.roleId;
+
+        /*        dialog.on({
+                    close: function () {
+                        getData();
+                    }
+                });*/
+    }
+    if (!roleId) {
+        return;
+    }
+
+    Tree.render(roleId);
+/*
 
     var setting = {
         check: {
@@ -211,27 +235,7 @@
 
     }
 
-    /*SMS.use('TreeView', function (TreeView) {
 
-        var treeView = new TreeView({
-            selector: '#tree',
-            data: getTree()
-        });
-
-        treeView.on('nodeSelected', function (event, data) {
-            console.log(data);
-            console.log($('.list-group-item').find('span.indent').length);
-        });
-        treeView.on('nodeChecked', function (event, data) {
-            console.log(data);
-        });
-        treeView.on('nodeUnchecked', function (event, data) {
-            console.log(data);
-        });
-
-    });*/
-
-    //$.fn.zTree.init($("#tree"), setting, getZTree());
     SMS.use('ZTree', function (ZTree) {
 
         var zTree = new ZTree({
@@ -239,18 +243,7 @@
             //config: setting,
             data: getZTree()
         });
-
-        /*        treeView.on('nodeSelected', function (event, data) {
-                    console.log(data);
-                    console.log($('.list-group-item').find('span.indent').length);
-                });
-                treeView.on('nodeChecked', function (event, data) {
-                    console.log(data);
-                });
-                treeView.on('nodeUnchecked', function (event, data) {
-                    console.log(data);
-                });*/
-
     });
+*/
 
 })();

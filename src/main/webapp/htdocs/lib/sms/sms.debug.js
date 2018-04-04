@@ -6309,9 +6309,7 @@
             var $this = meta.$this;
 
             var args = [].slice.call($argumetns, 0);
-            // args = [name].concat(args);
 
-            /* return $this.zTree.apply($this, args); */
             return $this[name].apply($this, args);
 
         }
@@ -6326,16 +6324,14 @@
                 config = selector;
                 selector = config.selector;
                 data = config.data;
-                delete config.selector; // 删除，避免对原始造成不可知的副作用
-                delete config.data; // 删除，避免对原始造成不可知的副作用
+                config = config.config;
             }
 
             config = $.Object.extend({}, defaults, config);
 
             var $this = $.fn.zTree.init($(selector), config, data);
-
             var meta = {
-                $this: $this,
+                $this: $this
             };
 
             mapper.set(this, meta);
@@ -6375,7 +6371,15 @@
             },
             selectNode: function () {
                 return invoke(this, 'selectNode', arguments);
-            }
+            },
+            checkNode: function () {
+                return invoke(this, 'checkNode', arguments);
+            },
+            setting: function () {
+                var meta = mapper.get(this);
+                return meta.$this['setting'];
+            },
+            //setting: mapper.get(this).$this['setting']
         };
 
 
@@ -6385,7 +6389,7 @@
 
                 Seajs.use([
                     'zTree-js',
-                   // 'zTree-css',
+                    // 'zTree-css',
                     'zTreeMetro-css'
                 ], function () {
                     fn && fn(ZTree);
@@ -7343,7 +7347,7 @@
         'ZTree': true,
         'Grid': true,
         'BarCode': true,
-        'TreeView':true
+        'TreeView': true
     });
 
 
@@ -7401,7 +7405,7 @@
         'MessageBox': require('Tips'),
         'Pagers': require('Pagers'),
         'Grid': require('Grid'),
-        'TreeView':require('TreeView')
+        'TreeView': require('TreeView')
     };
 
 

@@ -188,12 +188,12 @@
         },
 
         ZTree: {
-            treeId: '',
-            treeObj: null,
+/*            treeId: '',
+            treeObj: null,*/
             callback: {},
             view: {
-                showIcon: true,
-                showLine: true,
+                showIcon: false,
+                showLine: false,
                 dblClickExpand: true,//双击展开
                 selectedMulti: false,//是否允许多选
                 addDiyDom: function (treeId, treeNode) {

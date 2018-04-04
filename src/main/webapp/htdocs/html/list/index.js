@@ -22,7 +22,7 @@
     // var CascadeNavigator = require('CascadeNavigator');
     // var ClassMapping = require('ClassMapping');
     // 业务类别
-    var classId = MiniQuery.Url.getQueryString(window.location.href, 'classId');
+    var classId = Number(MiniQuery.Url.getQueryString(window.location.href, 'classId'));
 
     // 界面设置的过滤条件
     var conditions = [];
@@ -246,6 +246,63 @@
                     }
                 });
 
+            },
+            // 角色授权
+            'authorize': function (item, index) {
+
+                if (classId !== 1002) {
+                    return;
+                }
+                var list = List.getSelectedItems();
+
+                if (list.length === 0) {
+                    SMS.Tips.error('请选择要操作的项', 1000);
+                    return;
+                }
+
+                if (list.length > 1) {
+                    SMS.Tips.error('一次只能对一条记录进行操作', 1000);
+                    return;
+                }
+
+                SMS.use('Dialog', function (Dialog) {
+
+                    var dialog = new Dialog({
+                        //var url = $.Url.setQueryString('./html/list/index.html', 'classId', formClassID);
+                        title: '角色-' + list[0].data.name + '-权限管理',
+                        url: './html/role/index.html',
+                        width: $(window).width() * 0.8,
+                        height: $(window).height(),
+                        button: [{
+                            value: '取消授权',
+                            className: 'sms-cancel-btn'
+                        }, {
+                            value: '确认授权',
+                            className: 'sms-submit-btn',
+                            callback: function () {
+                                this.isSubmit = true;
+                            }
+                        }],
+                        data: {
+                            roleId: list[0].primaryValue
+                        }
+                    });
+
+                    // 默认关闭行为为不提交
+                    dialog.isSubmit = false;
+                    dialog.showModal();
+
+                    dialog.on({
+                        remove: function () {
+                            if (dialog.isSubmit) {
+                                // 保存权限设置
+                                dialog.saveRolePerMissions(function () {
+                                    SMS.Tips.success('权限设置成功', 1500)
+                                });
+                            }
+                        }
+                    });
+                });
             },
             // 更多菜单
             'more': function (item, index) {

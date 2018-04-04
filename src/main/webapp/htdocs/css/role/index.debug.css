@@ -1,4 +1,3 @@
-
 /*将末极权限项节点横排*/
 ul.level1 > li.level2 {
     /* display: inline-block;*/
@@ -7,4 +6,73 @@ ul.level1 > li.level2 {
 
 ul.level0 > li.level1 {
     display: table;
+}
+
+.ztree * {
+    font-size: 14px !important;
+}
+
+.ztree li {
+    line-height: 30px !important;
+}
+
+.ztree li span.button.ico_docu {
+    vertical-align: middle !important;
+}
+
+.ztree li span.button.ico_open {
+    vertical-align: middle !important;
+}
+
+.ztree li span.button.ico_close {
+    vertical-align: middle !important;
+}
+
+.ztree li a {
+    height: 25px !important;
+}
+
+.ztree li a.curSelectedNode {
+    background-color: #54add3 !important;
+    color: white !important;
+    opacity: 1 !important;
+}
+
+.ztree li span.button.chk.checkbox_true_full + a.level2 {
+    background-color: #428bca !important;
+    color: white !important;
+}
+
+.ztree li span.button.chk.checkbox_false_full + a.level2 {
+    background-color: #d9534f !important;
+    color: white !important;
+}
+
+.ztree li span.button.chk + a.level2 {
+    border-radius: 5px !important;
+    padding: 5px 10px;
+    line-height: 25px;
+    margin: 10px auto;
+}
+
+/*checkBox 一定要有，设置宽高界面隐藏*/
+.ztree li span.button.chk {
+    width: 0px !important;
+    height: 0px !important;
+    margin: 0 0px !important;
+}
+
+ul.level0 > li.level1 {
+    margin-top: 5px;
+}
+
+.ztree li a:hover{
+    text-decoration: none;
+}
+
+.tips {
+    height: 30px;
+    line-height: 30px;
+    color: red;
+    padding: 5px;
 }

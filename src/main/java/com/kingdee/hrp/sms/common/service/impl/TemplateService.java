@@ -227,7 +227,7 @@ public class TemplateService extends BaseService implements ITemplateService {
             FormAction formAction = it.next();
             Integer actionOwnerType = formAction.getOwnerType();
             Integer actionDisplay = formAction.getDisplay();
-
+            // 权限验证 TODO
             if (!((actionOwnerType & ownerType) == ownerType && (actionDisplay & display) == display)) {
                 // 不显示或非该角色类别拥有的功能
                 it.remove();
