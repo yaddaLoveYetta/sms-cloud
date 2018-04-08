@@ -36,6 +36,8 @@ ul.level0 > li.level1 {
     background-color: #54add3 !important;
     color: white !important;
     opacity: 1 !important;
+    border-radius: 4px;
+    line-height: 25px;
 }
 
 .ztree li span.button.chk.checkbox_true_full + a.level2 {

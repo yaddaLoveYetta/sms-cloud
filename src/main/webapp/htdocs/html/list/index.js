@@ -281,7 +281,10 @@
                             className: 'sms-submit-btn',
                             callback: function () {
                                 this.isSubmit = true;
+                                dialog.__dispatchEvent('saveRolePerMissions');
+                                return true;
                             }
+
                         }],
                         data: {
                             roleId: list[0].primaryValue
@@ -292,16 +295,6 @@
                     dialog.isSubmit = false;
                     dialog.showModal();
 
-                    dialog.on({
-                        remove: function () {
-                            if (dialog.isSubmit) {
-                                // 保存权限设置
-                                dialog.saveRolePerMissions(function () {
-                                    SMS.Tips.success('权限设置成功', 1500)
-                                });
-                            }
-                        }
-                    });
                 });
             },
             // 更多菜单

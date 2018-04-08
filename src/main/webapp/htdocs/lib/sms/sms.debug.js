@@ -6375,6 +6375,9 @@
             checkNode: function () {
                 return invoke(this, 'checkNode', arguments);
             },
+            getCheckedNodes:function () {
+                return invoke(this, 'getCheckedNodes', arguments);
+            },
             setting: function () {
                 var meta = mapper.get(this);
                 return meta.$this['setting'];

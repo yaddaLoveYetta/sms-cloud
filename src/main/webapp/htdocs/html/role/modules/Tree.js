@@ -34,26 +34,29 @@
         if (treeNode.isParent) {
             return;
         }
-        var currAcMsk = +treeNode.accessMask;
-        var currFAccessUse = +treeNode.accessUse;
+        var curAccessMask = treeNode.accessMask;
+        var curAccessUse = treeNode.accessUse;
         var parentNode = treeNode.getParentNode();
         var currSiblingsNode = parentNode.children;
+
         if (treeNode.checked) {
+            // 当前权限项选中则依赖权限项也必须选中 eg:新增权限依赖查看权限，则选中新增权限时查看权限也必须选中
             $.Array.each(currSiblingsNode, function (node, index) {
-                var nodelAcMsk = +node.accessMask;
-                if ((currFAccessUse & nodelAcMsk) == nodelAcMsk) {
+                var accessMask = node.accessMask;
+                if ((curAccessUse & accessMask) === accessMask) {
                     zTree.checkNode(node, true, true);
                 }
             });
         } else {
+            // 当前权限项不选中则依赖此权限的权限项也必须不选中 eg:新增权限依赖查看权限，则不选中查看权限时新增权限也必须不选中
             $.Array.each(currSiblingsNode, function (node, index) {
-                var nodeFAccessUse = +node.accessUse;
-                if ((currAcMsk | nodeFAccessUse) == currAcMsk) {
+                var accessUse = +node.accessUse;
+                if ((curAccessMask | accessUse) === curAccessMask) {
                     zTree.checkNode(node, false, true);
                 }
             });
         }
-    };
+    }
 
     function render(roleId, fn) {
 
@@ -96,6 +99,7 @@
 
                         treeData.push({
                             id: item.id,
+                            formActionId: item.formActionId,
                             name: item.name,
                             pId: grp.id,
                             checked: twoCheck,
@@ -112,13 +116,6 @@
                     open: true
                 });
             });
-/*            // 根节点
-            treeData.push({
-                id: 0,
-                name: '权限清单-蓝色代表有该权限，红色代表无该权限',
-                pId: -1,
-                open: true
-            });*/
 
             SMS.use('ZTree', function (ZTree) {
                 zTree = new ZTree({
@@ -240,12 +237,70 @@
      */
     function saveRolePerMissions(roleId, perMissions, fn) {
 
+        var nodes = zTree.getCheckedNodes(true);
+
+        var topNodes = $.Array.grep(nodes, function (item, index) {
+            return item.level === 0;
+        });
+
+        var permitData = [];
+        //循环顶级节点
+        $.Array.each(topNodes, function (topNode, index) {
+            console.log("-顶级节点-" + topNode.name);
+
+            if (topNode.children) {
+                $.Array.each(topNode.children, function (tNode, index) {
+                    //二级节点
+                    if (tNode.checked) {
+                        var accessMask = 0;
+                        var pData = {};
+                        pData.formActionId = tNode.formActionId;
+                        console.log("-2级节点-" + tNode.name);
+                        if (tNode.children) {
+                            $.Array.each(tNode.children, function (cNode, index) {
+                                //三级节点
+                                if (cNode.checked) {
+                                    accessMask = accessMask | cNode.accessMask;
+                                    console.log("-3级节点-" + cNode.name);
+                                }
+                            });
+                        }
+                        pData.accessMask = accessMask;
+                        permitData.push(pData);
+                    }
+                });
+            }
+        });
+
+        // 保存
+        var api = new API('role/saveRolePerMissions');
+        permitData = $.Object.toJson(permitData);
+
+        api.post({
+            roleId: roleId,
+            data: permitData
+        });
+
+        api.on({
+            'success': function (data, json) {
+                fn && fn(data);
+                SMS.Tips.success('保存成功！', 1500);
+            },
+            'fail': function (code, msg, json) {
+                var s = $.String.format('{0} (错误码: {1})', msg, code);
+                SMS.Tips.error(s, 1500);
+            },
+            'error': function () {
+                SMS.Tips.error('网络繁忙，请稍候再试', 1500);
+            }
+        });
+
     }
 
 
     return {
         render: render,
-        savePermit: savePermit
+        saveRolePerMissions: saveRolePerMissions
     }
 
 });
