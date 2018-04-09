@@ -23,15 +23,17 @@
         roleId = data.roleId;
 
         dialog.on({
-            'saveRolePerMissions': saveRolePerMissions
+            close: function () {
+                getPermitData();
+            }
         });
     }
     if (!roleId) {
         return;
     }
 
-    function saveRolePerMissions(fn) {
-        Tree.saveRolePerMissions(roleId, fn);
+    function getPermitData() {
+        dialog.setData(Tree.getPermitData(roleId));
     }
 
     Tree.render(roleId);

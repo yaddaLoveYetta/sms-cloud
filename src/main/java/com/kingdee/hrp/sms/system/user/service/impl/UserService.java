@@ -46,9 +46,7 @@ public class UserService extends BaseService implements IUserService {
         String password;
         String name;
         String mobile;
-        String businessLicense;
-        String taxId;
-        String address;
+        String creditCode;
         String orgName;
 
         JsonNode userTypeJsonNode = jsonNode.get("userType");
@@ -56,9 +54,7 @@ public class UserService extends BaseService implements IUserService {
         JsonNode passwordJsonNode = jsonNode.get("password");
         JsonNode nameJsonNode = jsonNode.get("name");
         JsonNode mobileJsonNode = jsonNode.get("mobile");
-        JsonNode businessLicenseJsonNode = jsonNode.get("businessLicense");
-        JsonNode taxIdJsonNode = jsonNode.get("taxId");
-        JsonNode addressJsonNode = jsonNode.get("address");
+        JsonNode creditCodeJsonNode = jsonNode.get("creditCode");
         JsonNode orgNameJsonNode = jsonNode.get("orgName");
 
         if (null == userTypeJsonNode || userTypeJsonNode.asInt() <= 0) {
@@ -91,22 +87,16 @@ public class UserService extends BaseService implements IUserService {
             mobile = mobileJsonNode.asText();
         }
 
-        if (null == businessLicenseJsonNode || !StringUtils.isNotBlank(businessLicenseJsonNode.asText())) {
-            throw new BusinessLogicRunTimeException("缺少营业执照号");
+        if (null == creditCodeJsonNode || !StringUtils.isNotBlank(creditCodeJsonNode.asText())) {
+            String msg = "";
+            if (userType == 2) {
+                msg = "缺少医疗机构登记号";
+            } else {
+                msg = "缺少企业统一信用代码";
+            }
+            throw new BusinessLogicRunTimeException(msg);
         } else {
-            businessLicense = businessLicenseJsonNode.asText();
-        }
-
-        if (null == taxIdJsonNode || !StringUtils.isNotBlank(taxIdJsonNode.asText())) {
-            throw new BusinessLogicRunTimeException("缺少税务登记号");
-        } else {
-            taxId = taxIdJsonNode.asText();
-        }
-
-        if (null == addressJsonNode || !StringUtils.isNotBlank(addressJsonNode.asText())) {
-            throw new BusinessLogicRunTimeException("缺少企业地址");
-        } else {
-            address = addressJsonNode.asText();
+            creditCode = creditCodeJsonNode.asText();
         }
 
         if (null == orgNameJsonNode || !StringUtils.isNotBlank(orgNameJsonNode.asText())) {
@@ -136,12 +126,10 @@ public class UserService extends BaseService implements IUserService {
             Hospital hospital = new Hospital();
             hospital.setName(orgName);
             hospital.setNumber(Pinyin4jUtil.converterToFirstSpell(orgName));
-            hospital.setBusinessLicense(businessLicense);
-            hospital.setTaxId(taxId);
-            hospital.setAddress(address);
+            hospital.setCreditCode(creditCode);
             hospital.setId(org);
 
-            hospitalMapper.insert(hospital);
+            hospitalMapper.insertSelective(hospital);
         } else if (userType == 3) {
             // 供应商注册
             SupplierMapper supplierMapper = sqlSession.getMapper(SupplierMapper.class);
@@ -150,12 +138,10 @@ public class UserService extends BaseService implements IUserService {
             Supplier supplier = new Supplier();
             supplier.setName(orgName);
             supplier.setNumber(Pinyin4jUtil.converterToFirstSpell(orgName));
-            supplier.setBusinessLicense(businessLicense);
-            supplier.setTaxId(taxId);
-            supplier.setAddress(address);
+            supplier.setCreditCode(creditCode);
             supplier.setId(org);
 
-            supplierMapper.insert(supplier);
+            supplierMapper.insertSelective(supplier);
         } else {
             throw new BusinessLogicRunTimeException("错误的用户类别!");
         }
@@ -266,7 +252,7 @@ public class UserService extends BaseService implements IUserService {
         for (AccessControl accessControl : accessControlList) {
             accessControlMapper.insertSelective(accessControl);
         }
-       // accessControlMapper.batchInsert(accessControlList);
+        // accessControlMapper.batchInsert(accessControlList);
 
     }
 
@@ -287,10 +273,17 @@ public class UserService extends BaseService implements IUserService {
 
         criteria.andUserNameEqualTo(username);
         criteria.andPasswordEqualTo(password);
+        // 非禁用用户
+        // criteria.andStatusEqualTo(false);
 
         List<User> list = userMapper.selectByExample(userExample);
         if (list != null && list.size() > 0) {
-            return list.get(0);
+
+            User user = list.get(0);
+            if (user.getStatus()) {
+                throw new BusinessLogicRunTimeException("你的账户已经被禁用，请联系管理员!");
+            }
+            return user;
         }
         throw new BusinessLogicRunTimeException("用户名或密码错误!");
     }
@@ -353,7 +346,7 @@ public class UserService extends BaseService implements IUserService {
 
     @Override
     @Transactional(rollbackFor = {Exception.class})
-    public boolean editPwd(Long userId, String oldPwd, String newPwd) {
+    public Boolean editPwd(Long userId, String oldPwd, String newPwd) {
 
         User user = null;
         UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
@@ -462,6 +455,29 @@ public class UserService extends BaseService implements IUserService {
     }
 
     /**
+     * 保存角色权限
+     * 先删除roleId已有权限再新增rolePermissions
+     *
+     * @param roleId            角色id
+     * @param accessControlList 角色授权结果
+     * @return Boolean
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void saveRolePermissions(Long roleId, List<AccessControl> accessControlList) {
+
+        // 1:删除roleId已存在的保存的授权结果
+        AccessControlMapper accessControlMapper = sqlSession.getMapper(AccessControlMapper.class);
+        AccessControlExample accessControlExample = new AccessControlExample();
+        AccessControlExample.Criteria accessControlExampleCriteria = accessControlExample.createCriteria();
+        accessControlExampleCriteria.andRoleIdEqualTo(roleId);
+        accessControlMapper.deleteByExample(accessControlExample);
+
+        // 新增roleId权限项rolePermissions
+        accessControlMapper.batchInsert(accessControlList);
+    }
+
+    /**
      * 菜单权限打包成树形结构数据
      *
      * @param menus             菜单数据
@@ -501,9 +517,16 @@ public class UserService extends BaseService implements IUserService {
                     // 明细菜单获取对应权限项
                     List<Map<String, Object>> accessList = new ArrayList<>();
 
+                    // 是否需要进行权限控制-menu可以不进行权限控制
+                    // (当t_menu不配置form_action_id或者配置的form_action在t_form_action中不存在时，认为不需要进行权限控制)
+                    Boolean isAccessControl = false;
+
                     for (FormAction formAction : formActions) {
 
                         if (formAction.getClassId().equals(formActionId)) {
+
+                            // 有在t_form_action表中配置权限项
+                            isAccessControl = true;
 
                             Integer accessMask = formAction.getAccessMask();
                             Integer accessUse = formAction.getAccessUse();

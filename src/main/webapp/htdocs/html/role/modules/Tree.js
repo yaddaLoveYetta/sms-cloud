@@ -230,12 +230,12 @@
     }
 
     /**
-     * 保存角色权限
+     * 保存角色权限 saveRolePerMissions
      * @param roleId  角色id
      * @param perMissions 权限授权结果集
      * @param fn 回调
      */
-    function saveRolePerMissions(roleId, perMissions, fn) {
+    function getPermitData(roleId, fn) {
 
         var nodes = zTree.getCheckedNodes(true);
 
@@ -246,7 +246,6 @@
         var permitData = [];
         //循环顶级节点
         $.Array.each(topNodes, function (topNode, index) {
-            console.log("-顶级节点-" + topNode.name);
 
             if (topNode.children) {
                 $.Array.each(topNode.children, function (tNode, index) {
@@ -254,53 +253,32 @@
                     if (tNode.checked) {
                         var accessMask = 0;
                         var pData = {};
-                        pData.formActionId = tNode.formActionId;
-                        console.log("-2级节点-" + tNode.name);
+                        pData.classId = tNode.formActionId;
+
                         if (tNode.children) {
                             $.Array.each(tNode.children, function (cNode, index) {
                                 //三级节点
                                 if (cNode.checked) {
                                     accessMask = accessMask | cNode.accessMask;
-                                    console.log("-3级节点-" + cNode.name);
                                 }
                             });
                         }
                         pData.accessMask = accessMask;
+                        pData.roleId = roleId;
                         permitData.push(pData);
                     }
                 });
             }
         });
 
-        // 保存
-        var api = new API('role/saveRolePerMissions');
-        permitData = $.Object.toJson(permitData);
-
-        api.post({
-            roleId: roleId,
-            data: permitData
-        });
-
-        api.on({
-            'success': function (data, json) {
-                fn && fn(data);
-                SMS.Tips.success('保存成功！', 1500);
-            },
-            'fail': function (code, msg, json) {
-                var s = $.String.format('{0} (错误码: {1})', msg, code);
-                SMS.Tips.error(s, 1500);
-            },
-            'error': function () {
-                SMS.Tips.error('网络繁忙，请稍候再试', 1500);
-            }
-        });
+        return permitData;
 
     }
 
 
     return {
         render: render,
-        saveRolePerMissions: saveRolePerMissions
+        getPermitData: getPermitData
     }
 
 });

@@ -12,6 +12,7 @@ define('Register', function (require, module, exports) {
     var API = SMS.require('API');
     var MD5 = SMS.require('MD5');
     var MessageBox = SMS.require('MessageBox');
+    var Validate = require('Validate');
 
     var hasBind = false;
 
@@ -97,51 +98,51 @@ define('Register', function (require, module, exports) {
 
             switch (stepNumber) {
                 case 0:
-                    if ($('input[name=user_type]:checked').val() > 0) {
-                        //转下一步
-                        return true;
-                    }
-                    else {
-                        MessageBox.show('请选择注册用户类别!','金蝶提示',true);
-                        return false;
-                    }
-                    break;
+                /*                    if ($('input[name=user_type]:checked').val() > 0) {
+                                        //转下一步
+                                        return true;
+                                    }
+                                    else {
+                                        MessageBox.show('请选择注册用户类别!', '金蝶提示', true);
+                                        return false;
+                                    }
+                                    break;*/
 
                 case 1:
 
-                    var validate = true;
+                    /*                    var validate = true;
 
-                    var validate_list = ['userName', 'password', 'name', 'mobile'];
+                                        var validate_list = ['userName', 'password', 'name', 'mobile'];
 
-                    $.Array.keep(validate_list, function (fieldName, index) {
+                                        $.Array.keep(validate_list, function (fieldName, index) {
 
-                       var $target= $('#' + fieldName);
-                        var v =$target.val();
+                                            var $target = $('#' + fieldName);
+                                            var v = $target.val();
 
-                        var msgElement = document.getElementById(fieldName + '-msg');
+                                            var msgElement = document.getElementById(fieldName + '-msg');
 
-                        if (!v) {
+                                            if (!v) {
 
-                            validate = false;
+                                                validate = false;
 
-                            if (!$(msgElement).hasClass('show')) {
-                                $(msgElement).toggleClass('show');
-                            }
-                            $(msgElement).html($target.attr('placeholder'));
+                                                if (!$(msgElement).hasClass('show')) {
+                                                    $(msgElement).toggleClass('show');
+                                                }
+                                                $(msgElement).html($target.attr('placeholder'));
 
-                        } else {
+                                            } else {
 
-                            $(msgElement).html('');
-                            if ($(msgElement).hasClass('show')) {
-                                $(msgElement).toggleClass('show');
-                            }
-                        }
+                                                $(msgElement).html('');
+                                                if ($(msgElement).hasClass('show')) {
+                                                    $(msgElement).toggleClass('show');
+                                                }
+                                            }
 
-                    });
+                                        });
 
-                    if (!validate && stepDirection === 'forward') {
-                        return false;
-                    }
+                                        if (!validate && stepDirection === 'forward') {
+                                            return false;
+                                        }*/
 
                     break;
             }
@@ -186,13 +187,37 @@ define('Register', function (require, module, exports) {
         }
         else {
             validate = false;
-            MessageBox.show('请选择注册用户类别!','金蝶提示',true);
+            MessageBox.show('请选择注册用户类别!', '金蝶提示', true);
+            fn && fn(false);
+            return;
         }
 
 
-        var validate_list = ['userName', 'password', 'name', 'mobile', 'orgName', 'businessLicense', 'taxId', 'address'];
+        // 手机号码校验
+        var mobile = $('#mobile').val();
+        if (!Validate.mobilePhone(mobile)) {
+            validate = false;
+            MessageBox.show('手机号码不正确!', '金蝶提示', true);
+            fn && fn(false);
+            return;
+        } else {
+            data['mobile'] = mobile;
+        }
 
-        $.Array.keep(validate_list, function (fieldName, index) {
+        // 企业统一社会信用代码校验
+        var creditCode = $('#creditCode').val();
+        if (!Validate.checkSocialCreditCode(creditCode)) {
+            validate = false;
+            MessageBox.show('企业统一信用代码不正确!', '金蝶提示', true);
+            fn && fn(false);
+            return;
+        } else {
+            data['creditCode'] = creditCode;
+        }
+
+        var validate_list = ['userName', 'password', 'name', 'orgName', 'creditCode'];
+
+        $.Array.each(validate_list, function (fieldName, index) {
 
             var $target = $('#' + fieldName);
 
@@ -203,11 +228,8 @@ define('Register', function (require, module, exports) {
             if (!v) {
 
                 validate = false;
-
-                if (!$(msgElement).hasClass('show')) {
-                    $(msgElement).toggleClass('show');
-                }
-                $(msgElement).html($target.attr('placeholder'));
+                MessageBox.show($target.attr('placeholder'), '金蝶提示', true);
+                return false;
 
             } else {
 
@@ -215,11 +237,6 @@ define('Register', function (require, module, exports) {
                     data[fieldName] = MD5.encrypt(v);
                 } else {
                     data[fieldName] = v;
-                }
-
-                $(msgElement).html('');
-                if ($(msgElement).hasClass('show')) {
-                    $(msgElement).toggleClass('show');
                 }
             }
 
@@ -235,7 +252,7 @@ define('Register', function (require, module, exports) {
 
         validate(function (falg, registerInfo) {
 
-            if (!validate) {
+            if (!falg) {
                 $(".final-btn").attr("disabled", false).html('立即注册');
                 return;
             }
@@ -245,18 +262,18 @@ define('Register', function (require, module, exports) {
                 data: registerInfo,
 
                 'success': function (data, json) {
-                    MessageBox.show('注册成功,请用注册的账号登录系统！','金蝶提示',true);
+                    MessageBox.show('注册成功,请用注册的账号登录系统！', '金蝶提示', true);
                     $(model).modal('hide');
                     $(".final-btn").attr("disabled", false).html('立即注册');
                 },
 
                 'fail': function (code, msg, json) {
-                    MessageBox.show(msg,'金蝶提示',true);
+                    MessageBox.show(msg, '金蝶提示', true);
                     $(".final-btn").attr("disabled", false).html('立即注册');
                 },
 
                 'error': function () {
-                    MessageBox.show('网络错误，请稍候再试','金蝶提示',true);
+                    MessageBox.show('网络错误，请稍候再试', '金蝶提示', true);
                     $(".final-btn").attr("disabled", false).html('立即注册');
                 }
 

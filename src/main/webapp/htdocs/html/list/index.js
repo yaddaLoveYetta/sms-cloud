@@ -281,8 +281,8 @@
                             className: 'sms-submit-btn',
                             callback: function () {
                                 this.isSubmit = true;
-                                dialog.__dispatchEvent('saveRolePerMissions');
-                                return true;
+                                /*        dialog.__dispatchEvent('saveRolePerMissions');
+                                        return true;*/
                             }
 
                         }],
@@ -294,6 +294,38 @@
                     // 默认关闭行为为不提交
                     dialog.isSubmit = false;
                     dialog.showModal();
+
+                    dialog.on({
+                        remove: function () {
+                            var data = dialog.getData();
+                            if (dialog.isSubmit) {
+
+                                // 保存
+                                var api = new API('user/saveRolePerMissions');
+                                var permitData = $.Object.toJson(data);
+
+                                api.post({
+                                    roleId: list[0].primaryValue,
+                                    perMissions: permitData
+                                });
+
+                                api.on({
+                                    'success': function (data, json) {
+                                        SMS.Tips.success('保存成功！', 1500);
+                                    },
+                                    'fail': function (code, msg, json) {
+                                        var s = $.String.format('{0} (错误码: {1})', msg, code);
+                                        SMS.Tips.error(s, 1500);
+                                    },
+                                    'error': function () {
+                                        SMS.Tips.error('网络繁忙，请稍候再试', 1500);
+                                    }
+                                });
+
+
+                            }
+                        }
+                    });
 
                 });
             },

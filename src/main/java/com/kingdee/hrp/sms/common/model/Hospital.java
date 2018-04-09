@@ -9,7 +9,7 @@ public class Hospital extends RootModel {
 
     private String name;
 
-    private String businessLicense;
+    private String creditCode;
 
     private String address;
 
@@ -39,12 +39,12 @@ public class Hospital extends RootModel {
         this.name = name == null ? null : name.trim();
     }
 
-    public String getBusinessLicense() {
-        return businessLicense;
+    public String getCreditCode() {
+        return creditCode;
     }
 
-    public void setBusinessLicense(String businessLicense) {
-        this.businessLicense = businessLicense == null ? null : businessLicense.trim();
+    public void setCreditCode(String creditCode) {
+        this.creditCode = creditCode == null ? null : creditCode.trim();
     }
 
     public String getAddress() {
@@ -74,7 +74,7 @@ public class Hospital extends RootModel {
         id("id"),
         number("number"),
         name("name"),
-        businessLicense("business_license"),
+        creditCode("credit_code"),
         address("address"),
         taxId("tax_id");
 

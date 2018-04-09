@@ -5,7 +5,7 @@
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="number" jdbcType="VARCHAR" property="number" />
     <result column="name" jdbcType="VARCHAR" property="name" />
-    <result column="business_license" jdbcType="VARCHAR" property="businessLicense" />
+    <result column="credit_code" jdbcType="VARCHAR" property="creditCode" />
     <result column="address" jdbcType="VARCHAR" property="address" />
     <result column="tax_id" jdbcType="VARCHAR" property="taxId" />
   </resultMap>
@@ -68,7 +68,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, `number`, `name`, business_license, address, tax_id
+    id, `number`, `name`, credit_code, address, tax_id
   </sql>
   <select id="selectByExample" parameterType="com.kingdee.hrp.sms.common.model.HospitalExample" resultMap="BaseResultMap">
     select
@@ -102,10 +102,10 @@
   </delete>
   <insert id="insert" parameterType="com.kingdee.hrp.sms.common.model.Hospital">
     insert into t_hospital (id, `number`, `name`, 
-      business_license, address, tax_id
+      credit_code, address, tax_id
       )
     values (#{id,jdbcType=BIGINT}, #{number,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
-      #{businessLicense,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{taxId,jdbcType=VARCHAR}
+      #{creditCode,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{taxId,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.kingdee.hrp.sms.common.model.Hospital">
@@ -120,8 +120,8 @@
       <if test="name != null">
         `name`,
       </if>
-      <if test="businessLicense != null">
-        business_license,
+      <if test="creditCode != null">
+        credit_code,
       </if>
       <if test="address != null">
         address,
@@ -140,8 +140,8 @@
       <if test="name != null">
         #{name,jdbcType=VARCHAR},
       </if>
-      <if test="businessLicense != null">
-        #{businessLicense,jdbcType=VARCHAR},
+      <if test="creditCode != null">
+        #{creditCode,jdbcType=VARCHAR},
       </if>
       <if test="address != null">
         #{address,jdbcType=VARCHAR},
@@ -169,8 +169,8 @@
       <if test="record.name != null">
         `name` = #{record.name,jdbcType=VARCHAR},
       </if>
-      <if test="record.businessLicense != null">
-        business_license = #{record.businessLicense,jdbcType=VARCHAR},
+      <if test="record.creditCode != null">
+        credit_code = #{record.creditCode,jdbcType=VARCHAR},
       </if>
       <if test="record.address != null">
         address = #{record.address,jdbcType=VARCHAR},
@@ -188,7 +188,7 @@
     set id = #{record.id,jdbcType=BIGINT},
       `number` = #{record.number,jdbcType=VARCHAR},
       `name` = #{record.name,jdbcType=VARCHAR},
-      business_license = #{record.businessLicense,jdbcType=VARCHAR},
+      credit_code = #{record.creditCode,jdbcType=VARCHAR},
       address = #{record.address,jdbcType=VARCHAR},
       tax_id = #{record.taxId,jdbcType=VARCHAR}
     <if test="_parameter != null">
@@ -204,8 +204,8 @@
       <if test="name != null">
         `name` = #{name,jdbcType=VARCHAR},
       </if>
-      <if test="businessLicense != null">
-        business_license = #{businessLicense,jdbcType=VARCHAR},
+      <if test="creditCode != null">
+        credit_code = #{creditCode,jdbcType=VARCHAR},
       </if>
       <if test="address != null">
         address = #{address,jdbcType=VARCHAR},
@@ -220,7 +220,7 @@
     update t_hospital
     set `number` = #{number,jdbcType=VARCHAR},
       `name` = #{name,jdbcType=VARCHAR},
-      business_license = #{businessLicense,jdbcType=VARCHAR},
+      credit_code = #{creditCode,jdbcType=VARCHAR},
       address = #{address,jdbcType=VARCHAR},
       tax_id = #{taxId,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
@@ -232,11 +232,11 @@
       @project https://github.com/itfsw/mybatis-generator-plugin
     -->
     insert into t_hospital
-    (id, `number`, `name`, business_license, address, tax_id)
+    (id, `number`, `name`, credit_code, address, tax_id)
     values
     <foreach collection="list" item="item" separator=",">
       (#{item.id,jdbcType=BIGINT}, #{item.number,jdbcType=VARCHAR}, #{item.name,jdbcType=VARCHAR}, 
-        #{item.businessLicense,jdbcType=VARCHAR}, #{item.address,jdbcType=VARCHAR}, #{item.taxId,jdbcType=VARCHAR}
+        #{item.creditCode,jdbcType=VARCHAR}, #{item.address,jdbcType=VARCHAR}, #{item.taxId,jdbcType=VARCHAR}
         )
     </foreach>
   </insert>
@@ -264,8 +264,8 @@
         <if test="'name' == column.value">
           #{item.name,jdbcType=VARCHAR}
         </if>
-        <if test="'business_license' == column.value">
-          #{item.businessLicense,jdbcType=VARCHAR}
+        <if test="'credit_code' == column.value">
+          #{item.creditCode,jdbcType=VARCHAR}
         </if>
         <if test="'address' == column.value">
           #{item.address,jdbcType=VARCHAR}

@@ -18,6 +18,7 @@
 
     <!--grunt.css.begin-->
     <link rel="stylesheet" href="css/login/index.css">
+
     <!--grunt.css.end-->
 </head>
 <body>
@@ -169,33 +170,14 @@
                                     <div class="row form-group">
                                         <label class="col-sm-2 ">
                                             <span class="must-mark">*</span>
-                                            营业执照号</label>
+                                            信用代码/登记号</label>
                                         <div class="col-sm-3">
-                                            <input id="businessLicense" type="text" class="form-control"
-                                                   placeholder="请输入营业执照号">
-                                            <span id="businessLicense-msg" class="error-msg msg"></span>
+                                            <input id="creditCode" type="text" class="form-control"
+                                                   placeholder="请输入信用代码/登记号">
+                                            <span id="creditCode-msg" class="error-msg msg"></span>
                                         </div>
                                     </div>
 
-                                    <div class="row form-group">
-                                        <label class="col-sm-2 ">
-                                            <span class="must-mark">*</span>
-                                            税务登记号</label>
-                                        <div class="col-sm-3">
-                                            <input id="taxId" type="text" class="form-control" placeholder="请输入税务登记号">
-                                            <span id="taxId-msg" class="error-msg msg"></span>
-                                        </div>
-                                    </div>
-
-                                    <div class="row form-group">
-                                        <label class="col-sm-2 ">
-                                            <span class="must-mark">*</span>
-                                            地址</label>
-                                        <div class="col-sm-3">
-                                            <input id="address" type="text" class="form-control" placeholder="请输入地址">
-                                            <span id="address-msg" class="error-msg msg"></span>
-                                        </div>
-                                    </div>
                                 </div>
 
                             </div>
@@ -227,6 +209,7 @@
 <script src="modules/login/Login.js"></script>
 <script src="modules/login/WarnTip.js"></script>
 <script src="modules/login/Register.js"></script>
+<script src="html/common-edit/Validate.js"></script>
 <script src="login.js"></script>
 <!--grunt.js.end-->
 

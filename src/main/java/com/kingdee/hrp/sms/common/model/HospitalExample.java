@@ -304,73 +304,73 @@ public class HospitalExample {
             return (Criteria) this;
         }
 
-        public Criteria andBusinessLicenseIsNull() {
-            addCriterion("business_license is null");
+        public Criteria andCreditCodeIsNull() {
+            addCriterion("credit_code is null");
             return (Criteria) this;
         }
 
-        public Criteria andBusinessLicenseIsNotNull() {
-            addCriterion("business_license is not null");
+        public Criteria andCreditCodeIsNotNull() {
+            addCriterion("credit_code is not null");
             return (Criteria) this;
         }
 
-        public Criteria andBusinessLicenseEqualTo(String value) {
-            addCriterion("business_license =", value, "businessLicense");
+        public Criteria andCreditCodeEqualTo(String value) {
+            addCriterion("credit_code =", value, "creditCode");
             return (Criteria) this;
         }
 
-        public Criteria andBusinessLicenseNotEqualTo(String value) {
-            addCriterion("business_license <>", value, "businessLicense");
+        public Criteria andCreditCodeNotEqualTo(String value) {
+            addCriterion("credit_code <>", value, "creditCode");
             return (Criteria) this;
         }
 
-        public Criteria andBusinessLicenseGreaterThan(String value) {
-            addCriterion("business_license >", value, "businessLicense");
+        public Criteria andCreditCodeGreaterThan(String value) {
+            addCriterion("credit_code >", value, "creditCode");
             return (Criteria) this;
         }
 
-        public Criteria andBusinessLicenseGreaterThanOrEqualTo(String value) {
-            addCriterion("business_license >=", value, "businessLicense");
+        public Criteria andCreditCodeGreaterThanOrEqualTo(String value) {
+            addCriterion("credit_code >=", value, "creditCode");
             return (Criteria) this;
         }
 
-        public Criteria andBusinessLicenseLessThan(String value) {
-            addCriterion("business_license <", value, "businessLicense");
+        public Criteria andCreditCodeLessThan(String value) {
+            addCriterion("credit_code <", value, "creditCode");
             return (Criteria) this;
         }
 
-        public Criteria andBusinessLicenseLessThanOrEqualTo(String value) {
-            addCriterion("business_license <=", value, "businessLicense");
+        public Criteria andCreditCodeLessThanOrEqualTo(String value) {
+            addCriterion("credit_code <=", value, "creditCode");
             return (Criteria) this;
         }
 
-        public Criteria andBusinessLicenseLike(String value) {
-            addCriterion("business_license like", value, "businessLicense");
+        public Criteria andCreditCodeLike(String value) {
+            addCriterion("credit_code like", value, "creditCode");
             return (Criteria) this;
         }
 
-        public Criteria andBusinessLicenseNotLike(String value) {
-            addCriterion("business_license not like", value, "businessLicense");
+        public Criteria andCreditCodeNotLike(String value) {
+            addCriterion("credit_code not like", value, "creditCode");
             return (Criteria) this;
         }
 
-        public Criteria andBusinessLicenseIn(List<String> values) {
-            addCriterion("business_license in", values, "businessLicense");
+        public Criteria andCreditCodeIn(List<String> values) {
+            addCriterion("credit_code in", values, "creditCode");
             return (Criteria) this;
         }
 
-        public Criteria andBusinessLicenseNotIn(List<String> values) {
-            addCriterion("business_license not in", values, "businessLicense");
+        public Criteria andCreditCodeNotIn(List<String> values) {
+            addCriterion("credit_code not in", values, "creditCode");
             return (Criteria) this;
         }
 
-        public Criteria andBusinessLicenseBetween(String value1, String value2) {
-            addCriterion("business_license between", value1, value2, "businessLicense");
+        public Criteria andCreditCodeBetween(String value1, String value2) {
+            addCriterion("credit_code between", value1, value2, "creditCode");
             return (Criteria) this;
         }
 
-        public Criteria andBusinessLicenseNotBetween(String value1, String value2) {
-            addCriterion("business_license not between", value1, value2, "businessLicense");
+        public Criteria andCreditCodeNotBetween(String value1, String value2) {
+            addCriterion("credit_code not between", value1, value2, "creditCode");
             return (Criteria) this;
         }
 

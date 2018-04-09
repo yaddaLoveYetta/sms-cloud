@@ -1,11 +1,10 @@
 package com.kingdee.hrp.sms.common.controller;
 
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kingdee.hrp.sms.common.exception.BusinessLogicRunTimeException;
 import com.kingdee.hrp.sms.common.pojo.Condition;
 import com.kingdee.hrp.sms.common.pojo.Sort;
 import com.kingdee.hrp.sms.common.service.ITemplateService;
+import com.kingdee.hrp.sms.util.Common;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -87,11 +86,11 @@ public class TemplateController {
 
         // 包装查询条件-方便操作
         if (StringUtils.isNotBlank(condition)) {
-            conditions = stringToList(condition, Condition.class);
+            conditions = Common.stringToList(condition, Condition.class);
         }
         // 包装查询结果排序-方便操作
         if (StringUtils.isNotBlank(sort)) {
-            sorts = stringToList(sort, Sort.class);
+            sorts = Common.stringToList(sort, Sort.class);
         }
 
         return templateService.getItems(classId, conditions, sorts, pageSize, pageNo);
@@ -117,7 +116,7 @@ public class TemplateController {
 
         // 包装查询结果排序-方便操作
         if (StringUtils.isNotBlank(sort)) {
-            sorts = stringToList(sort, Sort.class);
+            sorts = Common.stringToList(sort, Sort.class);
         }
 
         return templateService.getItemById(classId, id, sorts);
@@ -195,7 +194,7 @@ public class TemplateController {
             throw new BusinessLogicRunTimeException("参数错误：必须指定删除的项!");
         }
 
-        List<Long> ids = stringToList(items, Long.class);
+        List<Long> ids = Common.stringToList(items, Long.class);
 
         return templateService.delItem(classId, ids);
     }
@@ -213,7 +212,7 @@ public class TemplateController {
             throw new BusinessLogicRunTimeException("参数错误：必须指定操作的项!");
         }
 
-        List<Long> ids = stringToList(items, Long.class);
+        List<Long> ids = Common.stringToList(items, Long.class);
 
         return templateService.forbid(classId, ids, operateType);
 
@@ -246,30 +245,4 @@ public class TemplateController {
         return null;
     }
 
-    /**
-     * 将String转成List
-     *
-     * @param str 待转化字符串，必须符合list格式
-     * @param t   List泛型类型
-     * @param <T> List<T>
-     * @return List<T>
-     */
-    private <T> List<T> stringToList(String str, Class<T> t) {
-
-        List<T> target = new ArrayList<T>();
-
-        if (!StringUtils.isNotBlank(str)) {
-            return new ArrayList<T>();
-        }
-
-        try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            JavaType javaType = objectMapper.getTypeFactory().constructParametricType(List.class, t);
-            target = objectMapper.readValue(str, javaType);
-        } catch (IOException e) {
-            throw new BusinessLogicRunTimeException(e.getMessage(), e);
-        }
-
-        return target;
-    }
 }

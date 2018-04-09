@@ -1,6 +1,7 @@
 package com.kingdee.hrp.sms.system.user.controller;
 
 import com.kingdee.hrp.sms.common.exception.BusinessLogicRunTimeException;
+import com.kingdee.hrp.sms.common.model.AccessControl;
 import com.kingdee.hrp.sms.common.model.Role;
 import com.kingdee.hrp.sms.common.model.User;
 import com.kingdee.hrp.sms.system.user.service.IUserService;
@@ -168,6 +169,9 @@ public class UserController {
     @RequestMapping(value = "saveRolePerMissions")
     @ResponseBody
     public Boolean saveRolePerMissions(Long roleId, String perMissions) {
+
+        List<AccessControl> accessControlList = Common.stringToList(perMissions, AccessControl.class);
+        userService.saveRolePermissions(roleId, accessControlList);
         return true;
     }
 }

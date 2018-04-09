@@ -13,7 +13,7 @@
         },
         'keydown': function (event) {
 
-            if (event.keyCode == 13) {
+            if (event.keyCode === 13) {
                 Login.login();
             }
         }

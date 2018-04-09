@@ -58,10 +58,60 @@
 
     }
 
+    /**
+     * 校验企业统一社会信用代码是否合法
+     *
+     * 社会信用代码：由18位数字和大写的字母组成，第1位是登记管理部门代码，第2位是机构类别代码，
+     * 第3~8位登记管理机关行政区划码，第9~17位主休标识码，第18位校验码。有五个部分组成
+     *
+     * @param code 统一社会信用代码
+     */
+    function checkSocialCreditCode(code) {
+
+        var reg = /^[0-9A-Z]+$/;
+        //18位校验及大写校验
+        if ((code.length !== 18) || (!reg.test(code))) {
+
+            return false;
+            // alert("不是有效的统一社会信用编码！");
+        }
+        else {
+            var anCode;//统一社会信用代码的每一个值
+            var anCodeValue;//统一社会信用代码每一个值的权重
+            var total = 0;
+            var weight = [1, 3, 9, 27, 19, 26, 16, 17, 20, 29, 25, 13, 8, 24, 10, 30, 28];//加权因子
+            var str = '0123456789ABCDEFGHJKLMNPQRTUWXY';
+            //不用I、O、S、V、Z
+            for (var i = 0; i < code.length - 1; i++) {
+                anCode = code.substring(i, i + 1);
+                anCodeValue = str.indexOf(anCode);
+                total = total + anCodeValue * weight[i];
+                //权重与加权因子相乘之和
+            }
+            var logicCheckCode = 31 - total % 31;
+            if (logicCheckCode === 31) {
+                logicCheckCode = 0;
+            }
+            var Str = "0,1,2,3,4,5,6,7,8,9,A,B,C,D,E,F,G,H,J,K,L,M,N,P,Q,R,T,U,W,X,Y";
+            var Array_Str = Str.split(',');
+            logicCheckCode = Array_Str[logicCheckCode];
+
+
+            var checkCode = code.substring(17, 18);
+
+            return logicCheckCode === checkCode;
+            /*            if (logicCheckCode !== checkCode) {
+                            alert("不是有效的统一社会信用编码！");
+                        }*/
+        }
+    }
+
     return {
         integer: integer,
         mobilePhone: mobilePhone,
         phone: phone,
-        isDate:isDate
-    };
+        isDate: isDate,
+        checkSocialCreditCode: checkSocialCreditCode
+    }
+
 });

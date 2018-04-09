@@ -1,10 +1,7 @@
 package com.kingdee.hrp.sms.system.user.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.kingdee.hrp.sms.common.model.Hospital;
-import com.kingdee.hrp.sms.common.model.Role;
-import com.kingdee.hrp.sms.common.model.Supplier;
-import com.kingdee.hrp.sms.common.model.User;
+import com.kingdee.hrp.sms.common.model.*;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -63,15 +60,23 @@ public interface IUserService extends Serializable {
      * @param userId 用户ID
      * @param oldPwd 原密码
      * @param newPwd 新密码
-     * @return
+     * @return boolean
      */
-    boolean editPwd(Long userId, String oldPwd, String newPwd);
+    Boolean editPwd(Long userId, String oldPwd, String newPwd);
 
     /**
      * 获取角色所有权限
      *
      * @param roleId 角色id
-     * @return
+     * @return List<Map<String, Object>>
      */
     List<Map<String, Object>> getRolePermissions(Long roleId);
+
+    /**
+     * 保存角色权限
+     *
+     * @param roleId          角色id
+     * @param accessControlList 角色授权结果
+     */
+    void saveRolePermissions(Long roleId, List<AccessControl> accessControlList);
 }
