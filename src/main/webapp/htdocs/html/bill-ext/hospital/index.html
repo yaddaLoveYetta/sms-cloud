@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>供应商用户信息</title>
+
+    <link rel="stylesheet" href="../../../css/global.debug.css" type="text/css"/>
+    <link rel="stylesheet" href="../../../css/bootstrap.css" type="text/css"/>
+    <link rel="stylesheet" href="../../../css/iconfont/iconfont.css">
+
+    <link rel="stylesheet" href="../../../lib/bootstrap-fileinput-4.4.7/css/fileinput.min.css">
+
+    <!--grunt.css.begin-->
+    <link rel="stylesheet" href="../../../css/bill/index.debug.css">
+    <link rel="stylesheet" href="../../../css/bill-ext/hospital/index.debug.css">
+    <!--grunt.css.end-->
+</head>
+<body>
+
+<!--按钮区-->
+<div class="container-fluid options ">
+    <div id="div-button-list" class="btn-box"></div>
+</div>
+<!--主显示区-->
+<div class="div-head-container container-fluid">
+
+    <div class="col-sm-2 head-content img">
+        <img src="../../../css/img/a0.jpg" class="logo">
+        <input type="file" class="projectfile" id="hospital-logo" name="image">
+    </div>
+
+    <div id="div-head-content" class=" head-content col-sm-10">
+
+        <!--
+            #--ctrl.begin--#
+
+                #--ctrl.items.begin--#
+                <div class="row form-group">
+                     #--ctrl.items.item.begin--#
+                     #--ctrl.items.item.end--#
+                </div>
+                #--ctrl.items.end--#
+
+                #--mustInput.begin--#
+                <span class="must-mark">*</span>
+                #--mustInput.end--#
+
+                #--text.begin--#
+
+                    <label class="col-sm-2 ">{mustInput}{name}</label>
+                    <div class="col-sm-3">
+                        <input id="{key}" type="text" class="form-control" placeholder="请输入{name}">
+                        <span id="{key}-msg" class="error-msg msg"></span>
+                    </div>
+
+                #--text.end--#
+
+                #--textarea.begin--#
+
+                    <label class="col-sm-2 ">{mustInput}{name}</label>
+                    <div class="col-sm-3">
+                        <textarea id="{key}" class="form-control" placeholder="请输入{name}"></textarea>
+                        <span id="{key}-msg" class="error-msg msg"></span>
+                    </div>
+
+                #--textarea.end--#
+
+                #--datatime.begin--#
+
+                    <label class="col-sm-2 ">{mustInput}{name}</label>
+                    <div class=" col-sm-3">
+                        <span class="iconfont icon-riqixuanze form-control-feedback"></span>
+                        <input id="{key}" type="text" class="form-control" placeholder="点击选择{name}">
+                        <span id="{key}-msg" class="error-msg msg"></span>
+                    </div>
+
+                #--datatime.end--#
+
+                #--checkbox.begin--#
+
+                    <label class="col-sm-2 ">{mustInput}{name}</label>
+                    <div class="col-sm-3">
+                        <input id="{key}" type="checkbox" class="checkbox" >
+                        <span id="{key}-msg" class="error-msg msg"></span>
+                    </div>
+
+                #--checkbox.end--#
+
+                #--password.begin--#
+
+                    <label class="col-sm-2 ">{mustInput}{name}</label>
+                    <div class="col-sm-3">
+                        <input id="{key}" type="password" class="form-control" placeholder="请输入{name}">
+                        <span id="{key}-msg" class="error-msg msg"></span>
+                    </div>
+
+                #--password.end--#
+
+                #--f7.begin--#
+
+                    <label class="col-sm-2 ">{mustInput}{name}</label>
+                    <div class="col-sm-3 " id="{key}">
+
+                    </div>
+
+                #--f7.end--#
+
+                #--man_female.begin--#
+                <label class="col-sm-2 ">{mustInput}{name}</label>
+                <div class="col-sm-1">
+                    <select id="{key}" class="form-control">
+                        <option value="0">男</option>
+                        <option value="1">女</option>
+                    </select>
+                </div>
+                #--man_female.end--#
+
+                 #--yes_no.begin--#
+                <label class="col-sm-2 ">{mustInput}{name}</label>
+                <div class="col-sm-1">
+                    <select id="{key}" class="form-control">
+                        <option value="1">是</option>
+                        <option value="0">否</option>
+                    </select>
+                </div>
+                <div class="col-sm-1"></div>
+                #--yes_no.end--#
+
+                #--cascade_picker.begin--#
+                <label class="col-sm-2 ">{mustInput}{name}</label>
+                <div class="col-sm-3" id="{key}"></div>
+                #--cascade_picker.end--#
+
+                #--detail.begin--#
+                <div class="row form-group">
+
+                    <div class="col-sm-1"></div>
+                    <div class="grid-wrap col-sm-10">
+
+                        <table id="{key}"></table>
+
+                        <div id="{key}-pager"></div>
+                    </div>
+                    <div class="col-sm-1"></div>
+                    <div class="col-sm-12">
+                        <span class="error-msg" id="{key}-msg"></span>
+                    </div>
+                </div>
+                #--detail.end--#
+
+            #--ctrl.end--#
+
+        -->
+
+    </div>
+
+</div>
+
+
+<script src="../../../lib/jquery/jquery-1.11.1.debug.js"></script>
+<script src="../../../lib/miniquery/miniquery.debug.js"></script>
+<script src="../../../lib/sms/sms.debug.js"></script>
+<script src="../../../lib/bootstrap/bootstrap.js"></script>
+<script src="../../../config.js"></script>
+
+<script src="../../../lib/bootstrap-fileinput-4.4.7/js/fileinput.js"></script>
+<script src="../../../lib/bootstrap-fileinput-4.4.7/js/locales/zh.js"></script>
+<!--grunt.js.begin-->
+<script src="../../selector/module/DataSelector.js"></script>
+<script src="modules/Validate.js"></script>
+<script src="modules/FormEdit.js"></script>
+<script src="modules/Samples.js"></script>
+<script src="modules/FormAction.js"></script>
+<script src="modules/GridConfig.js"></script>
+<script src="index.js"></script>
+
+<!--grunt.js.end-->
+
+</body>
+</html>
