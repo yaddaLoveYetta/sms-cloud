@@ -59,6 +59,35 @@
     }
 
     /**
+     * 验证日期时间
+     * @param date
+     * @returns {boolean}
+     */
+    function isDateTime(date) {
+        var reg = /^(\d{1,4})(-|\/)(\d{1,2})\2(\d{1,2}) (\d{1,2}):(\d{1,2}):(\d{1,2})$/;
+        var r = date.match(reg);
+        if (r == null) return false;
+        var d = new Date(r[1], r[3] - 1, r[4], r[5], r[6], r[7]);
+        return (d.getFullYear() == r[1] && (d.getMonth() + 1) == r[3] && d.getDate() == r[4] && d.getHours() == r[5] && d.getMinutes() == r[6] && d.getSeconds() == r[7]);
+    }
+
+    /**
+     * 验证时间
+     * @param date
+     * @returns {boolean}
+     */
+    function isTime(date) {
+        var a = date.match(/^(\d{1,2})(:)?(\d{1,2})\2(\d{1,2})$/);
+        if (a == null) {
+            return false;
+        }
+        if (a[1] > 24 || a[3] > 60 || a[4] > 60) {
+            return false
+        }
+        return true;
+    }
+
+    /**
      * 校验企业统一社会信用代码是否合法
      *
      * 社会信用代码：由18位数字和大写的字母组成，第1位是登记管理部门代码，第2位是机构类别代码，
@@ -111,6 +140,8 @@
         mobilePhone: mobilePhone,
         phone: phone,
         isDate: isDate,
+        isDateTime: isDateTime,
+        isTime: isTime,
         checkSocialCreditCode: checkSocialCreditCode
     }
 

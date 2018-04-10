@@ -125,7 +125,7 @@
                 return;
             } else if (roleType === 2) {
                 //  医院角色类别
-                url = './html/bill/index.html?classId=1012';
+                url = './html/bill-ext/hospital/index.html?classId=1012';
                 classId = 1012;
             } else if (roleType === 3) {
                 // 供应商角色类别

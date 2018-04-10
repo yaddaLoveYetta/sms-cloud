@@ -204,9 +204,9 @@ define('Register', function (require, module, exports) {
             data['mobile'] = mobile;
         }
 
-        // 企业统一社会信用代码校验
+        // 企业统一社会信用代码校验-医疗机构登记号未校验
         var creditCode = $('#creditCode').val();
-        if (!Validate.checkSocialCreditCode(creditCode)) {
+        if (type === 3 && !Validate.checkSocialCreditCode(creditCode)) {
             validate = false;
             MessageBox.show('企业统一信用代码不正确!', '金蝶提示', true);
             fn && fn(false);

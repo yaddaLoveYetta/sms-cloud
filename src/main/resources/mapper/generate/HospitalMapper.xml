@@ -7,7 +7,17 @@
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="credit_code" jdbcType="VARCHAR" property="creditCode" />
     <result column="address" jdbcType="VARCHAR" property="address" />
-    <result column="tax_id" jdbcType="VARCHAR" property="taxId" />
+    <result column="introduction" jdbcType="VARCHAR" property="introduction" />
+    <result column="medical_subjects" jdbcType="VARCHAR" property="medicalSubjects" />
+    <result column="principal" jdbcType="VARCHAR" property="principal" />
+    <result column="issue_agency" jdbcType="VARCHAR" property="issueAgency" />
+    <result column="legal_person" jdbcType="VARCHAR" property="legalPerson" />
+    <result column="province" jdbcType="INTEGER" property="province" />
+    <result column="city" jdbcType="INTEGER" property="city" />
+    <result column="district" jdbcType="INTEGER" property="district" />
+    <result column="issue_date" jdbcType="TIMESTAMP" property="issueDate" />
+    <result column="validity_period_begin" jdbcType="TIMESTAMP" property="validityPeriodBegin" />
+    <result column="validity_period_end" jdbcType="TIMESTAMP" property="validityPeriodEnd" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -68,7 +78,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, `number`, `name`, credit_code, address, tax_id
+    id, `number`, `name`, credit_code, address, introduction, medical_subjects, principal, 
+    issue_agency, legal_person, province, city, district, issue_date, validity_period_begin, 
+    validity_period_end
   </sql>
   <select id="selectByExample" parameterType="com.kingdee.hrp.sms.common.model.HospitalExample" resultMap="BaseResultMap">
     select
@@ -102,11 +114,17 @@
   </delete>
   <insert id="insert" parameterType="com.kingdee.hrp.sms.common.model.Hospital">
     insert into t_hospital (id, `number`, `name`, 
-      credit_code, address, tax_id
-      )
+      credit_code, address, introduction, 
+      medical_subjects, principal, issue_agency, 
+      legal_person, province, city, 
+      district, issue_date, validity_period_begin, 
+      validity_period_end)
     values (#{id,jdbcType=BIGINT}, #{number,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
-      #{creditCode,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{taxId,jdbcType=VARCHAR}
-      )
+      #{creditCode,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{introduction,jdbcType=VARCHAR}, 
+      #{medicalSubjects,jdbcType=VARCHAR}, #{principal,jdbcType=VARCHAR}, #{issueAgency,jdbcType=VARCHAR}, 
+      #{legalPerson,jdbcType=VARCHAR}, #{province,jdbcType=INTEGER}, #{city,jdbcType=INTEGER}, 
+      #{district,jdbcType=INTEGER}, #{issueDate,jdbcType=TIMESTAMP}, #{validityPeriodBegin,jdbcType=TIMESTAMP}, 
+      #{validityPeriodEnd,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.kingdee.hrp.sms.common.model.Hospital">
     insert into t_hospital
@@ -126,8 +144,38 @@
       <if test="address != null">
         address,
       </if>
-      <if test="taxId != null">
-        tax_id,
+      <if test="introduction != null">
+        introduction,
+      </if>
+      <if test="medicalSubjects != null">
+        medical_subjects,
+      </if>
+      <if test="principal != null">
+        principal,
+      </if>
+      <if test="issueAgency != null">
+        issue_agency,
+      </if>
+      <if test="legalPerson != null">
+        legal_person,
+      </if>
+      <if test="province != null">
+        province,
+      </if>
+      <if test="city != null">
+        city,
+      </if>
+      <if test="district != null">
+        district,
+      </if>
+      <if test="issueDate != null">
+        issue_date,
+      </if>
+      <if test="validityPeriodBegin != null">
+        validity_period_begin,
+      </if>
+      <if test="validityPeriodEnd != null">
+        validity_period_end,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -146,8 +194,38 @@
       <if test="address != null">
         #{address,jdbcType=VARCHAR},
       </if>
-      <if test="taxId != null">
-        #{taxId,jdbcType=VARCHAR},
+      <if test="introduction != null">
+        #{introduction,jdbcType=VARCHAR},
+      </if>
+      <if test="medicalSubjects != null">
+        #{medicalSubjects,jdbcType=VARCHAR},
+      </if>
+      <if test="principal != null">
+        #{principal,jdbcType=VARCHAR},
+      </if>
+      <if test="issueAgency != null">
+        #{issueAgency,jdbcType=VARCHAR},
+      </if>
+      <if test="legalPerson != null">
+        #{legalPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null">
+        #{province,jdbcType=INTEGER},
+      </if>
+      <if test="city != null">
+        #{city,jdbcType=INTEGER},
+      </if>
+      <if test="district != null">
+        #{district,jdbcType=INTEGER},
+      </if>
+      <if test="issueDate != null">
+        #{issueDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="validityPeriodBegin != null">
+        #{validityPeriodBegin,jdbcType=TIMESTAMP},
+      </if>
+      <if test="validityPeriodEnd != null">
+        #{validityPeriodEnd,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -175,8 +253,38 @@
       <if test="record.address != null">
         address = #{record.address,jdbcType=VARCHAR},
       </if>
-      <if test="record.taxId != null">
-        tax_id = #{record.taxId,jdbcType=VARCHAR},
+      <if test="record.introduction != null">
+        introduction = #{record.introduction,jdbcType=VARCHAR},
+      </if>
+      <if test="record.medicalSubjects != null">
+        medical_subjects = #{record.medicalSubjects,jdbcType=VARCHAR},
+      </if>
+      <if test="record.principal != null">
+        principal = #{record.principal,jdbcType=VARCHAR},
+      </if>
+      <if test="record.issueAgency != null">
+        issue_agency = #{record.issueAgency,jdbcType=VARCHAR},
+      </if>
+      <if test="record.legalPerson != null">
+        legal_person = #{record.legalPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="record.province != null">
+        province = #{record.province,jdbcType=INTEGER},
+      </if>
+      <if test="record.city != null">
+        city = #{record.city,jdbcType=INTEGER},
+      </if>
+      <if test="record.district != null">
+        district = #{record.district,jdbcType=INTEGER},
+      </if>
+      <if test="record.issueDate != null">
+        issue_date = #{record.issueDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.validityPeriodBegin != null">
+        validity_period_begin = #{record.validityPeriodBegin,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.validityPeriodEnd != null">
+        validity_period_end = #{record.validityPeriodEnd,jdbcType=TIMESTAMP},
       </if>
     </set>
     <if test="_parameter != null">
@@ -190,7 +298,17 @@
       `name` = #{record.name,jdbcType=VARCHAR},
       credit_code = #{record.creditCode,jdbcType=VARCHAR},
       address = #{record.address,jdbcType=VARCHAR},
-      tax_id = #{record.taxId,jdbcType=VARCHAR}
+      introduction = #{record.introduction,jdbcType=VARCHAR},
+      medical_subjects = #{record.medicalSubjects,jdbcType=VARCHAR},
+      principal = #{record.principal,jdbcType=VARCHAR},
+      issue_agency = #{record.issueAgency,jdbcType=VARCHAR},
+      legal_person = #{record.legalPerson,jdbcType=VARCHAR},
+      province = #{record.province,jdbcType=INTEGER},
+      city = #{record.city,jdbcType=INTEGER},
+      district = #{record.district,jdbcType=INTEGER},
+      issue_date = #{record.issueDate,jdbcType=TIMESTAMP},
+      validity_period_begin = #{record.validityPeriodBegin,jdbcType=TIMESTAMP},
+      validity_period_end = #{record.validityPeriodEnd,jdbcType=TIMESTAMP}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -210,8 +328,38 @@
       <if test="address != null">
         address = #{address,jdbcType=VARCHAR},
       </if>
-      <if test="taxId != null">
-        tax_id = #{taxId,jdbcType=VARCHAR},
+      <if test="introduction != null">
+        introduction = #{introduction,jdbcType=VARCHAR},
+      </if>
+      <if test="medicalSubjects != null">
+        medical_subjects = #{medicalSubjects,jdbcType=VARCHAR},
+      </if>
+      <if test="principal != null">
+        principal = #{principal,jdbcType=VARCHAR},
+      </if>
+      <if test="issueAgency != null">
+        issue_agency = #{issueAgency,jdbcType=VARCHAR},
+      </if>
+      <if test="legalPerson != null">
+        legal_person = #{legalPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null">
+        province = #{province,jdbcType=INTEGER},
+      </if>
+      <if test="city != null">
+        city = #{city,jdbcType=INTEGER},
+      </if>
+      <if test="district != null">
+        district = #{district,jdbcType=INTEGER},
+      </if>
+      <if test="issueDate != null">
+        issue_date = #{issueDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="validityPeriodBegin != null">
+        validity_period_begin = #{validityPeriodBegin,jdbcType=TIMESTAMP},
+      </if>
+      <if test="validityPeriodEnd != null">
+        validity_period_end = #{validityPeriodEnd,jdbcType=TIMESTAMP},
       </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
@@ -222,7 +370,17 @@
       `name` = #{name,jdbcType=VARCHAR},
       credit_code = #{creditCode,jdbcType=VARCHAR},
       address = #{address,jdbcType=VARCHAR},
-      tax_id = #{taxId,jdbcType=VARCHAR}
+      introduction = #{introduction,jdbcType=VARCHAR},
+      medical_subjects = #{medicalSubjects,jdbcType=VARCHAR},
+      principal = #{principal,jdbcType=VARCHAR},
+      issue_agency = #{issueAgency,jdbcType=VARCHAR},
+      legal_person = #{legalPerson,jdbcType=VARCHAR},
+      province = #{province,jdbcType=INTEGER},
+      city = #{city,jdbcType=INTEGER},
+      district = #{district,jdbcType=INTEGER},
+      issue_date = #{issueDate,jdbcType=TIMESTAMP},
+      validity_period_begin = #{validityPeriodBegin,jdbcType=TIMESTAMP},
+      validity_period_end = #{validityPeriodEnd,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
   </update>
   <insert id="batchInsert" parameterType="map">
@@ -232,12 +390,17 @@
       @project https://github.com/itfsw/mybatis-generator-plugin
     -->
     insert into t_hospital
-    (id, `number`, `name`, credit_code, address, tax_id)
+    (id, `number`, `name`, credit_code, address, introduction, medical_subjects, principal, 
+      issue_agency, legal_person, province, city, district, issue_date, validity_period_begin, 
+      validity_period_end)
     values
     <foreach collection="list" item="item" separator=",">
       (#{item.id,jdbcType=BIGINT}, #{item.number,jdbcType=VARCHAR}, #{item.name,jdbcType=VARCHAR}, 
-        #{item.creditCode,jdbcType=VARCHAR}, #{item.address,jdbcType=VARCHAR}, #{item.taxId,jdbcType=VARCHAR}
-        )
+        #{item.creditCode,jdbcType=VARCHAR}, #{item.address,jdbcType=VARCHAR}, #{item.introduction,jdbcType=VARCHAR}, 
+        #{item.medicalSubjects,jdbcType=VARCHAR}, #{item.principal,jdbcType=VARCHAR}, #{item.issueAgency,jdbcType=VARCHAR}, 
+        #{item.legalPerson,jdbcType=VARCHAR}, #{item.province,jdbcType=INTEGER}, #{item.city,jdbcType=INTEGER}, 
+        #{item.district,jdbcType=INTEGER}, #{item.issueDate,jdbcType=TIMESTAMP}, #{item.validityPeriodBegin,jdbcType=TIMESTAMP}, 
+        #{item.validityPeriodEnd,jdbcType=TIMESTAMP})
     </foreach>
   </insert>
   <insert id="batchInsertSelective" parameterType="map">
@@ -270,8 +433,38 @@
         <if test="'address' == column.value">
           #{item.address,jdbcType=VARCHAR}
         </if>
-        <if test="'tax_id' == column.value">
-          #{item.taxId,jdbcType=VARCHAR}
+        <if test="'introduction' == column.value">
+          #{item.introduction,jdbcType=VARCHAR}
+        </if>
+        <if test="'medical_subjects' == column.value">
+          #{item.medicalSubjects,jdbcType=VARCHAR}
+        </if>
+        <if test="'principal' == column.value">
+          #{item.principal,jdbcType=VARCHAR}
+        </if>
+        <if test="'issue_agency' == column.value">
+          #{item.issueAgency,jdbcType=VARCHAR}
+        </if>
+        <if test="'legal_person' == column.value">
+          #{item.legalPerson,jdbcType=VARCHAR}
+        </if>
+        <if test="'province' == column.value">
+          #{item.province,jdbcType=INTEGER}
+        </if>
+        <if test="'city' == column.value">
+          #{item.city,jdbcType=INTEGER}
+        </if>
+        <if test="'district' == column.value">
+          #{item.district,jdbcType=INTEGER}
+        </if>
+        <if test="'issue_date' == column.value">
+          #{item.issueDate,jdbcType=TIMESTAMP}
+        </if>
+        <if test="'validity_period_begin' == column.value">
+          #{item.validityPeriodBegin,jdbcType=TIMESTAMP}
+        </if>
+        <if test="'validity_period_end' == column.value">
+          #{item.validityPeriodEnd,jdbcType=TIMESTAMP}
         </if>
       </foreach>
       )

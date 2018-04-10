@@ -80,6 +80,13 @@ define('Samples', function (require, module, exports) {
                 //fn: trim,
             },
             {
+                name: 'cascade_picker',
+                begin: '#--cascade_picker.begin--#',
+                end: '#--cascade_picker.end--#',
+                outer: '{cascade_picker}'
+                //fn: trim,
+            },
+            {
                 name: 'man_female',
                 begin: '#--man_female.begin--#',
                 end: '#--man_female.end--#',
