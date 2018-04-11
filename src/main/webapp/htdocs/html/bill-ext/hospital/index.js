@@ -13,6 +13,7 @@
     var MessageBox = SMS.require('MessageBox');
     var FormAction = require('FormAction');
     var FormEdit = require('FormEdit');
+    var FileUpload = require('FileUpload');
 
     var BL = SMS.require('ButtonList');
 
@@ -133,42 +134,18 @@
         operate: operate
     });
 
-    $("#hospital-logo").fileinput({
-        theme: "explorer", //主题
-        language: 'zh',
-        uploadUrl: "/Members/WorkOrder/PostAttachment",// 上传请求路径
-        allowedFileExtensions: ['jpg', 'gif', 'png', 'jpeg', 'pdf'],//允许上传的文件后缀
-        uploadAsync: false, //是否允许异步上传
-        showUpload: false,//是否显示上传按钮
-        showRemove : false,//是否移除按钮
-        showCaption: false,//是否显示容器
-        dropZoneEnabled: false,//是否显示拖拽区域
-        removeFromPreviewOnError: true,//是否移除校验文件失败的文件
-        uploadExtraData: function (previewId, index) {   //额外参数 返回json数组
+    FileUpload.render('#hospital-logo-select', {
+        uploadExtraData: function (previewId, index) {
+            //额外参数 返回json数组
             return {
-                'id': commId  // commId 为全局变量，可以给控件上传额外参数
-
+                classId: classId,
+                id: id
             };
-        },
-        layoutTemplates: {    //取消上传按钮
-            actionUpload: '',
-        },
-        showPreview: false,      //显示预览
-        minFileCount: 1,   //最低文件数量
-        maxFileCount: 3,   //最多文件数量
-        maxFileSize: 512,  //允许文件上传大小
-        overwriteInitial: true,
-        previewFileIcon: '<i class="fa fa-file"></i>',
-        initialPreviewAsData: true, // defaults markup
-        preferIconicPreview: false, // 是否优先显示图标  false 即优先显示图片
-        previewFileIconSettings: { // configure your icon file extensions
-            'pdf': '<i class="fa fa-file-pdf-o text-danger"></i>',
-            'jpg': '<i class="fa fa-file-photo-o text-danger"></i>',
-            'gif': '<i class="fa fa-file-photo-o text-muted"></i>',
-            'png': '<i class="fa fa-file-photo-o text-primary"></i>',
-            'jpeg': '<i class="fa fa-file-photo-o text-primary"></i>'
+        }
+    }, function (resp) {
+        if (resp.code === 200) {
+            $("#hospital-logo").attr('src', resp.data.success);
         }
     });
 
-    $("#hospital-logo").fileinput();
 })(jQuery, MiniQuery, SMS);

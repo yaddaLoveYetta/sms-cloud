@@ -8,11 +8,12 @@
     <link rel="stylesheet" href="../../../css/bootstrap.css" type="text/css"/>
     <link rel="stylesheet" href="../../../css/iconfont/iconfont.css">
 
-    <link rel="stylesheet" href="../../../lib/bootstrap-fileinput-4.4.7/css/fileinput.min.css">
+<!--    <link rel="stylesheet" href="../../../lib/bootstrap-fileinput-4.4.7/css/fileinput.min.css">-->
 
     <!--grunt.css.begin-->
     <link rel="stylesheet" href="../../../css/bill/index.debug.css">
     <link rel="stylesheet" href="../../../css/bill-ext/hospital/index.debug.css">
+
     <!--grunt.css.end-->
 </head>
 <body>
@@ -25,8 +26,8 @@
 <div class="div-head-container container-fluid">
 
     <div class="col-sm-2 head-content img">
-        <img src="../../../css/img/a0.jpg" class="logo">
-        <input type="file" class="projectfile" id="hospital-logo" name="image">
+        <img id="hospital-logo" src="../../../css/img/a0.jpg" class="logo">
+        <input id="hospital-logo-select" type="file" class="projectfile" name="image">
     </div>
 
     <div id="div-head-content" class=" head-content col-sm-10">
@@ -163,8 +164,8 @@
 <script src="../../../lib/bootstrap/bootstrap.js"></script>
 <script src="../../../config.js"></script>
 
-<script src="../../../lib/bootstrap-fileinput-4.4.7/js/fileinput.js"></script>
-<script src="../../../lib/bootstrap-fileinput-4.4.7/js/locales/zh.js"></script>
+<!--<script src="../../../lib/bootstrap-fileinput-4.4.7/js/fileinput.js"></script>
+<script src="../../../lib/bootstrap-fileinput-4.4.7/js/locales/zh.js"></script>-->
 <!--grunt.js.begin-->
 <script src="../../selector/module/DataSelector.js"></script>
 <script src="modules/Validate.js"></script>
@@ -172,6 +173,7 @@
 <script src="modules/Samples.js"></script>
 <script src="modules/FormAction.js"></script>
 <script src="modules/GridConfig.js"></script>
+<script src="modules/FileUpload.js"></script>
 <script src="index.js"></script>
 
 <!--grunt.js.end-->

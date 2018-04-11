@@ -6375,7 +6375,7 @@
             checkNode: function () {
                 return invoke(this, 'checkNode', arguments);
             },
-            getCheckedNodes:function () {
+            getCheckedNodes: function () {
                 return invoke(this, 'getCheckedNodes', arguments);
             },
             setting: function () {
@@ -6536,6 +6536,133 @@
                     'bootstrap-treeview-js'
                 ], function () {
                     fn && fn(TreeView);
+                });
+
+            },
+
+
+            config: function (obj) {
+                // get
+                if (arguments.length == 0) {
+                    return defaults;
+                }
+                // set
+                $.Object.extend(defaults, obj);
+            },
+
+        };
+
+    });
+
+    /**
+     * bootstrap-FileInput
+     *
+     * @author yadda
+     */
+    define('FileInput', function (require, exports, module) {
+
+        var $ = require('$');
+        var Seajs = require('Seajs');
+
+        var mapper = new $.Mapper();
+
+        // 默认配置
+        var defaults = {
+            theme: "explorer", //主题
+            language: 'zh',
+            //uploadUrl: api.getUrl(),// 上传请求路径
+            allowedFileExtensions: ['jpg', 'gif', 'png', 'jpeg', 'pdf'],//允许上传的文件后缀
+            uploadAsync: true, //是否允许异步上传 false时 fileuploaded事件无效
+            showUpload: false,//是否显示上传按钮
+            showRemove: false,//是否移除按钮
+            showCaption: false,//是否显示容器
+            dropZoneEnabled: false,//是否显示拖拽区域
+            removeFromPreviewOnError: true,//是否移除校验文件失败的文件
+            layoutTemplates: {    //取消上传按钮
+                actionUpload: ''
+            },
+            showPreview: false, //显示预览
+            minFileCount: 1,   //最低文件数量
+            maxFileCount: 3,   //最多文件数量
+            maxFileSize: 512,  //允许文件上传大小
+            overwriteInitial: true,
+            //previewFileIcon: '<i class="fa fa-file"></i>',
+            initialPreviewAsData: true, // defaults markup
+            preferIconicPreview: false, // 是否优先显示图标  false 即优先显示图片
+        };
+
+        // 调用原始控件的方法
+        function invoke(self, name, $argumetns) {
+
+            var meta = mapper.get(self);
+            var $selector = meta.$selector;
+
+            var args = [].slice.call($argumetns, 0);
+
+            return $selector.fileinput(name, args);
+
+        }
+
+
+        /**
+         * 构造函数。
+         */
+        function FileInput(selector, config) {
+
+            if ($.Object.isPlain(selector)) { // 重载 ( config )
+                config = selector;
+                selector = config.selector;
+                delete config.selector; // 删除，避免对原始造成不可知的副作用
+            }
+
+            config = $.Object.extend({}, defaults, config);
+
+            var $this = $(selector).fileinput(config);
+
+            var meta = {
+                $this: $this,
+                $selector: $(selector)
+            };
+
+            mapper.set(this, meta);
+
+        }
+
+
+        FileInput.prototype = { // 实例方法
+
+            constructor: FileInput,
+
+            on: function (name, fn) {
+                var meta = mapper.get(this);
+                var $selector = meta.$selector;
+
+                if ($.Object.isPlain(name)) {
+                    for (var item in name) {
+                        $selector.on(item.key, item.value);
+                    }
+                    return;
+                }
+
+                $selector.on(name, fn);
+            },
+
+            disable: function () {
+                return invoke(this, 'disable', arguments);
+            }
+        };
+
+
+        return {
+
+            use: function (fn) {
+
+                Seajs.use([
+                    'bootstrap-fileinput-js',
+                    'bootstrap-fileinput-local-js',
+                    'bootstrap-fileinput-css'
+                ], function () {
+                    fn && fn(FileInput);
                 });
 
             },
