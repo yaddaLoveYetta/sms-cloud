@@ -136,7 +136,7 @@
                 'easy-tabs': 'jspkg-archive/lib/jquery.easytabs.{@}.js',
                 'bootstrap-treeview-js': 'bootstrap-treeview-1.2.0/dist/bootstrap-treeview.min.js',
                 'bootstrap-treeview-css': 'bootstrap-treeview-1.2.0/dist/bootstrap-treeview.min.css',
-                'bootstrap-fileinput-js':'bootstrap-fileinput-4.4.7/js/fileinput.min.js',
+                'bootstrap-fileinput-js':'bootstrap-fileinput-4.4.7/js/fileinput.js',
                 'bootstrap-fileinput-local-js':'bootstrap-fileinput-4.4.7/js/locales/zh.js',
                 'bootstrap-fileinput-css':'bootstrap-fileinput-4.4.7/css/fileinput.min.css'
             }

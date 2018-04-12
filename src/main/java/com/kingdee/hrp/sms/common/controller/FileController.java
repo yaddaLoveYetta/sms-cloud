@@ -1,12 +1,17 @@
 package com.kingdee.hrp.sms.common.controller;
 
 import com.kingdee.hrp.sms.common.exception.BusinessLogicRunTimeException;
+import com.kingdee.hrp.sms.util.FileOperate;
+import com.sun.jersey.api.client.Client;
 import org.apache.commons.io.FilenameUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -25,7 +30,19 @@ import java.util.Random;
  */
 @Controller
 @RequestMapping(value = "/file/")
-public class UploadController {
+public class FileController {
+
+    /**
+     * 后台图片保存地址
+     */
+    @Value("#{propertiesConfig[filePath]}")
+    private String filePath;
+
+    /**
+     * 项目host路径
+     */
+    @Value("#{propertiesConfig[fileHost]}")
+    private String fileHost;
 
     @ResponseBody
     @RequestMapping(value = "uploadPic")
@@ -66,5 +83,40 @@ public class UploadController {
         }
 
         return json;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "changeLogo", method = RequestMethod.POST)
+    public Map<String, Object> changeLogo(HttpServletRequest request, HttpServletResponse response) {
+
+        Map<String, Object> ret = new HashMap<String, Object>();
+
+        MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
+        //得到文件map对象
+        Map<String, MultipartFile> files = multipartRequest.getFileMap();
+
+        // 实例化一个jersey
+        Client client = new Client();
+
+        for (Map.Entry<String, MultipartFile> fileEntry : files.entrySet()) {
+
+            //String fileName = fileEntry.getKey();
+            MultipartFile file = fileEntry.getValue();
+            String fileName = file.getOriginalFilename();
+
+            String uploadResult = FileOperate.upload(client, file, fileHost, filePath);
+
+            if (!"".equals(uploadResult)) {
+                //上传成功
+                ret.put(fileName, uploadResult);
+
+            } else {
+                //上传失败
+                ret.put(fileName, "error");
+            }
+
+        }
+
+        return ret;
     }
 }

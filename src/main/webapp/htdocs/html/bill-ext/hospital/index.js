@@ -135,6 +135,7 @@
     });
 
     FileUpload.render('#hospital-logo-select', {
+
         uploadExtraData: function (previewId, index) {
             //额外参数 返回json数组
             return {
@@ -142,9 +143,11 @@
                 id: id
             };
         }
-    }, function (resp) {
+    }, function (fileNames, resp) {
         if (resp.code === 200) {
-            $("#hospital-logo").attr('src', resp.data.success);
+            $("#hospital-logo").attr('src', resp.data[fileNames[0]]);
+        } else {
+            SMS.Tips.error(resp.msg, 1000);
         }
     });
 

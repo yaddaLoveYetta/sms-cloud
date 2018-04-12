@@ -4328,7 +4328,7 @@
                 var txtUser;
                 var txtPassword;
 
-                var user = get();
+                var user = getLast();
 
                 function submit(dialog) {
 
@@ -6621,7 +6621,8 @@
 
             var meta = {
                 $this: $this,
-                $selector: $(selector)
+                $selector: $(selector),
+                $config: config
             };
 
             mapper.set(this, meta);
@@ -6649,6 +6650,30 @@
 
             disable: function () {
                 return invoke(this, 'disable', arguments);
+            },
+            enable: function () {
+                return invoke(this, 'enable', arguments);
+            },
+            upload: function () {
+                return invoke(this, 'upload', arguments);
+            },
+            refresh: function () {
+                return invoke(this, 'refresh', arguments);
+            },
+            reset: function () {
+                return invoke(this, 'reset', arguments);
+            },
+            clear: function () {
+                return invoke(this, 'clear', arguments);
+            },
+            destroy: function () {
+                return invoke(this, 'destroy', arguments);
+            },
+            render: function () {
+                var meta = mapper.get(this);
+                var $selector = meta.$selector;
+                var $config = meta.$config;
+                $selector.fileinput($config);
             }
         };
 
@@ -6659,7 +6684,7 @@
 
                 Seajs.use([
                     'bootstrap-fileinput-js',
-                    'bootstrap-fileinput-local-js',
+                    //'bootstrap-fileinput-local-js',
                     'bootstrap-fileinput-css'
                 ], function () {
                     fn && fn(FileInput);
@@ -7477,7 +7502,8 @@
         'ZTree': true,
         'Grid': true,
         'BarCode': true,
-        'TreeView': true
+        'TreeView': true,
+        'FileInput': true
     });
 
 
@@ -7535,7 +7561,8 @@
         'MessageBox': require('Tips'),
         'Pagers': require('Pagers'),
         'Grid': require('Grid'),
-        'TreeView': require('TreeView')
+        'TreeView': require('TreeView'),
+        'FileInput': require('FileInput')
     };
 
 
