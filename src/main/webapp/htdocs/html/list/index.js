@@ -113,7 +113,7 @@
                 }
 
                 var metaData = List.getMetaData();
-                var url = 'html/bill/index.html';
+                var url = require("UrlMapping")(classId);
                 var name = metaData.formClass.name || '';
 
                 if (!url) {
@@ -221,7 +221,7 @@
                     SMS.Tips.error('请选择要禁用的项', 1500);
                     return;
                 }
-                MessageBox.confirm('确定禁用选择的项?', function (result) {
+                MessageBox.confirm('禁用后该用户不可使用系统。\r\n确定禁用?', function (result) {
                     if (result) {
                         List.forbid(classId, list, 1, function () {
                             refresh();
@@ -466,7 +466,7 @@
             }
 
             var metaData = List.getMetaData();
-            var url = 'html/bill/index.html';
+            var url = require("UrlMapping")(classId);
             var name = metaData.formClass.name || '';
 
             if (!url) {

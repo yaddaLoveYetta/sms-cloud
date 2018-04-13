@@ -9,7 +9,6 @@
 
     <!--grunt.css.begin-->
     <link rel="stylesheet" href="../../css/list/index.debug.css">
-
     <!--grunt.css.end-->
 </head>
 <body>
@@ -88,8 +87,8 @@
                             <select name="operator" class="form-control operator">
                             </select>
                         </td>
-                        <td class="col-sm-3"  data-name="value" style="overflow:visible">
-                            <input type="text" name="value" value=""  class="form-control  searchInput"
+                        <td class="col-sm-3" data-name="value" style="overflow:visible">
+                            <input type="text" name="value" value="" class="form-control  searchInput"
                                    autocomplete="off">
                         </td>
                     </tr>
@@ -101,7 +100,7 @@
                             </select>
                         </td>
                         <td class="col-sm-3">
-                            <select name="fieldKey"data-index="4" class="form-control field-key">
+                            <select name="fieldKey" data-index="4" class="form-control field-key">
                             </select>
                         </td>
                         <td class="col-sm-2">
@@ -155,7 +154,7 @@
             #--th.checkbox.end--#
 
             #--th.begin--#
-            <th style="width: {width}px;">
+            <th style="min-width: {width}px;">
                 {th}
             </th>
             #--th.end--#
@@ -192,7 +191,7 @@
 <!--标准分页控件 -->
 <div id="div-pager-normal" class="container-fluid pull-right page-panel"></div>
 
-<div id="filter-template"  style="display: none">
+<div id="filter-template" style="display: none">
     <!--
         #--option.begin--#
         <option data-index="{index}" value="{value}" data-ctrltype="{ctrlType}" >{name}</option>
@@ -226,6 +225,7 @@
 <script src="modules/List.js"></script>
 <script src="modules/Search.js"></script>
 <script src="modules/Pager.js"></script>
+<script src="modules/UrlMapping.js"></script>
 <script src="index.js"></script>
 <!--grunt.js.end-->
 </body>

@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>供应商用户信息</title>
+
+    <link rel="stylesheet" href="../../../css/global.debug.css" type="text/css"/>
+    <link rel="stylesheet" href="../../../css/bootstrap.css" type="text/css"/>
+    <link rel="stylesheet" href="../../../css/iconfont/iconfont.css">
+
+    <!--grunt.css.begin-->
+    <link rel="stylesheet" href="../../../css/bill/index.debug.css">
+    <link rel="stylesheet" href="../../../css/bill-ext/hospital/index.debug.css">
+
+    <!--grunt.css.end-->
+</head>
+<body>
+
+<!--按钮区-->
+<div class="container-fluid options ">
+    <div id="div-button-list" class="btn-box"></div>
+</div>
+<!--主显示区-->
+<div class="div-head-container container-fluid">
+
+
+    <ul id="myTab" class="nav nav-tabs">
+        <li class="active"><a href="#base" data-toggle="tab">基础资料信息</a></li>
+        <li><a href="#business" data-toggle="tab">工商信息</a></li>
+        <li><a href="#purchase" data-toggle="tab">采购信息</a></li>
+
+    </ul>
+    <div id="myTabContent" class="tab-content">
+        <div class="tab-pane fade in active" id="base">
+
+            <div class="col-sm-2 head-content img">
+                <img id="hospital-logo" src="../../../css/img/a0.jpg" class="logo">
+                <input id="hospital-logo-select" type="file" class="projectfile" name="image">
+            </div>
+
+            <div class=" head-content col-sm-10">
+                <div class="row form-group">
+
+                    <label class="col-sm-2 ">
+                        <span class="must-mark">*</span>
+                        公司名称</label>
+                    <div class="col-sm-3">
+                        <input id="name" type="text" class="form-control" placeholder="请输入公司名称">
+                        <span id="name-msg" class="error-msg msg"></span>
+                    </div>
+                </div>
+
+                <div class="row form-group">
+                    <label class="col-sm-2 ">
+                        <span class="must-mark">*</span>
+                        公司简介</label>
+                    <div class="col-sm-8">
+                        <textarea id="introduction" class="form-control" placeholder="请输入公司简介"></textarea>
+                        <span id="introduction-msg" class="error-msg msg"></span>
+                    </div>
+
+                </div>
+                <div class="row form-group">
+                    <label class="col-sm-2 ">
+                        <span class="must-mark">*</span>
+                        发展历程</label>
+                    <div class="col-sm-8">
+                        <textarea id="developmentExperience" class="form-control" placeholder="请输入发展历程"></textarea>
+                        <span id="developmentExperience-msg" class="error-msg msg"></span>
+                    </div>
+                </div>
+
+                <div class="row form-group">
+
+                    <label class="col-sm-2 ">
+                        <span class="must-mark">*</span>
+                        联系人</label>
+                    <div class="col-sm-3">
+                        <input id="contacts" type="text" class="form-control" placeholder="请输入联系人">
+                        <span id="contacts-msg" class="error-msg msg"></span>
+                    </div>
+
+                    <label class="col-sm-2 ">
+                        <span class="must-mark">*</span>
+                        电话</label>
+                    <div class="col-sm-3">
+                        <input id="phone" type="text" class="form-control" placeholder="请输入联系人电话">
+                        <span id="phone-msg" class="error-msg msg"></span>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+        <div class="tab-pane fade" id="business">
+            <div class=" head-content col-sm-10">
+                <div class="row form-group">
+
+                    <label class="col-sm-2 ">
+                        <span class="must-mark">*</span>
+                        统一信用代码</label>
+                    <div class="col-sm-3">
+                        <input id="credit_code" type="text" class="form-control" placeholder="请输入统一信用代码">
+                        <span id="credit_code-msg" class="error-msg msg"></span>
+                    </div>
+
+                    <label class="col-sm-2 ">
+                        <span class="must-mark">*</span>
+                        法定代表人</label>
+                    <div class="col-sm-3">
+                        <input id="legal_person" type="text" class="form-control" placeholder="请输入法定代表人">
+                        <span id="legal_person-msg" class="error-msg msg"></span>
+                    </div>
+                </div>
+                <div class="row form-group">
+
+                    <label class="col-sm-2 ">
+                        <span class="must-mark">*</span>
+                        企业类型</label>
+                    <div class="col-sm-3">
+                        <input id="company_type" type="text" class="form-control" placeholder="请输入企业类型">
+                        <span id="company_type-msg" class="error-msg msg"></span>
+                    </div>
+
+                    <label class="col-sm-2 ">
+                        <span class="must-mark">*</span>
+                        所属行业</label>
+                    <div class="col-sm-3">
+                        <input id="industry_type" type="text" class="form-control" placeholder="请输入所属行业">
+                        <span id="industry_type-msg" class="error-msg msg"></span>
+                    </div>
+                </div>
+                <div class="row form-group">
+
+                    <label class="col-sm-2 ">
+                        <span class="must-mark">*</span>
+                        注册地址</label>
+                    <div class="col-sm-8">
+                        <input id="address" type="text" class="form-control" placeholder="请输入注册地址">
+                        <span id="address-msg" class="error-msg msg"></span>
+                    </div>
+
+                </div>
+                <div class="row form-group">
+                    <label class="col-sm-2 ">
+                        <span class="must-mark">*</span>
+                        营业期限开始</label>
+                    <div class=" col-sm-3">
+                        <span class="iconfont icon-riqixuanze form-control-feedback"></span>
+                        <input id="validity_period_begin" type="text" class="form-control" placeholder="点击选择有效期开始">
+                        <span id="validity_period_begin-msg" class="error-msg msg"></span>
+                    </div>
+
+                    <label class="col-sm-2 ">
+                        <span class="must-mark">*</span>
+                        营业期限结束</label>
+                    <div class=" col-sm-3">
+                        <span class="iconfont icon-riqixuanze form-control-feedback"></span>
+                        <input id="validity_period_end" type="text" class="form-control" placeholder="点击选择有效期结束">
+                        <span id="validity_period_end-msg" class="error-msg msg"></span>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <label class="col-sm-2 ">
+                        <span class="must-mark">*</span>
+                        核准日期</label>
+                    <div class=" col-sm-3">
+                        <span class="iconfont icon-riqixuanze form-control-feedback"></span>
+                        <input id="issue_date" type="text" class="form-control" placeholder="点击选择发证日期">
+                        <span id="issue_date-msg" class="error-msg msg"></span>
+                    </div>
+
+
+                </div>
+                <div class="row form-group">
+                    <label class="col-sm-2 ">
+                        <span class="must-mark">*</span>
+                        发证机关</label>
+                    <div class="col-sm-5">
+                        <input id="issue_agency" type="text" class="form-control" placeholder="请输入发证机关">
+                        <span id="issue_agency-msg" class="error-msg msg"></span>
+                    </div>
+                </div>
+
+                <div class="row form-group">
+
+                    <label class="col-sm-2 ">
+                        <span class="must-mark">*</span>
+                        主营业务</label>
+                    <div class="col-sm-8">
+                        <textarea id="main_business" class="form-control" placeholder="请输入主营业务"></textarea>
+                        <span id="main_business-msg" class="error-msg msg"></span>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="purchase">
+
+            <div class=" head-content col-sm-10">
+                <div class="row form-group">
+
+                    <label class="col-sm-2 ">
+                        <span class="must-mark">*</span>
+                        开户行</label>
+                    <div class="col-sm-3">
+                        <input id="account_bank" type="text" class="form-control" placeholder="请输入开户行">
+                        <span id="account_bank-msg" class="error-msg msg"></span>
+                    </div>
+
+                    <label class="col-sm-2 ">
+                        <span class="must-mark">*</span>
+                        银行账号</label>
+                    <div class="col-sm-3">
+                        <input id="account_number" type="text" class="form-control" placeholder="请输入银行账号">
+                        <span id="account_number-msg" class="error-msg msg"></span>
+                    </div>
+                </div>
+                <div class="row form-group">
+
+                    <label class="col-sm-2 ">
+                        <span class="must-mark">*</span>
+                        开户地址</label>
+                    <div class="col-sm-8">
+                        <input id="account_address" type="text" class="form-control" placeholder="请输入开户地址">
+                        <span id="account_address-msg" class="error-msg msg"></span>
+                    </div>
+
+                </div>
+                <div class="row form-group">
+
+                    <label class="col-sm-2 ">
+                        <span class="must-mark">*</span>
+                        结算公司</label>
+                    <div class="col-sm-3">
+                        <input id="clearing_company" type="text" class="form-control" placeholder="请输入结算公司">
+                        <span id="clearing_company-msg" class="error-msg msg"></span>
+                    </div>
+
+                    <label class="col-sm-2 ">
+                        <span class="must-mark">*</span>
+                        送货公司</label>
+                    <div class="col-sm-3">
+                        <input id="delivery_company" type="text" class="form-control" placeholder="请输入送货公司">
+                        <span id="delivery_company-msg" class="error-msg msg"></span>
+                    </div>
+                </div>
+                <div class="row form-group">
+
+                    <label class="col-sm-2 ">
+                        <span class="must-mark">*</span>
+                        结算币种</label>
+                    <div class="col-sm-3">
+                        <input id="clearing_currency" type="text" class="form-control" placeholder="请输入结算币种">
+                        <span id="clearing_currency-msg" class="error-msg msg"></span>
+                    </div>
+
+                    <label class="col-sm-2 ">
+                        <span class="must-mark">*</span>
+                        结算方式</label>
+                    <div class="col-sm-3">
+                        <input id="clearing_type" type="text" class="form-control" placeholder="请输入结算方式">
+                        <span id="clearing_type-msg" class="error-msg msg"></span>
+                    </div>
+                </div>
+                <div class="row form-group">
+
+                    <label class="col-sm-2 ">
+                        <span class="must-mark">*</span>
+                        付款方式</label>
+                    <div class="col-sm-3">
+                        <input id="payment_type" type="text" class="form-control" placeholder="请输入付款方式">
+                        <span id="payment_type-msg" class="error-msg msg"></span>
+                    </div>
+
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+
+</div>
+
+
+<script src="../../../lib/jquery/jquery-1.11.1.debug.js"></script>
+<script src="../../../lib/miniquery/miniquery.debug.js"></script>
+<script src="../../../lib/sms/sms.debug.js"></script>
+<script src="../../../lib/bootstrap/bootstrap.js"></script>
+<script src="../../../config.js"></script>
+
+<!--grunt.js.begin-->
+<script src="../../selector/module/DataSelector.js"></script>
+<script src="../../common-edit/Validate.js"></script>
+<script src="../../common-edit/FormEdit.js"></script>
+<script src="../../common-edit/Samples.js"></script>
+<script src="../../common-edit/FormAction.js"></script>
+<script src="../../common-edit/GridConfig.js"></script>
+<script src="modules/FileUpload.js"></script>
+<!--<script src="index.js"></script>-->
+
+<!--grunt.js.end-->
+
+</body>
+</html>

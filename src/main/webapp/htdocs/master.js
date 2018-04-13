@@ -129,7 +129,7 @@
                 classId = 1012;
             } else if (roleType === 3) {
                 // 供应商角色类别
-                url = './html/bill/index.html?classId=1013';
+                url = './html/bill-ext/supplier/index.html?classId=1013';
                 classId = 1013;
             }
             Iframe.open({

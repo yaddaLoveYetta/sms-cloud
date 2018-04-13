@@ -18,6 +18,7 @@
     <result column="issue_date" jdbcType="TIMESTAMP" property="issueDate" />
     <result column="validity_period_begin" jdbcType="TIMESTAMP" property="validityPeriodBegin" />
     <result column="validity_period_end" jdbcType="TIMESTAMP" property="validityPeriodEnd" />
+    <result column="logo" jdbcType="VARCHAR" property="logo" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -80,7 +81,7 @@
   <sql id="Base_Column_List">
     id, `number`, `name`, credit_code, address, introduction, medical_subjects, principal, 
     issue_agency, legal_person, province, city, district, issue_date, validity_period_begin, 
-    validity_period_end
+    validity_period_end, logo
   </sql>
   <select id="selectByExample" parameterType="com.kingdee.hrp.sms.common.model.HospitalExample" resultMap="BaseResultMap">
     select
@@ -118,13 +119,13 @@
       medical_subjects, principal, issue_agency, 
       legal_person, province, city, 
       district, issue_date, validity_period_begin, 
-      validity_period_end)
+      validity_period_end, logo)
     values (#{id,jdbcType=BIGINT}, #{number,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
       #{creditCode,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{introduction,jdbcType=VARCHAR}, 
       #{medicalSubjects,jdbcType=VARCHAR}, #{principal,jdbcType=VARCHAR}, #{issueAgency,jdbcType=VARCHAR}, 
       #{legalPerson,jdbcType=VARCHAR}, #{province,jdbcType=INTEGER}, #{city,jdbcType=INTEGER}, 
       #{district,jdbcType=INTEGER}, #{issueDate,jdbcType=TIMESTAMP}, #{validityPeriodBegin,jdbcType=TIMESTAMP}, 
-      #{validityPeriodEnd,jdbcType=TIMESTAMP})
+      #{validityPeriodEnd,jdbcType=TIMESTAMP}, #{logo,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.kingdee.hrp.sms.common.model.Hospital">
     insert into t_hospital
@@ -177,6 +178,9 @@
       <if test="validityPeriodEnd != null">
         validity_period_end,
       </if>
+      <if test="logo != null">
+        logo,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -226,6 +230,9 @@
       </if>
       <if test="validityPeriodEnd != null">
         #{validityPeriodEnd,jdbcType=TIMESTAMP},
+      </if>
+      <if test="logo != null">
+        #{logo,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -286,6 +293,9 @@
       <if test="record.validityPeriodEnd != null">
         validity_period_end = #{record.validityPeriodEnd,jdbcType=TIMESTAMP},
       </if>
+      <if test="record.logo != null">
+        logo = #{record.logo,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -308,7 +318,8 @@
       district = #{record.district,jdbcType=INTEGER},
       issue_date = #{record.issueDate,jdbcType=TIMESTAMP},
       validity_period_begin = #{record.validityPeriodBegin,jdbcType=TIMESTAMP},
-      validity_period_end = #{record.validityPeriodEnd,jdbcType=TIMESTAMP}
+      validity_period_end = #{record.validityPeriodEnd,jdbcType=TIMESTAMP},
+      logo = #{record.logo,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -361,6 +372,9 @@
       <if test="validityPeriodEnd != null">
         validity_period_end = #{validityPeriodEnd,jdbcType=TIMESTAMP},
       </if>
+      <if test="logo != null">
+        logo = #{logo,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -380,7 +394,8 @@
       district = #{district,jdbcType=INTEGER},
       issue_date = #{issueDate,jdbcType=TIMESTAMP},
       validity_period_begin = #{validityPeriodBegin,jdbcType=TIMESTAMP},
-      validity_period_end = #{validityPeriodEnd,jdbcType=TIMESTAMP}
+      validity_period_end = #{validityPeriodEnd,jdbcType=TIMESTAMP},
+      logo = #{logo,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
   <insert id="batchInsert" parameterType="map">
@@ -392,7 +407,7 @@
     insert into t_hospital
     (id, `number`, `name`, credit_code, address, introduction, medical_subjects, principal, 
       issue_agency, legal_person, province, city, district, issue_date, validity_period_begin, 
-      validity_period_end)
+      validity_period_end, logo)
     values
     <foreach collection="list" item="item" separator=",">
       (#{item.id,jdbcType=BIGINT}, #{item.number,jdbcType=VARCHAR}, #{item.name,jdbcType=VARCHAR}, 
@@ -400,7 +415,7 @@
         #{item.medicalSubjects,jdbcType=VARCHAR}, #{item.principal,jdbcType=VARCHAR}, #{item.issueAgency,jdbcType=VARCHAR}, 
         #{item.legalPerson,jdbcType=VARCHAR}, #{item.province,jdbcType=INTEGER}, #{item.city,jdbcType=INTEGER}, 
         #{item.district,jdbcType=INTEGER}, #{item.issueDate,jdbcType=TIMESTAMP}, #{item.validityPeriodBegin,jdbcType=TIMESTAMP}, 
-        #{item.validityPeriodEnd,jdbcType=TIMESTAMP})
+        #{item.validityPeriodEnd,jdbcType=TIMESTAMP}, #{item.logo,jdbcType=VARCHAR})
     </foreach>
   </insert>
   <insert id="batchInsertSelective" parameterType="map">
@@ -465,6 +480,9 @@
         </if>
         <if test="'validity_period_end' == column.value">
           #{item.validityPeriodEnd,jdbcType=TIMESTAMP}
+        </if>
+        <if test="'logo' == column.value">
+          #{item.logo,jdbcType=VARCHAR}
         </if>
       </foreach>
       )

@@ -511,6 +511,7 @@ define('FormEdit', function (require, module, exports) {
         }).join('');
 
         if (!existEntry) {
+            emitter.fire('afterInitPage', [metaData]);
             fn && fn(1);
             return;
         }
@@ -580,53 +581,7 @@ define('FormEdit', function (require, module, exports) {
 
         });
 
-
-        /*SMS.use('Grid', function (Grid) {
-
-            var student = [
-                {id:'001',name:'zhangsan1',sex:'m',age:23},
-                {id:'002',name:'zhangsan2',sex:'w',age:20},
-                {id:'003',name:'zhangsan3',sex:'m',age:22},
-                {id:'004',name:'zhangsan4',sex:'w',age:21},
-                {id:'005',name:'zhangsan5',sex:'m',age:19},
-                {id:'006',name:'zhangsan6',sex:'w',age:18},
-                {id:'007',name:'zhangsan7',sex:'m',age:24},
-                {id:'008',name:'zhangsan8',sex:'w',age:20},
-                {id:'009',name:'zhangsan9',sex:'m',age:25},
-                {id:'010',name:'zhangsan10',sex:'w',age:23}
-            ];
-            $("#user_id").jqGrid({
-                data:student,
-                datatype:'local',
-                caption:'学生信息表',
-                styleUI: 'Bootstrap',
-                height:'auto',
-                rowNum: 30,
-                rowList: [10,20,30],
-                colNames:['编号','姓名','性别','年龄','aa'],
-                colModel:[
-                    {name:'id',index:'id', width:300, sorttype:"int"},
-                    {name:'name',index:'name', width:300,editable:true,fixed:true},
-                    {name:'sex',index:'sex',width:300},
-                    {name:'age',index:'age',width:300},
-                    {name:'aa',index:'aa',width:300}
-                ],
-                pager: "#grid-pager",
-                viewrecords: true,
-                sortname: 'name',
-
-
-                autowidth: true,
-                multiselect: true,
-                rownumbers: true, // 显示行号
-                autoScroll: true,
-
-                loadComplete:function(){
-                    //$(this).jqGrid("setCaption",year+"年毕业学生信息表");
-                }
-            });
-        });*/
-
+        emitter.fire('afterInitPage', [metaData]);
     }
 
     /**

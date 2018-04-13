@@ -6583,8 +6583,8 @@
             },
             showPreview: false, //显示预览
             minFileCount: 1,   //最低文件数量
-            maxFileCount: 3,   //最多文件数量
-            maxFileSize: 512,  //允许文件上传大小
+            maxFileCount: 10,   //最多文件数量
+            maxFileSize: 10240,  //允许文件上传大小(kb)
             overwriteInitial: true,
             //previewFileIcon: '<i class="fa fa-file"></i>',
             initialPreviewAsData: true, // defaults markup

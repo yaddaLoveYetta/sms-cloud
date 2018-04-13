@@ -15,7 +15,7 @@
 
     <!-- 将多个配置文件读取到容器中，交给Spring管理 -->
     <!--<bean id="propertyConfigurer" class="com.kingdee.hrp.sms.common.filter.SmsPropertyPlaceholderConfigurer">-->
-    <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+    <bean id="propertyConfigurer" class="com.kingdee.hrp.sms.common.filter.SmsPropertyPlaceholderConfigurer">
         <property name="properties" ref="propertiesConfig"/>
     </bean>
 

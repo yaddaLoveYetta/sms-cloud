@@ -11,6 +11,7 @@
     text-align: right;
 }
 
+
 /*搜索框样式========begin =====*/
 .search-box .table > tbody > tr > td {
     border-top: none !important;
@@ -58,7 +59,8 @@
     padding-right: 0px !important;
     padding-left: 0px !important;
 }
-.search-box .form-control-feedback{
+
+.search-box .form-control-feedback {
     pointer-events: auto !important;
 }
 

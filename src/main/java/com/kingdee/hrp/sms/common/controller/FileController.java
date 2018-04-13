@@ -1,17 +1,13 @@
 package com.kingdee.hrp.sms.common.controller;
 
 import com.kingdee.hrp.sms.common.exception.BusinessLogicRunTimeException;
-import com.kingdee.hrp.sms.util.FileOperate;
-import com.sun.jersey.api.client.Client;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -85,9 +81,10 @@ public class FileController {
         return json;
     }
 
+/*
     @ResponseBody
     @RequestMapping(value = "changeLogo", method = RequestMethod.POST)
-    public Map<String, Object> changeLogo(HttpServletRequest request, HttpServletResponse response) {
+    public Map<String, Object> changeLogo(HttpServletRequest request, HttpServletResponse response, Integer classId, Long id) {
 
         Map<String, Object> ret = new HashMap<String, Object>();
 
@@ -97,14 +94,15 @@ public class FileController {
 
         // 实例化一个jersey
         Client client = new Client();
+        // 供应商、医院logo按classId来建目录保存-要求比不在文件服务器中先建立好目录，否则不能上传成功
+        String logoPath = filePath + classId + "/";
 
         for (Map.Entry<String, MultipartFile> fileEntry : files.entrySet()) {
 
-            //String fileName = fileEntry.getKey();
             MultipartFile file = fileEntry.getValue();
             String fileName = file.getOriginalFilename();
 
-            String uploadResult = FileOperate.upload(client, file, fileHost, filePath);
+            String uploadResult = FileOperate.upload(client, file, fileHost, logoPath);
 
             if (!"".equals(uploadResult)) {
                 //上传成功
@@ -119,4 +117,6 @@ public class FileController {
 
         return ret;
     }
+*/
+
 }
