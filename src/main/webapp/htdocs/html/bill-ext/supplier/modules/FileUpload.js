@@ -29,9 +29,6 @@ define('FileUpload', function (require, module, exports) {
             });
 
             fileInput.on('fileuploaded', function (event, data) {
-                /*   fileInput.destroy();
-                   fileInput.render();
-                   fileInput.enable();*/
                 if (data.response) {
                     fn && fn(data.filenames, data.response);
                 }

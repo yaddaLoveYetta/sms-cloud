@@ -11,11 +11,15 @@
     var SMS = require('SMS');
     var Iframe = SMS.require('Iframe');
     var MessageBox = SMS.require('MessageBox');
-    var FormAction = require('FormAction');
-    var FormEdit = require('FormEdit');
-    var FileUpload = require('FileUpload');
-
     var BL = SMS.require('ButtonList');
+
+    var FormAction = require('FormAction');
+    var FileUpload = require('FileUpload');
+    var DatetimePicker = require('DatetimePicker');
+    var SelectorList = require('SelectorList');
+    var NumberFieldList = require('NumberFieldList');
+    var Edit = require('Edit');
+
 
     var user = SMS.Login.get();
     //检查登录状态
@@ -91,41 +95,19 @@
         });
     });
 
-    FormEdit.on({
-        'afterFill': function (classId, metaData, data) {
-            if (classId === 1012) {
-                $("#hospital-logo").attr('src', data['logo']);
-            }
+    FileUpload.render();
+    DatetimePicker.render();
+    NumberFieldList.render();
+    SelectorList.render();
+    Edit.render();
+
+    Edit.on({
+        'numberFieldSet': function (field, key, value) {
+            NumberFieldList.set(field, key, value);
         },
-        'afterInitPage': function (metaData) {
-
-            if (operate === 0) {
-                $('#hospital-logo-select').remove();
-                return;
-            }
-            FileUpload.render('#hospital-logo-select', {
-
-                uploadExtraData: function (previewId, index) {
-                    //额外参数 返回json数组
-                    return {
-                        classId: classId,
-                        id: id
-                    };
-                }
-            }, function (fileNames, resp) {
-                if (resp.code === 200) {
-                    $("#hospital-logo").attr('src', resp.data[fileNames[0]]);
-                } else {
-                    SMS.Tips.error(resp.msg, 1000);
-                }
-            });
+        'selectorSet': function (field, key, selectorData) {
+            SelectorList.set(field, key, selectorData);
         }
-    });
-
-    FormEdit.render({
-        classId: classId,
-        id: id,
-        operate: operate
     });
 
 })(jQuery, MiniQuery, SMS);

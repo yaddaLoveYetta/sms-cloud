@@ -4,7 +4,7 @@ module.exports = function(grunt) {
     grunt.initConfig({
         concat: {
             dist: {
-                src: [ '../html/js/DatetimePicker.js', '../html/js/FilterData.js', '../html/js/FilterOptions.js',
+                src: [ '../html/js/DatetimePickerList.js', '../html/js/FilterData.js', '../html/js/FilterOptions.js',
                     '../html/js/TimeZone.js', '../html/js/Path.js', '../html/js/Filter.js', '../html/js/Notification.js', '../html/login.js'],
                 dest: '../html/Filter.js'
             }
