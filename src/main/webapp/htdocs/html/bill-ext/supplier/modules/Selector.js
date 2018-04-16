@@ -2,7 +2,7 @@
  * 填充自定义控件模块
  *
  */
-define('SelectorList', function (require, module, exports) {
+define('Selector', function (require, module, exports) {
 
     var $ = require('$');
     var MiniQuery = require('MiniQuery');

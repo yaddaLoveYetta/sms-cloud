@@ -4,7 +4,7 @@
  * @date: 2018/4/16 11:31
  */
 
-define('NumberFieldList', function (require, module, exports) {
+define('NumberField', function (require, module, exports) {
 
     var $ = require('$');
     var MiniQuery = require('MiniQuery');

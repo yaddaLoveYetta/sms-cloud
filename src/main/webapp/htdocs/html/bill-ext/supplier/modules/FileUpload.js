@@ -9,7 +9,7 @@ define('FileUpload', function (require, module, exports) {
     var SMS = require('SMS');
     var API = SMS.require('API');
 
-    var api = new API("hospital/changeLogo");
+    var api = new API("supplier/changeLogo");
 
     var defaults = {
         uploadUrl: api.getUrl()// 上传请求路径

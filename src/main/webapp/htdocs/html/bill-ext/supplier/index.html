@@ -10,7 +10,7 @@
 
     <!--grunt.css.begin-->
     <link rel="stylesheet" href="../../../css/bill/index.debug.css">
-    <link rel="stylesheet" href="../../../css/bill-ext/hospital/index.debug.css">
+    <link rel="stylesheet" href="../../../css/bill-ext/supplier/index.debug.css">
 
     <!--grunt.css.end-->
 </head>
@@ -21,7 +21,7 @@
     <div id="div-button-list" class="btn-box"></div>
 </div>
 <!--主显示区-->
-<div class="div-head-container container-fluid">
+<div class="div-head-container container-fluid head-content">
 
 
     <ul id="supplierTab" class="nav nav-tabs">
@@ -34,8 +34,10 @@
         <div class="tab-pane fade in active" id="base">
 
             <div class="col-sm-2 head-content img">
-                <img id="hospital-logo" src="../../../css/img/a0.jpg" class="logo">
-                <input id="hospital-logo-select" type="file" class="projectfile" name="image">
+                <div class="row form-group">
+                    <img id="supplier-logo" src="../../../css/img/logo.png" class="logo">
+                </div>
+                <input id="supplier-logo-select" type="file" name="image">
             </div>
 
             <div class=" head-content col-sm-10">
@@ -65,8 +67,8 @@
                         <span class="must-mark">*</span>
                         发展历程</label>
                     <div class="col-sm-8">
-                        <textarea id="developmentExperience" class="form-control" placeholder="请输入发展历程"></textarea>
-                        <span id="developmentExperience-msg" class="error-msg msg"></span>
+                        <textarea id="development_experience" class="form-control" placeholder="请输入发展历程"></textarea>
+                        <span id="development_experience-msg" class="error-msg msg"></span>
                     </div>
                 </div>
 
@@ -166,7 +168,7 @@
                         核准日期</label>
                     <div class=" col-sm-3">
                         <span class="iconfont icon-riqixuanze form-control-feedback"></span>
-                        <input id="issue_date" type="text" class="form-control" placeholder="点击选择发证日期">
+                        <input id="issue_date" type="text" class="form-control" placeholder="点击选择核准日期">
                         <span id="issue_date-msg" class="error-msg msg"></span>
                     </div>
 
@@ -297,13 +299,12 @@
 <script src="../../common-edit/FormAction.js"></script>
 <script src="../../common-edit/Operator.js"></script>
 
-<script src="modules/DatetimePickerList.js"></script>
-<script src="modules/NumberFieldList.js"></script>
-<script src="modules/SelectorList.js"></script>
+<script src="modules/DatetimePicker.js"></script>
+<script src="modules/NumberField.js"></script>
+<script src="modules/Selector.js"></script>
 <script src="modules/Edit.js"></script>
 <script src="modules/FileUpload.js"></script>
-<script src="modules/FileUpload.js"></script>
-<!--<script src="index.js"></script>-->
+<script src="index.js"></script>
 
 <!--grunt.js.end-->
 

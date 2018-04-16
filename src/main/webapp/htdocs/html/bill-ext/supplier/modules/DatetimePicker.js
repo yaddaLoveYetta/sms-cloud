@@ -1,7 +1,7 @@
 ﻿/**
  * 时间选择器
  */
-define('DatetimePickerList', function (require, module, exports) {
+define('DatetimePicker', function (require, module, exports) {
 
     var $ = require('$');
     var MiniQuery = require('MiniQuery');
@@ -56,6 +56,9 @@ define('DatetimePickerList', function (require, module, exports) {
 
     }
 
+    function set() {
+
+    }
 
     return {
         render: render,

@@ -16,8 +16,8 @@
     var FormAction = require('FormAction');
     var FileUpload = require('FileUpload');
     var DatetimePicker = require('DatetimePicker');
-    var SelectorList = require('SelectorList');
-    var NumberFieldList = require('NumberFieldList');
+    var Selector = require('Selector');
+    var NumberField = require('NumberField');
     var Edit = require('Edit');
 
 
@@ -63,50 +63,58 @@
         // 自定义事件
         ButtonList.on('click', {
             'save': function (item, index) {
-                // 新增、修改时保存
-                FormEdit.save(function (ret) {
-
-                    if (operate === 1) {
-                        id = ret.value;
-                        operate = 2;
-                        FormEdit.render({
-                            classId: classId,
-                            id: id,
-                            operate: operate
-                        });
-                        // 向主控台跑出一个单据新增成功事件
-                        Iframe.raise({
-                            'eventName': 'addSuccess',
-                            'data': Iframe.getInfos()
-                        });
-                    }
+                // 修改时保存
+                Edit.save(function (ret) {
                     SMS.Tips.success("保存成功!", 1500);
                 });
-                console.log(item);
             },
             'refresh': function (item, index) {
                 // 刷新
-                FormEdit.render({
-                    classId: classId,
-                    id: id,
-                    operate: operate
-                });
+                Edit.render(operate, classId, id);
             }
         });
     });
 
-    FileUpload.render();
     DatetimePicker.render();
-    NumberFieldList.render();
-    SelectorList.render();
-    Edit.render();
+    NumberField.render();
+    Selector.render();
+    Edit.render(operate, classId, id);
 
     Edit.on({
         'numberFieldSet': function (field, key, value) {
-            NumberFieldList.set(field, key, value);
+            NumberField.set(field, key, value);
+        },
+        'numberFieldGet': function () {
+                return NumberField.get(field, key);
         },
         'selectorSet': function (field, key, selectorData) {
-            SelectorList.set(field, key, selectorData);
+            Selector.set(field, key, selectorData);
+        },
+        'afterFill': function (classId, metaData, data) {
+            $("#supplier-logo").attr('src', data['logo']);
+        },
+        'afterInitPage': function (metaData) {
+
+            if (operate === 0) {
+                $('#supplier-logo-select').remove();
+                return;
+            }
+            FileUpload.render('#supplier-logo-select', {
+
+                uploadExtraData: function (previewId, index) {
+                    //额外参数 返回json数组
+                    return {
+                        classId: classId,
+                        id: id
+                    };
+                }
+            }, function (fileNames, resp) {
+                if (resp.code === 200) {
+                    $("#supplier-logo").attr('src', resp.data[fileNames[0]]);
+                } else {
+                    SMS.Tips.error(resp.msg, 1000);
+                }
+            });
         }
     });
 

@@ -55,6 +55,12 @@ define('Operator', function (require, module, exports) {
      */
     function getMetaData(classId, fnSuccess) {
 
+        if ($.Object.isPlain(classId)) {
+            // 重载
+            config = classId;
+            classId = config.classId;
+        }
+
         // 获取单据模板
         var api = new API('template/getFormTemplate');
 
@@ -84,6 +90,14 @@ define('Operator', function (require, module, exports) {
      * @param fnSuccess 成功回调
      */
     function getItemData(classId, id, fnSuccess) {
+
+        if ($.Object.isPlain(classId)) {
+            // 重载
+            config = classId;
+            fnSuccess = id;
+            classId = config.classId;
+            id = config.id;
+        }
 
         var api = new API('template/getItemById');
         SMS.Tips.loading('数据加载中..');
@@ -119,11 +133,72 @@ define('Operator', function (require, module, exports) {
         return document.getElementById(key);
     }
 
+    /**
+     * 判断表头字段是否是必填字段
+     * @param metaData 字段模板
+     * @param key 字段模板key
+     * @param operate 当前业务场景 0查看 1新增 2修改
+     * @returns {boolean}
+     */
+    function isMustInputFiled(metaData, key, operate) {
+
+        var user = SMS.Login.get();
+
+        var fields = metaData['formFields'][0];
+
+        var field = fields[key];
+        // 模板中配置的mustInput
+        var mustInput = field['mustInput'] || 0;
+        //是否必填掩码
+        var mustInputMask = 0;
+        // 角色类别 1:系统管理员 2:医院 3:供应商
+        var userRoleType = (user.roles && user.roles[0] && user.roles[0]['type']) || -1;
+
+        /*
+                    1	新增时对于平台用户必填
+                    2	编辑时对于平台用户必填
+                    4	新增时对于供应商用户必填
+                    8	编辑时对于供应商用户必填
+                    16	新增时对于医院用户必填
+                    32	编辑时对于医院用户必填
+                    */
+
+        if (operate === 1) {
+            // 新增
+            if (userRoleType === 1) {
+                // 平台用户
+                mustInputMask = 1;
+            } else if (userRoleType === 2) {
+                //医院用户
+                mustInputMask = 16;
+            } else if (userRoleType === 3) {
+                //供应商用户
+                mustInputMask = 4;
+            }
+        } else if (operate === 2) {
+            // 修改
+            if (userRoleType === 1) {
+                // 平台用户
+                mustInputMask = 2;
+            } else if (userRoleType === 2) {
+                //医院用户
+                mustInputMask = 32;
+            } else if (userRoleType === 3) {
+                //供应商用户
+                mustInputMask = 8;
+            }
+        }
+
+        //是否必填
+        return !!(mustInputMask & mustInput);
+    }
+
     return {
         submitData: submitData,
         getMetaData: getMetaData,
         getItemData: getItemData,
-        getValueElement: getValueElement
+        getValueElement: getValueElement,
+        isMustInputFiled: isMustInputFiled
     }
 
 });

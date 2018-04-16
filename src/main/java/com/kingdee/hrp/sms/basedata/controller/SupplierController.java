@@ -1,6 +1,6 @@
 package com.kingdee.hrp.sms.basedata.controller;
 
-import com.kingdee.hrp.sms.basedata.service.IHospitalService;
+import com.kingdee.hrp.sms.basedata.service.ISupplierService;
 import com.kingdee.hrp.sms.common.exception.BusinessLogicRunTimeException;
 import com.kingdee.hrp.sms.util.FileOperate;
 import com.sun.jersey.api.client.Client;
@@ -23,8 +23,8 @@ import java.util.Map;
  * @date 2018/4/13 11:11
  */
 @Controller
-@RequestMapping(value = "/hospital/")
-public class HospitalController {
+@RequestMapping(value = "/supplier/")
+public class SupplierController {
 
     /**
      * 后台图片保存地址
@@ -39,7 +39,7 @@ public class HospitalController {
     private String fileHost;
 
     @Resource
-    private IHospitalService hospitalService;
+    private ISupplierService supplierService;
 
     @ResponseBody
     @RequestMapping(value = "changeLogo", method = RequestMethod.POST)
@@ -83,7 +83,7 @@ public class HospitalController {
         }
 
         if (logoUrl != null && !"".equals(logoUrl)) {
-            hospitalService.changeLogo(classId, id, logoUrl);
+            supplierService.changeLogo(classId, id, logoUrl);
         }
 
         return ret;
