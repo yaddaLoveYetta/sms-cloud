@@ -11,7 +11,6 @@
     <!--grunt.css.begin-->
     <link rel="stylesheet" href="../../../css/bill/index.debug.css">
     <link rel="stylesheet" href="../../../css/bill-ext/supplier/index.debug.css">
-
     <!--grunt.css.end-->
 </head>
 <body>
@@ -137,8 +136,18 @@
                     <label class="col-sm-2 ">
                         <span class="must-mark">*</span>
                         注册地址</label>
+
+                    <div id="address-picker" class="col-sm-8 form-inline"></div>
+                    <span id="address-picker-msg" style="display: inline-block" class="error-msg msg"></span>
+
+                </div>
+                <div class="row form-group">
+
+                    <label class="col-sm-2 ">
+                        <span class="must-mark">*</span>
+                        详细地址</label>
                     <div class="col-sm-8">
-                        <input id="address" type="text" class="form-control" placeholder="请输入注册地址">
+                        <input id="address" type="text" class="form-control" placeholder="请输入详细地址">
                         <span id="address-msg" class="error-msg msg"></span>
                     </div>
 
@@ -183,7 +192,6 @@
                         <span id="issue_agency-msg" class="error-msg msg"></span>
                     </div>
                 </div>
-
                 <div class="row form-group">
 
                     <label class="col-sm-2 ">
@@ -298,12 +306,13 @@
 <script src="../../common-edit/Validate.js"></script>
 <script src="../../common-edit/FormAction.js"></script>
 <script src="../../common-edit/Operator.js"></script>
+<script src="../../common-edit/Edit.js"></script>
+<script src="../../common-edit/FileUpload.js"></script>
 
 <script src="modules/DatetimePicker.js"></script>
 <script src="modules/NumberField.js"></script>
 <script src="modules/Selector.js"></script>
-<script src="modules/Edit.js"></script>
-<script src="modules/FileUpload.js"></script>
+<script src="modules/Address.js"></script>
 <script src="index.js"></script>
 
 <!--grunt.js.end-->

@@ -116,7 +116,7 @@
             // 修改个人信息
             var user = SMS.Login.get();
 
-            var url, classId;
+            var url, classId, name;
             var roleType = user.roles && user.roles[0] && user.roles[0]['type'];
 
             if (roleType === 1) {
@@ -127,14 +127,16 @@
                 //  医院角色类别
                 url = './html/bill-ext/hospital/index.html?classId=1012';
                 classId = 1012;
+                name = '医院信息维护';
             } else if (roleType === 3) {
                 // 供应商角色类别
                 url = './html/bill-ext/supplier/index.html?classId=1013';
                 classId = 1013;
+                name = '供应商信息维护';
             }
             Iframe.open({
                 id: 'editProfile-' + classId,
-                name: '信息维护',
+                name: name,
                 url: url,
                 query: {
                     'roleType': roleType,

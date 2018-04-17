@@ -224,9 +224,9 @@ define("Search", function (require, module, exports) {
             }
 
             if (operator === 'BN' || operator === 'NBN') {
-                $(this).parent('td').parent("tr").find("input[name='value']").attr("disabled",true).val('');
-            }else {
-                $(this).parent('td').parent("tr").find("input[name='value']").attr("disabled",false);
+                $(this).parent('td').parent("tr").find("input[name='value']").attr("disabled", true).val('');
+            } else {
+                $(this).parent('td').parent("tr").find("input[name='value']").attr("disabled", false);
             }
 
         });
@@ -405,6 +405,13 @@ define("Search", function (require, module, exports) {
                         return true;
                     }
 
+                }
+
+                if (operator === 'BLT') {
+                    // 包含（like查询）条件时，前端自主控制%位置，有利于精确匹配，利用索性提高效率，如果没有%符号，则默认全模糊,
+                    if (value.indexOf('%') === -1) {
+                        value = '%' + value + '%';
+                    }
                 }
 
                 if (typeof value === 'string') {

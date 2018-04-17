@@ -10,8 +10,6 @@ define('FileUpload', function (require, module, exports) {
 
     function render(container, config, fn) {
 
-        config = $.Object.extend({}, defaults, config);
-
         SMS.use('FileInput', function (FileInput) {
 
             var fileInput = new FileInput(container, config);

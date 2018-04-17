@@ -1127,8 +1127,9 @@ public class TemplateService extends BaseService implements ITemplateService {
                     }
 
                 } else if (lookUpType != null && lookUpType == 4) {
-                    // 普通引用-引用其他表数据
 
+                    // 普通引用-引用其他表数据
+                    sbSelect.append(String.format("%s.%s%s%s AS %s%s%s,", formFieldLinkedTable, bDelimiter, sqlColumnName, eDelimiter, bDelimiter, key, eDelimiter)).append(separator);
                     sbSelect.append(String.format("%s.%s%s%s AS %s%s%s,", srcTableAlis, bDelimiter, disPlayField, eDelimiter, bDelimiter, key, eDelimiter)).append(separator);
 
                     // from 中同时增加关联表
@@ -1357,8 +1358,8 @@ public class TemplateService extends BaseService implements ITemplateService {
 
             } else if (lookUpType == 4) {
                 // 普通引用-引用其他表数据
-
-                sbSelect.append(String.format("%s.%s%s%s AS %s%s%s,", srcTableAlis, bDelimiter, disPlayField, eDelimiter, bDelimiter, key, eDelimiter)).append(separator);
+                sbSelect.append(String.format("%s.%s%s%s AS %s%s%s,", selTable, bDelimiter, sqlColumnName, eDelimiter, bDelimiter, key, eDelimiter)).append(separator);
+                sbSelect.append(String.format("%s.%s%s%s AS %s%s%s,", srcTableAlis, bDelimiter, disPlayField, eDelimiter, bDelimiter, key + "_DspName", eDelimiter)).append(separator);
 
                 // from 中同时增加关联表
                 sbFrom.append(joinType).append(srcTable);

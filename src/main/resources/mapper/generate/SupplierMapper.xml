@@ -28,6 +28,9 @@
     <result column="clearing_type" jdbcType="VARCHAR" property="clearingType" />
     <result column="payment_type" jdbcType="VARCHAR" property="paymentType" />
     <result column="logo" jdbcType="VARCHAR" property="logo" />
+    <result column="province" jdbcType="INTEGER" property="province" />
+    <result column="city" jdbcType="INTEGER" property="city" />
+    <result column="district" jdbcType="INTEGER" property="district" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -92,7 +95,7 @@
     legal_person, contacts, phone, company_type, industry_type, validity_period_begin, 
     validity_period_end, issue_date, issue_agency, main_business, account_bank, account_number, 
     account_address, clearing_company, delivery_company, clearing_currency, clearing_type, 
-    payment_type, logo
+    payment_type, logo, province, city, district
   </sql>
   <select id="selectByExample" parameterType="com.kingdee.hrp.sms.common.model.SupplierExample" resultMap="BaseResultMap">
     select
@@ -133,7 +136,8 @@
       issue_date, issue_agency, main_business, 
       account_bank, account_number, account_address, 
       clearing_company, delivery_company, clearing_currency, 
-      clearing_type, payment_type, logo
+      clearing_type, payment_type, logo, 
+      province, city, district
       )
     values (#{id,jdbcType=BIGINT}, #{number,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
       #{creditCode,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{introduction,jdbcType=VARCHAR}, 
@@ -143,7 +147,8 @@
       #{issueDate,jdbcType=TIMESTAMP}, #{issueAgency,jdbcType=VARCHAR}, #{mainBusiness,jdbcType=VARCHAR}, 
       #{accountBank,jdbcType=VARCHAR}, #{accountNumber,jdbcType=VARCHAR}, #{accountAddress,jdbcType=VARCHAR}, 
       #{clearingCompany,jdbcType=VARCHAR}, #{deliveryCompany,jdbcType=VARCHAR}, #{clearingCurrency,jdbcType=VARCHAR}, 
-      #{clearingType,jdbcType=VARCHAR}, #{paymentType,jdbcType=VARCHAR}, #{logo,jdbcType=VARCHAR}
+      #{clearingType,jdbcType=VARCHAR}, #{paymentType,jdbcType=VARCHAR}, #{logo,jdbcType=VARCHAR}, 
+      #{province,jdbcType=INTEGER}, #{city,jdbcType=INTEGER}, #{district,jdbcType=INTEGER}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.kingdee.hrp.sms.common.model.Supplier">
@@ -227,6 +232,15 @@
       <if test="logo != null">
         logo,
       </if>
+      <if test="province != null">
+        province,
+      </if>
+      <if test="city != null">
+        city,
+      </if>
+      <if test="district != null">
+        district,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -306,6 +320,15 @@
       </if>
       <if test="logo != null">
         #{logo,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null">
+        #{province,jdbcType=INTEGER},
+      </if>
+      <if test="city != null">
+        #{city,jdbcType=INTEGER},
+      </if>
+      <if test="district != null">
+        #{district,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -396,6 +419,15 @@
       <if test="record.logo != null">
         logo = #{record.logo,jdbcType=VARCHAR},
       </if>
+      <if test="record.province != null">
+        province = #{record.province,jdbcType=INTEGER},
+      </if>
+      <if test="record.city != null">
+        city = #{record.city,jdbcType=INTEGER},
+      </if>
+      <if test="record.district != null">
+        district = #{record.district,jdbcType=INTEGER},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -428,7 +460,10 @@
       clearing_currency = #{record.clearingCurrency,jdbcType=VARCHAR},
       clearing_type = #{record.clearingType,jdbcType=VARCHAR},
       payment_type = #{record.paymentType,jdbcType=VARCHAR},
-      logo = #{record.logo,jdbcType=VARCHAR}
+      logo = #{record.logo,jdbcType=VARCHAR},
+      province = #{record.province,jdbcType=INTEGER},
+      city = #{record.city,jdbcType=INTEGER},
+      district = #{record.district,jdbcType=INTEGER}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -511,6 +546,15 @@
       <if test="logo != null">
         logo = #{logo,jdbcType=VARCHAR},
       </if>
+      <if test="province != null">
+        province = #{province,jdbcType=INTEGER},
+      </if>
+      <if test="city != null">
+        city = #{city,jdbcType=INTEGER},
+      </if>
+      <if test="district != null">
+        district = #{district,jdbcType=INTEGER},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -540,7 +584,10 @@
       clearing_currency = #{clearingCurrency,jdbcType=VARCHAR},
       clearing_type = #{clearingType,jdbcType=VARCHAR},
       payment_type = #{paymentType,jdbcType=VARCHAR},
-      logo = #{logo,jdbcType=VARCHAR}
+      logo = #{logo,jdbcType=VARCHAR},
+      province = #{province,jdbcType=INTEGER},
+      city = #{city,jdbcType=INTEGER},
+      district = #{district,jdbcType=INTEGER}
     where id = #{id,jdbcType=BIGINT}
   </update>
   <insert id="batchInsert" parameterType="map">
@@ -554,7 +601,7 @@
       legal_person, contacts, phone, company_type, industry_type, validity_period_begin, 
       validity_period_end, issue_date, issue_agency, main_business, account_bank, account_number, 
       account_address, clearing_company, delivery_company, clearing_currency, clearing_type, 
-      payment_type, logo)
+      payment_type, logo, province, city, district)
     values
     <foreach collection="list" item="item" separator=",">
       (#{item.id,jdbcType=BIGINT}, #{item.number,jdbcType=VARCHAR}, #{item.name,jdbcType=VARCHAR}, 
@@ -567,7 +614,8 @@
         #{item.accountNumber,jdbcType=VARCHAR}, #{item.accountAddress,jdbcType=VARCHAR}, 
         #{item.clearingCompany,jdbcType=VARCHAR}, #{item.deliveryCompany,jdbcType=VARCHAR}, 
         #{item.clearingCurrency,jdbcType=VARCHAR}, #{item.clearingType,jdbcType=VARCHAR}, 
-        #{item.paymentType,jdbcType=VARCHAR}, #{item.logo,jdbcType=VARCHAR})
+        #{item.paymentType,jdbcType=VARCHAR}, #{item.logo,jdbcType=VARCHAR}, #{item.province,jdbcType=INTEGER}, 
+        #{item.city,jdbcType=INTEGER}, #{item.district,jdbcType=INTEGER})
     </foreach>
   </insert>
   <insert id="batchInsertSelective" parameterType="map">
@@ -662,6 +710,15 @@
         </if>
         <if test="'logo' == column.value">
           #{item.logo,jdbcType=VARCHAR}
+        </if>
+        <if test="'province' == column.value">
+          #{item.province,jdbcType=INTEGER}
+        </if>
+        <if test="'city' == column.value">
+          #{item.city,jdbcType=INTEGER}
+        </if>
+        <if test="'district' == column.value">
+          #{item.district,jdbcType=INTEGER}
         </if>
       </foreach>
       )

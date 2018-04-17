@@ -14,7 +14,9 @@ define('UrlMapping', function (require, module, exports) {
             case 1012:
                 return 'html/bill-ext/hospital/index.html';
                 break;
-
+            case 1013:
+                return 'html/bill-ext/supplier/index.html';
+                break;
             default:
                 return defaultUrl;
         }
