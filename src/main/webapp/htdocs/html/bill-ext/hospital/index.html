@@ -30,131 +30,133 @@
 
     <div id="div-head-content" class=" head-content col-sm-10">
 
-        <!--
-            #--ctrl.begin--#
-
-                #--ctrl.items.begin--#
-                <div class="row form-group">
-                     #--ctrl.items.item.begin--#
-                     #--ctrl.items.item.end--#
-                </div>
-                #--ctrl.items.end--#
-
-                #--mustInput.begin--#
+        <div class="row form-group">
+            <label class="col-sm-2 ">
                 <span class="must-mark">*</span>
-                #--mustInput.end--#
+                代码</label>
+            <div class="col-sm-3">
+                <input id="number" type="text" class="form-control" placeholder="请输入代码" >
+                <span id="number-msg" class="error-msg msg"></span>
+            </div>
+            <label class="col-sm-2 ">
+                <span class="must-mark">*</span>
+                机构名称</label>
+            <div class="col-sm-3">
+                <input id="name" type="text" class="form-control" placeholder="请输入机构名称" >
+                <span id="name-msg" class="error-msg msg"></span>
+            </div>
 
-                #--text.begin--#
+        </div>
+        <div class="row form-group">
+            <label class="col-sm-2 ">
+                <span class="must-mark">*</span>
+                登记号</label>
+            <div class="col-sm-3">
+                <input id="credit_code" type="text" class="form-control" placeholder="请输入登记号" >
+                <span id="credit_code-msg" class="error-msg msg"></span>
+            </div>
+        </div>
+        <div class="row form-group">
 
-                    <label class="col-sm-2 ">{mustInput}{name}</label>
-                    <div class="col-sm-3">
-                        <input id="{key}" type="text" class="form-control" placeholder="请输入{name}">
-                        <span id="{key}-msg" class="error-msg msg"></span>
-                    </div>
+            <label class="col-sm-2 ">
+                <span class="must-mark">*</span>
+                法定代表人</label>
+            <div class="col-sm-3">
+                <input id="legal_person" type="text" class="form-control" placeholder="请输入法定代表人" >
+                <span id="legal_person-msg" class="error-msg msg"></span>
+            </div>
 
-                #--text.end--#
+            <label class="col-sm-2 ">
+                <span class="must-mark">*</span>
+                主要负责人</label>
+            <div class="col-sm-3">
+                <input id="principal" type="text" class="form-control" placeholder="请输入主要负责人" >
+                <span id="principal-msg" class="error-msg msg"></span>
+            </div>
 
-                #--textarea.begin--#
+        </div>
+        <div class="row form-group">
 
-                    <label class="col-sm-2 ">{mustInput}{name}</label>
-                    <div class="col-sm-3">
-                        <textarea id="{key}" class="form-control" placeholder="请输入{name}"></textarea>
-                        <span id="{key}-msg" class="error-msg msg"></span>
-                    </div>
+            <label class="col-sm-2 ">
+                <span class="must-mark">*</span>
+                注册地址</label>
 
-                #--textarea.end--#
+            <div id="address-picker" class="col-sm-8 form-inline"></div>
+            <span id="address-picker-msg" style="display: inline-block" class="error-msg msg"></span>
 
-                #--datatime.begin--#
+        </div>
+        <div class="row form-group">
 
-                    <label class="col-sm-2 ">{mustInput}{name}</label>
-                    <div class=" col-sm-3">
-                        <span class="iconfont icon-riqixuanze form-control-feedback"></span>
-                        <input id="{key}" type="text" class="form-control" placeholder="点击选择{name}">
-                        <span id="{key}-msg" class="error-msg msg"></span>
-                    </div>
+            <label class="col-sm-2 ">
+                <span class="must-mark">*</span>
+                详细地址</label>
+            <div class="col-sm-8">
+                <input id="address" type="text" class="form-control" placeholder="请输入详细地址">
+                <span id="address-msg" class="error-msg msg"></span>
+            </div>
 
-                #--datatime.end--#
+        </div>
+        <div class="row form-group">
+            <label class="col-sm-2 ">
+                <span class="must-mark">*</span>
+                发证机关</label>
+            <div class="col-sm-3">
+                <input id="issue_agency" type="text" class="form-control" placeholder="请输入发证机关" >
+                <span id="issue_agency-msg" class="error-msg msg"></span>
+            </div>
 
-                #--checkbox.begin--#
+            <label class="col-sm-2 ">
+                <span class="must-mark">*</span>
+                发证日期</label>
+            <div class=" col-sm-3">
+                <span class="iconfont icon-riqixuanze form-control-feedback"></span>
+                <input id="issue_date" type="text" class="form-control" placeholder="点击选择发证日期" >
+                <span id="issue_date-msg" class="error-msg msg"></span>
+            </div>
+        </div>
+        <div class="row form-group">
 
-                    <label class="col-sm-2 ">{mustInput}{name}</label>
-                    <div class="col-sm-3">
-                        <input id="{key}" type="checkbox" class="checkbox" >
-                        <span id="{key}-msg" class="error-msg msg"></span>
-                    </div>
+            <label class="col-sm-2 ">
+                <span class="must-mark">*</span>
+                有效期开始</label>
+            <div class=" col-sm-3">
+                <span class="iconfont icon-riqixuanze form-control-feedback"></span>
+                <input id="validity_period_begin" type="text" class="form-control" placeholder="点击选择有效期开始" >
+                <span id="validity_period_begin-msg" class="error-msg msg"></span>
+            </div>
 
-                #--checkbox.end--#
+            <label class="col-sm-2 ">
+                <span class="must-mark">*</span>
+                有效期结束</label>
+            <div class=" col-sm-3">
+                <span class="iconfont icon-riqixuanze form-control-feedback"></span>
+                <input id="validity_period_end" type="text" class="form-control" placeholder="点击选择有效期结束" >
+                <span id="validity_period_end-msg" class="error-msg msg"></span>
+            </div>
 
-                #--password.begin--#
-
-                    <label class="col-sm-2 ">{mustInput}{name}</label>
-                    <div class="col-sm-3">
-                        <input id="{key}" type="password" class="form-control" placeholder="请输入{name}">
-                        <span id="{key}-msg" class="error-msg msg"></span>
-                    </div>
-
-                #--password.end--#
-
-                #--f7.begin--#
-
-                    <label class="col-sm-2 ">{mustInput}{name}</label>
-                    <div class="col-sm-3 " id="{key}">
-
-                    </div>
-
-                #--f7.end--#
-
-                #--man_female.begin--#
-                <label class="col-sm-2 ">{mustInput}{name}</label>
-                <div class="col-sm-1">
-                    <select id="{key}" class="form-control">
-                        <option value="0">男</option>
-                        <option value="1">女</option>
-                    </select>
-                </div>
-                #--man_female.end--#
-
-                 #--yes_no.begin--#
-                <label class="col-sm-2 ">{mustInput}{name}</label>
-                <div class="col-sm-1">
-                    <select id="{key}" class="form-control">
-                        <option value="1">是</option>
-                        <option value="0">否</option>
-                    </select>
-                </div>
-                <div class="col-sm-1"></div>
-                #--yes_no.end--#
-
-                #--cascade_picker.begin--#
-                <label class="col-sm-2 ">{mustInput}{name}</label>
-                <div class="col-sm-3" id="{key}"></div>
-                #--cascade_picker.end--#
-
-                #--detail.begin--#
-                <div class="row form-group">
-
-                    <div class="col-sm-1"></div>
-                    <div class="grid-wrap col-sm-10">
-
-                        <table id="{key}"></table>
-
-                        <div id="{key}-pager"></div>
-                    </div>
-                    <div class="col-sm-1"></div>
-                    <div class="col-sm-12">
-                        <span class="error-msg" id="{key}-msg"></span>
-                    </div>
-                </div>
-                #--detail.end--#
-
-            #--ctrl.end--#
-
-        -->
-
+        </div>
+        <div class="row form-group">
+            <label class="col-sm-2 ">
+                <span class="must-mark">*</span>
+                医疗科目</label>
+            <div class="col-sm-8">
+                <textarea id="medical_subjects" class="form-control" placeholder="请输入医疗科目" ></textarea>
+                <span id="medical_subjects-msg" class="error-msg msg"></span>
+            </div>
+        </div>
+        <div class="row form-group">
+            <label class="col-sm-2 ">
+                <span class="must-mark">*</span>
+                简介</label>
+            <div class="col-sm-8">
+                <textarea id="introduction" class="form-control" placeholder="请输入简介" ></textarea>
+                <span id="introduction-msg" class="error-msg msg"></span>
+            </div>
+        </div>
+        
     </div>
 
 </div>
-
 
 <script src="../../../lib/jquery/jquery-1.11.1.debug.js"></script>
 <script src="../../../lib/miniquery/miniquery.debug.js"></script>
@@ -164,12 +166,16 @@
 
 <!--grunt.js.begin-->
 <script src="../../selector/module/DataSelector.js"></script>
-<script src="modules/Validate.js"></script>
-<script src="modules/FormEdit.js"></script>
-<script src="modules/Samples.js"></script>
-<script src="modules/FormAction.js"></script>
-<script src="modules/GridConfig.js"></script>
-<script src="modules/FileUpload.js"></script>
+<script src="../../common-edit/Validate.js"></script>
+<script src="../../common-edit/FormAction.js"></script>
+<script src="../../common-edit/Operator.js"></script>
+<script src="../../common-edit/Edit.js"></script>
+<script src="../../common-edit/FileUpload.js"></script>
+
+<script src="modules/DatetimePicker.js"></script>
+<script src="modules/NumberField.js"></script>
+<script src="modules/Selector.js"></script>
+<script src="modules/Address.js"></script>
 <script src="index.js"></script>
 
 <!--grunt.js.end-->
