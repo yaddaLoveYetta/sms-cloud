@@ -136,7 +136,7 @@
             'add': function (item, index) {
 
                 var metaData = List.getMetaData();
-                var url = 'html/bill/index.html';
+                var url = require("UrlMapping")(classId);
                 var name = metaData.formClass.name || '';
 
                 if (!url) {
@@ -170,7 +170,7 @@
                 }
 
                 var metaData = List.getMetaData();
-                var url = 'html/bill/index.html';
+                var url = require("UrlMapping")(classId);
                 var name = metaData.formClass.name || '';
 
                 if (!url) {

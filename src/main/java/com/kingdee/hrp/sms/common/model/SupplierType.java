@@ -3,7 +3,7 @@ package com.kingdee.hrp.sms.common.model;
 import com.kingdee.hrp.sms.common.RootModel;
 
 public class SupplierType extends RootModel {
-    private Integer id;
+    private Long id;
 
     private String number;
 
@@ -11,11 +11,11 @@ public class SupplierType extends RootModel {
 
     private Long org;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

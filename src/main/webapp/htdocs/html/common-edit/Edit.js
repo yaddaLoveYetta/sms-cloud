@@ -17,6 +17,13 @@ define('Edit', function (require, module, exports) {
     var metaData = {};
     var itemData = {};
 
+    var user = SMS.Login.get();
+
+    //检查登录
+    if (!SMS.Login.check(true)) {
+        return;
+    }
+
     /**
      * 数据渲染，新增时不处理，修改是填充界面数据
      * @param type 操作类别 1：新增 2：修改
@@ -27,26 +34,30 @@ define('Edit', function (require, module, exports) {
 
         operate = type;
         itemId = id;
-        var tasks = [
-            {
-                fn: Operator.getMetaData,
-                args: [{
-                    'classId': classId
-                }]
-            },
-            {
+
+        var tasks = new Array();
+        tasks.push({
+            fn: Operator.getMetaData,
+            args: [{
+                'classId': classId
+            }]
+        });
+
+        if (operate !== 1) {
+            tasks.push({
                 fn: Operator.getItemData,
                 args: [{
                     'classId': classId,
                     id: id
                 }]
-            }];
+            });
+        }
 
         // 并发执行任务
         Multitask.concurrency(tasks, function (list) {
 
             metaData = list[0];
-            itemData = list[1];
+            itemData = list[1] || {};
 
             // 填充页面元素
             if (!metaData || !metaData['formFields']) {
@@ -54,10 +65,13 @@ define('Edit', function (require, module, exports) {
                 return;
             }
 
-            if (!itemData) {
+            if (!itemData && operate !== 1) {
+                // 查看，修改时有单据数据，新增时没有
                 SMS.Tips.error('数据错误，请联系管理员');
                 return;
             }
+
+            initFieldLock();
             // 定制页面，不需要构建DOM，此处作为构建玩DOM结构时间节点
             emitter.fire('afterInitPage', [metaData]);
 
@@ -67,6 +81,92 @@ define('Edit', function (require, module, exports) {
 
         });
 
+    }
+
+    // 处理字段锁定性
+    function initFieldLock() {
+
+        if (!metaData || !metaData['formFields'] || !metaData['formFields'][0]) {
+            SMS.Tips.error('元数据错误，请联系管理员');
+            return;
+        }
+        var fields = metaData['formFields'][0];
+
+        var lockMask = 0;
+        // 用户角色类别
+        //var userRoleType = user.role.type;
+        var userRoleType = (user.roles && user.roles[0] && user.roles[0]['type']) || -1;
+
+        /*
+            1	新增时对于平台用户锁定
+            2	编辑时对于平台用户锁定
+            4	新增时对于供应商用户锁定
+            8	编辑时对于供应商用户锁定
+            16	新增时对于医院用户锁定
+            32	编辑时对于医院用户锁定
+         */
+        if (operate === 0) {
+            // 查看详情时所有字段锁定
+            lockMask = 63;
+        } else if (operate === 1) {
+            // 新增
+            if (userRoleType === 1) {
+                // 平台用户
+                lockMask = 1;
+            } else if (userRoleType === 2) {
+                //供应商用户
+                lockMask = 4;
+            } else if (userRoleType === 3) {
+                //医院用户
+                lockMask = 16;
+            }
+        } else if (operate === 2) {
+            // 编辑
+            if (userRoleType === 1) {
+                // 平台用户
+                lockMask = 2;
+            } else if (userRoleType === 2) {
+                //供应商用户
+                lockMask = 8;
+            } else if (userRoleType === 3) {
+                //医院用户
+                lockMask = 32;
+            }
+        }
+
+        for (var key in fields) {
+
+            var field = fields[key];
+
+            var element = Operator.get$Element(key);
+            if (!element) {
+                continue;
+            }
+
+            var fieldLock = field.lock;
+
+            //新增时处理默认值-默认值可来自模板配置或者业务传递，业务传递的默认值优先于模板配置
+            if (operate === 0 || !!(fieldLock & lockMask)) {
+                // 需要锁定该字段 --查看时所有字段锁定
+                switch (field.ctrlType) {
+                    case 6:
+                        //F7选择框锁定特殊处理
+                        emitter.fire('selectorLock', [key]);
+                        break;
+                    default:
+                        element.prop("disabled", "disabled");
+                }
+            } else {
+                switch (field.ctrlType) {
+                    case 6:
+                        //F7选择框锁定特殊处理
+                        emitter.fire('selectorUnLock', [key]);
+                        break;
+                    default:
+                        element.prop("disabled", "");
+                }
+            }
+        }
     }
 
     function fill() {
@@ -82,7 +182,7 @@ define('Edit', function (require, module, exports) {
 
             var key = item;
             var field = fields[key];
-            var element = Operator.getValueElement(key);
+            var element = Operator.getElement(key);
             var value = itemData[key] || '';
 
             if (!element) {
@@ -118,6 +218,11 @@ define('Edit', function (require, module, exports) {
                     break;
                 case 6:
                     // F7选择框
+                    var selectorData = [{
+                        ID:value,
+                        number:itemData[key+'_NmbName'] || '',
+                        name: itemData[key+'_DspName'] || ''
+                    }];
                     emitter.fire('selectorSet', [field, key, selectorData]);
                     break;
 
@@ -199,7 +304,7 @@ define('Edit', function (require, module, exports) {
         for (var key in fields) {
 
             var field = fields[key];
-            var element = Operator.getValueElement(key);
+            var element = Operator.getElement(key);
 
             if (!element) {
                 // 按元数据未找到控件，跳过此字段
@@ -247,10 +352,11 @@ define('Edit', function (require, module, exports) {
                     break;
                 case 6:
                     //F7选择框
-                    var selector = selectors[key];
-                    var selectorID = selector.getData()[0]['ID'];
+                    var selector = emitter.fire('selectorGet', [field, key]);
 
-                    if (!selectorID) {
+                    var selectorId = selector && selector[0].getData()[0]['ID'];
+
+                    if (!selectorId) {
                         if (Operator.isMustInputFiled(metaData, key, operate)) {
                             msg = field['name'] + '为必填项';
                             errorData[key] = msg;
@@ -259,7 +365,7 @@ define('Edit', function (require, module, exports) {
                             successData[key] = 0;
                         }
                     } else {
-                        successData[key] = selectorID;
+                        successData[key] = selectorId;
                     }
                     break;
                 case 14:

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>供应商用户信息</title>
+
+    <link rel="stylesheet" href="../../../css/global.debug.css" type="text/css"/>
+    <link rel="stylesheet" href="../../../css/bootstrap.css" type="text/css"/>
+    <link rel="stylesheet" href="../../../css/iconfont/iconfont.css">
+
+    <!--grunt.css.begin-->
+    <link rel="stylesheet" href="../../../css/bill/index.debug.css">
+    <link rel="stylesheet" href="../../../css/bill-ext/hospital/index.debug.css">
+
+    <!--grunt.css.end-->
+</head>
+<body>
+
+<!--按钮区-->
+<div class="container-fluid options ">
+    <div id="div-button-list" class="btn-box"></div>
+</div>
+<!--主显示区-->
+<div id="div-head-content" class="container-fluid head-content">
+    <div class="row form-group">
+        <label class="col-sm-2 ">
+            <span class="must-mark">*</span>
+            代码</label>
+        <div class="col-sm-2">
+            <input id="number" type="text" class="form-control" placeholder="请输入代码">
+            <span id="number-msg" class="error-msg msg"></span>
+        </div>
+    </div>
+
+    <div class="row form-group">
+        <label class="col-sm-2 ">
+            <span class="must-mark">*</span>
+            名称</label>
+        <div class="col-sm-2">
+            <input id="name" type="text" class="form-control" placeholder="请输入名称">
+            <span id="name-msg" class="error-msg msg"></span>
+        </div>
+
+
+    </div>
+
+    <div class="row form-group">
+        <label class="col-sm-2 ">
+            <span class="must-mark">*</span>
+            地址</label>
+        <div id="address-picker" class="col-sm-8 form-inline"></div>
+        <span id="address-picker-msg" style="display: inline-block" class="error-msg msg"></span>
+    </div>
+
+    <div class="row form-group">
+        <label class="col-sm-2 ">
+            <span class="must-mark">*</span>
+            详细地址</label>
+        <div class="col-sm-6">
+            <input id="address" type="text" class="form-control" placeholder="请输入地址">
+            <span id="address-msg" class="error-msg msg"></span>
+        </div>
+    </div>
+
+    <div class="row form-group">
+        <label class="col-sm-2 ">
+            <span class="must-mark">*</span>
+            归属医院</label>
+        <div class="col-sm-2 " id="org">
+
+        </div>
+    </div>
+
+    <div class="row form-group">
+        <label class="col-sm-2 ">
+            <span class="must-mark">*</span>
+            供应商类别</label>
+        <div class="col-sm-2 " id="type">
+        </div>
+    </div>
+</div>
+
+<script src="../../../lib/jquery/jquery-1.11.1.debug.js"></script>
+<script src="../../../lib/miniquery/miniquery.debug.js"></script>
+<script src="../../../lib/sms/sms.debug.js"></script>
+<script src="../../../lib/bootstrap/bootstrap.js"></script>
+<script src="../../../config.js"></script>
+
+<!--grunt.js.begin-->
+<script src="../../selector/module/DataSelector.js"></script>
+<script src="../../common-edit/Validate.js"></script>
+<script src="../../common-edit/FormAction.js"></script>
+<script src="../../common-edit/Operator.js"></script>
+<script src="../../common-edit/Edit.js"></script>
+<script src="../../common-edit/FileUpload.js"></script>
+
+<script src="modules/DatetimePicker.js"></script>
+<script src="modules/NumberField.js"></script>
+<script src="modules/Selector.js"></script>
+<script src="modules/Address.js"></script>
+<script src="index.js"></script>
+
+<!--grunt.js.end-->
+
+</body>
+</html>

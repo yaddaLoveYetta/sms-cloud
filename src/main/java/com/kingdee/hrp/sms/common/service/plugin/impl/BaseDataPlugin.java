@@ -45,6 +45,12 @@ public class BaseDataPlugin extends PlugInAdpter implements InitializingBean {
         classIdSet.add(1001);
         // 角色
         classIdSet.add(1002);
+        // 供应商类别
+        classIdSet.add(1004);
+        //医院供应商
+        classIdSet.add(1005);
+        // 医院物料
+        classIdSet.add(1006);
     }
 
     /**
@@ -121,13 +127,26 @@ public class BaseDataPlugin extends PlugInAdpter implements InitializingBean {
             // 系统角色类别放开所有数据查看权限
             return ret;
         }
-        if (classId == 1001 || classId == 1002) {
 
+        if (classId == 1001 || classId == 1002) {
+            // 用户、角色
             String fieldKey = userRoleType == 2 ? "org_hospital" : "org_supplier";
 
             Condition condition = new Condition();
             condition.setLinkType(Condition.LinkTypeEnum.AND);
             condition.setFieldKey(fieldKey);
+            condition.setLogicOperator(Condition.LogicOperatorEnum.EQUAL);
+            condition.setValue(linkOrg);
+            condition.setNeedConvert(false);
+            ret.add(condition);
+        }
+
+        if ((classId == 1004 || classId == 1005 || classId == 1006) && userRoleType == 2) {
+            // 供应商类别、医院供应商
+
+            Condition condition = new Condition();
+            condition.setLinkType(Condition.LinkTypeEnum.AND);
+            condition.setFieldKey("org");
             condition.setLogicOperator(Condition.LogicOperatorEnum.EQUAL);
             condition.setValue(linkOrg);
             condition.setNeedConvert(false);

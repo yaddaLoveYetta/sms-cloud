@@ -2,16 +2,15 @@ package com.kingdee.hrp.sms.common.dao.generate;
 
 import com.kingdee.hrp.sms.common.model.SupplierType;
 import com.kingdee.hrp.sms.common.model.SupplierTypeExample;
-import org.apache.ibatis.annotations.Param;
-
 import java.util.List;
+import org.apache.ibatis.annotations.Param;
 
 public interface SupplierTypeMapper {
     long countByExample(SupplierTypeExample example);
 
     int deleteByExample(SupplierTypeExample example);
 
-    int deleteByPrimaryKey(Integer id);
+    int deleteByPrimaryKey(Long id);
 
     int insert(SupplierType record);
 
@@ -19,7 +18,7 @@ public interface SupplierTypeMapper {
 
     List<SupplierType> selectByExample(SupplierTypeExample example);
 
-    SupplierType selectByPrimaryKey(Integer id);
+    SupplierType selectByPrimaryKey(Long id);
 
     int updateByExampleSelective(@Param("record") SupplierType record, @Param("example") SupplierTypeExample example);
 

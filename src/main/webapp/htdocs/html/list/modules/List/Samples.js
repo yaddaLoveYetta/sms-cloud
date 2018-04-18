@@ -48,6 +48,12 @@ define('List/Samples', function (require, module, exports) {
                 //fn: trim,
             },
             {
+                name: 'td.image',
+                begin: '#--td.image.begin--#',
+                end: '#--td.image.end--#',
+                outer: '{image}'
+            },
+            {
                 name: 'td',
                 begin: '#--td.begin--#',
                 end: '#--td.end--#',

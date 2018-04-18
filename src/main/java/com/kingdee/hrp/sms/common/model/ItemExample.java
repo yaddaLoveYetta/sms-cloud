@@ -3,14 +3,14 @@ package com.kingdee.hrp.sms.common.model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SupplierTypeExample {
+public class ItemExample {
     protected String orderByClause;
 
     protected boolean distinct;
 
     protected List<Criteria> oredCriteria;
 
-    public SupplierTypeExample() {
+    public ItemExample() {
         oredCriteria = new ArrayList<Criteria>();
     }
 
@@ -304,6 +304,196 @@ public class SupplierTypeExample {
             return (Criteria) this;
         }
 
+        public Criteria andSpecificationIsNull() {
+            addCriterion("specification is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecificationIsNotNull() {
+            addCriterion("specification is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecificationEqualTo(String value) {
+            addCriterion("specification =", value, "specification");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecificationNotEqualTo(String value) {
+            addCriterion("specification <>", value, "specification");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecificationGreaterThan(String value) {
+            addCriterion("specification >", value, "specification");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecificationGreaterThanOrEqualTo(String value) {
+            addCriterion("specification >=", value, "specification");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecificationLessThan(String value) {
+            addCriterion("specification <", value, "specification");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecificationLessThanOrEqualTo(String value) {
+            addCriterion("specification <=", value, "specification");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecificationLike(String value) {
+            addCriterion("specification like", value, "specification");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecificationNotLike(String value) {
+            addCriterion("specification not like", value, "specification");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecificationIn(List<String> values) {
+            addCriterion("specification in", values, "specification");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecificationNotIn(List<String> values) {
+            addCriterion("specification not in", values, "specification");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecificationBetween(String value1, String value2) {
+            addCriterion("specification between", value1, value2, "specification");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecificationNotBetween(String value1, String value2) {
+            addCriterion("specification not between", value1, value2, "specification");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsHighConsumableIsNull() {
+            addCriterion("is_high_consumable is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsHighConsumableIsNotNull() {
+            addCriterion("is_high_consumable is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsHighConsumableEqualTo(Boolean value) {
+            addCriterion("is_high_consumable =", value, "isHighConsumable");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsHighConsumableNotEqualTo(Boolean value) {
+            addCriterion("is_high_consumable <>", value, "isHighConsumable");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsHighConsumableGreaterThan(Boolean value) {
+            addCriterion("is_high_consumable >", value, "isHighConsumable");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsHighConsumableGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("is_high_consumable >=", value, "isHighConsumable");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsHighConsumableLessThan(Boolean value) {
+            addCriterion("is_high_consumable <", value, "isHighConsumable");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsHighConsumableLessThanOrEqualTo(Boolean value) {
+            addCriterion("is_high_consumable <=", value, "isHighConsumable");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsHighConsumableIn(List<Boolean> values) {
+            addCriterion("is_high_consumable in", values, "isHighConsumable");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsHighConsumableNotIn(List<Boolean> values) {
+            addCriterion("is_high_consumable not in", values, "isHighConsumable");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsHighConsumableBetween(Boolean value1, Boolean value2) {
+            addCriterion("is_high_consumable between", value1, value2, "isHighConsumable");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsHighConsumableNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("is_high_consumable not between", value1, value2, "isHighConsumable");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsLotNumberIsNull() {
+            addCriterion("is_lot_number is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsLotNumberIsNotNull() {
+            addCriterion("is_lot_number is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsLotNumberEqualTo(Boolean value) {
+            addCriterion("is_lot_number =", value, "isLotNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsLotNumberNotEqualTo(Boolean value) {
+            addCriterion("is_lot_number <>", value, "isLotNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsLotNumberGreaterThan(Boolean value) {
+            addCriterion("is_lot_number >", value, "isLotNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsLotNumberGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("is_lot_number >=", value, "isLotNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsLotNumberLessThan(Boolean value) {
+            addCriterion("is_lot_number <", value, "isLotNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsLotNumberLessThanOrEqualTo(Boolean value) {
+            addCriterion("is_lot_number <=", value, "isLotNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsLotNumberIn(List<Boolean> values) {
+            addCriterion("is_lot_number in", values, "isLotNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsLotNumberNotIn(List<Boolean> values) {
+            addCriterion("is_lot_number not in", values, "isLotNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsLotNumberBetween(Boolean value1, Boolean value2) {
+            addCriterion("is_lot_number between", value1, value2, "isLotNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsLotNumberNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("is_lot_number not between", value1, value2, "isLotNumber");
+            return (Criteria) this;
+        }
+
         public Criteria andOrgIsNull() {
             addCriterion("org is null");
             return (Criteria) this;
@@ -361,6 +551,66 @@ public class SupplierTypeExample {
 
         public Criteria andOrgNotBetween(Long value1, Long value2) {
             addCriterion("org not between", value1, value2, "org");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusIsNull() {
+            addCriterion("`status` is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusIsNotNull() {
+            addCriterion("`status` is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusEqualTo(Boolean value) {
+            addCriterion("`status` =", value, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusNotEqualTo(Boolean value) {
+            addCriterion("`status` <>", value, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusGreaterThan(Boolean value) {
+            addCriterion("`status` >", value, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("`status` >=", value, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusLessThan(Boolean value) {
+            addCriterion("`status` <", value, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusLessThanOrEqualTo(Boolean value) {
+            addCriterion("`status` <=", value, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusIn(List<Boolean> values) {
+            addCriterion("`status` in", values, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusNotIn(List<Boolean> values) {
+            addCriterion("`status` not in", values, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusBetween(Boolean value1, Boolean value2) {
+            addCriterion("`status` between", value1, value2, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("`status` not between", value1, value2, "status");
             return (Criteria) this;
         }
     }

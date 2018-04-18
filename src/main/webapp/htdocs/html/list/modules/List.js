@@ -95,6 +95,7 @@ define("List", function (require, module, exports) {
                            14	密码控件
                            15	是：否
                            16	单价/金额(两位小数)
+                           17	图片地址
                         */
         switch (ctrlType) {
             case 1:
@@ -119,6 +120,12 @@ define("List", function (require, module, exports) {
                 break;
             case 15: //是：否
                 data = data ? "是" : "否";
+                break;
+            case 17:
+                data = $.String.format(samples["td.image"], {
+                        text: data || "../../css/img/medicine.jpg"
+                    }
+                );
                 break;
             default:
                 data = data || '';
@@ -241,7 +248,7 @@ define("List", function (require, module, exports) {
                         checkbox: data.checkbox ? $.String.format(samples["td.checkbox"], {
                             index: no
                         }) : "",
-
+                        image: "",
                         tds: $.Array.keep(item.items, function (item, index) {
                             // 列
                             var field = headItems[index];

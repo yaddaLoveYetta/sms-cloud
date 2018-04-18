@@ -129,8 +129,17 @@ define('Operator', function (require, module, exports) {
      * @param key 模板key
      * @returns {Element}
      */
-    function getValueElement(key) {
+    function getElement(key) {
         return document.getElementById(key);
+    }
+
+    /**
+     * 获取界面Jquery元素（$('#xx')方式）
+     * @param key 模板key
+     * @returns {Element}
+     */
+    function get$Element(key) {
+        return $('#' + key);
     }
 
     /**
@@ -197,7 +206,8 @@ define('Operator', function (require, module, exports) {
         submitData: submitData,
         getMetaData: getMetaData,
         getItemData: getItemData,
-        getValueElement: getValueElement,
+        getElement: getElement,
+        get$Element: get$Element,
         isMustInputFiled: isMustInputFiled
     }
 

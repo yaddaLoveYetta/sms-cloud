@@ -8,6 +8,7 @@
     <result column="type" jdbcType="INTEGER" property="type" />
     <result column="user_define" jdbcType="BIT" property="userDefine" />
     <result column="org" jdbcType="BIGINT" property="org" />
+    <result column="status" jdbcType="BIT" property="status" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -68,7 +69,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, `number`, `name`, `type`, user_define, org
+    id, `number`, `name`, `type`, user_define, org, `status`
   </sql>
   <select id="selectByExample" parameterType="com.kingdee.hrp.sms.common.model.RoleExample" resultMap="BaseResultMap">
     select
@@ -102,9 +103,11 @@
   </delete>
   <insert id="insert" parameterType="com.kingdee.hrp.sms.common.model.Role">
     insert into t_role (id, `number`, `name`, 
-      `type`, user_define, org)
+      `type`, user_define, org, `status`
+      )
     values (#{id,jdbcType=BIGINT}, #{number,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
-      #{type,jdbcType=INTEGER}, #{userDefine,jdbcType=BIT}, #{org,jdbcType=BIGINT})
+      #{type,jdbcType=INTEGER}, #{userDefine,jdbcType=BIT}, #{org,jdbcType=BIGINT}, #{status,jdbcType=BIT}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.kingdee.hrp.sms.common.model.Role">
     insert into t_role
@@ -127,6 +130,9 @@
       <if test="org != null">
         org,
       </if>
+      <if test="status != null">
+        `status`,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -146,6 +152,9 @@
       </if>
       <if test="org != null">
         #{org,jdbcType=BIGINT},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=BIT},
       </if>
     </trim>
   </insert>
@@ -176,6 +185,9 @@
       <if test="record.org != null">
         org = #{record.org,jdbcType=BIGINT},
       </if>
+      <if test="record.status != null">
+        `status` = #{record.status,jdbcType=BIT},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -188,7 +200,8 @@
       `name` = #{record.name,jdbcType=VARCHAR},
       `type` = #{record.type,jdbcType=INTEGER},
       user_define = #{record.userDefine,jdbcType=BIT},
-      org = #{record.org,jdbcType=BIGINT}
+      org = #{record.org,jdbcType=BIGINT},
+      `status` = #{record.status,jdbcType=BIT}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -211,6 +224,9 @@
       <if test="org != null">
         org = #{org,jdbcType=BIGINT},
       </if>
+      <if test="status != null">
+        `status` = #{status,jdbcType=BIT},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -220,7 +236,8 @@
       `name` = #{name,jdbcType=VARCHAR},
       `type` = #{type,jdbcType=INTEGER},
       user_define = #{userDefine,jdbcType=BIT},
-      org = #{org,jdbcType=BIGINT}
+      org = #{org,jdbcType=BIGINT},
+      `status` = #{status,jdbcType=BIT}
     where id = #{id,jdbcType=BIGINT}
   </update>
   <insert id="batchInsert" parameterType="map">
@@ -230,12 +247,12 @@
       @project https://github.com/itfsw/mybatis-generator-plugin
     -->
     insert into t_role
-    (id, `number`, `name`, `type`, user_define, org)
+    (id, `number`, `name`, `type`, user_define, org, `status`)
     values
     <foreach collection="list" item="item" separator=",">
       (#{item.id,jdbcType=BIGINT}, #{item.number,jdbcType=VARCHAR}, #{item.name,jdbcType=VARCHAR}, 
-        #{item.type,jdbcType=INTEGER}, #{item.userDefine,jdbcType=BIT}, #{item.org,jdbcType=BIGINT}
-        )
+        #{item.type,jdbcType=INTEGER}, #{item.userDefine,jdbcType=BIT}, #{item.org,jdbcType=BIGINT}, 
+        #{item.status,jdbcType=BIT})
     </foreach>
   </insert>
   <insert id="batchInsertSelective" parameterType="map">
@@ -270,6 +287,9 @@
         </if>
         <if test="'org' == column.value">
           #{item.org,jdbcType=BIGINT}
+        </if>
+        <if test="'status' == column.value">
+          #{item.status,jdbcType=BIT}
         </if>
       </foreach>
       )

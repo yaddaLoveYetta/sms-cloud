@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.kingdee.hrp.sms.common.dao.generate.SupplierTypeMapper">
-  <resultMap id="BaseResultMap" type="com.kingdee.hrp.sms.common.model.SupplierType">
+<mapper namespace="com.kingdee.hrp.sms.common.dao.generate.ItemMapper">
+  <resultMap id="BaseResultMap" type="com.kingdee.hrp.sms.common.model.Item">
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="number" jdbcType="VARCHAR" property="number" />
     <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="specification" jdbcType="VARCHAR" property="specification" />
+    <result column="is_high_consumable" jdbcType="BIT" property="isHighConsumable" />
+    <result column="is_lot_number" jdbcType="BIT" property="isLotNumber" />
     <result column="org" jdbcType="BIGINT" property="org" />
+    <result column="status" jdbcType="BIT" property="status" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -66,15 +70,15 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, `number`, `name`, org
+    id, `number`, `name`, specification, is_high_consumable, is_lot_number, org, `status`
   </sql>
-  <select id="selectByExample" parameterType="com.kingdee.hrp.sms.common.model.SupplierTypeExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="com.kingdee.hrp.sms.common.model.ItemExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from t_supplier_type
+    from t_item
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -85,27 +89,29 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from t_supplier_type
+    from t_item
     where id = #{id,jdbcType=BIGINT}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    delete from t_supplier_type
+    delete from t_item
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <delete id="deleteByExample" parameterType="com.kingdee.hrp.sms.common.model.SupplierTypeExample">
-    delete from t_supplier_type
+  <delete id="deleteByExample" parameterType="com.kingdee.hrp.sms.common.model.ItemExample">
+    delete from t_item
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.kingdee.hrp.sms.common.model.SupplierType">
-    insert into t_supplier_type (id, `number`, `name`, 
-      org)
+  <insert id="insert" parameterType="com.kingdee.hrp.sms.common.model.Item">
+    insert into t_item (id, `number`, `name`, 
+      specification, is_high_consumable, is_lot_number, 
+      org, `status`)
     values (#{id,jdbcType=BIGINT}, #{number,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
-      #{org,jdbcType=BIGINT})
+      #{specification,jdbcType=VARCHAR}, #{isHighConsumable,jdbcType=BIT}, #{isLotNumber,jdbcType=BIT}, 
+      #{org,jdbcType=BIGINT}, #{status,jdbcType=BIT})
   </insert>
-  <insert id="insertSelective" parameterType="com.kingdee.hrp.sms.common.model.SupplierType">
-    insert into t_supplier_type
+  <insert id="insertSelective" parameterType="com.kingdee.hrp.sms.common.model.Item">
+    insert into t_item
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         id,
@@ -116,8 +122,20 @@
       <if test="name != null">
         `name`,
       </if>
+      <if test="specification != null">
+        specification,
+      </if>
+      <if test="isHighConsumable != null">
+        is_high_consumable,
+      </if>
+      <if test="isLotNumber != null">
+        is_lot_number,
+      </if>
       <if test="org != null">
         org,
+      </if>
+      <if test="status != null">
+        `status`,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -130,19 +148,31 @@
       <if test="name != null">
         #{name,jdbcType=VARCHAR},
       </if>
+      <if test="specification != null">
+        #{specification,jdbcType=VARCHAR},
+      </if>
+      <if test="isHighConsumable != null">
+        #{isHighConsumable,jdbcType=BIT},
+      </if>
+      <if test="isLotNumber != null">
+        #{isLotNumber,jdbcType=BIT},
+      </if>
       <if test="org != null">
         #{org,jdbcType=BIGINT},
       </if>
+      <if test="status != null">
+        #{status,jdbcType=BIT},
+      </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.kingdee.hrp.sms.common.model.SupplierTypeExample" resultType="java.lang.Long">
-    select count(*) from t_supplier_type
+  <select id="countByExample" parameterType="com.kingdee.hrp.sms.common.model.ItemExample" resultType="java.lang.Long">
+    select count(*) from t_item
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
-    update t_supplier_type
+    update t_item
     <set>
       <if test="record.id != null">
         id = #{record.id,jdbcType=BIGINT},
@@ -153,8 +183,20 @@
       <if test="record.name != null">
         `name` = #{record.name,jdbcType=VARCHAR},
       </if>
+      <if test="record.specification != null">
+        specification = #{record.specification,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isHighConsumable != null">
+        is_high_consumable = #{record.isHighConsumable,jdbcType=BIT},
+      </if>
+      <if test="record.isLotNumber != null">
+        is_lot_number = #{record.isLotNumber,jdbcType=BIT},
+      </if>
       <if test="record.org != null">
         org = #{record.org,jdbcType=BIGINT},
+      </if>
+      <if test="record.status != null">
+        `status` = #{record.status,jdbcType=BIT},
       </if>
     </set>
     <if test="_parameter != null">
@@ -162,17 +204,21 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map">
-    update t_supplier_type
+    update t_item
     set id = #{record.id,jdbcType=BIGINT},
       `number` = #{record.number,jdbcType=VARCHAR},
       `name` = #{record.name,jdbcType=VARCHAR},
-      org = #{record.org,jdbcType=BIGINT}
+      specification = #{record.specification,jdbcType=VARCHAR},
+      is_high_consumable = #{record.isHighConsumable,jdbcType=BIT},
+      is_lot_number = #{record.isLotNumber,jdbcType=BIT},
+      org = #{record.org,jdbcType=BIGINT},
+      `status` = #{record.status,jdbcType=BIT}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.kingdee.hrp.sms.common.model.SupplierType">
-    update t_supplier_type
+  <update id="updateByPrimaryKeySelective" parameterType="com.kingdee.hrp.sms.common.model.Item">
+    update t_item
     <set>
       <if test="number != null">
         `number` = #{number,jdbcType=VARCHAR},
@@ -180,17 +226,33 @@
       <if test="name != null">
         `name` = #{name,jdbcType=VARCHAR},
       </if>
+      <if test="specification != null">
+        specification = #{specification,jdbcType=VARCHAR},
+      </if>
+      <if test="isHighConsumable != null">
+        is_high_consumable = #{isHighConsumable,jdbcType=BIT},
+      </if>
+      <if test="isLotNumber != null">
+        is_lot_number = #{isLotNumber,jdbcType=BIT},
+      </if>
       <if test="org != null">
         org = #{org,jdbcType=BIGINT},
+      </if>
+      <if test="status != null">
+        `status` = #{status,jdbcType=BIT},
       </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.kingdee.hrp.sms.common.model.SupplierType">
-    update t_supplier_type
+  <update id="updateByPrimaryKey" parameterType="com.kingdee.hrp.sms.common.model.Item">
+    update t_item
     set `number` = #{number,jdbcType=VARCHAR},
       `name` = #{name,jdbcType=VARCHAR},
-      org = #{org,jdbcType=BIGINT}
+      specification = #{specification,jdbcType=VARCHAR},
+      is_high_consumable = #{isHighConsumable,jdbcType=BIT},
+      is_lot_number = #{isLotNumber,jdbcType=BIT},
+      org = #{org,jdbcType=BIGINT},
+      `status` = #{status,jdbcType=BIT}
     where id = #{id,jdbcType=BIGINT}
   </update>
   <insert id="batchInsert" parameterType="map">
@@ -199,12 +261,15 @@
       This element is automatically generated by MyBatis Generator, do not modify.
       @project https://github.com/itfsw/mybatis-generator-plugin
     -->
-    insert into t_supplier_type
-    (id, `number`, `name`, org)
+    insert into t_item
+    (id, `number`, `name`, specification, is_high_consumable, is_lot_number, org, `status`
+      )
     values
     <foreach collection="list" item="item" separator=",">
       (#{item.id,jdbcType=BIGINT}, #{item.number,jdbcType=VARCHAR}, #{item.name,jdbcType=VARCHAR}, 
-        #{item.org,jdbcType=BIGINT})
+        #{item.specification,jdbcType=VARCHAR}, #{item.isHighConsumable,jdbcType=BIT}, 
+        #{item.isLotNumber,jdbcType=BIT}, #{item.org,jdbcType=BIGINT}, #{item.status,jdbcType=BIT}
+        )
     </foreach>
   </insert>
   <insert id="batchInsertSelective" parameterType="map">
@@ -213,7 +278,7 @@
       This element is automatically generated by MyBatis Generator, do not modify.
       @project https://github.com/itfsw/mybatis-generator-plugin
     -->
-    insert into t_supplier_type (
+    insert into t_item (
     <foreach collection="selective" item="column" separator=",">
       ${column.value}
     </foreach>
@@ -231,8 +296,20 @@
         <if test="'name' == column.value">
           #{item.name,jdbcType=VARCHAR}
         </if>
+        <if test="'specification' == column.value">
+          #{item.specification,jdbcType=VARCHAR}
+        </if>
+        <if test="'is_high_consumable' == column.value">
+          #{item.isHighConsumable,jdbcType=BIT}
+        </if>
+        <if test="'is_lot_number' == column.value">
+          #{item.isLotNumber,jdbcType=BIT}
+        </if>
         <if test="'org' == column.value">
           #{item.org,jdbcType=BIGINT}
+        </if>
+        <if test="'status' == column.value">
+          #{item.status,jdbcType=BIT}
         </if>
       </foreach>
       )
