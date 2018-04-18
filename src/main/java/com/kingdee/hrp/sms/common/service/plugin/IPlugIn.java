@@ -2,6 +2,7 @@ package com.kingdee.hrp.sms.common.service.plugin;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.kingdee.hrp.sms.common.pojo.Condition;
+import com.kingdee.hrp.sms.util.SessionUtil;
 
 import java.util.List;
 import java.util.Map;
@@ -27,7 +28,7 @@ public interface IPlugIn {
      *
      * @return 插件支持的业务类型classId集合
      */
-    public Set<Integer> getClassId();
+    public Set<Integer> getClassIdSet();
 
     /**
      * 基础资料新增前操作
@@ -168,4 +169,31 @@ public interface IPlugIn {
      * @return PlugInRet
      */
     PlugInRet afterForbid(Integer classId, Map<String, Object> template, List<Long> ids, Integer operateType);
+
+    /**
+     * 获取当前用户关联的组织id(供应商/医院资料内码，系统用户返回0)
+     *
+     * @return Long
+     */
+    default Long getUserLinkOrg() {
+
+        Integer userRoleType = SessionUtil.getUserRoleType();
+        if (userRoleType == 2) {
+            //医院角色
+            return SessionUtil.getUserLinkHospital();
+        } else if (userRoleType == 3) {
+            //供应商角色
+            return SessionUtil.getUserLinkSupplier();
+        }
+        return 0L;
+    }
+
+    /**
+     * 获取当前用户的角色类别（1: 系统角色 2: 医院角色 3: 供应商角色）
+     *
+     * @return Integer
+     */
+    default Integer getUserRoleType() {
+        return SessionUtil.getUserRoleType();
+    }
 }

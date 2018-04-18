@@ -24,7 +24,7 @@ public abstract class PlugInAdpter implements IPlugIn {
      * @return 插件支持的业务类型classId集合
      */
     @Override
-    public Set<Integer> getClassId() {
+    public Set<Integer> getClassIdSet() {
         return null;
     }
 

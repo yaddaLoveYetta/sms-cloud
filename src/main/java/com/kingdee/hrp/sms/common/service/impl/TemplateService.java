@@ -812,7 +812,7 @@ public class TemplateService extends BaseService implements ITemplateService {
         TemplateDaoMapper templateDaoMapper = sqlSession.getMapper(TemplateDaoMapper.class);
 
         if (!statement.isEmpty()) {
-            statement.put("operateType", operateType == 1 ? 1 : 0);
+            statement.put("operateType", operateType == 1);
             templateDaoMapper.forbid(statement);
         }
         // 禁用/反禁用后插件事件

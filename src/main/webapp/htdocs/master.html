@@ -6,7 +6,7 @@
     <meta name="description"
           content="app, web app, responsive, responsive layout, admin, admin panel, admin dashboard, flat, flat ui, ui kit, AngularJS, ui route, charts, widgets, components"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
-    <link rel="shortcut icon" href="css/img/favicon.ico" type="image/x-icon" >
+    <link rel="shortcut icon" href="css/img/favicon.ico" type="image/x-icon">
 
     <link rel="stylesheet" href="css/global.debug.css" type="text/css"/>
     <link rel="stylesheet" href="css/bootstrap.css" type="text/css"/>
@@ -57,21 +57,21 @@
             <!-- / buttons -->
 
             <!-- search form -->
-            <form class="navbar-form navbar-form-sm navbar-left shift" ui-shift="prependTo"
-                  data-target=".navbar-collapse" role="search" ng-controller="TypeaheadDemoCtrl">
+            <div class="navbar-form navbar-form-sm navbar-left shift search-box" ui-shift="prependTo"
+                 data-target=".navbar-collapse" role="search" ng-controller="TypeaheadDemoCtrl">
                 <div class="form-group">
                     <div class="input-group">
-                        <input type="text" ng-model="selected"
+                        <input id="input-order-search" type="text" ng-model="selected"
                                typeahead="state for state in states | filter:$viewValue | limitTo:8"
                                class="form-control input-sm bg-light no-border rounded padder"
                                placeholder="Search orders...">
                         <span class="input-group-btn">
-                            <button type="submit" class="btn btn-sm bg-light rounded"><i
-                                    class="fa fa-search"></i></button>
+                            <button id="btn-order-search" type="button" class="btn btn-sm bg-light rounded"><i
+                                    class="iconfont icon-chaxun"></i></button>
                         </span>
                     </div>
                 </div>
-            </form>
+            </div>
             <!-- / search form -->
 
             <!-- nabar right -->

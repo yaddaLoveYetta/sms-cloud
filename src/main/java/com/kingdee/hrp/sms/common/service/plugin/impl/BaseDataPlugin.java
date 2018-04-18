@@ -25,7 +25,7 @@ public class BaseDataPlugin extends PlugInAdpter implements InitializingBean {
     @Resource
     private ITemplateService templateService;
 
-    private Set<Integer> classId;
+    private Set<Integer> classIdSet;
 
 
     /**
@@ -40,10 +40,11 @@ public class BaseDataPlugin extends PlugInAdpter implements InitializingBean {
      */
     @Override
     public void afterPropertiesSet() throws Exception {
-        classId = new HashSet<>();
+        classIdSet = new HashSet<>();
         // 用户
-        classId.add(1001);
-        classId.add(1002);
+        classIdSet.add(1001);
+        // 角色
+        classIdSet.add(1002);
     }
 
     /**
@@ -52,8 +53,8 @@ public class BaseDataPlugin extends PlugInAdpter implements InitializingBean {
      * @return 插件支持的业务类型classId集合
      */
     @Override
-    public Set<Integer> getClassId() {
-        return classId;
+    public Set<Integer> getClassIdSet() {
+        return classIdSet;
     }
 
     /**
@@ -110,20 +111,31 @@ public class BaseDataPlugin extends PlugInAdpter implements InitializingBean {
     @Override
     public List<Condition> getConditions(int classId, Map<String, Object> formTemplate, List<Condition> conditons) {
 
-/*        // test
+        // test
         List<Condition> ret = new ArrayList<Condition>();
 
-        if (classId == 1001) {
+        Integer userRoleType = getUserRoleType();
+        Long linkOrg = getUserLinkOrg();
+
+        if (userRoleType == 1) {
+            // 系统角色类别放开所有数据查看权限
+            return ret;
+        }
+        if (classId == 1001 || classId == 1002) {
+
+            String fieldKey = userRoleType == 2 ? "org_hospital" : "org_supplier";
+
             Condition condition = new Condition();
             condition.setLinkType(Condition.LinkTypeEnum.AND);
-            condition.setFieldKey("name");
+            condition.setFieldKey(fieldKey);
             condition.setLogicOperator(Condition.LogicOperatorEnum.EQUAL);
-            condition.setValue("yadda");
+            condition.setValue(linkOrg);
+            condition.setNeedConvert(false);
             ret.add(condition);
         }
-        return ret;*/
 
-        return null;
+        return ret;
+
     }
 
 

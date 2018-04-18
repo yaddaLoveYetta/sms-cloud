@@ -74,7 +74,7 @@ public class PlugInFactory implements IPlugIn, InitializingBean, ApplicationCont
      * @return 插件支持的业务类型classId集合
      */
     @Override
-    public Set<Integer> getClassId() {
+    public Set<Integer> getClassIdSet() {
         return null;
     }
 
@@ -92,7 +92,7 @@ public class PlugInFactory implements IPlugIn, InitializingBean, ApplicationCont
         PlugInRet plugInRet = new PlugInRet();
 
         for (IPlugIn plugIn : plugIns) {
-            if (plugIn.getClassId() != null && plugIn.getClassId().contains(classId)) {
+            if (plugIn.getClassIdSet() != null && plugIn.getClassIdSet().contains(classId)) {
                 plugInRet = plugIn.beforeSave(classId, formTemplate, data);
                 if (plugInRet.getCode() != 200) {
                     // 插件返回了阻止继续运行的情况--返回不继续执行后续插件
@@ -118,7 +118,7 @@ public class PlugInFactory implements IPlugIn, InitializingBean, ApplicationCont
         PlugInRet plugInRet = new PlugInRet();
 
         for (IPlugIn plugIn : plugIns) {
-            if (plugIn.getClassId() != null && plugIn.getClassId().contains(classId)) {
+            if (plugIn.getClassIdSet() != null && plugIn.getClassIdSet().contains(classId)) {
                 plugInRet = plugIn.afterSave(classId, id, data);
                 if (plugInRet.getCode() != 200) {
                     // 插件返回了阻止继续运行的情况--返回不继续执行后续插件
@@ -144,7 +144,7 @@ public class PlugInFactory implements IPlugIn, InitializingBean, ApplicationCont
         PlugInRet plugInRet = new PlugInRet();
 
         for (IPlugIn plugIn : plugIns) {
-            if (plugIn.getClassId() != null && plugIn.getClassId().contains(classId)) {
+            if (plugIn.getClassIdSet() != null && plugIn.getClassIdSet().contains(classId)) {
                 plugInRet = plugIn.beforeModify(classId, id, formTemplate, data);
                 if (plugInRet.getCode() != 200) {
                     // 插件返回了阻止继续运行的情况--返回不继续执行后续插件
@@ -174,7 +174,7 @@ public class PlugInFactory implements IPlugIn, InitializingBean, ApplicationCont
         PlugInRet plugInRet = new PlugInRet();
 
         for (IPlugIn plugIn : plugIns) {
-            if (plugIn.getClassId() != null && plugIn.getClassId().contains(classId)) {
+            if (plugIn.getClassIdSet() != null && plugIn.getClassIdSet().contains(classId)) {
                 plugInRet = plugIn.beforeEntryModify(classId, primaryId, entryId, formTemplate, data);
                 if (plugInRet.getCode() != 200) {
                     // 插件返回了阻止继续运行的情况--返回不继续执行后续插件
@@ -201,7 +201,7 @@ public class PlugInFactory implements IPlugIn, InitializingBean, ApplicationCont
         PlugInRet plugInRet = new PlugInRet();
 
         for (IPlugIn plugIn : plugIns) {
-            if (plugIn.getClassId() != null && plugIn.getClassId().contains(classId)) {
+            if (plugIn.getClassIdSet() != null && plugIn.getClassIdSet().contains(classId)) {
                 plugInRet = plugIn.afterModify(classId, id, formTemplate, data);
                 if (plugInRet.getCode() != 200) {
                     // 插件返回了阻止继续运行的情况--返回不继续执行后续插件
@@ -227,7 +227,7 @@ public class PlugInFactory implements IPlugIn, InitializingBean, ApplicationCont
         PlugInRet plugInRet = new PlugInRet();
 
         for (IPlugIn plugIn : plugIns) {
-            if (plugIn.getClassId() != null && plugIn.getClassId().contains(classId)) {
+            if (plugIn.getClassIdSet() != null && plugIn.getClassIdSet().contains(classId)) {
                 plugInRet = plugIn.beforeDelete(classId, formTemplate, ids);
                 if (plugInRet.getCode() != 200) {
                     // 插件返回了阻止继续运行的情况--返回不继续执行后续插件
@@ -256,7 +256,7 @@ public class PlugInFactory implements IPlugIn, InitializingBean, ApplicationCont
         PlugInRet plugInRet = new PlugInRet();
 
         for (IPlugIn plugIn : plugIns) {
-            if (plugIn.getClassId() != null && plugIn.getClassId().contains(classId)) {
+            if (plugIn.getClassIdSet() != null && plugIn.getClassIdSet().contains(classId)) {
                 plugInRet = plugIn.beforeEntryDelete(classId, primaryId, entryId, formTemplate);
                 if (plugInRet.getCode() != 200) {
                     // 插件返回了阻止继续运行的情况--返回不继续执行后续插件
@@ -282,7 +282,7 @@ public class PlugInFactory implements IPlugIn, InitializingBean, ApplicationCont
         PlugInRet plugInRet = new PlugInRet();
 
         for (IPlugIn plugIn : plugIns) {
-            if (plugIn.getClassId() != null && plugIn.getClassId().contains(classId)) {
+            if (plugIn.getClassIdSet() != null && plugIn.getClassIdSet().contains(classId)) {
                 plugInRet = plugIn.afterDelete(classId, formTemplate, ids);
                 if (plugInRet.getCode() != 200) {
                     // 插件返回了阻止继续运行的情况--返回不继续执行后续插件
@@ -308,7 +308,7 @@ public class PlugInFactory implements IPlugIn, InitializingBean, ApplicationCont
         PlugInRet plugInRet = new PlugInRet();
 
         for (IPlugIn plugIn : plugIns) {
-            if (plugIn.getClassId() != null && plugIn.getClassId().contains(classId)) {
+            if (plugIn.getClassIdSet() != null && plugIn.getClassIdSet().contains(classId)) {
                 plugInRet = plugIn.beforeQuery(classId, formTemplate, conditons);
                 if (plugInRet.getCode() != 200) {
                     // 插件返回了阻止继续运行的情况--返回不继续执行后续插件
@@ -333,7 +333,7 @@ public class PlugInFactory implements IPlugIn, InitializingBean, ApplicationCont
         PlugInRet plugInRet = new PlugInRet();
 
         for (IPlugIn plugIn : plugIns) {
-            if (plugIn.getClassId() != null && plugIn.getClassId().contains(classId)) {
+            if (plugIn.getClassIdSet() != null && plugIn.getClassIdSet().contains(classId)) {
                 plugInRet = plugIn.afterQuery(classId, list);
                 if (plugInRet.getCode() != 200) {
                     // 插件返回了阻止继续运行的情况--返回不继续执行后续插件
@@ -359,7 +359,7 @@ public class PlugInFactory implements IPlugIn, InitializingBean, ApplicationCont
         List<Condition> pluginConditions = new ArrayList<Condition>();
 
         for (IPlugIn plugIn : plugIns) {
-            if (plugIn.getClassId() != null && plugIn.getClassId().contains(classId)) {
+            if (plugIn.getClassIdSet() != null && plugIn.getClassIdSet().contains(classId)) {
 
                 List<Condition> c = plugIn.getConditions(classId, formTemplate, conditons);
                 if (c != null && c.size() > 0) {
@@ -386,7 +386,7 @@ public class PlugInFactory implements IPlugIn, InitializingBean, ApplicationCont
         PlugInRet plugInRet = new PlugInRet();
 
         for (IPlugIn plugIn : plugIns) {
-            if (plugIn.getClassId() != null && plugIn.getClassId().contains(classId)) {
+            if (plugIn.getClassIdSet() != null && plugIn.getClassIdSet().contains(classId)) {
                 plugInRet = plugIn.beforeForbid(classId, template, ids, operateType);
                 if (plugInRet.getCode() != 200) {
                     // 插件返回了阻止继续运行的情况--返回不继续执行后续插件
@@ -413,7 +413,7 @@ public class PlugInFactory implements IPlugIn, InitializingBean, ApplicationCont
         PlugInRet plugInRet = new PlugInRet();
 
         for (IPlugIn plugIn : plugIns) {
-            if (plugIn.getClassId() != null && plugIn.getClassId().contains(classId)) {
+            if (plugIn.getClassIdSet() != null && plugIn.getClassIdSet().contains(classId)) {
                 plugInRet = plugIn.afterForbid(classId, template, ids, operateType);
                 if (plugInRet.getCode() != 200) {
                     // 插件返回了阻止继续运行的情况--返回不继续执行后续插件

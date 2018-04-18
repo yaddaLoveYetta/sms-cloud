@@ -27,10 +27,10 @@
     <result column="clearing_currency" jdbcType="VARCHAR" property="clearingCurrency" />
     <result column="clearing_type" jdbcType="VARCHAR" property="clearingType" />
     <result column="payment_type" jdbcType="VARCHAR" property="paymentType" />
-    <result column="logo" jdbcType="VARCHAR" property="logo" />
     <result column="province" jdbcType="INTEGER" property="province" />
     <result column="city" jdbcType="INTEGER" property="city" />
     <result column="district" jdbcType="INTEGER" property="district" />
+    <result column="logo" jdbcType="VARCHAR" property="logo" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -95,7 +95,7 @@
     legal_person, contacts, phone, company_type, industry_type, validity_period_begin, 
     validity_period_end, issue_date, issue_agency, main_business, account_bank, account_number, 
     account_address, clearing_company, delivery_company, clearing_currency, clearing_type, 
-    payment_type, logo, province, city, district
+    payment_type, province, city, district, logo
   </sql>
   <select id="selectByExample" parameterType="com.kingdee.hrp.sms.common.model.SupplierExample" resultMap="BaseResultMap">
     select
@@ -136,8 +136,8 @@
       issue_date, issue_agency, main_business, 
       account_bank, account_number, account_address, 
       clearing_company, delivery_company, clearing_currency, 
-      clearing_type, payment_type, logo, 
-      province, city, district
+      clearing_type, payment_type, province, 
+      city, district, logo
       )
     values (#{id,jdbcType=BIGINT}, #{number,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
       #{creditCode,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{introduction,jdbcType=VARCHAR}, 
@@ -147,8 +147,8 @@
       #{issueDate,jdbcType=TIMESTAMP}, #{issueAgency,jdbcType=VARCHAR}, #{mainBusiness,jdbcType=VARCHAR}, 
       #{accountBank,jdbcType=VARCHAR}, #{accountNumber,jdbcType=VARCHAR}, #{accountAddress,jdbcType=VARCHAR}, 
       #{clearingCompany,jdbcType=VARCHAR}, #{deliveryCompany,jdbcType=VARCHAR}, #{clearingCurrency,jdbcType=VARCHAR}, 
-      #{clearingType,jdbcType=VARCHAR}, #{paymentType,jdbcType=VARCHAR}, #{logo,jdbcType=VARCHAR}, 
-      #{province,jdbcType=INTEGER}, #{city,jdbcType=INTEGER}, #{district,jdbcType=INTEGER}
+      #{clearingType,jdbcType=VARCHAR}, #{paymentType,jdbcType=VARCHAR}, #{province,jdbcType=INTEGER}, 
+      #{city,jdbcType=INTEGER}, #{district,jdbcType=INTEGER}, #{logo,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.kingdee.hrp.sms.common.model.Supplier">
@@ -229,9 +229,6 @@
       <if test="paymentType != null">
         payment_type,
       </if>
-      <if test="logo != null">
-        logo,
-      </if>
       <if test="province != null">
         province,
       </if>
@@ -240,6 +237,9 @@
       </if>
       <if test="district != null">
         district,
+      </if>
+      <if test="logo != null">
+        logo,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -318,9 +318,6 @@
       <if test="paymentType != null">
         #{paymentType,jdbcType=VARCHAR},
       </if>
-      <if test="logo != null">
-        #{logo,jdbcType=VARCHAR},
-      </if>
       <if test="province != null">
         #{province,jdbcType=INTEGER},
       </if>
@@ -329,6 +326,9 @@
       </if>
       <if test="district != null">
         #{district,jdbcType=INTEGER},
+      </if>
+      <if test="logo != null">
+        #{logo,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -416,9 +416,6 @@
       <if test="record.paymentType != null">
         payment_type = #{record.paymentType,jdbcType=VARCHAR},
       </if>
-      <if test="record.logo != null">
-        logo = #{record.logo,jdbcType=VARCHAR},
-      </if>
       <if test="record.province != null">
         province = #{record.province,jdbcType=INTEGER},
       </if>
@@ -427,6 +424,9 @@
       </if>
       <if test="record.district != null">
         district = #{record.district,jdbcType=INTEGER},
+      </if>
+      <if test="record.logo != null">
+        logo = #{record.logo,jdbcType=VARCHAR},
       </if>
     </set>
     <if test="_parameter != null">
@@ -460,10 +460,10 @@
       clearing_currency = #{record.clearingCurrency,jdbcType=VARCHAR},
       clearing_type = #{record.clearingType,jdbcType=VARCHAR},
       payment_type = #{record.paymentType,jdbcType=VARCHAR},
-      logo = #{record.logo,jdbcType=VARCHAR},
       province = #{record.province,jdbcType=INTEGER},
       city = #{record.city,jdbcType=INTEGER},
-      district = #{record.district,jdbcType=INTEGER}
+      district = #{record.district,jdbcType=INTEGER},
+      logo = #{record.logo,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -543,9 +543,6 @@
       <if test="paymentType != null">
         payment_type = #{paymentType,jdbcType=VARCHAR},
       </if>
-      <if test="logo != null">
-        logo = #{logo,jdbcType=VARCHAR},
-      </if>
       <if test="province != null">
         province = #{province,jdbcType=INTEGER},
       </if>
@@ -554,6 +551,9 @@
       </if>
       <if test="district != null">
         district = #{district,jdbcType=INTEGER},
+      </if>
+      <if test="logo != null">
+        logo = #{logo,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
@@ -584,10 +584,10 @@
       clearing_currency = #{clearingCurrency,jdbcType=VARCHAR},
       clearing_type = #{clearingType,jdbcType=VARCHAR},
       payment_type = #{paymentType,jdbcType=VARCHAR},
-      logo = #{logo,jdbcType=VARCHAR},
       province = #{province,jdbcType=INTEGER},
       city = #{city,jdbcType=INTEGER},
-      district = #{district,jdbcType=INTEGER}
+      district = #{district,jdbcType=INTEGER},
+      logo = #{logo,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
   <insert id="batchInsert" parameterType="map">
@@ -601,7 +601,7 @@
       legal_person, contacts, phone, company_type, industry_type, validity_period_begin, 
       validity_period_end, issue_date, issue_agency, main_business, account_bank, account_number, 
       account_address, clearing_company, delivery_company, clearing_currency, clearing_type, 
-      payment_type, logo, province, city, district)
+      payment_type, province, city, district, logo)
     values
     <foreach collection="list" item="item" separator=",">
       (#{item.id,jdbcType=BIGINT}, #{item.number,jdbcType=VARCHAR}, #{item.name,jdbcType=VARCHAR}, 
@@ -614,8 +614,8 @@
         #{item.accountNumber,jdbcType=VARCHAR}, #{item.accountAddress,jdbcType=VARCHAR}, 
         #{item.clearingCompany,jdbcType=VARCHAR}, #{item.deliveryCompany,jdbcType=VARCHAR}, 
         #{item.clearingCurrency,jdbcType=VARCHAR}, #{item.clearingType,jdbcType=VARCHAR}, 
-        #{item.paymentType,jdbcType=VARCHAR}, #{item.logo,jdbcType=VARCHAR}, #{item.province,jdbcType=INTEGER}, 
-        #{item.city,jdbcType=INTEGER}, #{item.district,jdbcType=INTEGER})
+        #{item.paymentType,jdbcType=VARCHAR}, #{item.province,jdbcType=INTEGER}, #{item.city,jdbcType=INTEGER}, 
+        #{item.district,jdbcType=INTEGER}, #{item.logo,jdbcType=VARCHAR})
     </foreach>
   </insert>
   <insert id="batchInsertSelective" parameterType="map">
@@ -708,9 +708,6 @@
         <if test="'payment_type' == column.value">
           #{item.paymentType,jdbcType=VARCHAR}
         </if>
-        <if test="'logo' == column.value">
-          #{item.logo,jdbcType=VARCHAR}
-        </if>
         <if test="'province' == column.value">
           #{item.province,jdbcType=INTEGER}
         </if>
@@ -719,6 +716,9 @@
         </if>
         <if test="'district' == column.value">
           #{item.district,jdbcType=INTEGER}
+        </if>
+        <if test="'logo' == column.value">
+          #{item.logo,jdbcType=VARCHAR}
         </if>
       </foreach>
       )

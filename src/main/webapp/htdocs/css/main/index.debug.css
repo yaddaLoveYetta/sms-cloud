@@ -868,6 +868,10 @@ body {
     margin-bottom: 10px;
 }
 
+.navbar-form.search-box .iconfont {
+    font-size: 12px !important;
+}
+
 .navbar-md {
     min-height: 60px;
 }
