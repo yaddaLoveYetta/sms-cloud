@@ -153,6 +153,10 @@ define('Edit', function (require, module, exports) {
                         //F7选择框锁定特殊处理
                         emitter.fire('selectorLock', [key]);
                         break;
+                    /*                    case 7:
+                                            //级联选择器锁定特殊处理
+                                            emitter.fire('cascadePickerLock', [key]);
+                                            break;*/
                     default:
                         element.prop("disabled", "disabled");
                 }
@@ -219,9 +223,9 @@ define('Edit', function (require, module, exports) {
                 case 6:
                     // F7选择框
                     var selectorData = [{
-                        ID:value,
-                        number:itemData[key+'_NmbName'] || '',
-                        name: itemData[key+'_DspName'] || ''
+                        ID: value,
+                        number: itemData[key + '_NmbName'] || '',
+                        name: itemData[key + '_DspName'] || ''
                     }];
                     emitter.fire('selectorSet', [field, key, selectorData]);
                     break;

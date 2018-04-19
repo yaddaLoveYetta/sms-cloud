@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.kingdee.hrp.sms.common.dao.generate.ItemMapper">
-  <resultMap id="BaseResultMap" type="com.kingdee.hrp.sms.common.model.Item">
+<mapper namespace="com.kingdee.hrp.sms.common.dao.generate.HospitalSupplierMapper">
+  <resultMap id="BaseResultMap" type="com.kingdee.hrp.sms.common.model.HospitalSupplier">
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="number" jdbcType="VARCHAR" property="number" />
     <result column="name" jdbcType="VARCHAR" property="name" />
-    <result column="specification" jdbcType="VARCHAR" property="specification" />
-    <result column="manufacturer" jdbcType="VARCHAR" property="manufacturer" />
-    <result column="is_high_consumable" jdbcType="BIT" property="isHighConsumable" />
-    <result column="is_lot_number" jdbcType="BIT" property="isLotNumber" />
     <result column="org" jdbcType="BIGINT" property="org" />
+    <result column="type" jdbcType="BIGINT" property="type" />
+    <result column="province" jdbcType="INTEGER" property="province" />
+    <result column="city" jdbcType="INTEGER" property="city" />
+    <result column="district" jdbcType="INTEGER" property="district" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
     <result column="status" jdbcType="BIT" property="status" />
-    <result column="image" jdbcType="VARCHAR" property="image" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -72,16 +72,15 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, `number`, `name`, specification, manufacturer, is_high_consumable, is_lot_number, 
-    org, `status`, image
+    id, `number`, `name`, org, `type`, province, city, district, address, `status`
   </sql>
-  <select id="selectByExample" parameterType="com.kingdee.hrp.sms.common.model.ItemExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="com.kingdee.hrp.sms.common.model.HospitalSupplierExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from t_item
+    from t_hospital_supplier
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -92,31 +91,31 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from t_item
+    from t_hospital_supplier
     where id = #{id,jdbcType=BIGINT}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    delete from t_item
+    delete from t_hospital_supplier
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <delete id="deleteByExample" parameterType="com.kingdee.hrp.sms.common.model.ItemExample">
-    delete from t_item
+  <delete id="deleteByExample" parameterType="com.kingdee.hrp.sms.common.model.HospitalSupplierExample">
+    delete from t_hospital_supplier
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.kingdee.hrp.sms.common.model.Item">
-    insert into t_item (id, `number`, `name`, 
-      specification, manufacturer, is_high_consumable, 
-      is_lot_number, org, `status`, image
-      )
+  <insert id="insert" parameterType="com.kingdee.hrp.sms.common.model.HospitalSupplier">
+    insert into t_hospital_supplier (id, `number`, `name`, 
+      org, `type`, province, 
+      city, district, address, 
+      `status`)
     values (#{id,jdbcType=BIGINT}, #{number,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
-      #{specification,jdbcType=VARCHAR}, #{manufacturer,jdbcType=VARCHAR}, #{isHighConsumable,jdbcType=BIT}, 
-      #{isLotNumber,jdbcType=BIT}, #{org,jdbcType=BIGINT}, #{status,jdbcType=BIT}, #{image,jdbcType=VARCHAR}
-      )
+      #{org,jdbcType=BIGINT}, #{type,jdbcType=BIGINT}, #{province,jdbcType=INTEGER}, 
+      #{city,jdbcType=INTEGER}, #{district,jdbcType=INTEGER}, #{address,jdbcType=VARCHAR}, 
+      #{status,jdbcType=BIT})
   </insert>
-  <insert id="insertSelective" parameterType="com.kingdee.hrp.sms.common.model.Item">
-    insert into t_item
+  <insert id="insertSelective" parameterType="com.kingdee.hrp.sms.common.model.HospitalSupplier">
+    insert into t_hospital_supplier
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         id,
@@ -127,26 +126,26 @@
       <if test="name != null">
         `name`,
       </if>
-      <if test="specification != null">
-        specification,
-      </if>
-      <if test="manufacturer != null">
-        manufacturer,
-      </if>
-      <if test="isHighConsumable != null">
-        is_high_consumable,
-      </if>
-      <if test="isLotNumber != null">
-        is_lot_number,
-      </if>
       <if test="org != null">
         org,
       </if>
+      <if test="type != null">
+        `type`,
+      </if>
+      <if test="province != null">
+        province,
+      </if>
+      <if test="city != null">
+        city,
+      </if>
+      <if test="district != null">
+        district,
+      </if>
+      <if test="address != null">
+        address,
+      </if>
       <if test="status != null">
         `status`,
-      </if>
-      <if test="image != null">
-        image,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -159,37 +158,37 @@
       <if test="name != null">
         #{name,jdbcType=VARCHAR},
       </if>
-      <if test="specification != null">
-        #{specification,jdbcType=VARCHAR},
-      </if>
-      <if test="manufacturer != null">
-        #{manufacturer,jdbcType=VARCHAR},
-      </if>
-      <if test="isHighConsumable != null">
-        #{isHighConsumable,jdbcType=BIT},
-      </if>
-      <if test="isLotNumber != null">
-        #{isLotNumber,jdbcType=BIT},
-      </if>
       <if test="org != null">
         #{org,jdbcType=BIGINT},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=BIGINT},
+      </if>
+      <if test="province != null">
+        #{province,jdbcType=INTEGER},
+      </if>
+      <if test="city != null">
+        #{city,jdbcType=INTEGER},
+      </if>
+      <if test="district != null">
+        #{district,jdbcType=INTEGER},
+      </if>
+      <if test="address != null">
+        #{address,jdbcType=VARCHAR},
       </if>
       <if test="status != null">
         #{status,jdbcType=BIT},
       </if>
-      <if test="image != null">
-        #{image,jdbcType=VARCHAR},
-      </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.kingdee.hrp.sms.common.model.ItemExample" resultType="java.lang.Long">
-    select count(*) from t_item
+  <select id="countByExample" parameterType="com.kingdee.hrp.sms.common.model.HospitalSupplierExample" resultType="java.lang.Long">
+    select count(*) from t_hospital_supplier
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
-    update t_item
+    update t_hospital_supplier
     <set>
       <if test="record.id != null">
         id = #{record.id,jdbcType=BIGINT},
@@ -200,26 +199,26 @@
       <if test="record.name != null">
         `name` = #{record.name,jdbcType=VARCHAR},
       </if>
-      <if test="record.specification != null">
-        specification = #{record.specification,jdbcType=VARCHAR},
-      </if>
-      <if test="record.manufacturer != null">
-        manufacturer = #{record.manufacturer,jdbcType=VARCHAR},
-      </if>
-      <if test="record.isHighConsumable != null">
-        is_high_consumable = #{record.isHighConsumable,jdbcType=BIT},
-      </if>
-      <if test="record.isLotNumber != null">
-        is_lot_number = #{record.isLotNumber,jdbcType=BIT},
-      </if>
       <if test="record.org != null">
         org = #{record.org,jdbcType=BIGINT},
       </if>
+      <if test="record.type != null">
+        `type` = #{record.type,jdbcType=BIGINT},
+      </if>
+      <if test="record.province != null">
+        province = #{record.province,jdbcType=INTEGER},
+      </if>
+      <if test="record.city != null">
+        city = #{record.city,jdbcType=INTEGER},
+      </if>
+      <if test="record.district != null">
+        district = #{record.district,jdbcType=INTEGER},
+      </if>
+      <if test="record.address != null">
+        address = #{record.address,jdbcType=VARCHAR},
+      </if>
       <if test="record.status != null">
         `status` = #{record.status,jdbcType=BIT},
-      </if>
-      <if test="record.image != null">
-        image = #{record.image,jdbcType=VARCHAR},
       </if>
     </set>
     <if test="_parameter != null">
@@ -227,23 +226,23 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map">
-    update t_item
+    update t_hospital_supplier
     set id = #{record.id,jdbcType=BIGINT},
       `number` = #{record.number,jdbcType=VARCHAR},
       `name` = #{record.name,jdbcType=VARCHAR},
-      specification = #{record.specification,jdbcType=VARCHAR},
-      manufacturer = #{record.manufacturer,jdbcType=VARCHAR},
-      is_high_consumable = #{record.isHighConsumable,jdbcType=BIT},
-      is_lot_number = #{record.isLotNumber,jdbcType=BIT},
       org = #{record.org,jdbcType=BIGINT},
-      `status` = #{record.status,jdbcType=BIT},
-      image = #{record.image,jdbcType=VARCHAR}
+      `type` = #{record.type,jdbcType=BIGINT},
+      province = #{record.province,jdbcType=INTEGER},
+      city = #{record.city,jdbcType=INTEGER},
+      district = #{record.district,jdbcType=INTEGER},
+      address = #{record.address,jdbcType=VARCHAR},
+      `status` = #{record.status,jdbcType=BIT}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.kingdee.hrp.sms.common.model.Item">
-    update t_item
+  <update id="updateByPrimaryKeySelective" parameterType="com.kingdee.hrp.sms.common.model.HospitalSupplier">
+    update t_hospital_supplier
     <set>
       <if test="number != null">
         `number` = #{number,jdbcType=VARCHAR},
@@ -251,41 +250,41 @@
       <if test="name != null">
         `name` = #{name,jdbcType=VARCHAR},
       </if>
-      <if test="specification != null">
-        specification = #{specification,jdbcType=VARCHAR},
-      </if>
-      <if test="manufacturer != null">
-        manufacturer = #{manufacturer,jdbcType=VARCHAR},
-      </if>
-      <if test="isHighConsumable != null">
-        is_high_consumable = #{isHighConsumable,jdbcType=BIT},
-      </if>
-      <if test="isLotNumber != null">
-        is_lot_number = #{isLotNumber,jdbcType=BIT},
-      </if>
       <if test="org != null">
         org = #{org,jdbcType=BIGINT},
+      </if>
+      <if test="type != null">
+        `type` = #{type,jdbcType=BIGINT},
+      </if>
+      <if test="province != null">
+        province = #{province,jdbcType=INTEGER},
+      </if>
+      <if test="city != null">
+        city = #{city,jdbcType=INTEGER},
+      </if>
+      <if test="district != null">
+        district = #{district,jdbcType=INTEGER},
+      </if>
+      <if test="address != null">
+        address = #{address,jdbcType=VARCHAR},
       </if>
       <if test="status != null">
         `status` = #{status,jdbcType=BIT},
       </if>
-      <if test="image != null">
-        image = #{image,jdbcType=VARCHAR},
-      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.kingdee.hrp.sms.common.model.Item">
-    update t_item
+  <update id="updateByPrimaryKey" parameterType="com.kingdee.hrp.sms.common.model.HospitalSupplier">
+    update t_hospital_supplier
     set `number` = #{number,jdbcType=VARCHAR},
       `name` = #{name,jdbcType=VARCHAR},
-      specification = #{specification,jdbcType=VARCHAR},
-      manufacturer = #{manufacturer,jdbcType=VARCHAR},
-      is_high_consumable = #{isHighConsumable,jdbcType=BIT},
-      is_lot_number = #{isLotNumber,jdbcType=BIT},
       org = #{org,jdbcType=BIGINT},
-      `status` = #{status,jdbcType=BIT},
-      image = #{image,jdbcType=VARCHAR}
+      `type` = #{type,jdbcType=BIGINT},
+      province = #{province,jdbcType=INTEGER},
+      city = #{city,jdbcType=INTEGER},
+      district = #{district,jdbcType=INTEGER},
+      address = #{address,jdbcType=VARCHAR},
+      `status` = #{status,jdbcType=BIT}
     where id = #{id,jdbcType=BIGINT}
   </update>
   <insert id="batchInsert" parameterType="map">
@@ -294,15 +293,14 @@
       This element is automatically generated by MyBatis Generator, do not modify.
       @project https://github.com/itfsw/mybatis-generator-plugin
     -->
-    insert into t_item
-    (id, `number`, `name`, specification, manufacturer, is_high_consumable, is_lot_number, 
-      org, `status`, image)
+    insert into t_hospital_supplier
+    (id, `number`, `name`, org, `type`, province, city, district, address, `status`)
     values
     <foreach collection="list" item="item" separator=",">
       (#{item.id,jdbcType=BIGINT}, #{item.number,jdbcType=VARCHAR}, #{item.name,jdbcType=VARCHAR}, 
-        #{item.specification,jdbcType=VARCHAR}, #{item.manufacturer,jdbcType=VARCHAR}, 
-        #{item.isHighConsumable,jdbcType=BIT}, #{item.isLotNumber,jdbcType=BIT}, #{item.org,jdbcType=BIGINT}, 
-        #{item.status,jdbcType=BIT}, #{item.image,jdbcType=VARCHAR})
+        #{item.org,jdbcType=BIGINT}, #{item.type,jdbcType=BIGINT}, #{item.province,jdbcType=INTEGER}, 
+        #{item.city,jdbcType=INTEGER}, #{item.district,jdbcType=INTEGER}, #{item.address,jdbcType=VARCHAR}, 
+        #{item.status,jdbcType=BIT})
     </foreach>
   </insert>
   <insert id="batchInsertSelective" parameterType="map">
@@ -311,7 +309,7 @@
       This element is automatically generated by MyBatis Generator, do not modify.
       @project https://github.com/itfsw/mybatis-generator-plugin
     -->
-    insert into t_item (
+    insert into t_hospital_supplier (
     <foreach collection="selective" item="column" separator=",">
       ${column.value}
     </foreach>
@@ -329,26 +327,26 @@
         <if test="'name' == column.value">
           #{item.name,jdbcType=VARCHAR}
         </if>
-        <if test="'specification' == column.value">
-          #{item.specification,jdbcType=VARCHAR}
-        </if>
-        <if test="'manufacturer' == column.value">
-          #{item.manufacturer,jdbcType=VARCHAR}
-        </if>
-        <if test="'is_high_consumable' == column.value">
-          #{item.isHighConsumable,jdbcType=BIT}
-        </if>
-        <if test="'is_lot_number' == column.value">
-          #{item.isLotNumber,jdbcType=BIT}
-        </if>
         <if test="'org' == column.value">
           #{item.org,jdbcType=BIGINT}
         </if>
+        <if test="'type' == column.value">
+          #{item.type,jdbcType=BIGINT}
+        </if>
+        <if test="'province' == column.value">
+          #{item.province,jdbcType=INTEGER}
+        </if>
+        <if test="'city' == column.value">
+          #{item.city,jdbcType=INTEGER}
+        </if>
+        <if test="'district' == column.value">
+          #{item.district,jdbcType=INTEGER}
+        </if>
+        <if test="'address' == column.value">
+          #{item.address,jdbcType=VARCHAR}
+        </if>
         <if test="'status' == column.value">
           #{item.status,jdbcType=BIT}
-        </if>
-        <if test="'image' == column.value">
-          #{item.image,jdbcType=VARCHAR}
         </if>
       </foreach>
       )

@@ -76,7 +76,7 @@ public class BaseDataPlugin extends PlugInAdpter implements InitializingBean {
     @Transactional(rollbackFor = Exception.class)
     public PlugInRet afterForbid(Integer classId, Map<String, Object> template, List<Long> ids, Integer operateType) {
 
-        if (classId == 1001) {
+        if (classId == 1001 && operateType == 1) {
             // 禁用用户时，如果该用户是医院/供应商的管理员,则将归属该医院、供应商的所有用户一并禁用
             SqlSession sqlSession = Environ.getBean(SqlSession.class);
             UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
@@ -86,19 +86,20 @@ public class BaseDataPlugin extends PlugInAdpter implements InitializingBean {
             criteria.andIdIn(ids);
             List<User> users = userMapper.selectByExample(userExample);
 
-            List<Long> adminUserIds = new ArrayList<>();
+            List<Long> adminUserOrgIds = new ArrayList<>();
             for (User user : users) {
                 if (user.getIsAdmin() && user.getOrg() > 0) {
                     //user.getOrg() > 0 不是系统用户
-                    adminUserIds.add(user.getId());
+                    adminUserOrgIds.add(user.getOrg());
                 }
             }
 
-            if (!adminUserIds.isEmpty()) {
+            if (!adminUserOrgIds.isEmpty()) {
                 User forbidUser = new User();
                 forbidUser.setStatus(true);
                 userExample.clear();
-                criteria.andIdIn(adminUserIds);
+                criteria = userExample.createCriteria();
+                criteria.andOrgIn(adminUserOrgIds);
                 userMapper.updateByExampleSelective(forbidUser, userExample);
             }
         }

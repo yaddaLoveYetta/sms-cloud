@@ -3695,6 +3695,28 @@
             },
 
             /**
+             * 锁定不可编辑
+             */
+            lock: function () {
+
+                var meta = mapper.get(this);
+
+                $(meta.container).children('select').attr("disabled", "disabled");
+
+            },
+
+            /**
+             * 解锁定
+             */
+            unLock: function () {
+
+                var meta = mapper.get(this);
+
+                $(meta.container).children('select').attr("disabled", "");
+
+            },
+
+            /**
              * 给当前实例绑定一个指定名称的事件回调函数。
              */
             on: function (name, fn) {

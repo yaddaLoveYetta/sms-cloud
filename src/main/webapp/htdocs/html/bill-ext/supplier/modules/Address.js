@@ -58,10 +58,20 @@ define('Address', function (require, exports, module) {
         }
     }
 
+    function lock() {
+        picker && picker.lock();
+    }
+
+    function unLock() {
+        picker && picker.unLock();
+    }
+
     return {
         create: create,
         getSelectedItems: getSelectedItems,
-        showHeadValidInfo: showHeadValidInfo
+        showHeadValidInfo: showHeadValidInfo,
+        lock: lock,
+        unLock: unLock
     }
 });
 

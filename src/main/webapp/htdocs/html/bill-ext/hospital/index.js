@@ -102,6 +102,11 @@
                 'district': data.district || -1
             });
             Address.showHeadValidInfo(false);
+
+            if (operate === 0) {
+                Address.lock();
+            }
+            
         },
         'afterInitPage': function (metaData) {
 

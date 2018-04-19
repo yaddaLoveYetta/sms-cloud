@@ -40,8 +40,6 @@
 
     var ButtonList;
 
-    var addressPicker;
-
     FormAction.create({
         'classId': classId,
         'type': operate,
@@ -69,6 +67,10 @@
             'save': function (item, index) {
                 // 修改时保存
                 Edit.save(function (ret) {
+                    if (operate === 1) {
+                        // 记录下新增后产生的资料内码
+                        id = ret.value;
+                    }
                     SMS.Tips.success("保存成功!", 1500);
                 });
             },
@@ -94,30 +96,38 @@
         'selectorSet': function (field, key, selectorData) {
             Selector.set(field, key, selectorData);
         },
+        'selectorGet': function (field, key) {
+            return Selector.get(key);
+        },
+        'selectorLock': function (key) {
+            Selector.get(key).lock();
+        },
+        'selectorUnLock': function (key) {
+            Selector.get(key).unlock();
+        },
         'afterFill': function (classId, metaData, data) {
-            $("#supplier-logo").attr('src', data['logo']);
-            // 渲染地址选择器
-            Address.create({
-                'id': 'address-picker',
-                'province': data.province || -1,
-                'city': data.city || -1,
-                'district': data.district || -1
-            });
-            Address.showHeadValidInfo(false);
-
-            if (operate === 0) {
-                Address.lock();
-            }
+            $("#item-image").attr('src', data['image'] || '../../../css/img/medicine.png');
         },
         'afterInitPage': function (metaData) {
 
+            if (operate === 1 && user.roles && user.roles[0] && user.roles[0]['type'] === 2) {
+                // 新增
+                var org = Selector.get('org');
+                var initData = [{
+                    ID: user.org.id,
+                    number: user.org.number || '',
+                    name: user.org.name || ''
+                }];
+                org.setData(initData);
+            }
+
             if (operate === 0) {
-                $('#supplier-logo-select').remove();
+                $('#item-image-select').remove();
             } else {
 
-                var api = new API("supplier/changeLogo");
+                var api = new API("item/setImage");
 
-                FileUpload.render('#supplier-logo-select', {
+                FileUpload.render('#item-image-select', {
                     uploadUrl: api.getUrl(),// 上传请求路径
                     uploadExtraData: function (previewId, index) {
                         //额外参数 返回json数组
@@ -128,7 +138,7 @@
                     }
                 }, function (fileNames, resp) {
                     if (resp.code === 200) {
-                        $("#supplier-logo").attr('src', resp.data[fileNames[0]]);
+                        $("#item-image").attr('src', resp.data[fileNames[0]]);
                     } else {
                         SMS.Tips.error(resp.msg, 1000);
                     }
@@ -137,19 +147,6 @@
 
         },
         'beforeSave': function (metaData, headData) {
-            var address = Address.getSelectedItems();
-            if (address.length !== 3) {
-                Address.showHeadValidInfo(true);
-                return false;
-            } else {
-                Address.showHeadValidInfo(false);
-                headData.successData['province'] = address[0][0] || -1;
-                headData.successData['city'] = address[1][0] || -1;
-                headData.successData['district'] = address[2][0] || -1;
-
-                return true;
-            }
-
         }
     });
 

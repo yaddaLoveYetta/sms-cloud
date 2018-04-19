@@ -448,6 +448,49 @@
             // 导入 TODO
             'import': function (item, index) {
 
+            },
+            //中标库查看关联供应商详细资料
+            'view-supplier': function (item, index) {
+
+                if (classId !== 1007) {
+                    return;
+                }
+
+                var list = List.getSelectedItems();
+
+                if (list.length === 0) {
+                    SMS.Tips.error('请选择要操作的项', 1000);
+                    return;
+                }
+
+                if (list.length > 1) {
+                    SMS.Tips.error('一次只能对一条记录进行操作', 1000);
+                    return;
+                }
+
+                var url = require("UrlMapping")(1005);
+                var name = list[0].data.supplier_DspName || '';
+
+                if (!url) {
+                    // 没有配置编辑页面或不需要编辑功能
+                    return;
+                }
+
+                Iframe.open({
+                    id: classId + '-view-supplier-' + list[0].primaryValue,
+                    name: '查看供应商资料-' + name,
+                    url: url,
+                    query: {
+                        'id': list[0].data.supplier,
+                        'classId': 1005,
+                        'operate': 0
+                    }
+                });
+
+            },
+            // 中标库查看关联合同资料
+            'view-contract': function (item, index) {
+                MessageBox.show('此功能正在开发中，敬请期待……', '金蝶提示！', true);
             }
         });
     });

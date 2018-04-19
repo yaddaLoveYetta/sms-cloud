@@ -68,7 +68,8 @@ define('FormAction', function (require, module, exports) {
                 return {
                     text: item[routeKey],
                     name: item[textKey],
-                    icon: item[iconKey]
+                    icon: item[iconKey],
+                    index: item.index
                 };
             });
             // 处理菜单分组--转换成Array结构
@@ -83,6 +84,10 @@ define('FormAction', function (require, module, exports) {
 
                 return group[0];
             })
+
+            actions = $.Array.sort(actions, function (arr1, arr2) {
+                return arr1.index > arr2.index;
+            });
 
             __default__.items = actions;
 
