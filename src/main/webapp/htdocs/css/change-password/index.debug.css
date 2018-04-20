@@ -1,4 +1,4 @@
-.title {
+/*.title {
   color: #838383;
   text-align: right;
   width: 80px;
@@ -26,4 +26,18 @@
 }
 td {
   height: 35px;
+}*/
+
+.msg {
+  color: green;
+}
+.error-msg {
+  color: red;
+}
+.row > label {
+  text-align: right;
+  padding-top: 7px;
+}
+.div-content{
+  margin-top: 10px;
 }

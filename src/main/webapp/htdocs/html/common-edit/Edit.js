@@ -171,6 +171,8 @@ define('Edit', function (require, module, exports) {
                 }
             }
         }
+
+        emitter.fire('afterFieldLock', [metaData, itemData]);
     }
 
     function fill() {

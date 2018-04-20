@@ -478,7 +478,7 @@
 
                 Iframe.open({
                     id: classId + '-view-supplier-' + list[0].primaryValue,
-                    name: '查看供应商资料-' + name,
+                    name: '供应商资料-' + name,
                     url: url,
                     query: {
                         'id': list[0].data.supplier,

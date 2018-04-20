@@ -102,6 +102,7 @@
             Selector.get(key).unlock();
         },
         'afterFill': function (classId, metaData, data) {
+
             // 渲染地址选择器
             Address.create({
                 'id': 'address-picker',
@@ -115,6 +116,11 @@
                 Address.lock();
             }
         },
+        'afterFieldLock':function (metaData, itemData) {
+/*            if (operate === 0) {
+                Address.lock();
+            }*/
+        },
         'afterInitPage': function (metaData) {
 
             if (operate === 1 && user.roles && user.roles[0] && user.roles[0]['type'] === 2) {
@@ -126,8 +132,6 @@
                     name: user.org.name || ''
                 }];
                 org.setData(initData);
-
-
             }
 
         },

@@ -109,8 +109,8 @@ define('UserInfos', function (require, module, exports) {
 
     function changePwd() {
 
-        var width = 400;
-        var height = 130;
+        var width = 380;
+        var height = 210;
         SMS.use('Dialog', function (Dialog) {
             var dialog = new Dialog({
                 id: 'changePassword',
@@ -132,7 +132,7 @@ define('UserInfos', function (require, module, exports) {
                             doChangePwd({
                                 oldPwd: oldPwd,
                                 newPwd: newPwd,
-                                userId: user.userId
+                                userId: user.id
                             }, function (data) {
                                 dialog.find('[data-id="修改密码"]').attr('disabled', false);
                                 dialog.setData(data);
@@ -165,7 +165,7 @@ define('UserInfos', function (require, module, exports) {
             'success': function (data, json) {
                 fn && fn({
                     result: true,
-                    msg: '修改密码成功！'
+                    msg: '修改密码成功,请用新密码重新登录！'
                 });
             },
 
