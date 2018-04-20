@@ -109,7 +109,7 @@ define('UserInfos', function (require, module, exports) {
 
     function changePwd() {
 
-        var width = 380;
+        var width = 360;
         var height = 210;
         SMS.use('Dialog', function (Dialog) {
             var dialog = new Dialog({

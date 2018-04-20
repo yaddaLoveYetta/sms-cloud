@@ -176,6 +176,12 @@
                 }
             }
 
+        },
+        'initSelector': function (lookUpClassId, key, metaData) {
+
+            if (classId === 1008) {
+
+            }
         }
     });
 

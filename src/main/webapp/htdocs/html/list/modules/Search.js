@@ -32,6 +32,8 @@ define("Search", function (require, module, exports) {
 
     var div = document.getElementById('filter-template');
 
+    var div_search_box = document.getElementById('search-box');
+
     var samples = $.String.getTemplates(div.innerHTML, [
             {
                 name: 'all',
@@ -126,6 +128,12 @@ define("Search", function (require, module, exports) {
 
         if (hasBind) {
             // 保留已经设置好的条件,不在重新渲染
+            return;
+        }
+
+        if (filterItems.length === 0) {
+            // 没有可过滤字段时不出现过滤条件
+            $(div_search_box).remove();
             return;
         }
 
@@ -285,18 +293,6 @@ define("Search", function (require, module, exports) {
                     // 控件对象缓存下来，设置获取值时使用
                     numberFields[key] = numberField;
 
-                    $(target).focusout(function () {
-
-                        /*var id = $(this).attr('id')
-                        var v = id && numberFields[id].get();
-                        console.log(v);*/
-                    }).focusin(function () {
-                        //debugger;
-                        var id = $(this).attr('id')
-                        var v = id && numberFields[id].get();
-                        console.log(v);
-                    });
-
                 });
 
             }
@@ -339,6 +335,13 @@ define("Search", function (require, module, exports) {
                         pageSize: 10
                     }
                 };
+
+                // 个性化配置
+                var pConfig = emitter.fire('initSelector', [field.lookUpClassId, field.key, metaData]);
+
+                pConfig = pConfig && pConfig[pConfig.length - 1];
+
+                config = $.Object.extend({}, config, pConfig);
 
                 selectors[key] = DataSelector.create(config);
             }

@@ -221,7 +221,7 @@
                     SMS.Tips.error('请选择要禁用的项', 1500);
                     return;
                 }
-                MessageBox.confirm('禁用后该用户不可使用系统。\r\n确定禁用?', function (result) {
+                MessageBox.confirm('禁用后资料不能参与业务。\r\n确定禁用?', function (result) {
                     if (result) {
                         List.forbid(classId, list, 1, function () {
                             refresh();
@@ -491,13 +491,73 @@
             // 中标库查看关联合同资料
             'view-contract': function (item, index) {
                 MessageBox.show('此功能正在开发中，敬请期待……', '金蝶提示！', true);
+            },
+            // 供应商合作医院-查看医院详细信息
+            'view-hospital': function (item, index) {
+
+                if (classId !== 1008) {
+                    return;
+                }
+
+                var list = List.getSelectedItems();
+
+                if (list.length === 0) {
+                    SMS.Tips.error('请选择要操作的项', 1000);
+                    return;
+                }
+
+                if (list.length > 1) {
+                    SMS.Tips.error('一次只能对一条记录进行操作', 1000);
+                    return;
+                }
+
+                var url = require("UrlMapping")(1012);
+                var name = list[0].data.hospital_DspName || '';
+
+                if (!url) {
+                    // 没有配置编辑页面或不需要编辑功能
+                    return;
+                }
+
+                Iframe.open({
+                    id: classId + '-view-hospital-' + list[0].primaryValue,
+                    name: '医院资料-' + name,
+                    url: url,
+                    query: {
+                        'id': list[0].data.hospital,
+                        'classId': 1012,
+                        'operate': 0
+                    }
+                });
+
             }
         });
     });
 
-    Search.on('doSearch', function (userConditions) {
-        conditions = userConditions;
-        refresh();
+    Search.on({
+        'doSearch': function (userConditions) {
+            conditions = userConditions;
+            refresh();
+        },
+        'initSelector': function (lookUpClassId, key, metaData) {
+
+            var config = {};
+
+            if (classId === 1008) {
+
+                // 供应商-我的合作医院查询中医院过滤条件只能在跟自身有关系的医院中过滤
+                config = {
+                    conditionF7Names: [{
+                        type: "selector",
+                        target: 'supplier',
+                        filterKey: "supplier"
+                    }]
+                };
+
+            }
+
+            return config;
+        }
     });
 
     List.on({

@@ -364,10 +364,10 @@ public class UserService extends BaseService implements IUserService {
             user = list.get(0);
         }
         if (null == user) {
-            throw new BusinessLogicRunTimeException("输入的原密码错误");
+            throw new BusinessLogicRunTimeException("原密码错误");
         }
         if (user.getPassword().equals(newPwd)) {
-            throw new BusinessLogicRunTimeException("修改密码的新密码不能与原密码相同");
+            throw new BusinessLogicRunTimeException("新密码不能与原密码相同");
         }
         user.setPassword(newPwd);
         userMapper.updateByPrimaryKey(user);

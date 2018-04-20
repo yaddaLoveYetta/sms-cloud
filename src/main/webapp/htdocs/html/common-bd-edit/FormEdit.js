@@ -387,11 +387,10 @@ define('FormEdit', function (require, module, exports) {
                     }
                 };
 
-                var pConfig = {};
+                // 个性化配置
+                var pConfig = emitter.fire('initSelector', [formClassId, field.classId, field.key, metaData]);
 
-                if (!!fnSelectors) {
-                    pConfig = fnSelectors(field.classId, field.key);// 个性化配置
-                }
+                pConfig = pConfig && pConfig[pConfig.length - 1];
 
                 config = $.Object.extend({}, config, pConfig);
 
@@ -410,7 +409,7 @@ define('FormEdit', function (require, module, exports) {
             },
             'done': function (key, data) {
                 emitter.fire(key, [data, selectors, metaData]);
-            },
+            }
         });
 
         // 初始化selectors后将selectors抛出，Edit模块中可能需要

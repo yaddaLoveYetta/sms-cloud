@@ -1118,7 +1118,8 @@ label {
     display: inline-block;
     width: 200px;
 }
-.login-box .input-panel .iconfont{
+
+.login-box .input-panel .iconfont {
     font-size: 18px;
     padding: 5px;
 }
@@ -1370,7 +1371,7 @@ label {
     width: 40px;
     /*border: 1px solid #dbdee6;*/
     border: none !important;
-   /* padding: 6px 0;*/
+    /* padding: 6px 0;*/
     text-align: center;
     height: 25px;
     line-height: 25px;
@@ -1528,15 +1529,15 @@ table {
 }
 
 .address-picker select {
-/*    height: 28px;
-    width: 30%;
-    border: 1px solid #d4d9e1;
-    -moz-border-radius: 2px;
-    -webkit-border-radius: 2px;
-    border-radius: 2px;
-    font-size: 12px;
-    color: #282828;
-    margin-right: 4%;*/
+    /*    height: 28px;
+        width: 30%;
+        border: 1px solid #d4d9e1;
+        -moz-border-radius: 2px;
+        -webkit-border-radius: 2px;
+        border-radius: 2px;
+        font-size: 12px;
+        color: #282828;
+        margin-right: 4%;*/
 }
 
 .address-picker select:last-child {
@@ -1756,4 +1757,8 @@ table {
 
 .btn-box .iconfont {
     font-size: 14px !important;
+}
+
+button {
+    outline: none !important;
 }
