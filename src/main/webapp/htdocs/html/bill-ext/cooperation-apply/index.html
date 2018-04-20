@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>供应商添加合作医院</title>
+
+    <link rel="stylesheet" href="../../../css/global.debug.css" type="text/css"/>
+    <link rel="stylesheet" href="../../../css/bootstrap.css" type="text/css"/>
+    <link rel="stylesheet" href="../../../css/iconfont/iconfont.css">
+
+    <!--grunt.css.begin-->
+    <link rel="stylesheet" href="../../../css/bill/index.debug.css">
+    <link rel="stylesheet" href="../../../css/bill-ext/cooperation-apply/index.debug.css">
+    <!--grunt.css.end-->
+
+
+</head>
+<body>
+
+<!--按钮区-->
+<div class="container-fluid options">
+    <div id="div-button-list" class="btn-box">
+        <button data-index="0" id="view-hospital" type="button" class="btn btn-primary">
+            <i class=" iconfont icon-chakan"></i> 查看
+        </button>
+
+        <button data-index="1" type="button" class="btn btn-primary">
+            <i class=" iconfont icon-chakan"></i> 申请成为供应商
+        </button>
+    </div>
+</div>
+<!--过滤条件 -->
+<div id="search-box" class="container-fluid search-box">
+
+    <div class="input-group col-sm-3">
+        <input id="input-order-search" type="text" ng-model="selected"
+               class="form-control input-sm bg-light no-border rounded padder" placeholder="输入医院全称查找 ...">
+        <span class="input-group-btn">
+            <button id="btn-order-search" type="button" class="btn btn-sm bg-light rounded">
+                <i class="iconfont icon-chaxun"></i>
+            </button>
+        </span>
+    </div>
+
+</div>
+
+
+<div id="search-detail" class=" search-detail col-sm-12 col-xs-12">
+
+    <div data-index="0" class="row form-group active">
+
+        <div class="col-xs-2 logo">
+            <img src="../../../css/img/medicine.png" class="logo">
+        </div>
+
+        <div class="col-xs-9 detail">
+            <label class="panel-title">广州红十字会医院</label>
+            <label class="address">武汉市江岸区洞庭街9号</label>
+        </div>
+    </div>
+
+    <div data-index="1" class="row form-group">
+
+        <div class="col-xs-2 logo">
+            <img src="../../../css/img/medicine.png" class="logo">
+        </div>
+
+        <div class="col-xs-9 detail">
+            <label class="panel-title">广州红十字会医院</label>
+            <label class="address">武汉市江岸区洞庭街9号</label>
+        </div>
+    </div>
+    <div class="row form-group active">
+
+        <div class="col-xs-2 logo">
+            <img src="../../../css/img/medicine.png" class="logo">
+        </div>
+
+        <div class="col-xs-9 detail">
+            <label class="panel-title">广州红十字会医院</label>
+            <label class="address">武汉市江岸区洞庭街9号</label>
+        </div>
+    </div>
+    <div class="row form-group">
+
+        <div class="col-xs-2 logo">
+            <img src="../../../css/img/medicine.png" class="logo">
+        </div>
+
+        <div class="col-xs-9 detail">
+            <label class="panel-title">广州红十字会医院</label>
+            <label class="address">武汉市江岸区洞庭街9号</label>
+        </div>
+    </div>
+    <div class="row form-group">
+
+        <div class="col-xs-2 logo">
+            <img src="../../../css/img/medicine.png" class="logo">
+        </div>
+
+        <div class="col-xs-9 detail">
+            <label class="panel-title">广州红十字会医院</label>
+            <label class="address">武汉市江岸区洞庭街9号</label>
+        </div>
+    </div>
+    <div class="row form-group">
+
+        <div class="col-xs-2 logo">
+            <img src="../../../css/img/medicine.png" class="logo">
+        </div>
+
+        <div class="col-xs-9 detail">
+            <label class="panel-title">广州红十字会医院</label>
+            <label class="address">武汉市江岸区洞庭街9号</label>
+        </div>
+    </div>
+
+</div>
+
+<script src="../../../lib/jquery/jquery-1.11.1.debug.js"></script>
+<script src="../../../lib/miniquery/miniquery.debug.js"></script>
+<script src="../../../lib/sms/sms.debug.js"></script>
+<script src="../../../lib/bootstrap/bootstrap.js"></script>
+<script src="../../../config.js"></script>
+
+<!--grunt.js.begin-->
+<script src="index.js"></script>
+<!--grunt.js.end-->
+
+</body>
+</html>

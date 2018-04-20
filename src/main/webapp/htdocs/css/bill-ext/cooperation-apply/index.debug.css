@@ -1,0 +1,53 @@
+
+.rounded {
+    border-radius: 500px;
+}
+
+.iconfont {
+    font-size: 12px !important;
+}
+
+.bg-light {
+    color: #58666e;
+    background-color: #edf1f2;
+}
+
+.no-border, .no-borders {
+    border-color: transparent;
+    border-width: 0;
+}
+
+.search-box {
+    margin: 20px auto;
+}
+
+.search-detail .logo {
+    height: 50px;
+    width: 80px;
+}
+
+.search-detail .logo img {
+    max-height: 50px;
+    max-width: 50px;
+    height: 100%;
+    vertical-align: middle;
+}
+
+.search-detail .detail {
+    height: 50px;
+    display: table-cell;
+    vertical-align: middle;
+    overflow: hidden;
+}
+
+.search-detail .detail label {
+    display: block !important;
+}
+
+.search-detail .active{
+    background-color: #0da5ef;
+}
+.search-detail .address {
+    color: #67435b;
+}
+

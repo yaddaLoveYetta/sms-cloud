@@ -530,7 +530,32 @@
                     }
                 });
 
+            },
+            // 供应商合作医院-添加合作医院
+            'cooperation-apply': function (item, index) {
+
+                if (classId !== 1008) {
+                    return;
+                }
+
+                SMS.use('Dialog', function (Dialog) {
+
+                    var dialog = new Dialog({
+                        id: 'cooperation-apply',
+                        title: '添加医院客户',
+                        url: './html/bill-ext/cooperation-apply/index.html', // ./ 表示相对于网站根目录
+                        width: 500,
+                        height: 300,
+                        button: [{
+                            value: '关闭',
+                            className: 'sms-cancel-btn'
+                        }]
+                    });
+
+                    dialog.showModal();
+                });
             }
+
         });
     });
 
