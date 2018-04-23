@@ -20,6 +20,8 @@
     <result column="validity_period_end" jdbcType="TIMESTAMP" property="validityPeriodEnd" />
     <result column="logo" jdbcType="VARCHAR" property="logo" />
     <result column="status" jdbcType="BIT" property="status" />
+    <result column="contacts" jdbcType="VARCHAR" property="contacts" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -82,7 +84,7 @@
   <sql id="Base_Column_List">
     id, `number`, `name`, credit_code, address, introduction, medical_subjects, principal, 
     issue_agency, legal_person, province, city, district, issue_date, validity_period_begin, 
-    validity_period_end, logo, `status`
+    validity_period_end, logo, `status`, contacts, phone
   </sql>
   <select id="selectByExample" parameterType="com.kingdee.hrp.sms.common.model.HospitalExample" resultMap="BaseResultMap">
     select
@@ -120,15 +122,15 @@
       medical_subjects, principal, issue_agency, 
       legal_person, province, city, 
       district, issue_date, validity_period_begin, 
-      validity_period_end, logo, `status`
-      )
+      validity_period_end, logo, `status`, 
+      contacts, phone)
     values (#{id,jdbcType=BIGINT}, #{number,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
       #{creditCode,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{introduction,jdbcType=VARCHAR}, 
       #{medicalSubjects,jdbcType=VARCHAR}, #{principal,jdbcType=VARCHAR}, #{issueAgency,jdbcType=VARCHAR}, 
       #{legalPerson,jdbcType=VARCHAR}, #{province,jdbcType=INTEGER}, #{city,jdbcType=INTEGER}, 
       #{district,jdbcType=INTEGER}, #{issueDate,jdbcType=TIMESTAMP}, #{validityPeriodBegin,jdbcType=TIMESTAMP}, 
-      #{validityPeriodEnd,jdbcType=TIMESTAMP}, #{logo,jdbcType=VARCHAR}, #{status,jdbcType=BIT}
-      )
+      #{validityPeriodEnd,jdbcType=TIMESTAMP}, #{logo,jdbcType=VARCHAR}, #{status,jdbcType=BIT}, 
+      #{contacts,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.kingdee.hrp.sms.common.model.Hospital">
     insert into t_hospital
@@ -187,6 +189,12 @@
       <if test="status != null">
         `status`,
       </if>
+      <if test="contacts != null">
+        contacts,
+      </if>
+      <if test="phone != null">
+        phone,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -242,6 +250,12 @@
       </if>
       <if test="status != null">
         #{status,jdbcType=BIT},
+      </if>
+      <if test="contacts != null">
+        #{contacts,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        #{phone,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -308,6 +322,12 @@
       <if test="record.status != null">
         `status` = #{record.status,jdbcType=BIT},
       </if>
+      <if test="record.contacts != null">
+        contacts = #{record.contacts,jdbcType=VARCHAR},
+      </if>
+      <if test="record.phone != null">
+        phone = #{record.phone,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -332,7 +352,9 @@
       validity_period_begin = #{record.validityPeriodBegin,jdbcType=TIMESTAMP},
       validity_period_end = #{record.validityPeriodEnd,jdbcType=TIMESTAMP},
       logo = #{record.logo,jdbcType=VARCHAR},
-      `status` = #{record.status,jdbcType=BIT}
+      `status` = #{record.status,jdbcType=BIT},
+      contacts = #{record.contacts,jdbcType=VARCHAR},
+      phone = #{record.phone,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -391,6 +413,12 @@
       <if test="status != null">
         `status` = #{status,jdbcType=BIT},
       </if>
+      <if test="contacts != null">
+        contacts = #{contacts,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -412,7 +440,9 @@
       validity_period_begin = #{validityPeriodBegin,jdbcType=TIMESTAMP},
       validity_period_end = #{validityPeriodEnd,jdbcType=TIMESTAMP},
       logo = #{logo,jdbcType=VARCHAR},
-      `status` = #{status,jdbcType=BIT}
+      `status` = #{status,jdbcType=BIT},
+      contacts = #{contacts,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
   <insert id="batchInsert" parameterType="map">
@@ -424,7 +454,7 @@
     insert into t_hospital
     (id, `number`, `name`, credit_code, address, introduction, medical_subjects, principal, 
       issue_agency, legal_person, province, city, district, issue_date, validity_period_begin, 
-      validity_period_end, logo, `status`)
+      validity_period_end, logo, `status`, contacts, phone)
     values
     <foreach collection="list" item="item" separator=",">
       (#{item.id,jdbcType=BIGINT}, #{item.number,jdbcType=VARCHAR}, #{item.name,jdbcType=VARCHAR}, 
@@ -432,8 +462,8 @@
         #{item.medicalSubjects,jdbcType=VARCHAR}, #{item.principal,jdbcType=VARCHAR}, #{item.issueAgency,jdbcType=VARCHAR}, 
         #{item.legalPerson,jdbcType=VARCHAR}, #{item.province,jdbcType=INTEGER}, #{item.city,jdbcType=INTEGER}, 
         #{item.district,jdbcType=INTEGER}, #{item.issueDate,jdbcType=TIMESTAMP}, #{item.validityPeriodBegin,jdbcType=TIMESTAMP}, 
-        #{item.validityPeriodEnd,jdbcType=TIMESTAMP}, #{item.logo,jdbcType=VARCHAR}, #{item.status,jdbcType=BIT}
-        )
+        #{item.validityPeriodEnd,jdbcType=TIMESTAMP}, #{item.logo,jdbcType=VARCHAR}, #{item.status,jdbcType=BIT}, 
+        #{item.contacts,jdbcType=VARCHAR}, #{item.phone,jdbcType=VARCHAR})
     </foreach>
   </insert>
   <insert id="batchInsertSelective" parameterType="map">
@@ -504,6 +534,12 @@
         </if>
         <if test="'status' == column.value">
           #{item.status,jdbcType=BIT}
+        </if>
+        <if test="'contacts' == column.value">
+          #{item.contacts,jdbcType=VARCHAR}
+        </if>
+        <if test="'phone' == column.value">
+          #{item.phone,jdbcType=VARCHAR}
         </if>
       </foreach>
       )

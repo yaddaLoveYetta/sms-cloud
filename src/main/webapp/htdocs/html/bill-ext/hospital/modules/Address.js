@@ -33,6 +33,8 @@ define('Address', function (require, exports, module) {
             }
         });
 
+        return picker;
+
     }
 
     function getSelectedItems() {

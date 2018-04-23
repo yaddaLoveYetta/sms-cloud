@@ -24,7 +24,7 @@
             <i class=" iconfont icon-chakan"></i> 查看
         </button>
 
-        <button data-index="1" type="button" class="btn btn-primary">
+        <button data-index="1" id="cooperation-apply" type="button" class="btn btn-primary">
             <i class=" iconfont icon-chakan"></i> 申请成为供应商
         </button>
     </div>
@@ -36,7 +36,7 @@
         <input id="input-order-search" type="text" ng-model="selected"
                class="form-control input-sm bg-light no-border rounded padder" placeholder="输入医院全称查找 ...">
         <span class="input-group-btn">
-            <button id="btn-order-search" type="button" class="btn btn-sm bg-light rounded">
+            <button id="btn-search" type="button" class="btn btn-sm bg-light rounded">
                 <i class="iconfont icon-chaxun"></i>
             </button>
         </span>
@@ -45,78 +45,91 @@
 </div>
 
 
-<div id="search-detail" class=" search-detail col-sm-12 col-xs-12">
+<div id="div-search-detail" class=" search-detail col-sm-12 col-xs-12">
 
-    <div data-index="0" class="row form-group active">
+    <!--
 
-        <div class="col-xs-2 logo">
-            <img src="../../../css/img/medicine.png" class="logo">
+        #--item.none.begin--#
+        <div class="row form-group">
+             <div class="col-xs-9 detail">
+                <label class="error-msg">没有找到相关医院,请输入医院全称查找……</label>
+              </div>
         </div>
+        #--item.none.end--#
 
-        <div class="col-xs-9 detail">
-            <label class="panel-title">广州红十字会医院</label>
-            <label class="address">武汉市江岸区洞庭街9号</label>
-        </div>
-    </div>
+        #--item.begin--#
+            <div data-index="{index}" class="row form-group {active}">
 
-    <div data-index="1" class="row form-group">
+                <div class="col-xs-2 logo">
+                    <img src="{logo}" class="logo">
+                </div>
 
-        <div class="col-xs-2 logo">
-            <img src="../../../css/img/medicine.png" class="logo">
-        </div>
+                <div class="col-xs-9 detail">
+                    <label class="panel-title">{name}</label>
+                    <label class="address">{address}</label>
+                </div>
 
-        <div class="col-xs-9 detail">
-            <label class="panel-title">广州红十字会医院</label>
-            <label class="address">武汉市江岸区洞庭街9号</label>
-        </div>
-    </div>
-    <div class="row form-group active">
-
-        <div class="col-xs-2 logo">
-            <img src="../../../css/img/medicine.png" class="logo">
-        </div>
-
-        <div class="col-xs-9 detail">
-            <label class="panel-title">广州红十字会医院</label>
-            <label class="address">武汉市江岸区洞庭街9号</label>
-        </div>
-    </div>
-    <div class="row form-group">
-
-        <div class="col-xs-2 logo">
-            <img src="../../../css/img/medicine.png" class="logo">
-        </div>
-
-        <div class="col-xs-9 detail">
-            <label class="panel-title">广州红十字会医院</label>
-            <label class="address">武汉市江岸区洞庭街9号</label>
-        </div>
-    </div>
-    <div class="row form-group">
-
-        <div class="col-xs-2 logo">
-            <img src="../../../css/img/medicine.png" class="logo">
-        </div>
-
-        <div class="col-xs-9 detail">
-            <label class="panel-title">广州红十字会医院</label>
-            <label class="address">武汉市江岸区洞庭街9号</label>
-        </div>
-    </div>
-    <div class="row form-group">
-
-        <div class="col-xs-2 logo">
-            <img src="../../../css/img/medicine.png" class="logo">
-        </div>
-
-        <div class="col-xs-9 detail">
-            <label class="panel-title">广州红十字会医院</label>
-            <label class="address">武汉市江岸区洞庭街9号</label>
-        </div>
-    </div>
+            </div>
+        #--item.end--#
+    -->
 
 </div>
 
+<!--<div data-index="1" class="row form-group">
+
+    <div class="col-xs-2 logo">
+        <img src="../../../css/img/medicine.png" class="logo">
+    </div>
+
+    <div class="col-xs-9 detail">
+        <label class="panel-title">广州红十字会医院</label>
+        <label class="address">武汉市江岸区洞庭街9号</label>
+    </div>
+</div>
+<div class="row form-group active">
+
+    <div class="col-xs-2 logo">
+        <img src="../../../css/img/medicine.png" class="logo">
+    </div>
+
+    <div class="col-xs-9 detail">
+        <label class="panel-title">广州红十字会医院</label>
+        <label class="address">武汉市江岸区洞庭街9号</label>
+    </div>
+</div>
+<div class="row form-group">
+
+    <div class="col-xs-2 logo">
+        <img src="../../../css/img/medicine.png" class="logo">
+    </div>
+
+    <div class="col-xs-9 detail">
+        <label class="panel-title">广州红十字会医院</label>
+        <label class="address">武汉市江岸区洞庭街9号</label>
+    </div>
+</div>
+<div class="row form-group">
+
+    <div class="col-xs-2 logo">
+        <img src="../../../css/img/medicine.png" class="logo">
+    </div>
+
+    <div class="col-xs-9 detail">
+        <label class="panel-title">广州红十字会医院</label>
+        <label class="address">武汉市江岸区洞庭街9号</label>
+    </div>
+</div>
+<div class="row form-group">
+
+    <div class="col-xs-2 logo">
+        <img src="../../../css/img/medicine.png" class="logo">
+    </div>
+
+    <div class="col-xs-9 detail">
+        <label class="panel-title">广州红十字会医院</label>
+        <label class="address">武汉市江岸区洞庭街9号</label>
+    </div>
+</div>-->
 <script src="../../../lib/jquery/jquery-1.11.1.debug.js"></script>
 <script src="../../../lib/miniquery/miniquery.debug.js"></script>
 <script src="../../../lib/sms/sms.debug.js"></script>
@@ -124,6 +137,8 @@
 <script src="../../../config.js"></script>
 
 <!--grunt.js.begin-->
+<script src="modules/List.js"></script>
+<script src="modules/Samples.js"></script>
 <script src="index.js"></script>
 <!--grunt.js.end-->
 

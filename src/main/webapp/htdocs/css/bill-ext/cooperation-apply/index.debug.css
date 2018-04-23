@@ -33,6 +33,11 @@
     vertical-align: middle;
 }
 
+.search-detail .form-group {
+    padding-top: 5px !important;
+    padding-bottom: 5px !important;
+}
+
 .search-detail .detail {
     height: 50px;
     display: table-cell;
@@ -44,9 +49,15 @@
     display: block !important;
 }
 
-.search-detail .active{
+.search-detail .detail .address {
+    margin-top: 5px !important;
+    margin-bottom: 0px !important;
+}
+
+.search-detail .active {
     background-color: #0da5ef;
 }
+
 .search-detail .address {
     color: #67435b;
 }

@@ -160,5 +160,10 @@
             <property name="rootClass" value="com.kingdee.hrp.sms.common.RootModel"/>
         </table>
 
+        <table tableName="t_cooperation_apply" domainObjectName="CooperationApply">
+            <property name="useActualColumnNames" value="false"/>
+            <property name="rootClass" value="com.kingdee.hrp.sms.common.RootModel"/>
+        </table>
+
     </context>
 </generatorConfiguration> 

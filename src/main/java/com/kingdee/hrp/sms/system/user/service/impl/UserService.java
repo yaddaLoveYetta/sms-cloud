@@ -6,6 +6,7 @@ import com.kingdee.hrp.sms.common.dao.generate.*;
 import com.kingdee.hrp.sms.common.exception.BusinessLogicRunTimeException;
 import com.kingdee.hrp.sms.common.filter.SmsPropertyPlaceholderConfigurer;
 import com.kingdee.hrp.sms.common.model.*;
+import com.kingdee.hrp.sms.common.pojo.BaseStatusEnum;
 import com.kingdee.hrp.sms.common.service.BaseService;
 import com.kingdee.hrp.sms.system.user.service.IUserService;
 import com.kingdee.hrp.sms.util.Environ;
@@ -575,6 +576,68 @@ public class UserService extends BaseService implements IUserService {
         }
 
         return ret;
+    }
+
+
+    /**
+     * 获取消息通知
+     *
+     * @param userRoleType 角色类别
+     * @param org          组织id
+     * @return Map
+     */
+    @Override
+    public Map<String, Object> getMessage(Integer userRoleType, Long org) {
+
+        Map<String, Object> ret = new HashMap<>(16);
+        // 供应商申请成为医院供应商的消息
+        List<CooperationApply> cooperationApplyList = getCooperationApplyMessage(userRoleType, org);
+
+        ret.put("cooperationApplyMessage", cooperationApplyList);
+
+        return ret;
+    }
+
+    /**
+     * 获取供应商发送给医院的，申请成为其供应商的消息
+     *
+     * @param userRoleType 角色类别
+     * @param org          组织id
+     * @return Map
+     */
+    private List getCooperationApplyMessage(Integer userRoleType, Long org) {
+
+        // 供应商申请成为医院供应商的消息
+        List<CooperationApply> cooperationApplyList = new ArrayList<>();
+
+        CooperationApplyMapper cooperationApplyMapper = sqlSession.getMapper(CooperationApplyMapper.class);
+
+        CooperationApplyExample cooperationApplyExample = new CooperationApplyExample();
+
+        CooperationApplyExample.Criteria cooperationApplyExampleCriteria = cooperationApplyExample.createCriteria();
+
+        if (userRoleType == 2) {
+            // 医院
+            cooperationApplyExampleCriteria.andHospitalEqualTo(org);
+        } else if (userRoleType == 3) {
+            // 供应商
+            cooperationApplyExampleCriteria.andSupplierEqualTo(org);
+        }
+        cooperationApplyExampleCriteria.andStatusEqualTo(BaseStatusEnum.UN_PROCESSED.getNumber());
+
+        List<CooperationApply> cooperationApplies = cooperationApplyMapper.selectByExample(cooperationApplyExample);
+
+        if (cooperationApplies != null && cooperationApplies.size() > 0) {
+            // 最多取2条
+            int count = cooperationApplies.size() > 2 ? 2 : cooperationApplies.size();
+
+            for (int i = 0; i < count; i++) {
+                cooperationApplyList.add(cooperationApplies.get(i));
+            }
+        }
+
+        return cooperationApplyList;
+
     }
 
 }

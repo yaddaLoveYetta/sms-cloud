@@ -75,8 +75,17 @@ public interface IUserService extends Serializable {
     /**
      * 保存角色权限
      *
-     * @param roleId          角色id
+     * @param roleId            角色id
      * @param accessControlList 角色授权结果
      */
     void saveRolePermissions(Long roleId, List<AccessControl> accessControlList);
+
+    /**
+     * 获取消息通知
+     *
+     * @param userRoleType 角色类别
+     * @param org          组织id
+     * @return Map
+     */
+    Map<String, Object> getMessage(Integer userRoleType, Long org);
 }

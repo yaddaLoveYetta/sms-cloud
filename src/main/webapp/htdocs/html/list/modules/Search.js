@@ -337,7 +337,7 @@ define("Search", function (require, module, exports) {
                 };
 
                 // 个性化配置
-                var pConfig = emitter.fire('initSelector', [field.lookUpClassId, field.key, metaData]);
+                var pConfig = emitter.fire('initSelector', [field.lookUpClassId, field.key]);
 
                 pConfig = pConfig && pConfig[pConfig.length - 1];
 
@@ -437,7 +437,7 @@ define("Search", function (require, module, exports) {
         });
 
         $(document).bind('keypress', function (event) {
-            if (event.keyCode == 13) {
+            if (event.keyCode === 13) {
                 $('#search').trigger("click");
             }
         });

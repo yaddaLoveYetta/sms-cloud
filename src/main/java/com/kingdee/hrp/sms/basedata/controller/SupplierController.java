@@ -3,6 +3,7 @@ package com.kingdee.hrp.sms.basedata.controller;
 import com.kingdee.hrp.sms.basedata.service.ISupplierService;
 import com.kingdee.hrp.sms.common.exception.BusinessLogicRunTimeException;
 import com.kingdee.hrp.sms.util.FileOperate;
+import com.kingdee.hrp.sms.util.SessionUtil;
 import com.sun.jersey.api.client.Client;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -89,4 +90,16 @@ public class SupplierController {
         return ret;
     }
 
+    @ResponseBody
+    @RequestMapping(value = "addCooperationApply")
+    public Boolean cooperationApply(Long hospital) {
+
+        // 供应商
+        Long supplier = SessionUtil.getUserLinkSupplier();
+        if (supplier <= 0) {
+            throw new BusinessLogicRunTimeException("当前用户身份错误，不能进行此操作!");
+        }
+
+        return supplierService.addCooperationApply(supplier, hospital);
+    }
 }

@@ -6,6 +6,7 @@ import com.kingdee.hrp.sms.common.model.Role;
 import com.kingdee.hrp.sms.common.model.User;
 import com.kingdee.hrp.sms.system.user.service.IUserService;
 import com.kingdee.hrp.sms.util.Common;
+import com.kingdee.hrp.sms.util.SessionUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -128,7 +129,7 @@ public class UserController {
      * @param userId 用户ID
      * @param oldPwd 原密码
      * @param newPwd 新密码
-     * @return
+     * @return Boolean
      */
     @RequestMapping("editPwd")
     @ResponseBody
@@ -173,5 +174,23 @@ public class UserController {
         List<AccessControl> accessControlList = Common.stringToList(perMissions, AccessControl.class);
         userService.saveRolePermissions(roleId, accessControlList);
         return true;
+    }
+
+    /**
+     * 获取消息通知(未处理的)
+     *
+     * @return List<Map<String, Object>>
+     */
+    @RequestMapping(value = "getMessage")
+    @ResponseBody
+    public Map<String, Object> getMessage() {
+
+        Map<String, Object> ret = new HashMap<String, Object>(32);
+
+        Integer userRoleType = SessionUtil.getUserRoleType();
+        Long org = SessionUtil.getUser().getOrg();
+
+        return userService.getMessage(userRoleType, org);
+
     }
 }

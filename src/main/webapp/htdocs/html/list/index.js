@@ -542,10 +542,10 @@
 
                     var dialog = new Dialog({
                         id: 'cooperation-apply',
-                        title: '添加医院客户',
+                        title: '添加合作医院',
                         url: './html/bill-ext/cooperation-apply/index.html', // ./ 表示相对于网站根目录
                         width: 500,
-                        height: 300,
+                        height: 400,
                         button: [{
                             value: '关闭',
                             className: 'sms-cancel-btn'
@@ -564,7 +564,7 @@
             conditions = userConditions;
             refresh();
         },
-        'initSelector': function (lookUpClassId, key, metaData) {
+        'initSelector': function (lookUpClassId, key) {
 
             var config = {};
 

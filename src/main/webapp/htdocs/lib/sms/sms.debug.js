@@ -6111,12 +6111,12 @@
          */
         function show(info, caption, showClose) {
 
-            info = $.String.format('<div style="padding: 20px 20px">{0}</div>', info);
+            info = $.String.format('<div style="padding: 20px 20px;max-width:500px;">{0}</div>', info);
 
             Dialog.use(function (Dialog) {
                 var config = {
                     title: caption ? caption : '金蝶提示',
-                    content: info,
+                    content: info
                 };
                 if (showClose) {
                     config.button = [
@@ -6136,14 +6136,15 @@
          * info: 提示文本 caption: 提示标题 fnClose(result): 回调返回是否点击了确定按钮
          */
         function confirm(info, caption, fnClose) {
+
             Dialog.use(function (Dialog) {
 
-                if (typeof caption == 'function') {
+                if (typeof caption === 'function') {
                     fnClose = caption;
                     caption = '';
                 }
 
-                info = $.String.format('<div style="padding: 20px 20px">{0}</div>', info);
+                info = $.String.format('<div style="padding: 20px 20px;max-width:500px;">{0}</div>', info);
 
                 var dialog = new Dialog({
                     title: caption ? caption : '金蝶提示!',

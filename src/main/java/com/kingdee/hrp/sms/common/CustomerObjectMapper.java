@@ -28,7 +28,7 @@ public class CustomerObjectMapper extends ObjectMapper {
         // 数字也加引号
         // this.configure(JsonGenerator.Feature.WRITE_NUMBERS_AS_STRINGS, true);
         this.configure(JsonGenerator.Feature.QUOTE_NON_NUMERIC_NUMBERS, true);
-        // null返回空字符chuan
+        // null返回空字符串
         this.getSerializerProvider().setNullValueSerializer(new JsonSerializer<Object>() {
             @Override
             public void serialize(Object value, JsonGenerator generator, SerializerProvider serializers) throws IOException, JsonProcessingException {
