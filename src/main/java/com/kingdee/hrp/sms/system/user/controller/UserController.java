@@ -2,6 +2,7 @@ package com.kingdee.hrp.sms.system.user.controller;
 
 import com.kingdee.hrp.sms.common.exception.BusinessLogicRunTimeException;
 import com.kingdee.hrp.sms.common.model.AccessControl;
+import com.kingdee.hrp.sms.common.model.Message;
 import com.kingdee.hrp.sms.common.model.Role;
 import com.kingdee.hrp.sms.common.model.User;
 import com.kingdee.hrp.sms.system.user.service.IUserService;

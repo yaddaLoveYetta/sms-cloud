@@ -19,7 +19,6 @@
 
     <!--grunt.css.begin-->
     <link rel="stylesheet" href="css/main/index.debug.css" type="text/css"/>
-
     <!--grunt.css.end-->
 </head>
 <body>
@@ -77,48 +76,47 @@
             <!-- nabar right -->
             <ul class="nav navbar-nav navbar-right">
 
-                <li class="dropdown">
+                <li id="li-message" class="dropdown">
+                    <!--
                     <a href="#" data-toggle="dropdown" class="dropdown-toggle">
                         <i class="iconfont icon-nitification"></i>
                         <span class="visible-xs-inline">消息通知</span>
-                        <span class="badge badge-sm up bg-danger pull-right-xs">2</span>
+                        #--message.count.tip.begin--#
+                        <span class="badge badge-sm up bg-danger pull-right-xs">{count}</span>
+                        #--message.count.tip.end--#
                     </a>
-                    <!-- dropdown -->
+
                     <div class="dropdown-menu w-xl animated fadeInUp">
-                        <div class="panel bg-white">
+                        <div id="div-message" class="panel bg-white">
+
                             <div class="panel-heading b-light bg-light">
-                                <strong>你有 <span>2</span> 条待处理消息</strong>
+                                 #--message.count.begin--#
+                                <strong>你有 <span>{count}</span> 条待处理消息</strong>
+                                #--message.count.end--#
                             </div>
                             <div class="list-group">
-                                <div class="media list-group-item">
-                                    <span class="media-body block m-b-none">
-                                          哈尔滨利白生物有限公司发来的申请，希望成为供应商<br>
-                                          <small class="text-muted">10 minutes ago</small>
-                                    </span>
-                                </div>
-                                <div class="media list-group-item">
-                                    <span class="media-body block m-b-none">
-                                          哈尔滨利白生物有限公司发来的申请，希望成为供应商<br>
-                                          <small class="text-muted">10 minutes ago</small>
-                                    </span>
-                                </div>
-                                <div class="media list-group-item">
-                                    <span class="media-body block m-b-none">
-                                          哈尔滨利白生物有限公司发来的申请，希望成为供应商<br>
-                                          <small class="text-muted">10 minutes ago</small>
-                                    </span>
-                                </div>
+
+                                #--message.item.begin--#
+                                    <div class="media list-group-item">
+                                        <span class="media-body block m-b-none">
+                                              {topic}<br>
+                                              <small class="text-muted">{date}</small>
+                                        </span>
+                                    </div>
+                                #--message.item.end--#
+
                             </div>
                             <div class="panel-footer text-sm">
                                 <button id="more" type="button" class="btn btn-sm bg-light rounded pull-right">
                                     <i class="iconfont icon-chaxun"></i>
                                     全部
                                 </button>
-                                <div style="clear: both"></div>
+                                <div class="clearfix"></div>
                             </div>
+
                         </div>
                     </div>
-                    <!-- / dropdown -->
+                    -->
                 </li>
 
                 <li id="li-user-infos" class="dropdown">
@@ -550,6 +548,7 @@
 <script src="modules/main/PageTabs.js"></script>
 <script src="modules/main/PageList.js"></script>
 <script src="modules/main/Iframes.js"></script>
+<script src="modules/main/Message.js"></script>
 <script src="master.js"></script>
 
 <!--grunt.js.end-->

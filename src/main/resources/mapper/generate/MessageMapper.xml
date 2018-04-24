@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kingdee.hrp.sms.common.dao.generate.MessageMapper">
+  <resultMap id="BaseResultMap" type="com.kingdee.hrp.sms.common.model.Message">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="org_type" jdbcType="INTEGER" property="orgType" />
+    <result column="org" jdbcType="BIGINT" property="org" />
+    <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="topic" jdbcType="VARCHAR" property="topic" />
+    <result column="date" jdbcType="TIMESTAMP" property="date" />
+    <result column="data_ext" jdbcType="VARCHAR" property="dataExt" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, org_type, org, `type`, topic, `date`, data_ext, `status`
+  </sql>
+  <select id="selectByExample" parameterType="com.kingdee.hrp.sms.common.model.MessageExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_message
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_message
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_message
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.kingdee.hrp.sms.common.model.MessageExample">
+    delete from t_message
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.kingdee.hrp.sms.common.model.Message">
+    insert into t_message (id, org_type, org, 
+      `type`, topic, `date`, 
+      data_ext, `status`)
+    values (#{id,jdbcType=BIGINT}, #{orgType,jdbcType=INTEGER}, #{org,jdbcType=BIGINT}, 
+      #{type,jdbcType=INTEGER}, #{topic,jdbcType=VARCHAR}, #{date,jdbcType=TIMESTAMP}, 
+      #{dataExt,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.kingdee.hrp.sms.common.model.Message">
+    insert into t_message
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="orgType != null">
+        org_type,
+      </if>
+      <if test="org != null">
+        org,
+      </if>
+      <if test="type != null">
+        `type`,
+      </if>
+      <if test="topic != null">
+        topic,
+      </if>
+      <if test="date != null">
+        `date`,
+      </if>
+      <if test="dataExt != null">
+        data_ext,
+      </if>
+      <if test="status != null">
+        `status`,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="orgType != null">
+        #{orgType,jdbcType=INTEGER},
+      </if>
+      <if test="org != null">
+        #{org,jdbcType=BIGINT},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="topic != null">
+        #{topic,jdbcType=VARCHAR},
+      </if>
+      <if test="date != null">
+        #{date,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dataExt != null">
+        #{dataExt,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.kingdee.hrp.sms.common.model.MessageExample" resultType="java.lang.Long">
+    select count(*) from t_message
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update t_message
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.orgType != null">
+        org_type = #{record.orgType,jdbcType=INTEGER},
+      </if>
+      <if test="record.org != null">
+        org = #{record.org,jdbcType=BIGINT},
+      </if>
+      <if test="record.type != null">
+        `type` = #{record.type,jdbcType=INTEGER},
+      </if>
+      <if test="record.topic != null">
+        topic = #{record.topic,jdbcType=VARCHAR},
+      </if>
+      <if test="record.date != null">
+        `date` = #{record.date,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.dataExt != null">
+        data_ext = #{record.dataExt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null">
+        `status` = #{record.status,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update t_message
+    set id = #{record.id,jdbcType=BIGINT},
+      org_type = #{record.orgType,jdbcType=INTEGER},
+      org = #{record.org,jdbcType=BIGINT},
+      `type` = #{record.type,jdbcType=INTEGER},
+      topic = #{record.topic,jdbcType=VARCHAR},
+      `date` = #{record.date,jdbcType=TIMESTAMP},
+      data_ext = #{record.dataExt,jdbcType=VARCHAR},
+      `status` = #{record.status,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.kingdee.hrp.sms.common.model.Message">
+    update t_message
+    <set>
+      <if test="orgType != null">
+        org_type = #{orgType,jdbcType=INTEGER},
+      </if>
+      <if test="org != null">
+        org = #{org,jdbcType=BIGINT},
+      </if>
+      <if test="type != null">
+        `type` = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="topic != null">
+        topic = #{topic,jdbcType=VARCHAR},
+      </if>
+      <if test="date != null">
+        `date` = #{date,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dataExt != null">
+        data_ext = #{dataExt,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        `status` = #{status,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.kingdee.hrp.sms.common.model.Message">
+    update t_message
+    set org_type = #{orgType,jdbcType=INTEGER},
+      org = #{org,jdbcType=BIGINT},
+      `type` = #{type,jdbcType=INTEGER},
+      topic = #{topic,jdbcType=VARCHAR},
+      `date` = #{date,jdbcType=TIMESTAMP},
+      data_ext = #{dataExt,jdbcType=VARCHAR},
+      `status` = #{status,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <insert id="batchInsert" parameterType="map">
+    <!--
+      WARNING - @mbg.generated
+      This element is automatically generated by MyBatis Generator, do not modify.
+      @project https://github.com/itfsw/mybatis-generator-plugin
+    -->
+    insert into t_message
+    (id, org_type, org, `type`, topic, `date`, data_ext, `status`)
+    values
+    <foreach collection="list" item="item" separator=",">
+      (#{item.id,jdbcType=BIGINT}, #{item.orgType,jdbcType=INTEGER}, #{item.org,jdbcType=BIGINT}, 
+        #{item.type,jdbcType=INTEGER}, #{item.topic,jdbcType=VARCHAR}, #{item.date,jdbcType=TIMESTAMP}, 
+        #{item.dataExt,jdbcType=VARCHAR}, #{item.status,jdbcType=INTEGER})
+    </foreach>
+  </insert>
+  <insert id="batchInsertSelective" parameterType="map">
+    <!--
+      WARNING - @mbg.generated
+      This element is automatically generated by MyBatis Generator, do not modify.
+      @project https://github.com/itfsw/mybatis-generator-plugin
+    -->
+    insert into t_message (
+    <foreach collection="selective" item="column" separator=",">
+      ${column.value}
+    </foreach>
+    )
+    values
+    <foreach collection="list" item="item" separator=",">
+      (
+      <foreach collection="selective" item="column" separator=",">
+        <if test="'id' == column.value">
+          #{item.id,jdbcType=BIGINT}
+        </if>
+        <if test="'org_type' == column.value">
+          #{item.orgType,jdbcType=INTEGER}
+        </if>
+        <if test="'org' == column.value">
+          #{item.org,jdbcType=BIGINT}
+        </if>
+        <if test="'type' == column.value">
+          #{item.type,jdbcType=INTEGER}
+        </if>
+        <if test="'topic' == column.value">
+          #{item.topic,jdbcType=VARCHAR}
+        </if>
+        <if test="'date' == column.value">
+          #{item.date,jdbcType=TIMESTAMP}
+        </if>
+        <if test="'data_ext' == column.value">
+          #{item.dataExt,jdbcType=VARCHAR}
+        </if>
+        <if test="'status' == column.value">
+          #{item.status,jdbcType=INTEGER}
+        </if>
+      </foreach>
+      )
+    </foreach>
+  </insert>
+</mapper>

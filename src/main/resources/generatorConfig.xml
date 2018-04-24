@@ -165,5 +165,10 @@
             <property name="rootClass" value="com.kingdee.hrp.sms.common.RootModel"/>
         </table>
 
+        <table tableName="t_message" domainObjectName="Message">
+            <property name="useActualColumnNames" value="false"/>
+            <property name="rootClass" value="com.kingdee.hrp.sms.common.RootModel"/>
+        </table>
+
     </context>
 </generatorConfiguration> 

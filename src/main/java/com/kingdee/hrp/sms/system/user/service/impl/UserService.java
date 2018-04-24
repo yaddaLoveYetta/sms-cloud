@@ -590,10 +590,22 @@ public class UserService extends BaseService implements IUserService {
     public Map<String, Object> getMessage(Integer userRoleType, Long org) {
 
         Map<String, Object> ret = new HashMap<>(16);
-        // 供应商申请成为医院供应商的消息
-        List<CooperationApply> cooperationApplyList = getCooperationApplyMessage(userRoleType, org);
 
-        ret.put("cooperationApplyMessage", cooperationApplyList);
+        MessageMapper messageMapper = sqlSession.getMapper(MessageMapper.class);
+
+        MessageExample example = new MessageExample();
+
+        MessageExample.Criteria criteria = example.createCriteria();
+        criteria.andOrgTypeEqualTo(userRoleType);
+        criteria.andOrgEqualTo(org);
+        criteria.andStatusEqualTo(BaseStatusEnum.UN_PROCESSED.getNumber());
+
+        example.setOrderByClause("`date` DESC");
+
+        List<Message> messages = messageMapper.selectByExample(example);
+
+        ret.put("count", messages.size());
+        ret.put("list", messages);
 
         return ret;
     }

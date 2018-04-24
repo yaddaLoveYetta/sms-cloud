@@ -85,7 +85,7 @@ public interface IUserService extends Serializable {
      *
      * @param userRoleType 角色类别
      * @param org          组织id
-     * @return Map
+     * @return List<Message>
      */
     Map<String, Object> getMessage(Integer userRoleType, Long org);
 }

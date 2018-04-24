@@ -88,6 +88,7 @@
         <mapper resource="mapper/generate/HospitalSupplierMapper.xml"/>
         <mapper resource="mapper/generate/ItemMapper.xml"/>
         <mapper resource="mapper/generate/CooperationApplyMapper.xml"/>
+        <mapper resource="mapper/generate/MessageMapper.xml"/>
 
         <!-- =============================== 生成工具生成Mapper ========================end==== -->
 

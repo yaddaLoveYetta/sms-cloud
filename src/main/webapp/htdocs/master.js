@@ -21,6 +21,7 @@
     var UserInfos = require('UserInfos');
     var Sidebar = require('Sidebar');
     var NavBar = require('NavBar');
+    var Message = require('Message');
 
     //检查登录
     if (!SMS.Login.check(true)) {
@@ -242,6 +243,8 @@
     Sidebar.render();
     // 导航栏按钮
     NavBar.render();
+    // 消息通知
+    Message.render();
     // 用户信息
     UserInfos.render();
 
