@@ -2,7 +2,6 @@ package com.kingdee.hrp.sms.system.user.controller;
 
 import com.kingdee.hrp.sms.common.exception.BusinessLogicRunTimeException;
 import com.kingdee.hrp.sms.common.model.AccessControl;
-import com.kingdee.hrp.sms.common.model.Message;
 import com.kingdee.hrp.sms.common.model.Role;
 import com.kingdee.hrp.sms.common.model.User;
 import com.kingdee.hrp.sms.system.user.service.IUserService;
@@ -180,18 +179,21 @@ public class UserController {
     /**
      * 获取消息通知(未处理的)
      *
+     * @param status 消息状态 （0未处理，1已处理，其他值全部）
      * @return List<Map<String, Object>>
      */
     @RequestMapping(value = "getMessage")
     @ResponseBody
-    public Map<String, Object> getMessage() {
+    public Map<String, Object> getMessage(Integer status) {
+
+        status = status == null ? -1 : status;
 
         Map<String, Object> ret = new HashMap<String, Object>(32);
 
         Integer userRoleType = SessionUtil.getUserRoleType();
         Long org = SessionUtil.getUser().getOrg();
 
-        return userService.getMessage(userRoleType, org);
+        return userService.getMessage(userRoleType, org, status);
 
     }
 }

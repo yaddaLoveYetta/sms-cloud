@@ -6111,7 +6111,7 @@
          */
         function show(info, caption, showClose) {
 
-            info = $.String.format('<div style="padding: 20px 20px;max-width:500px;">{0}</div>', info);
+            info = $.String.format('<div style="padding: 20px 20px;max-width:500px;max-height:300px;overflow: scroll;"><code>{0}</code></div>', info);
 
             Dialog.use(function (Dialog) {
                 var config = {
@@ -6500,7 +6500,7 @@
             if ($.Object.isPlain(selector)) { // 重载 ( config )
                 config = selector;
                 selector = config.selector;
-                delete config.selector; // 删除，避免对原始造成不可知的副作用
+                config = config.config
             }
 
             config = $.Object.extend({}, defaults, config);

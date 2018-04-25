@@ -23,6 +23,8 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.Date;
 
 /**
@@ -84,7 +86,7 @@ public class ResponseAspect {
         ResultWarp result = new ResultWarp();
 
         result.setCode(-1);
-        result.setMsg(throwable.getMessage());
+        result.setMsg(throwable.getMessage() == null ? printStackTraceToString(throwable) : throwable.getMessage());
 
         if (throwable instanceof BaseRuntimeException) {
 
@@ -127,5 +129,11 @@ public class ResponseAspect {
         }
 
         return result;
+    }
+
+    private static String printStackTraceToString(Throwable t) {
+        StringWriter sw = new StringWriter();
+        t.printStackTrace(new PrintWriter(sw, true));
+        return sw.getBuffer().toString();
     }
 }

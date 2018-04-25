@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>消息中心</title>
+    <link rel="stylesheet" href="../../css/global.debug.css" type="text/css"/>
+    <link rel="stylesheet" href="../../css/bootstrap.css" type="text/css"/>
+    <link rel="stylesheet" href="../../css/iconfont/iconfont.css">
+
+    <!--grunt.css.begin-->
+    <link rel="stylesheet" href="../../css/message/index.debug.css">
+    <!--grunt.css.end-->
+</head>
+<body>
+
+<div class="container-fluid">
+    <div class="form-group">
+        <div class="col-sm-2" id="div-message-type"></div>
+        <div id="div-message-list" class="table-responsive col-sm-10">
+
+            <table class="table table-striped table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th class="col-sm-6" style="min-width: 80px;">
+                        主题
+                    </th>
+                    <th class="col-sm-3" style="min-width: 80px;">
+                        发送者
+                    </th>
+                    <th class="col-sm-2" style="min-width: 80px;">
+                        接收时间
+                    </th>
+                    <th class="col-sm-1" style="min-width: 80px;">
+                        状态
+                    </th>
+                </tr>
+                </thead>
+                <tbody id="message-list">
+                <!--
+                    #--message.item.begin--#
+                        <tr data-index="{index}" class="">
+                            <td class=" text-align-left">
+                                {topic}
+                            </td>
+                            <td class=" text-align-left">
+                                {sender}
+                            </td>
+                            <td  class=" text-align-left">
+                                {date}
+                            </td>
+                            <td  class=" text-align-center">
+                                {status}
+                            </td>
+                        </tr>
+                    #--message.item.end--#
+                -->
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>
+
+
+<script src="../../lib/jquery/jquery-1.11.1.debug.js"></script>
+<script src="../../lib/miniquery/miniquery.debug.js"></script>
+<script src="../../lib/sms/sms.debug.js"></script>
+<script src="../../lib/bootstrap/bootstrap.js"></script>
+<script src="../../config.js"></script>
+
+<!--grunt.js.begin-->
+<script src="modules/List.js"></script>
+<script src="modules/Tree.js"></script>
+<script src="index.js"></script>
+<!--grunt.js.end-->
+
+</body>
+</html>

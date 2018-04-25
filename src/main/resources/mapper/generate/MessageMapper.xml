@@ -3,12 +3,14 @@
 <mapper namespace="com.kingdee.hrp.sms.common.dao.generate.MessageMapper">
   <resultMap id="BaseResultMap" type="com.kingdee.hrp.sms.common.model.Message">
     <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="org_type" jdbcType="INTEGER" property="orgType" />
-    <result column="org" jdbcType="BIGINT" property="org" />
+    <result column="sender_org" jdbcType="BIGINT" property="senderOrg" />
+    <result column="sender_type" jdbcType="INTEGER" property="senderType" />
+    <result column="receiver_type" jdbcType="INTEGER" property="receiverType" />
+    <result column="receiver_org" jdbcType="BIGINT" property="receiverOrg" />
     <result column="type" jdbcType="INTEGER" property="type" />
     <result column="topic" jdbcType="VARCHAR" property="topic" />
     <result column="date" jdbcType="TIMESTAMP" property="date" />
-    <result column="data_ext" jdbcType="VARCHAR" property="dataExt" />
+    <result column="data" jdbcType="VARCHAR" property="data" />
     <result column="status" jdbcType="INTEGER" property="status" />
   </resultMap>
   <sql id="Example_Where_Clause">
@@ -70,7 +72,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, org_type, org, `type`, topic, `date`, data_ext, `status`
+    id, sender_org, sender_type, receiver_type, receiver_org, `type`, topic, `date`, 
+    `data`, `status`
   </sql>
   <select id="selectByExample" parameterType="com.kingdee.hrp.sms.common.model.MessageExample" resultMap="BaseResultMap">
     select
@@ -103,12 +106,14 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.kingdee.hrp.sms.common.model.Message">
-    insert into t_message (id, org_type, org, 
-      `type`, topic, `date`, 
-      data_ext, `status`)
-    values (#{id,jdbcType=BIGINT}, #{orgType,jdbcType=INTEGER}, #{org,jdbcType=BIGINT}, 
-      #{type,jdbcType=INTEGER}, #{topic,jdbcType=VARCHAR}, #{date,jdbcType=TIMESTAMP}, 
-      #{dataExt,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER})
+    insert into t_message (id, sender_org, sender_type, 
+      receiver_type, receiver_org, `type`, 
+      topic, `date`, `data`, 
+      `status`)
+    values (#{id,jdbcType=BIGINT}, #{senderOrg,jdbcType=BIGINT}, #{senderType,jdbcType=INTEGER}, 
+      #{receiverType,jdbcType=INTEGER}, #{receiverOrg,jdbcType=BIGINT}, #{type,jdbcType=INTEGER}, 
+      #{topic,jdbcType=VARCHAR}, #{date,jdbcType=TIMESTAMP}, #{data,jdbcType=VARCHAR}, 
+      #{status,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.kingdee.hrp.sms.common.model.Message">
     insert into t_message
@@ -116,11 +121,17 @@
       <if test="id != null">
         id,
       </if>
-      <if test="orgType != null">
-        org_type,
+      <if test="senderOrg != null">
+        sender_org,
       </if>
-      <if test="org != null">
-        org,
+      <if test="senderType != null">
+        sender_type,
+      </if>
+      <if test="receiverType != null">
+        receiver_type,
+      </if>
+      <if test="receiverOrg != null">
+        receiver_org,
       </if>
       <if test="type != null">
         `type`,
@@ -131,8 +142,8 @@
       <if test="date != null">
         `date`,
       </if>
-      <if test="dataExt != null">
-        data_ext,
+      <if test="data != null">
+        `data`,
       </if>
       <if test="status != null">
         `status`,
@@ -142,11 +153,17 @@
       <if test="id != null">
         #{id,jdbcType=BIGINT},
       </if>
-      <if test="orgType != null">
-        #{orgType,jdbcType=INTEGER},
+      <if test="senderOrg != null">
+        #{senderOrg,jdbcType=BIGINT},
       </if>
-      <if test="org != null">
-        #{org,jdbcType=BIGINT},
+      <if test="senderType != null">
+        #{senderType,jdbcType=INTEGER},
+      </if>
+      <if test="receiverType != null">
+        #{receiverType,jdbcType=INTEGER},
+      </if>
+      <if test="receiverOrg != null">
+        #{receiverOrg,jdbcType=BIGINT},
       </if>
       <if test="type != null">
         #{type,jdbcType=INTEGER},
@@ -157,8 +174,8 @@
       <if test="date != null">
         #{date,jdbcType=TIMESTAMP},
       </if>
-      <if test="dataExt != null">
-        #{dataExt,jdbcType=VARCHAR},
+      <if test="data != null">
+        #{data,jdbcType=VARCHAR},
       </if>
       <if test="status != null">
         #{status,jdbcType=INTEGER},
@@ -177,11 +194,17 @@
       <if test="record.id != null">
         id = #{record.id,jdbcType=BIGINT},
       </if>
-      <if test="record.orgType != null">
-        org_type = #{record.orgType,jdbcType=INTEGER},
+      <if test="record.senderOrg != null">
+        sender_org = #{record.senderOrg,jdbcType=BIGINT},
       </if>
-      <if test="record.org != null">
-        org = #{record.org,jdbcType=BIGINT},
+      <if test="record.senderType != null">
+        sender_type = #{record.senderType,jdbcType=INTEGER},
+      </if>
+      <if test="record.receiverType != null">
+        receiver_type = #{record.receiverType,jdbcType=INTEGER},
+      </if>
+      <if test="record.receiverOrg != null">
+        receiver_org = #{record.receiverOrg,jdbcType=BIGINT},
       </if>
       <if test="record.type != null">
         `type` = #{record.type,jdbcType=INTEGER},
@@ -192,8 +215,8 @@
       <if test="record.date != null">
         `date` = #{record.date,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.dataExt != null">
-        data_ext = #{record.dataExt,jdbcType=VARCHAR},
+      <if test="record.data != null">
+        `data` = #{record.data,jdbcType=VARCHAR},
       </if>
       <if test="record.status != null">
         `status` = #{record.status,jdbcType=INTEGER},
@@ -206,12 +229,14 @@
   <update id="updateByExample" parameterType="map">
     update t_message
     set id = #{record.id,jdbcType=BIGINT},
-      org_type = #{record.orgType,jdbcType=INTEGER},
-      org = #{record.org,jdbcType=BIGINT},
+      sender_org = #{record.senderOrg,jdbcType=BIGINT},
+      sender_type = #{record.senderType,jdbcType=INTEGER},
+      receiver_type = #{record.receiverType,jdbcType=INTEGER},
+      receiver_org = #{record.receiverOrg,jdbcType=BIGINT},
       `type` = #{record.type,jdbcType=INTEGER},
       topic = #{record.topic,jdbcType=VARCHAR},
       `date` = #{record.date,jdbcType=TIMESTAMP},
-      data_ext = #{record.dataExt,jdbcType=VARCHAR},
+      `data` = #{record.data,jdbcType=VARCHAR},
       `status` = #{record.status,jdbcType=INTEGER}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -220,11 +245,17 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.kingdee.hrp.sms.common.model.Message">
     update t_message
     <set>
-      <if test="orgType != null">
-        org_type = #{orgType,jdbcType=INTEGER},
+      <if test="senderOrg != null">
+        sender_org = #{senderOrg,jdbcType=BIGINT},
       </if>
-      <if test="org != null">
-        org = #{org,jdbcType=BIGINT},
+      <if test="senderType != null">
+        sender_type = #{senderType,jdbcType=INTEGER},
+      </if>
+      <if test="receiverType != null">
+        receiver_type = #{receiverType,jdbcType=INTEGER},
+      </if>
+      <if test="receiverOrg != null">
+        receiver_org = #{receiverOrg,jdbcType=BIGINT},
       </if>
       <if test="type != null">
         `type` = #{type,jdbcType=INTEGER},
@@ -235,8 +266,8 @@
       <if test="date != null">
         `date` = #{date,jdbcType=TIMESTAMP},
       </if>
-      <if test="dataExt != null">
-        data_ext = #{dataExt,jdbcType=VARCHAR},
+      <if test="data != null">
+        `data` = #{data,jdbcType=VARCHAR},
       </if>
       <if test="status != null">
         `status` = #{status,jdbcType=INTEGER},
@@ -246,12 +277,14 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.kingdee.hrp.sms.common.model.Message">
     update t_message
-    set org_type = #{orgType,jdbcType=INTEGER},
-      org = #{org,jdbcType=BIGINT},
+    set sender_org = #{senderOrg,jdbcType=BIGINT},
+      sender_type = #{senderType,jdbcType=INTEGER},
+      receiver_type = #{receiverType,jdbcType=INTEGER},
+      receiver_org = #{receiverOrg,jdbcType=BIGINT},
       `type` = #{type,jdbcType=INTEGER},
       topic = #{topic,jdbcType=VARCHAR},
       `date` = #{date,jdbcType=TIMESTAMP},
-      data_ext = #{dataExt,jdbcType=VARCHAR},
+      `data` = #{data,jdbcType=VARCHAR},
       `status` = #{status,jdbcType=INTEGER}
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -262,12 +295,14 @@
       @project https://github.com/itfsw/mybatis-generator-plugin
     -->
     insert into t_message
-    (id, org_type, org, `type`, topic, `date`, data_ext, `status`)
+    (id, sender_org, sender_type, receiver_type, receiver_org, `type`, topic, `date`, 
+      `data`, `status`)
     values
     <foreach collection="list" item="item" separator=",">
-      (#{item.id,jdbcType=BIGINT}, #{item.orgType,jdbcType=INTEGER}, #{item.org,jdbcType=BIGINT}, 
-        #{item.type,jdbcType=INTEGER}, #{item.topic,jdbcType=VARCHAR}, #{item.date,jdbcType=TIMESTAMP}, 
-        #{item.dataExt,jdbcType=VARCHAR}, #{item.status,jdbcType=INTEGER})
+      (#{item.id,jdbcType=BIGINT}, #{item.senderOrg,jdbcType=BIGINT}, #{item.senderType,jdbcType=INTEGER}, 
+        #{item.receiverType,jdbcType=INTEGER}, #{item.receiverOrg,jdbcType=BIGINT}, #{item.type,jdbcType=INTEGER}, 
+        #{item.topic,jdbcType=VARCHAR}, #{item.date,jdbcType=TIMESTAMP}, #{item.data,jdbcType=VARCHAR}, 
+        #{item.status,jdbcType=INTEGER})
     </foreach>
   </insert>
   <insert id="batchInsertSelective" parameterType="map">
@@ -288,11 +323,17 @@
         <if test="'id' == column.value">
           #{item.id,jdbcType=BIGINT}
         </if>
-        <if test="'org_type' == column.value">
-          #{item.orgType,jdbcType=INTEGER}
+        <if test="'sender_org' == column.value">
+          #{item.senderOrg,jdbcType=BIGINT}
         </if>
-        <if test="'org' == column.value">
-          #{item.org,jdbcType=BIGINT}
+        <if test="'sender_type' == column.value">
+          #{item.senderType,jdbcType=INTEGER}
+        </if>
+        <if test="'receiver_type' == column.value">
+          #{item.receiverType,jdbcType=INTEGER}
+        </if>
+        <if test="'receiver_org' == column.value">
+          #{item.receiverOrg,jdbcType=BIGINT}
         </if>
         <if test="'type' == column.value">
           #{item.type,jdbcType=INTEGER}
@@ -303,8 +344,8 @@
         <if test="'date' == column.value">
           #{item.date,jdbcType=TIMESTAMP}
         </if>
-        <if test="'data_ext' == column.value">
-          #{item.dataExt,jdbcType=VARCHAR}
+        <if test="'data' == column.value">
+          #{item.data,jdbcType=VARCHAR}
         </if>
         <if test="'status' == column.value">
           #{item.status,jdbcType=INTEGER}

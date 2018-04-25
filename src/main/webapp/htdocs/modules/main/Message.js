@@ -10,6 +10,7 @@ define('Message', function (require, module, exports) {
     var MiniQuery = require('MiniQuery');
     var SMS = require('SMS');
     var emitter = MiniQuery.Event.create();
+    var Iframe = SMS.require('Iframe');
     var API = SMS.require('API');
     var MessageBox = SMS.require('MessageBox');
 
@@ -55,7 +56,7 @@ define('Message', function (require, module, exports) {
 
         var api = new API('user/getMessage');
 
-        api.get();
+        api.get({status: 0});
 
         api.on({
             'success': function (data, json) {
@@ -94,9 +95,9 @@ define('Message', function (require, module, exports) {
 
             });
 
-        });
+            bindEvents();
 
-        bindEvents();
+        });
 
     }
 
@@ -107,6 +108,15 @@ define('Message', function (require, module, exports) {
             return;
         }
 
+        $('#message-center').on('click', function () {
+
+            Iframe.open({
+                id: 'view-message-center',
+                name: '消息中心',
+                url: './html/message/index.html'
+            });
+
+        });
 
         hasBind = true;
     }

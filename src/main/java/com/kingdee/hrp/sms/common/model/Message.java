@@ -6,9 +6,13 @@ import java.util.Date;
 public class Message extends RootModel {
     private Long id;
 
-    private Integer orgType;
+    private Long senderOrg;
 
-    private Long org;
+    private Integer senderType;
+
+    private Integer receiverType;
+
+    private Long receiverOrg;
 
     private Integer type;
 
@@ -16,7 +20,7 @@ public class Message extends RootModel {
 
     private Date date;
 
-    private String dataExt;
+    private String data;
 
     private Integer status;
 
@@ -28,20 +32,36 @@ public class Message extends RootModel {
         this.id = id;
     }
 
-    public Integer getOrgType() {
-        return orgType;
+    public Long getSenderOrg() {
+        return senderOrg;
     }
 
-    public void setOrgType(Integer orgType) {
-        this.orgType = orgType;
+    public void setSenderOrg(Long senderOrg) {
+        this.senderOrg = senderOrg;
     }
 
-    public Long getOrg() {
-        return org;
+    public Integer getSenderType() {
+        return senderType;
     }
 
-    public void setOrg(Long org) {
-        this.org = org;
+    public void setSenderType(Integer senderType) {
+        this.senderType = senderType;
+    }
+
+    public Integer getReceiverType() {
+        return receiverType;
+    }
+
+    public void setReceiverType(Integer receiverType) {
+        this.receiverType = receiverType;
+    }
+
+    public Long getReceiverOrg() {
+        return receiverOrg;
+    }
+
+    public void setReceiverOrg(Long receiverOrg) {
+        this.receiverOrg = receiverOrg;
     }
 
     public Integer getType() {
@@ -68,12 +88,12 @@ public class Message extends RootModel {
         this.date = date;
     }
 
-    public String getDataExt() {
-        return dataExt;
+    public String getData() {
+        return data;
     }
 
-    public void setDataExt(String dataExt) {
-        this.dataExt = dataExt == null ? null : dataExt.trim();
+    public void setData(String data) {
+        this.data = data == null ? null : data.trim();
     }
 
     public Integer getStatus() {
@@ -93,12 +113,14 @@ public class Message extends RootModel {
      */
     public enum Column {
         id("id"),
-        orgType("org_type"),
-        org("org"),
+        senderOrg("sender_org"),
+        senderType("sender_type"),
+        receiverType("receiver_type"),
+        receiverOrg("receiver_org"),
         type("type"),
         topic("topic"),
         date("date"),
-        dataExt("data_ext"),
+        data("data"),
         status("status");
 
         /**

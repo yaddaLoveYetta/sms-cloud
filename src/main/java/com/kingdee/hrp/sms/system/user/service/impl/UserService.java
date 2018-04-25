@@ -9,6 +9,7 @@ import com.kingdee.hrp.sms.common.model.*;
 import com.kingdee.hrp.sms.common.pojo.BaseStatusEnum;
 import com.kingdee.hrp.sms.common.service.BaseService;
 import com.kingdee.hrp.sms.system.user.service.IUserService;
+import com.kingdee.hrp.sms.util.Common;
 import com.kingdee.hrp.sms.util.Environ;
 import com.kingdee.hrp.sms.util.Pinyin4jUtil;
 import org.apache.commons.lang.StringUtils;
@@ -584,10 +585,11 @@ public class UserService extends BaseService implements IUserService {
      *
      * @param userRoleType 角色类别
      * @param org          组织id
+     * @param status       消息状态 （0未处理，1已处理，其他值全部）
      * @return Map
      */
     @Override
-    public Map<String, Object> getMessage(Integer userRoleType, Long org) {
+    public Map<String, Object> getMessage(Integer userRoleType, Long org, Integer status) {
 
         Map<String, Object> ret = new HashMap<>(16);
 
@@ -596,16 +598,68 @@ public class UserService extends BaseService implements IUserService {
         MessageExample example = new MessageExample();
 
         MessageExample.Criteria criteria = example.createCriteria();
-        criteria.andOrgTypeEqualTo(userRoleType);
-        criteria.andOrgEqualTo(org);
-        criteria.andStatusEqualTo(BaseStatusEnum.UN_PROCESSED.getNumber());
+        criteria.andReceiverTypeEqualTo(userRoleType);
+        criteria.andReceiverOrgEqualTo(org);
+        if (status == 0) {
+            // 未处理消息
+            criteria.andStatusEqualTo(BaseStatusEnum.UN_PROCESSED.getNumber());
+        } else if (status == 1) {
+            // 已处理消息
+            criteria.andStatusEqualTo(BaseStatusEnum.PROCESSED.getNumber());
+        }
+
 
         example.setOrderByClause("`date` DESC");
 
         List<Message> messages = messageMapper.selectByExample(example);
 
-        ret.put("count", messages.size());
-        ret.put("list", messages);
+        List<Map<String, Object>> messageList = new ArrayList<Map<String, Object>>();
+        Map<String, Object> item = new HashMap<>(16);
+
+        for (Message message : messages) {
+
+            try {
+                item.putAll(Common.beanToMap(message));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            Integer senderType = message.getSenderType();
+            Long senderOrg = message.getSenderOrg();
+            Integer receiverType = message.getReceiverType();
+            Long receiverOrg = message.getReceiverOrg();
+            Integer messageStatus = message.getStatus();
+
+            if (senderType == 2) {
+                //医院发送的
+                HospitalMapper mapper = sqlSession.getMapper(HospitalMapper.class);
+                Hospital hospital = mapper.selectByPrimaryKey(senderOrg);
+                item.put("senderOrg", hospital);
+            } else if (senderType == 3) {
+                // 供应商发送的
+                SupplierMapper mapper = sqlSession.getMapper(SupplierMapper.class);
+                Supplier supplier = mapper.selectByPrimaryKey(senderOrg);
+                item.put("senderOrg", supplier);
+            }
+
+            if (receiverType == 2) {
+                // 医院接收的
+                HospitalMapper mapper = sqlSession.getMapper(HospitalMapper.class);
+                Hospital hospital = mapper.selectByPrimaryKey(receiverOrg);
+                item.put("receiverOrg", hospital);
+            } else if (receiverType == 3) {
+                // 供应商接收的
+                SupplierMapper mapper = sqlSession.getMapper(SupplierMapper.class);
+                Supplier supplier = mapper.selectByPrimaryKey(receiverOrg);
+                item.put("receiverOrg", supplier);
+            }
+            item.put("status", BaseStatusEnum.getBaseStatusEnum(messageStatus).getNumber());
+
+            messageList.add(item);
+        }
+
+        ret.put("count", messageList.size());
+        ret.put("list", messageList);
 
         return ret;
     }

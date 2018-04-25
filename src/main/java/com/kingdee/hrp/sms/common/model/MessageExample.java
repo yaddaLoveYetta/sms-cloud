@@ -165,123 +165,243 @@ public class MessageExample {
             return (Criteria) this;
         }
 
-        public Criteria andOrgTypeIsNull() {
-            addCriterion("org_type is null");
+        public Criteria andSenderOrgIsNull() {
+            addCriterion("sender_org is null");
             return (Criteria) this;
         }
 
-        public Criteria andOrgTypeIsNotNull() {
-            addCriterion("org_type is not null");
+        public Criteria andSenderOrgIsNotNull() {
+            addCriterion("sender_org is not null");
             return (Criteria) this;
         }
 
-        public Criteria andOrgTypeEqualTo(Integer value) {
-            addCriterion("org_type =", value, "orgType");
+        public Criteria andSenderOrgEqualTo(Long value) {
+            addCriterion("sender_org =", value, "senderOrg");
             return (Criteria) this;
         }
 
-        public Criteria andOrgTypeNotEqualTo(Integer value) {
-            addCriterion("org_type <>", value, "orgType");
+        public Criteria andSenderOrgNotEqualTo(Long value) {
+            addCriterion("sender_org <>", value, "senderOrg");
             return (Criteria) this;
         }
 
-        public Criteria andOrgTypeGreaterThan(Integer value) {
-            addCriterion("org_type >", value, "orgType");
+        public Criteria andSenderOrgGreaterThan(Long value) {
+            addCriterion("sender_org >", value, "senderOrg");
             return (Criteria) this;
         }
 
-        public Criteria andOrgTypeGreaterThanOrEqualTo(Integer value) {
-            addCriterion("org_type >=", value, "orgType");
+        public Criteria andSenderOrgGreaterThanOrEqualTo(Long value) {
+            addCriterion("sender_org >=", value, "senderOrg");
             return (Criteria) this;
         }
 
-        public Criteria andOrgTypeLessThan(Integer value) {
-            addCriterion("org_type <", value, "orgType");
+        public Criteria andSenderOrgLessThan(Long value) {
+            addCriterion("sender_org <", value, "senderOrg");
             return (Criteria) this;
         }
 
-        public Criteria andOrgTypeLessThanOrEqualTo(Integer value) {
-            addCriterion("org_type <=", value, "orgType");
+        public Criteria andSenderOrgLessThanOrEqualTo(Long value) {
+            addCriterion("sender_org <=", value, "senderOrg");
             return (Criteria) this;
         }
 
-        public Criteria andOrgTypeIn(List<Integer> values) {
-            addCriterion("org_type in", values, "orgType");
+        public Criteria andSenderOrgIn(List<Long> values) {
+            addCriterion("sender_org in", values, "senderOrg");
             return (Criteria) this;
         }
 
-        public Criteria andOrgTypeNotIn(List<Integer> values) {
-            addCriterion("org_type not in", values, "orgType");
+        public Criteria andSenderOrgNotIn(List<Long> values) {
+            addCriterion("sender_org not in", values, "senderOrg");
             return (Criteria) this;
         }
 
-        public Criteria andOrgTypeBetween(Integer value1, Integer value2) {
-            addCriterion("org_type between", value1, value2, "orgType");
+        public Criteria andSenderOrgBetween(Long value1, Long value2) {
+            addCriterion("sender_org between", value1, value2, "senderOrg");
             return (Criteria) this;
         }
 
-        public Criteria andOrgTypeNotBetween(Integer value1, Integer value2) {
-            addCriterion("org_type not between", value1, value2, "orgType");
+        public Criteria andSenderOrgNotBetween(Long value1, Long value2) {
+            addCriterion("sender_org not between", value1, value2, "senderOrg");
             return (Criteria) this;
         }
 
-        public Criteria andOrgIsNull() {
-            addCriterion("org is null");
+        public Criteria andSenderTypeIsNull() {
+            addCriterion("sender_type is null");
             return (Criteria) this;
         }
 
-        public Criteria andOrgIsNotNull() {
-            addCriterion("org is not null");
+        public Criteria andSenderTypeIsNotNull() {
+            addCriterion("sender_type is not null");
             return (Criteria) this;
         }
 
-        public Criteria andOrgEqualTo(Long value) {
-            addCriterion("org =", value, "org");
+        public Criteria andSenderTypeEqualTo(Integer value) {
+            addCriterion("sender_type =", value, "senderType");
             return (Criteria) this;
         }
 
-        public Criteria andOrgNotEqualTo(Long value) {
-            addCriterion("org <>", value, "org");
+        public Criteria andSenderTypeNotEqualTo(Integer value) {
+            addCriterion("sender_type <>", value, "senderType");
             return (Criteria) this;
         }
 
-        public Criteria andOrgGreaterThan(Long value) {
-            addCriterion("org >", value, "org");
+        public Criteria andSenderTypeGreaterThan(Integer value) {
+            addCriterion("sender_type >", value, "senderType");
             return (Criteria) this;
         }
 
-        public Criteria andOrgGreaterThanOrEqualTo(Long value) {
-            addCriterion("org >=", value, "org");
+        public Criteria andSenderTypeGreaterThanOrEqualTo(Integer value) {
+            addCriterion("sender_type >=", value, "senderType");
             return (Criteria) this;
         }
 
-        public Criteria andOrgLessThan(Long value) {
-            addCriterion("org <", value, "org");
+        public Criteria andSenderTypeLessThan(Integer value) {
+            addCriterion("sender_type <", value, "senderType");
             return (Criteria) this;
         }
 
-        public Criteria andOrgLessThanOrEqualTo(Long value) {
-            addCriterion("org <=", value, "org");
+        public Criteria andSenderTypeLessThanOrEqualTo(Integer value) {
+            addCriterion("sender_type <=", value, "senderType");
             return (Criteria) this;
         }
 
-        public Criteria andOrgIn(List<Long> values) {
-            addCriterion("org in", values, "org");
+        public Criteria andSenderTypeIn(List<Integer> values) {
+            addCriterion("sender_type in", values, "senderType");
             return (Criteria) this;
         }
 
-        public Criteria andOrgNotIn(List<Long> values) {
-            addCriterion("org not in", values, "org");
+        public Criteria andSenderTypeNotIn(List<Integer> values) {
+            addCriterion("sender_type not in", values, "senderType");
             return (Criteria) this;
         }
 
-        public Criteria andOrgBetween(Long value1, Long value2) {
-            addCriterion("org between", value1, value2, "org");
+        public Criteria andSenderTypeBetween(Integer value1, Integer value2) {
+            addCriterion("sender_type between", value1, value2, "senderType");
             return (Criteria) this;
         }
 
-        public Criteria andOrgNotBetween(Long value1, Long value2) {
-            addCriterion("org not between", value1, value2, "org");
+        public Criteria andSenderTypeNotBetween(Integer value1, Integer value2) {
+            addCriterion("sender_type not between", value1, value2, "senderType");
+            return (Criteria) this;
+        }
+
+        public Criteria andReceiverTypeIsNull() {
+            addCriterion("receiver_type is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andReceiverTypeIsNotNull() {
+            addCriterion("receiver_type is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andReceiverTypeEqualTo(Integer value) {
+            addCriterion("receiver_type =", value, "receiverType");
+            return (Criteria) this;
+        }
+
+        public Criteria andReceiverTypeNotEqualTo(Integer value) {
+            addCriterion("receiver_type <>", value, "receiverType");
+            return (Criteria) this;
+        }
+
+        public Criteria andReceiverTypeGreaterThan(Integer value) {
+            addCriterion("receiver_type >", value, "receiverType");
+            return (Criteria) this;
+        }
+
+        public Criteria andReceiverTypeGreaterThanOrEqualTo(Integer value) {
+            addCriterion("receiver_type >=", value, "receiverType");
+            return (Criteria) this;
+        }
+
+        public Criteria andReceiverTypeLessThan(Integer value) {
+            addCriterion("receiver_type <", value, "receiverType");
+            return (Criteria) this;
+        }
+
+        public Criteria andReceiverTypeLessThanOrEqualTo(Integer value) {
+            addCriterion("receiver_type <=", value, "receiverType");
+            return (Criteria) this;
+        }
+
+        public Criteria andReceiverTypeIn(List<Integer> values) {
+            addCriterion("receiver_type in", values, "receiverType");
+            return (Criteria) this;
+        }
+
+        public Criteria andReceiverTypeNotIn(List<Integer> values) {
+            addCriterion("receiver_type not in", values, "receiverType");
+            return (Criteria) this;
+        }
+
+        public Criteria andReceiverTypeBetween(Integer value1, Integer value2) {
+            addCriterion("receiver_type between", value1, value2, "receiverType");
+            return (Criteria) this;
+        }
+
+        public Criteria andReceiverTypeNotBetween(Integer value1, Integer value2) {
+            addCriterion("receiver_type not between", value1, value2, "receiverType");
+            return (Criteria) this;
+        }
+
+        public Criteria andReceiverOrgIsNull() {
+            addCriterion("receiver_org is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andReceiverOrgIsNotNull() {
+            addCriterion("receiver_org is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andReceiverOrgEqualTo(Long value) {
+            addCriterion("receiver_org =", value, "receiverOrg");
+            return (Criteria) this;
+        }
+
+        public Criteria andReceiverOrgNotEqualTo(Long value) {
+            addCriterion("receiver_org <>", value, "receiverOrg");
+            return (Criteria) this;
+        }
+
+        public Criteria andReceiverOrgGreaterThan(Long value) {
+            addCriterion("receiver_org >", value, "receiverOrg");
+            return (Criteria) this;
+        }
+
+        public Criteria andReceiverOrgGreaterThanOrEqualTo(Long value) {
+            addCriterion("receiver_org >=", value, "receiverOrg");
+            return (Criteria) this;
+        }
+
+        public Criteria andReceiverOrgLessThan(Long value) {
+            addCriterion("receiver_org <", value, "receiverOrg");
+            return (Criteria) this;
+        }
+
+        public Criteria andReceiverOrgLessThanOrEqualTo(Long value) {
+            addCriterion("receiver_org <=", value, "receiverOrg");
+            return (Criteria) this;
+        }
+
+        public Criteria andReceiverOrgIn(List<Long> values) {
+            addCriterion("receiver_org in", values, "receiverOrg");
+            return (Criteria) this;
+        }
+
+        public Criteria andReceiverOrgNotIn(List<Long> values) {
+            addCriterion("receiver_org not in", values, "receiverOrg");
+            return (Criteria) this;
+        }
+
+        public Criteria andReceiverOrgBetween(Long value1, Long value2) {
+            addCriterion("receiver_org between", value1, value2, "receiverOrg");
+            return (Criteria) this;
+        }
+
+        public Criteria andReceiverOrgNotBetween(Long value1, Long value2) {
+            addCriterion("receiver_org not between", value1, value2, "receiverOrg");
             return (Criteria) this;
         }
 
@@ -475,73 +595,73 @@ public class MessageExample {
             return (Criteria) this;
         }
 
-        public Criteria andDataExtIsNull() {
-            addCriterion("data_ext is null");
+        public Criteria andDataIsNull() {
+            addCriterion("`data` is null");
             return (Criteria) this;
         }
 
-        public Criteria andDataExtIsNotNull() {
-            addCriterion("data_ext is not null");
+        public Criteria andDataIsNotNull() {
+            addCriterion("`data` is not null");
             return (Criteria) this;
         }
 
-        public Criteria andDataExtEqualTo(String value) {
-            addCriterion("data_ext =", value, "dataExt");
+        public Criteria andDataEqualTo(String value) {
+            addCriterion("`data` =", value, "data");
             return (Criteria) this;
         }
 
-        public Criteria andDataExtNotEqualTo(String value) {
-            addCriterion("data_ext <>", value, "dataExt");
+        public Criteria andDataNotEqualTo(String value) {
+            addCriterion("`data` <>", value, "data");
             return (Criteria) this;
         }
 
-        public Criteria andDataExtGreaterThan(String value) {
-            addCriterion("data_ext >", value, "dataExt");
+        public Criteria andDataGreaterThan(String value) {
+            addCriterion("`data` >", value, "data");
             return (Criteria) this;
         }
 
-        public Criteria andDataExtGreaterThanOrEqualTo(String value) {
-            addCriterion("data_ext >=", value, "dataExt");
+        public Criteria andDataGreaterThanOrEqualTo(String value) {
+            addCriterion("`data` >=", value, "data");
             return (Criteria) this;
         }
 
-        public Criteria andDataExtLessThan(String value) {
-            addCriterion("data_ext <", value, "dataExt");
+        public Criteria andDataLessThan(String value) {
+            addCriterion("`data` <", value, "data");
             return (Criteria) this;
         }
 
-        public Criteria andDataExtLessThanOrEqualTo(String value) {
-            addCriterion("data_ext <=", value, "dataExt");
+        public Criteria andDataLessThanOrEqualTo(String value) {
+            addCriterion("`data` <=", value, "data");
             return (Criteria) this;
         }
 
-        public Criteria andDataExtLike(String value) {
-            addCriterion("data_ext like", value, "dataExt");
+        public Criteria andDataLike(String value) {
+            addCriterion("`data` like", value, "data");
             return (Criteria) this;
         }
 
-        public Criteria andDataExtNotLike(String value) {
-            addCriterion("data_ext not like", value, "dataExt");
+        public Criteria andDataNotLike(String value) {
+            addCriterion("`data` not like", value, "data");
             return (Criteria) this;
         }
 
-        public Criteria andDataExtIn(List<String> values) {
-            addCriterion("data_ext in", values, "dataExt");
+        public Criteria andDataIn(List<String> values) {
+            addCriterion("`data` in", values, "data");
             return (Criteria) this;
         }
 
-        public Criteria andDataExtNotIn(List<String> values) {
-            addCriterion("data_ext not in", values, "dataExt");
+        public Criteria andDataNotIn(List<String> values) {
+            addCriterion("`data` not in", values, "data");
             return (Criteria) this;
         }
 
-        public Criteria andDataExtBetween(String value1, String value2) {
-            addCriterion("data_ext between", value1, value2, "dataExt");
+        public Criteria andDataBetween(String value1, String value2) {
+            addCriterion("`data` between", value1, value2, "data");
             return (Criteria) this;
         }
 
-        public Criteria andDataExtNotBetween(String value1, String value2) {
-            addCriterion("data_ext not between", value1, value2, "dataExt");
+        public Criteria andDataNotBetween(String value1, String value2) {
+            addCriterion("`data` not between", value1, value2, "data");
             return (Criteria) this;
         }
 
