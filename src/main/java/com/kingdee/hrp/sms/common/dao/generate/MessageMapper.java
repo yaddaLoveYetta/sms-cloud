@@ -2,9 +2,8 @@ package com.kingdee.hrp.sms.common.dao.generate;
 
 import com.kingdee.hrp.sms.common.model.Message;
 import com.kingdee.hrp.sms.common.model.MessageExample;
-import org.apache.ibatis.annotations.Param;
-
 import java.util.List;
+import org.apache.ibatis.annotations.Param;
 
 public interface MessageMapper {
     long countByExample(MessageExample example);

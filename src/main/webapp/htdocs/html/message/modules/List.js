@@ -14,6 +14,8 @@ define('List', function (require, module, exports) {
 
     // 列表数据
     var list = {};
+    // 事件绑定标识
+    var hasBind = false;
 
     var tbody = document.getElementById("message-list");
     var samples = $.String.getTemplates(tbody.innerHTML, [
@@ -27,6 +29,12 @@ define('List', function (require, module, exports) {
             begin: '#--message.item.begin--#',
             end: '#--message.item.end--#',
             outer: '{item}'
+        },
+        {
+            name: 'message.item.operate',
+            begin: '#--message.item.operate.begin--#',
+            end: '#--message.item.operate.end--#',
+            outer: '{operate}'
         }
     ]);
 
@@ -34,7 +42,7 @@ define('List', function (require, module, exports) {
 
         SMS.Tips.loading({
             text: '数据加载中，请稍候...',
-            delay: 200
+            delay: 100
         });
 
         var api = new API('user/getMessage');
@@ -44,7 +52,7 @@ define('List', function (require, module, exports) {
             'status': type
         }).on({
             'success': function (data, json) {
-                SMS.Tips.success("数据加载成功!", 1000);
+                SMS.Tips.success("数据加载成功!", 500);
                 fn && fn(data, json);
             },
             'fail': function (code, msg, json) {
@@ -70,9 +78,12 @@ define('List', function (require, module, exports) {
                     return $.String.format(samples["message.item"], {
                         index: index,
                         topic: item.topic || '',
-                        sender: item.sender,
+                        sender: item.senderOrg.name,
                         date: item.date,
-                        status: item.status
+                        status: item.status,
+                        operate: type === 0 ? $.String.format(samples["message.item.operate"], {
+                            index: index
+                        }) : ''
                     });
                 }).join("")
 
@@ -85,6 +96,41 @@ define('List', function (require, module, exports) {
     }
 
     function bindEvents() {
+
+        if (hasBind) {
+            return;
+        }
+
+        $(tbody).delegate('>tr[data-index]', 'dblclick', function (event) {
+            var index = $(this).data('index');
+            emitter.fire('dblclick', [list[index]]);
+        });
+        $(tbody).delegate('button[type="button"]', 'click', function (event) {
+            var index = $(this).data('index');
+
+            setProcessed(list[index], function () {
+                render(0);
+            });
+
+            emitter.fire('set', [list[index]]);
+        });
+
+    }
+
+    function setProcessed(message, fn) {
+
+        var api = new API('user/setMessageProcessed');
+
+        api.post({
+            id: message.id
+        });
+
+        api.on({
+            'success': function (data, json) {
+                fn && fn(data);
+            }
+        });
+
 
     }
 

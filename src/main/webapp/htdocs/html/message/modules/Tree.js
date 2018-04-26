@@ -19,11 +19,13 @@ define('Tree', function (require, module, exports) {
             nodes: [
                 {
                     text: "未处理",
-                    type: 0
+                    type: 0,
+                    icon: "iconfont icon-noread"
                 },
                 {
                     text: "已处理",
-                    type: 1
+                    type: 1,
+                    icon: "iconfont icon-yiduxiaoxi"
                 }
             ]
         }
@@ -36,7 +38,8 @@ define('Tree', function (require, module, exports) {
                 selector: div,
                 config: {
                     data: treeData,
-                    showCheckbox: false
+                    showCheckbox: false,
+                    showIcon: true
                 }
             });
             treeView.on('nodeSelected', function (event, data) {

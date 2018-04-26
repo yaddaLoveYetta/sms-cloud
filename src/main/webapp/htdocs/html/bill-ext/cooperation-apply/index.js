@@ -16,7 +16,7 @@
     // 搜索按钮
     $('#btn-search').on('click', function () {
 
-        var keyword = $('#input-order-search').val();
+        var keyword = $('#input-search').val();
 
         if (keyword.trim() === '') {
             SMS.Tips.error('请输入完整的医院机构名称查找!', 1500);
@@ -30,9 +30,9 @@
     });
 
     // 搜索框enter
-    $('#input-order-search').on('keypress', function (event) {
+    $('#input-search').on('keypress', function (event) {
         if (event.keyCode === 13) {
-            $('#btn-order-search').trigger('click');
+            $('#btn-search').trigger('click');
         }
     });
 

@@ -196,4 +196,19 @@ public class UserController {
         return userService.getMessage(userRoleType, org, status);
 
     }
+
+    /**
+     * 标记消息为已读
+     *
+     * @param id 消息id
+     * @return Boolean
+     */
+    @RequestMapping(value = "setMessageProcessed")
+    @ResponseBody
+    public Boolean setMessageProcessed(Long id) {
+
+        userService.setMessageProcessed(id);
+        return true;
+
+    }
 }

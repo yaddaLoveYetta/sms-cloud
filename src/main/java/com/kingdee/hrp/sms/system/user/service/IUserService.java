@@ -85,8 +85,15 @@ public interface IUserService extends Serializable {
      *
      * @param userRoleType 角色类别
      * @param org          组织id
-     * @param status      消息状态 （0未处理，1已处理，其他值全部）
+     * @param status       消息状态 （0未处理，1已处理，其他值全部）
      * @return List<Message>
      */
     Map<String, Object> getMessage(Integer userRoleType, Long org, Integer status);
+
+    /**
+     * 设置消息为已读状态
+     *
+     * @param id 消息id
+     */
+    void setMessageProcessed(Long id);
 }

@@ -92,7 +92,7 @@ public class SupplierController {
 
     @ResponseBody
     @RequestMapping(value = "addCooperationApply")
-    public Boolean cooperationApply(Long hospital) {
+    public Boolean addCooperationApply(Long hospital) {
 
         // 供应商
         Long supplier = SessionUtil.getUserLinkSupplier();

@@ -15,6 +15,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -213,7 +215,13 @@ public class Common {
         return value == codes.get(check);
     }
 
-    public static void main(String[] args) {
-        System.out.println(MD5("123"));
+
+    public static void main(String[] args) throws ParseException {
+
+        String date = "2016/4/1";
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+        SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd");
+
+        System.out.println(sdf2.format(sdf.parse(date)));
     }
 }

@@ -653,7 +653,7 @@ public class UserService extends BaseService implements IUserService {
                 Supplier supplier = mapper.selectByPrimaryKey(receiverOrg);
                 item.put("receiverOrg", supplier);
             }
-            item.put("status", BaseStatusEnum.getBaseStatusEnum(messageStatus).getNumber());
+            item.put("status", BaseStatusEnum.getBaseStatusEnum(messageStatus).getName());
 
             messageList.add(item);
         }
@@ -662,6 +662,24 @@ public class UserService extends BaseService implements IUserService {
         ret.put("list", messageList);
 
         return ret;
+    }
+
+    /**
+     * 设置消息为已读状态
+     *
+     * @param id 消息id
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void setMessageProcessed(Long id) {
+
+        MessageMapper messageMapper = sqlSession.getMapper(MessageMapper.class);
+
+        Message message = new Message();
+        message.setId(id);
+        message.setStatus(BaseStatusEnum.PROCESSED.getNumber());
+
+        messageMapper.updateByPrimaryKeySelective(message);
     }
 
     /**

@@ -24,7 +24,7 @@
                     <th class="col-sm-6" style="min-width: 80px;">
                         主题
                     </th>
-                    <th class="col-sm-3" style="min-width: 80px;">
+                    <th class="col-sm-2" style="min-width: 80px;">
                         发送者
                     </th>
                     <th class="col-sm-2" style="min-width: 80px;">
@@ -33,9 +33,12 @@
                     <th class="col-sm-1" style="min-width: 80px;">
                         状态
                     </th>
+                    <th class="col-sm-1" style="min-width: 80px;">
+                        操作
+                    </th>
                 </tr>
                 </thead>
-                <tbody id="message-list">
+                <tbody id="message-list" class="message-list">
                 <!--
                     #--message.item.begin--#
                         <tr data-index="{index}" class="">
@@ -50,6 +53,13 @@
                             </td>
                             <td  class=" text-align-center">
                                 {status}
+                            </td>
+                            <td  class=" text-align-center">
+                                #--message.item.operate.begin--#
+                                <button data-index="{index}" id="cooperation-apply" type="button" class="btn btn-primary btn-xs">
+                                    <i class=" iconfont icon-yiduxiaoxi"></i>标记已读
+                                </button>
+                                #--message.item.operate.end--#
                             </td>
                         </tr>
                     #--message.item.end--#
