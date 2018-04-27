@@ -242,7 +242,6 @@ define("List", function (require, module, exports) {
 
                         index: no,
 
-                        //"disabled-class": item.disabled ? "disabled" : "",
                         "disabled-class": "",
 
                         checkbox: data.checkbox ? $.String.format(samples["td.checkbox"], {

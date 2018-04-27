@@ -122,7 +122,7 @@
     <tx:annotation-driven transaction-manager="txManager" proxy-target-class="true"/>
 
     <!-- spring系统启动以后，获取WebApplicationContext容器，提供动态获取实例bean功能 -->
-    <!--<bean class="com.kingdee.eas.hrp.sms.util.Environ"></bean>-->
+    <bean class="com.kingdee.hrp.sms.util.Environ"></bean>
 
     <!-- business service bean configure -->
 
