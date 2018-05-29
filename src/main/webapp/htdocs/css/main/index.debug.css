@@ -1065,7 +1065,7 @@ body {
     }
 
     .msg-box {
-        left: 200px !important;
+        /*left: 200px !important;*/
     }
 
     .tab-panel {
@@ -1077,7 +1077,7 @@ body {
     }
 
     .app-aside-folded .msg-box {
-        left: 60px !important;
+       /* left: 60px !important;*/
     }
 }
 
@@ -5456,7 +5456,7 @@ a.text-#000000:hover {
 /*div-tips*/
 .msg-box {
     position: fixed;
-    left: 200px;
+    left: 0px;
     right: 0px;
     /* width: 100%; */
     text-align: center;
