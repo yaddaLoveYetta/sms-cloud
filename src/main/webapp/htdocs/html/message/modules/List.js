@@ -25,6 +25,12 @@ define('List', function (require, module, exports) {
             end: '-->'
         },
         {
+            name: 'message.none',
+            begin: '#--message.none.begin--#',
+            end: '#--message.none.end--#',
+            outer: '{none}'
+        },
+        {
             name: 'message.item',
             begin: '#--message.item.begin--#',
             end: '#--message.item.end--#',
@@ -74,6 +80,7 @@ define('List', function (require, module, exports) {
             // 填充列表
             tbody.innerHTML = $.String.format(samples["message"], {
 
+                none: (!list || list.length === 0) ? $.String.format(samples["message.none"], {}) : '',
                 item: $.Array.keep(list, function (item, index) {
                     return $.String.format(samples["message.item"], {
                         index: index,
