@@ -5,13 +5,12 @@
 	http://www.springframework.org/schema/beans/spring-beans.xsd">
 
     <!-- 异常处理器 -->
-    <!--
-      <bean class="com.kingdee.hrp.sms.common.exception.SmsHandlerExceptionResolver"/>
-
-           <bean id="apiHandler" class="com.yadda.api.core.ApiHandler">
-               <property name="tokenService" ref="defaultTokenServiceImpl"/>
-               <property name="tokenHandler" ref="defaultTokenServiceImpl"/>
-           </bean>-->
+    <!--<bean class="com.kingdee.hrp.sms.common.exception.SmsHandlerExceptionResolver"/>-->
+    <!--app 网关 -->
+    <!--<bean id="apiHandler" class="com.yadda.api.core.ApiHandler">
+        <property name="tokenService" ref="defaultTokenServiceImpl"/>
+        <property name="tokenHandler" ref="defaultTokenServiceImpl"/>
+    </bean>-->
 
     <bean id="customerObjectMapper" class="com.kingdee.hrp.sms.common.CustomerObjectMapper">
         <property name="dateFormat">
@@ -31,7 +30,7 @@
             </list>
         </property>
     </bean>
-
+    
     <bean id="stringHttpMessageConverter" class="org.springframework.http.converter.StringHttpMessageConverter">
         <constructor-arg index="0" value="utf-8"/>
         <property name="supportedMediaTypes">

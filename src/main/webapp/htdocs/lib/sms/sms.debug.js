@@ -6548,6 +6548,9 @@
             selectNode: function () {
                 return invoke(this, 'selectNode', arguments);
             },
+            toggleNodeSelected: function () {
+                return invoke(this, 'toggleNodeSelected', arguments);
+            }
         };
 
 

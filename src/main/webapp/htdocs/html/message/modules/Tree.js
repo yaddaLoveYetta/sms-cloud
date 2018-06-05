@@ -47,6 +47,7 @@ define('Tree', function (require, module, exports) {
                     emitter.fire("messageTypeChange", [data.type]);
                 }
             });
+            treeView.toggleNodeSelected([ 0, { silent: true } ]);
         });
     }
 
