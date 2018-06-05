@@ -236,3 +236,10 @@ input, textarea {
     -ms-flex-pack: end !important;
     justify-content: flex-end !important;
 }
+
+.footer .container {
+    height: 60px;
+    font-size: 14px;
+    text-align: center;
+    padding: 10px;
+}
