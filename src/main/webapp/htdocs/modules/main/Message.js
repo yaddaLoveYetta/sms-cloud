@@ -116,7 +116,6 @@ define('Message', function (require, module, exports) {
         }
 
         $('#message-center').on('click', function () {
-
             Iframe.open({
                 id: 'view-message-center',
                 name: '消息中心',
@@ -128,9 +127,15 @@ define('Message', function (require, module, exports) {
         hasBind = true;
     }
 
+    function changeMsgCount() {
+        // 简单粗暴，直接重新load
+        render()
+    }
+
 
     return {
         render: render,
+        changeMsgCount: changeMsgCount,
         on: emitter.on.bind(emitter)
     }
 

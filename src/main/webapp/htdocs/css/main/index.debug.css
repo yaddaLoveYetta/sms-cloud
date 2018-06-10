@@ -749,6 +749,7 @@ body {
 
 .app-content {
     height: 100%;
+    padding-bottom: 50px;
     /* transform: translate(0,0);*/
 }
 
@@ -781,20 +782,13 @@ body {
 .app-content-body {
     float: left;
     width: 100%;
-    padding-bottom: 50px;
+    /*padding-bottom: 50px;*/
 }
 
 .app-footer {
-    position: absolute;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    z-index: 2;
+    margin-left: 200px;
 }
 
-.app-footer.app-footer-fixed {
-    position: fixed;
-}
 
 .hbox {
     display: table;
@@ -1077,7 +1071,7 @@ body {
     }
 
     .app-aside-folded .msg-box {
-       /* left: 60px !important;*/
+        /* left: 60px !important;*/
     }
 }
 

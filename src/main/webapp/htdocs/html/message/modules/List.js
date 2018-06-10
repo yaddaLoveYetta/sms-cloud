@@ -16,6 +16,8 @@ define('List', function (require, module, exports) {
     var list = {};
     // 事件绑定标识
     var hasBind = false;
+    // 当前列表的消息类别
+    var type = 0;
 
     var tbody = document.getElementById("message-list");
     var samples = $.String.getTemplates(tbody.innerHTML, [
@@ -50,6 +52,8 @@ define('List', function (require, module, exports) {
             text: '数据加载中，请稍候...',
             delay: 100
         });
+
+        type = config.type;
 
         var api = new API('user/getMessage');
 
@@ -120,13 +124,15 @@ define('List', function (require, module, exports) {
         });
         $(tbody).delegate('button[type="button"]', 'click', function (event) {
             var index = $(this).data('index');
-
             setProcessed(list[index], function () {
-                render(0);
+                // 设置已读成功后抛出setProcessed事件
+                emitter.fire('setProcessed', [type]);
+
             });
 
-            emitter.fire('set', [list[index]]);
         });
+
+        hasBind = true;
 
     }
 
@@ -141,6 +147,13 @@ define('List', function (require, module, exports) {
         api.on({
             'success': function (data, json) {
                 fn && fn(data);
+            },
+            'fail': function (code, msg, json) {
+                var s = $.String.format('{0} (错误码: {1})', msg, code);
+                SMS.Tips.error(s);
+            },
+            'error': function () {
+                SMS.Tips.error('网络繁忙，请稍候再试');
             }
         });
 
@@ -148,7 +161,8 @@ define('List', function (require, module, exports) {
     }
 
     return {
-        render: render
+        render: render,
+        on: emitter.on.bind(emitter)
     }
 
 });

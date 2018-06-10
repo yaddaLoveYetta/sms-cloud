@@ -5028,6 +5028,13 @@
 
                 mapper.remove(this);
 
+            },
+            /**
+             * 获取总记录数
+             */
+            getTotal: function () {
+                var meta = mapper.get(this);
+                return meta.total;
             }
         };
 
@@ -5090,7 +5097,11 @@
             simple.render();
             pager.render();
 
-            return [simple, pager];
+            //return [simple, pager];
+            return {
+                simple: simple,
+                pager: pager
+            }
 
         }
 
@@ -6551,7 +6562,7 @@
             toggleNodeSelected: function () {
                 return invoke(this, 'toggleNodeSelected', arguments);
             },
-            selectNode:function () {
+            selectNode: function () {
                 return invoke(this, 'selectNode', arguments);
             }
         };

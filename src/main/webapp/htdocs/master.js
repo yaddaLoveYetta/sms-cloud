@@ -237,6 +237,11 @@
         },
         'editSuccess': function (sn, data) {
 
+        },
+        'msgProcessed': function (type, noReadMsgCount) {
+            // 消息中心将消息设置为已读后会抛出此事件--刷新未读消息数目
+            // type=40 未读消息 noReadMessageCount=未读消息数目
+            Message.changeMsgCount(noReadMsgCount);
         }
     });
     // 加载顶级菜单
