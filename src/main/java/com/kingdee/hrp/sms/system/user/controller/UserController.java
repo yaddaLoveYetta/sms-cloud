@@ -179,21 +179,21 @@ public class UserController {
     /**
      * 获取消息通知(未处理的)
      *
-     * @param status 消息状态 （0未处理，1已处理，其他值全部）
+     * @param type 消息类别 （0未处理，1已处理，其他值全部）
      * @return List<Map<String, Object>>
      */
     @RequestMapping(value = "getMessage")
     @ResponseBody
-    public Map<String, Object> getMessage(Integer status) {
+    public Map<String, Object> getMessage(Integer type, @RequestParam(defaultValue = "10") Integer pageSize, @RequestParam(defaultValue = "1") Integer pageNo) {
 
-        status = status == null ? -1 : status;
+        type = type == null ? -1 : type;
 
         Map<String, Object> ret = new HashMap<String, Object>(32);
 
         Integer userRoleType = SessionUtil.getUserRoleType();
         Long org = SessionUtil.getUser().getOrg();
 
-        return userService.getMessage(userRoleType, org, status);
+        return userService.getMessage(userRoleType, org, type, pageSize, pageNo);
 
     }
 

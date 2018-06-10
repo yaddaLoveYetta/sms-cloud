@@ -56,7 +56,9 @@ define('Message', function (require, module, exports) {
 
         var api = new API('user/getMessage');
 
-        api.get({status: 0});
+        api.get({
+            type: 0
+        });
 
         api.on({
             'success': function (data, json) {
@@ -76,6 +78,11 @@ define('Message', function (require, module, exports) {
     function render() {
 
         load(function (data) {
+
+            if (data.list.length > 10) {
+                // 最多显示10条消息
+                data.list = data.list.slice(0, 10);
+            }
 
             li.innerHTML = $.String.format(samples["message"], {
 

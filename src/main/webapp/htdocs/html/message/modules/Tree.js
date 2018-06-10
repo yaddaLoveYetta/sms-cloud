@@ -16,16 +16,19 @@ define('Tree', function (require, module, exports) {
     var treeData = [
         {
             text: "消息类别",
+            nodeid: "0",
             nodes: [
                 {
                     text: "未处理",
                     type: 0,
-                    icon: "iconfont icon-noread"
+                    icon: "iconfont icon-noread",
+                    nodeid: "1"
                 },
                 {
                     text: "已处理",
                     type: 1,
-                    icon: "iconfont icon-yiduxiaoxi"
+                    icon: "iconfont icon-yiduxiaoxi",
+                    nodeid: "2"
                 }
             ]
         }
@@ -47,7 +50,8 @@ define('Tree', function (require, module, exports) {
                     emitter.fire("messageTypeChange", [data.type]);
                 }
             });
-            treeView.toggleNodeSelected([ 0, { silent: true } ]);
+            // 初始化默认选中未读消息
+            treeView.selectNode(1, {silent: false});
         });
     }
 

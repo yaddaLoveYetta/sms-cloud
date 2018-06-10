@@ -6483,7 +6483,7 @@
         function invoke(self, name, $argumetns) {
 
             var meta = mapper.get(self);
-            var $selector = meta.$selector;
+            var $selector = meta.$this;
 
             var args = [].slice.call($argumetns, 0);
 
@@ -6550,6 +6550,9 @@
             },
             toggleNodeSelected: function () {
                 return invoke(this, 'toggleNodeSelected', arguments);
+            },
+            selectNode:function () {
+                return invoke(this, 'selectNode', arguments);
             }
         };
 

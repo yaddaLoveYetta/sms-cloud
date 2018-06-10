@@ -2,6 +2,8 @@ package com.kingdee.hrp.sms.system.user.service.impl;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.kingdee.hrp.sms.common.dao.generate.*;
 import com.kingdee.hrp.sms.common.exception.BusinessLogicRunTimeException;
 import com.kingdee.hrp.sms.common.filter.SmsPropertyPlaceholderConfigurer;
@@ -585,11 +587,13 @@ public class UserService extends BaseService implements IUserService {
      *
      * @param userRoleType 角色类别
      * @param org          组织id
-     * @param status       消息状态 （0未处理，1已处理，其他值全部）
+     * @param type         消息类别 （0未处理，1已处理，其他值全部）
+     * @param pageSize     分页大小
+     * @param pageNo       当前页码
      * @return Map
      */
     @Override
-    public Map<String, Object> getMessage(Integer userRoleType, Long org, Integer status) {
+    public Map<String, Object> getMessage(Integer userRoleType, Long org, Integer type, Integer pageSize, Integer pageNo) {
 
         Map<String, Object> ret = new HashMap<>(16);
 
@@ -600,10 +604,10 @@ public class UserService extends BaseService implements IUserService {
         MessageExample.Criteria criteria = example.createCriteria();
         criteria.andReceiverTypeEqualTo(userRoleType);
         criteria.andReceiverOrgEqualTo(org);
-        if (status == 0) {
+        if (type == 0) {
             // 未处理消息
             criteria.andStatusEqualTo(BaseStatusEnum.UN_PROCESSED.getNumber());
-        } else if (status == 1) {
+        } else if (type == 1) {
             // 已处理消息
             criteria.andStatusEqualTo(BaseStatusEnum.PROCESSED.getNumber());
         }
@@ -611,12 +615,21 @@ public class UserService extends BaseService implements IUserService {
 
         example.setOrderByClause("`date` DESC");
 
+        if (pageNo == 1) {
+            // 查询第一页数据是查询出总记录数
+            PageHelper.startPage(pageNo, pageSize, true);
+        } else {
+            // 非第一页查询时不查询总记录数
+            PageHelper.startPage(pageNo, pageSize, false);
+        }
+
         List<Message> messages = messageMapper.selectByExample(example);
 
         List<Map<String, Object>> messageList = new ArrayList<Map<String, Object>>();
-        Map<String, Object> item = new HashMap<>(16);
-
+        Map<String, Object> item;
         for (Message message : messages) {
+
+            item = new HashMap<>(32);
 
             try {
                 item.putAll(Common.beanToMap(message));
@@ -658,7 +671,12 @@ public class UserService extends BaseService implements IUserService {
             messageList.add(item);
         }
 
-        ret.put("count", messageList.size());
+        if (pageNo == 1) {
+            PageInfo<Message> pageInfo = new PageInfo<Message>(messages);
+            ret.put("count", pageInfo.getTotal());
+        }
+
+        //ret.put("count", messageList.size());
         ret.put("list", messageList);
 
         return ret;

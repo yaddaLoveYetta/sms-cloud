@@ -44,7 +44,7 @@ define('List', function (require, module, exports) {
         }
     ]);
 
-    function load(type, fn) {
+    function load(config, fn) {
 
         SMS.Tips.loading({
             text: '数据加载中，请稍候...',
@@ -55,11 +55,14 @@ define('List', function (require, module, exports) {
 
 
         api.get({
-            'status': type
+            'type': config.type,
+            'pageSize': config.pageSize || 10,
+            'pageNo': config.pageNo || 1
         }).on({
             'success': function (data, json) {
                 SMS.Tips.success("数据加载成功!", 500);
-                fn && fn(data, json);
+                var total = data.count;
+                fn && fn(data, total);
             },
             'fail': function (code, msg, json) {
                 var s = $.String.format('{0} (错误码: {1})', msg, code);
@@ -71,9 +74,10 @@ define('List', function (require, module, exports) {
         });
     }
 
-    function render(type) {
+    function render(config, fn) {
 
-        load(type, function (data) {
+        load(config, function (data, total) {
+
 
             list = data.list;
 
@@ -88,7 +92,7 @@ define('List', function (require, module, exports) {
                         sender: item.senderOrg.name,
                         date: item.date,
                         status: item.status,
-                        operate: type === 0 ? $.String.format(samples["message.item.operate"], {
+                        operate: config.type === 0 ? $.String.format(samples["message.item.operate"], {
                             index: index
                         }) : ''
                     });
@@ -98,6 +102,8 @@ define('List', function (require, module, exports) {
 
 
             bindEvents();
+
+            fn && fn(total, config.pageSize);
 
         });
     }
