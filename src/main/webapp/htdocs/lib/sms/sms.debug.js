@@ -835,7 +835,7 @@
         return {
             request: request,
             response: response,
-            config: config,
+            config: config
         };
 
     });
@@ -7607,9 +7607,8 @@
 
 
     // 暴露
-    if (typeof global.define == 'function' && (global.define.cmd || global.define.amd)) { // cmd
-        // 或
-        // amd
+    if (typeof global.define == 'function' && (global.define.cmd || global.define.amd)) {
+        // cmd 或 amd
         global.define(function (require) {
             return SMS;
         });
@@ -7633,7 +7632,6 @@
     history,
     setTimeout,
     setInterval,
-
     $,
     jQuery,
     MiniQuery,
