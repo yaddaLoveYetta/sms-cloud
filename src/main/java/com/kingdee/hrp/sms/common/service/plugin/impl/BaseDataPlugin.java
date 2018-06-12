@@ -5,6 +5,7 @@ import com.kingdee.hrp.sms.common.model.User;
 import com.kingdee.hrp.sms.common.model.UserExample;
 import com.kingdee.hrp.sms.common.pojo.Condition;
 import com.kingdee.hrp.sms.common.service.ITemplateService;
+import com.kingdee.hrp.sms.common.service.plugin.IPlugIn;
 import com.kingdee.hrp.sms.common.service.plugin.PlugInAdpter;
 import com.kingdee.hrp.sms.common.service.plugin.PlugInRet;
 import com.kingdee.hrp.sms.util.Environ;
@@ -22,11 +23,21 @@ import java.util.*;
 @Service
 public class BaseDataPlugin extends PlugInAdpter implements InitializingBean {
 
-    @Resource
-    private ITemplateService templateService;
-
+    /**
+     * 插件支持的业务类别id集合，推荐的做法是一个插件只支持一个业务类别
+     * 如只支持订单业务
+     */
     private Set<Integer> classIdSet;
 
+    /**
+     * 插件序号-同一个业务上绑定多插件时确定插件的执行顺序
+     *
+     * @return 插件序号，值越小越先执行
+     */
+    @Override
+    public Integer getIndex() {
+        return 1;
+    }
 
     /**
      * Invoked by a BeanFactory after it has set all bean properties supplied
@@ -40,6 +51,7 @@ public class BaseDataPlugin extends PlugInAdpter implements InitializingBean {
      */
     @Override
     public void afterPropertiesSet() throws Exception {
+
         classIdSet = new HashSet<>();
         // 用户
         classIdSet.add(1001);
@@ -118,7 +130,6 @@ public class BaseDataPlugin extends PlugInAdpter implements InitializingBean {
     @Override
     public List<Condition> getConditions(int classId, Map<String, Object> formTemplate, List<Condition> conditons) {
 
-        // test
         List<Condition> ret = new ArrayList<Condition>();
 
         Integer userRoleType = getUserRoleType();
@@ -157,6 +168,5 @@ public class BaseDataPlugin extends PlugInAdpter implements InitializingBean {
         return ret;
 
     }
-
 
 }

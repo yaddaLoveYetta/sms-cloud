@@ -8,10 +8,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * 用于生产服务中所需的所有插件，并统一提供所有插件的方法调用
@@ -19,7 +16,7 @@ import java.util.Set;
  * @author yadda
  * @date 2018-02-27 17:31:28 星期四
  */
-@Service
+@Service(value = "plugInFactory")
 public class PlugInFactory implements IPlugIn, InitializingBean, ApplicationContextAware {
 
     private ApplicationContext applicationContext;
@@ -27,7 +24,7 @@ public class PlugInFactory implements IPlugIn, InitializingBean, ApplicationCont
     /**
      * 存放所有的插件序列
      */
-    private List<IPlugIn> plugIns = new ArrayList<IPlugIn>();
+    private static List<IPlugIn> plugIns = new ArrayList<IPlugIn>();
 
     /**
      * 1. 实例化()构造函数;
@@ -49,13 +46,34 @@ public class PlugInFactory implements IPlugIn, InitializingBean, ApplicationCont
         Class<?> type;
 
         // 反射
-        for (String name : names) {
+        synchronized (PlugInFactory.class) {
+            for (String name : names) {
 
-            type = applicationContext.getType(name);
+                type = applicationContext.getType(name);
 
-            if (IPlugIn.class.isAssignableFrom(type)) {
-                plugIns.add(applicationContext.getBean(name, IPlugIn.class));
+                if (PlugInFactory.class.isAssignableFrom(type)) {
+                    // 为了规范PlugInFactory调用插件的逻辑，PlugInFactory也实现了IPlugIn接口
+                    // 但PlugInFactory不是业务插件
+                    continue;
+                }
+
+                if (IPlugIn.class.isAssignableFrom(type)) {
+
+                    IPlugIn plugIn = applicationContext.getBean(name, IPlugIn.class);
+
+                    if (!plugIns.contains(plugIn)) {
+                        plugIns.add(plugIn);
+                    }
+                }
             }
+            // 插件执行顺序排序
+            Collections.sort(plugIns, new Comparator<IPlugIn>() {
+                @Override
+                public int compare(IPlugIn o1, IPlugIn o2) {
+                    return o1.getIndex().compareTo(o2.getIndex());
+                }
+            });
+
         }
     }
 
@@ -64,8 +82,17 @@ public class PlugInFactory implements IPlugIn, InitializingBean, ApplicationCont
         this.applicationContext = applicationContext;
     }
 
-
     public PlugInFactory() {
+    }
+
+    /**
+     * 插件序号-同一个业务上绑定多插件时确定插件的执行顺序
+     *
+     * @return 插件序号，值越小越先执行
+     */
+    @Override
+    public Integer getIndex() {
+        return 0;
     }
 
     /**
@@ -75,7 +102,7 @@ public class PlugInFactory implements IPlugIn, InitializingBean, ApplicationCont
      */
     @Override
     public Set<Integer> getClassIdSet() {
-        return null;
+        return new HashSet<>(1);
     }
 
     /**
@@ -169,7 +196,8 @@ public class PlugInFactory implements IPlugIn, InitializingBean, ApplicationCont
      * @date 2017-07-12 09:05:42 星期三
      */
     @Override
-    public PlugInRet beforeEntryModify(int classId, String primaryId, String entryId, Map<String, Object> formTemplate, JsonNode data) {
+    public PlugInRet beforeEntryModify(int classId, String primaryId, String entryId, Map<String, Object> formTemplate,
+            JsonNode data) {
 
         PlugInRet plugInRet = new PlugInRet();
 
@@ -221,7 +249,6 @@ public class PlugInFactory implements IPlugIn, InitializingBean, ApplicationCont
      * @param ids          删除的内码集合
      * @return PlugInRet
      */
-    @Override
     public PlugInRet beforeDelete(int classId, Map<String, Object> formTemplate, List<Long> ids) {
 
         PlugInRet plugInRet = new PlugInRet();
@@ -251,7 +278,8 @@ public class PlugInFactory implements IPlugIn, InitializingBean, ApplicationCont
      * @date 2017-07-12 09:10:46 星期三
      */
     @Override
-    public PlugInRet beforeEntryDelete(int classId, String primaryId, String entryId, Map<String, Object> formTemplate) {
+    public PlugInRet beforeEntryDelete(int classId, String primaryId, String entryId,
+            Map<String, Object> formTemplate) {
 
         PlugInRet plugInRet = new PlugInRet();
 

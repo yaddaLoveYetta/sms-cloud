@@ -24,6 +24,13 @@ import java.util.Set;
 public interface IPlugIn {
 
     /**
+     * 插件序号-同一个业务上绑定多插件时确定插件的执行顺序
+     *
+     * @return 插件序号，值越小越先执行
+     */
+    Integer getIndex();
+
+    /**
      * 获取当前插件支持的业务类型集合
      *
      * @return 插件支持的业务类型classId集合
@@ -73,7 +80,8 @@ public interface IPlugIn {
      * @Title beforeEntryModify
      * @date 2017-07-12 09:05:42 星期三
      */
-    public PlugInRet beforeEntryModify(int classId, String primaryId, String entryId, Map<String, Object> formTemplate, JsonNode data);
+    public PlugInRet beforeEntryModify(int classId, String primaryId, String entryId, Map<String, Object> formTemplate,
+            JsonNode data);
 
     /**
      * 单据修改后操作

@@ -19,6 +19,16 @@ public abstract class PlugInAdpter implements IPlugIn {
     PlugInRet result = new PlugInRet();
 
     /**
+     * 插件序号-同一个业务上绑定多插件时确定插件的执行顺序
+     *
+     * @return 插件序号，值越小越先执行
+     */
+    @Override
+    public Integer getIndex() {
+        return 0;
+    }
+
+    /**
      * 获取当前插件支持的业务类型集合
      *
      * @return 插件支持的业务类型classId集合
@@ -81,7 +91,8 @@ public abstract class PlugInAdpter implements IPlugIn {
      * @date 2017-07-12 09:05:42 星期三
      */
     @Override
-    public PlugInRet beforeEntryModify(int classId, String primaryId, String entryId, Map<String, Object> formTemplate, JsonNode data) {
+    public PlugInRet beforeEntryModify(int classId, String primaryId, String entryId, Map<String, Object> formTemplate,
+            JsonNode data) {
         return result;
     }
 
@@ -124,7 +135,8 @@ public abstract class PlugInAdpter implements IPlugIn {
      * @date 2017-07-12 09:10:46 星期三
      */
     @Override
-    public PlugInRet beforeEntryDelete(int classId, String primaryId, String entryId, Map<String, Object> formTemplate) {
+    public PlugInRet beforeEntryDelete(int classId, String primaryId, String entryId,
+            Map<String, Object> formTemplate) {
         return result;
     }
 

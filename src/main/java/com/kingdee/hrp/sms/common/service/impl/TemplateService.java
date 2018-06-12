@@ -17,6 +17,7 @@ import com.kingdee.hrp.sms.common.pojo.Sort;
 import com.kingdee.hrp.sms.common.pojo.StatusCode;
 import com.kingdee.hrp.sms.common.service.BaseService;
 import com.kingdee.hrp.sms.common.service.ITemplateService;
+import com.kingdee.hrp.sms.common.service.plugin.IPlugIn;
 import com.kingdee.hrp.sms.common.service.plugin.PlugInFactory;
 import com.kingdee.hrp.sms.common.service.plugin.PlugInRet;
 import com.kingdee.hrp.sms.util.Common;
@@ -34,8 +35,8 @@ import java.util.*;
 @Service
 public class TemplateService extends BaseService implements ITemplateService {
 
-    @Resource
-    private PlugInFactory plugInFactory;
+    @Resource(name = "plugInFactory")
+    private IPlugIn plugInFactory;
 
     /**
      * 查询基础资料/单据模板数据
@@ -134,7 +135,6 @@ public class TemplateService extends BaseService implements ITemplateService {
 
         return retMap;
 
-
     }
 
     /**
@@ -156,56 +156,56 @@ public class TemplateService extends BaseService implements ITemplateService {
         if (type == 0) {
             // 查看
             switch (userRoleType) {
-                case 1:
-                    //系统管理员
-                    display = 1;
-                    break;
-                case 2:
-                    //医院
-                    display = 64;
-                    break;
-                case 3:
-                    //供应商
-                    display = 8;
-                    break;
-                default:
-                    break;
+            case 1:
+                //系统管理员
+                display = 1;
+                break;
+            case 2:
+                //医院
+                display = 64;
+                break;
+            case 3:
+                //供应商
+                display = 8;
+                break;
+            default:
+                break;
             }
         } else if (type == 1) {
             // 新增
             switch (userRoleType) {
-                case 1:
-                    //系统管理员
-                    display = 2;
-                    break;
-                case 2:
-                    //医院
-                    display = 128;
-                    break;
-                case 3:
-                    //供应商
-                    display = 16;
-                    break;
-                default:
-                    break;
+            case 1:
+                //系统管理员
+                display = 2;
+                break;
+            case 2:
+                //医院
+                display = 128;
+                break;
+            case 3:
+                //供应商
+                display = 16;
+                break;
+            default:
+                break;
             }
         } else if (type == 2) {
             // 编辑
             switch (userRoleType) {
-                case 1:
-                    //系统管理员
-                    display = 4;
-                    break;
-                case 2:
-                    //医院
-                    display = 256;
-                    break;
-                case 3:
-                    //供应商
-                    display = 32;
-                    break;
-                default:
-                    break;
+            case 1:
+                //系统管理员
+                display = 4;
+                break;
+            case 2:
+                //医院
+                display = 256;
+                break;
+            case 3:
+                //供应商
+                display = 32;
+                break;
+            default:
+                break;
             }
         }
 
@@ -248,7 +248,8 @@ public class TemplateService extends BaseService implements ITemplateService {
      */
     @Override
     @SuppressWarnings("unchecked")
-    public Map<String, Object> getItems(Integer classId, List<Condition> conditions, List<Sort> sorts, Integer pageSize, Integer pageNo) {
+    public Map<String, Object> getItems(Integer classId, List<Condition> conditions, List<Sort> sorts, Integer pageSize,
+            Integer pageNo) {
 
         // 返回结构
         Map<String, Object> ret = new HashMap<String, Object>(16);
@@ -260,7 +261,8 @@ public class TemplateService extends BaseService implements ITemplateService {
         // 子表资料描述信息
         Map<String, Object> formEntries = (Map<String, Object>) template.get("formClassEntry");
         // 主表字段模板
-        Map<String, Object> formFields0 = (Map<String, Object>) ((Map<String, Object>) template.get("formFields")).get("0");
+        Map<String, Object> formFields0 = (Map<String, Object>) ((Map<String, Object>) template.get("formFields"))
+                .get("0");
         // 第一个子表字段模板(如果有)
         Map<String, Object> formFields1 = new HashMap<String, Object>();
 
@@ -343,7 +345,8 @@ public class TemplateService extends BaseService implements ITemplateService {
 
         Map<String, Object> sqlMap = new HashMap<String, Object>();
         // 完整的sql(带格式化参数)
-        String sql = selectExec + System.getProperty("line.separator") + from + System.getProperty("line.separator") + where + System.getProperty("line.separator")
+        String sql = selectExec + System.getProperty("line.separator") + from + System.getProperty("line.separator") +
+                where + System.getProperty("line.separator")
                 + sort;
         sqlMap.put("sql", sql);
 
@@ -420,7 +423,8 @@ public class TemplateService extends BaseService implements ITemplateService {
 
     @Override
     @SuppressWarnings("unchecked")
-    public List<Map<String, Object>> getItemByIds(Integer classId, List<Long> idList, List<Condition> conditions, List<Sort> sorts) {
+    public List<Map<String, Object>> getItemByIds(Integer classId, List<Long> idList, List<Condition> conditions,
+            List<Sort> sorts) {
 
         if (idList == null || idList.size() == 0) {
             throw new BusinessLogicRunTimeException("请提交单据内码");
@@ -432,7 +436,8 @@ public class TemplateService extends BaseService implements ITemplateService {
         Map<String, Object> template = getFormTemplate(classId, 1);
 
         // 主表字段模板
-        Map<String, Object> formFields0 = (Map<String, Object>) ((Map<String, Object>) template.get("formFields")).get("0");
+        Map<String, Object> formFields0 = (Map<String, Object>) ((Map<String, Object>) template.get("formFields"))
+                .get("0");
         // 第一个子表字段模板(如果有)
         Map<String, Object> formFields1 = new HashMap<String, Object>();
         // 主表资料描述信息
@@ -486,13 +491,16 @@ public class TemplateService extends BaseService implements ITemplateService {
 
         // 查询条件-直接用传入的主键做条件
         StringBuilder sbWhere = new StringBuilder();
-        sbWhere.append("WHERE").append(System.getProperty("line.separator")).append(String.format("%s.%s%s%s IN (%s)", primaryTableName, bDelimiter, primaryKey, eDelimiter, ids));
+        sbWhere.append("WHERE").append(System.getProperty("line.separator"))
+                .append(String.format("%s.%s%s%s IN (%s)", primaryTableName, bDelimiter, primaryKey, eDelimiter, ids));
         where = sbWhere.toString();
 
         Map<String, Object> sqlMap = new HashMap<String, Object>();
         // 完整的sql(带格式化参数)
-        String sql = select + System.getProperty("line.separator") + from + System.getProperty("line.separator") + where + System.getProperty("line.separator") + orderBy
-                + System.getProperty("line.separator");
+        String sql =
+                select + System.getProperty("line.separator") + from + System.getProperty("line.separator") + where +
+                        System.getProperty("line.separator") + orderBy
+                        + System.getProperty("line.separator");
         sqlMap.put("sql", sql);
 
         TemplateDaoMapper templateDaoMapper = sqlSession.getMapper(TemplateDaoMapper.class);
@@ -523,12 +531,14 @@ public class TemplateService extends BaseService implements ITemplateService {
 
             // 查询条件-直接用传入的主键做子表的外键条件
             sbWhere = new StringBuilder();
-            sbWhere.append(where).append(System.getProperty("line.separator")).append(String.format(" AND %s.%s%s%s IN (%s)", entryTableName, bDelimiter, foreignKey, eDelimiter, ids));
+            sbWhere.append(where).append(System.getProperty("line.separator")).append(String
+                    .format(" AND %s.%s%s%s IN (%s)", entryTableName, bDelimiter, foreignKey, eDelimiter, ids));
             where = sbWhere.toString();
 
             sqlMap = new HashMap<String, Object>();
             // 完整的sql(带格式化参数)
-            sql = select + System.getProperty("line.separator") + from + System.getProperty("line.separator") + where + System.getProperty("line.separator") + orderBy
+            sql = select + System.getProperty("line.separator") + from + System.getProperty("line.separator") + where +
+                    System.getProperty("line.separator") + orderBy
                     + System.getProperty("line.separator");
             sqlMap.put("sql", sql);
 
@@ -556,7 +566,8 @@ public class TemplateService extends BaseService implements ITemplateService {
 
                     Long primaryKeyValue = (Long) dataHeadItem.get(primaryKey);
 
-                    ArrayList<Map<String, Object>> headEntry = ((Map<String, ArrayList<Map<String, Object>>>) dataHeadItem.get("entry")).get("1");
+                    ArrayList<Map<String, Object>> headEntry = ((Map<String, ArrayList<Map<String, Object>>>) dataHeadItem
+                            .get("entry")).get("1");
 
                     if (primaryKeyValue.equals(foreignKeyValue)) {
                         // 确认了该分录就是该主表分录-家该分录添加到对应主表分录中
@@ -589,7 +600,8 @@ public class TemplateService extends BaseService implements ITemplateService {
         // 基础资料模板
         Map<String, Object> template = getFormTemplate(classId, 1);
         // 主表字段模板
-        Map<String, FormFields> formFields = (Map<String, FormFields>) ((Map<String, Object>) template.get("formFields")).get("0");
+        Map<String, FormFields> formFields = (Map<String, FormFields>) ((Map<String, Object>) template
+                .get("formFields")).get("0");
         // 主表资料描述信息
         FormClass formClass = (FormClass) template.get("formClass");
         // 子表资料描述信息
@@ -611,7 +623,8 @@ public class TemplateService extends BaseService implements ITemplateService {
         Long id = getId();
 
         // 准备保存模板
-        Map<String, Object> statement = prepareAddMap(jsonNode, formFields, formClass.getTableName(), formClass.getPrimaryKey(), id);
+        Map<String, Object> statement = prepareAddMap(jsonNode, formFields, formClass.getTableName(),
+                formClass.getPrimaryKey(), id);
 
         Map<String, Object> sqlMap = new HashMap<String, Object>();
 
@@ -633,7 +646,6 @@ public class TemplateService extends BaseService implements ITemplateService {
         // 处理分录数据
         handleEntryData(classId, id, jsonNode);
 
-
         // 新增后事件
         plugInRet = plugInFactory.afterSave(classId, id, jsonNode);
         if (plugInRet != null && plugInRet.getCode() != StatusCode.SUCCESS) {
@@ -643,7 +655,6 @@ public class TemplateService extends BaseService implements ITemplateService {
         return id;
 
     }
-
 
     /**
      * 修改业务数据
@@ -662,7 +673,8 @@ public class TemplateService extends BaseService implements ITemplateService {
         Map<String, Object> template = getFormTemplate(classId, 1);
 
         // 主表的字段模板
-        Map<String, FormFields> formFields = (Map<String, FormFields>) ((Map<String, Object>) template.get("formFields")).get("0");
+        Map<String, FormFields> formFields = (Map<String, FormFields>) ((Map<String, Object>) template
+                .get("formFields")).get("0");
 
         // 主表资料描述信息
         FormClass formClass = (FormClass) template.get("formClass");
@@ -670,7 +682,6 @@ public class TemplateService extends BaseService implements ITemplateService {
         // 转成json便于操作
         ObjectMapper mapper = Environ.getBean(ObjectMapper.class);
         JsonNode jsonNode = mapper.readTree(data);
-
 
         // 修改前插件事件
         PlugInRet plugInRet = plugInFactory.beforeModify(classId, id, template, jsonNode);
@@ -695,7 +706,8 @@ public class TemplateService extends BaseService implements ITemplateService {
 
             Map<String, Object> sqlMap = new HashMap<String, Object>();
 
-            String sql = "update " + tableName + " set " + kvStr + " where " + primaryColumnName + "= #{" + primaryKey + "}";
+            String sql =
+                    "update " + tableName + " set " + kvStr + " where " + primaryColumnName + "= #{" + primaryKey + "}";
             // 完整带参数的sql
             sqlMap.put("sql", sql);
             // --格式化参数列表
@@ -738,7 +750,8 @@ public class TemplateService extends BaseService implements ITemplateService {
         // 主表资料描述信息
         FormClass formClass = (FormClass) template.get("formClass");
         // 主表字段模板
-        Map<String, FormFields> formFields = (Map<String, FormFields>) ((Map<String, Object>) template.get("formFields")).get("0");
+        Map<String, FormFields> formFields = (Map<String, FormFields>) ((Map<String, Object>) template
+                .get("formFields")).get("0");
 
         String primaryTableName = formClass.getTableName();
         String primaryKey = formClass.getPrimaryKey();
@@ -772,7 +785,6 @@ public class TemplateService extends BaseService implements ITemplateService {
         return true;
     }
 
-
     /**
      * 禁用/反禁用(基础资料用)
      *
@@ -795,7 +807,8 @@ public class TemplateService extends BaseService implements ITemplateService {
         // 主表资料描述信息
         FormClass formClass = (FormClass) template.get("formClass");
         // 主表字段模板
-        Map<String, FormFields> formFields = (Map<String, FormFields>) ((Map<String, Object>) template.get("formFields")).get("0");
+        Map<String, FormFields> formFields = (Map<String, FormFields>) ((Map<String, Object>) template
+                .get("formFields")).get("0");
 
         String primaryTableName = formClass.getTableName();
         String primaryKey = formClass.getPrimaryKey();
@@ -896,7 +909,6 @@ public class TemplateService extends BaseService implements ITemplateService {
         return null;
     }
 
-
     /**
      * 构建查询脚本
      *
@@ -917,7 +929,6 @@ public class TemplateService extends BaseService implements ITemplateService {
         FormClass formClass = (FormClass) template.get("formClass");
         // 子表资料描述信息
         Map<String, Object> formEntries = (Map<String, Object>) template.get("formClassEntry");
-
 
         // 数据库字段-关键字处理
         Map<String, String> dbDelimiter = getDBDelimiter();
@@ -972,8 +983,10 @@ public class TemplateService extends BaseService implements ITemplateService {
 
         if (isChildTableExist) {
             // 存在子表先拼接子表
-            sbFrom.append(String.format(" %s %s ON %s.%s%s%s = %s.%s%s%s", entryJoinType, childTableName, childTableName, bDelimiter, foreignKey, eDelimiter, primaryTableName, bDelimiter, primaryKey,
-                    eDelimiter)).append(separator);
+            sbFrom.append(
+                    String.format(" %s %s ON %s.%s%s%s = %s.%s%s%s", entryJoinType, childTableName, childTableName,
+                            bDelimiter, foreignKey, eDelimiter, primaryTableName, bDelimiter, primaryKey,
+                            eDelimiter)).append(separator);
         }
 
         /*
@@ -1052,13 +1065,19 @@ public class TemplateService extends BaseService implements ITemplateService {
 
                     // 基础资料/辅助资料引用类型-主表中记录关联字段值一般是id
                     // 查询出主表中记录的关联字段值
-                    sbSelect.append(String.format("%s.%s%s%s AS %s%s%s,", formFieldLinkedTable, bDelimiter, sqlColumnName, eDelimiter, bDelimiter, key, eDelimiter)).append(separator);
+                    sbSelect.append(
+                            String.format("%s.%s%s%s AS %s%s%s,", formFieldLinkedTable, bDelimiter, sqlColumnName,
+                                    eDelimiter, bDelimiter, key, eDelimiter)).append(separator);
                     // 查询出关联表该显示的值
-                    sbSelect.append(String.format("%s.%s%s%s AS %s%s%s,", srcTableAlis, bDelimiter, disPlayField, eDelimiter, bDelimiter, key + "_DspName", eDelimiter)).append(separator);
+                    sbSelect.append(
+                            String.format("%s.%s%s%s AS %s%s%s,", srcTableAlis, bDelimiter, disPlayField, eDelimiter,
+                                    bDelimiter, key + "_DspName", eDelimiter)).append(separator);
                     // 如果增加配置了关联表扩展显示值，则一并查询出
                     if (displayExt != null && !"".equals(displayExt.trim())) {
                         // 代码显示字段
-                        sbSelect.append(String.format("%s.%s%s%s AS %s%s%s,", srcTableAlis, bDelimiter, displayExt, eDelimiter, bDelimiter, key + "_NmbName", eDelimiter)).append(separator);
+                        sbSelect.append(
+                                String.format("%s.%s%s%s AS %s%s%s,", srcTableAlis, bDelimiter, displayExt, eDelimiter,
+                                        bDelimiter, key + "_NmbName", eDelimiter)).append(separator);
                     }
 
                     // from 中同时增加关联表
@@ -1069,7 +1088,9 @@ public class TemplateService extends BaseService implements ITemplateService {
                         sbFrom.append(" AS ").append(srcTableAlisAs);
                     }
                     // 主表与关联表的关联条件
-                    sbFrom.append(String.format(" ON %s.%s%s%s = %s.%s%s%s ", formFieldLinkedTable, bDelimiter, sqlColumnName, eDelimiter, srcTableAlis, bDelimiter, srcField, eDelimiter))
+                    sbFrom.append(
+                            String.format(" ON %s.%s%s%s = %s.%s%s%s ", formFieldLinkedTable, bDelimiter, sqlColumnName,
+                                    eDelimiter, srcTableAlis, bDelimiter, srcField, eDelimiter))
                             .append(separator);
 
                     if (filter != null && !"".equals(filter.trim())) {
@@ -1091,7 +1112,8 @@ public class TemplateService extends BaseService implements ITemplateService {
                     FormFields lookUpTypeFormField = getFormField(lookUpClassId, disPlayField);
 
                     if (lookUpTypeFormField == null) {
-                        throw new BusinessLogicRunTimeException(String.format("classId=%s, key=%s 的disPlayField配置错误，请联系管理员", classId, key));
+                        throw new BusinessLogicRunTimeException(
+                                String.format("classId=%s, key=%s 的disPlayField配置错误，请联系管理员", classId, key));
                     }
 
                     String nameEx = lookUpTypeFormField.getName();
@@ -1102,14 +1124,18 @@ public class TemplateService extends BaseService implements ITemplateService {
 
                     if (needSave) {
                         // 需要保存的携带属性值直接从主表查询
-                        sbSelect.append(String.format("%s.%s%s%s AS %s%s%s,", formFieldLinkedTable, bDelimiter, sqlColumnName, eDelimiter, bDelimiter, key, eDelimiter)).append(separator);
+                        sbSelect.append(
+                                String.format("%s.%s%s%s AS %s%s%s,", formFieldLinkedTable, bDelimiter, sqlColumnName,
+                                        eDelimiter, bDelimiter, key, eDelimiter)).append(separator);
 
                     } else {
                         // 不需要保存的引用字段关联查询
                         if (lookUpTypeEx != null && lookUpTypeEx > 0) {
 
                             // 附加属性又是引用类型的情况--取显示字段并关联表
-                            sbSelect.append(String.format("%s.%s%s%s AS %s%s%s,", srcTableAlis, bDelimiter, nameEx, eDelimiter, bDelimiter, key, eDelimiter)).append(separator);
+                            sbSelect.append(
+                                    String.format("%s.%s%s%s AS %s%s%s,", srcTableAlis, bDelimiter, nameEx, eDelimiter,
+                                            bDelimiter, key, eDelimiter)).append(separator);
 
                             // from 中同时增加关联表
                             sbFrom.append(joinTypeEx).append(srcTableEx);
@@ -1117,11 +1143,15 @@ public class TemplateService extends BaseService implements ITemplateService {
                             // 关联表的别名
                             sbFrom.append(" AS ").append(srcTableAlis);
 
-                            sbFrom.append(String.format(" ON %s.%s%s%s = %s.%s%s%s ", srcTableEx, bDelimiter, srcFieldEx, eDelimiter, srcTableAlis, bDelimiter, srcFieldEx, eDelimiter))
+                            sbFrom.append(
+                                    String.format(" ON %s.%s%s%s = %s.%s%s%s ", srcTableEx, bDelimiter, srcFieldEx,
+                                            eDelimiter, srcTableAlis, bDelimiter, srcFieldEx, eDelimiter))
                                     .append(separator);
                         } else {
                             // 普通属性
-                            sbSelect.append(String.format("%s.%s%s%s AS %s%s%s,", srcTableAlis, bDelimiter, disPlayField, eDelimiter, bDelimiter, key, eDelimiter)).append(separator);
+                            sbSelect.append(
+                                    String.format("%s.%s%s%s AS %s%s%s,", srcTableAlis, bDelimiter, disPlayField,
+                                            eDelimiter, bDelimiter, key, eDelimiter)).append(separator);
                         }
 
                     }
@@ -1129,8 +1159,12 @@ public class TemplateService extends BaseService implements ITemplateService {
                 } else if (lookUpType != null && lookUpType == 4) {
 
                     // 普通引用-引用其他表数据
-                    sbSelect.append(String.format("%s.%s%s%s AS %s%s%s,", formFieldLinkedTable, bDelimiter, sqlColumnName, eDelimiter, bDelimiter, key, eDelimiter)).append(separator);
-                    sbSelect.append(String.format("%s.%s%s%s AS %s%s%s,", srcTableAlis, bDelimiter, disPlayField, eDelimiter, bDelimiter, key, eDelimiter)).append(separator);
+                    sbSelect.append(
+                            String.format("%s.%s%s%s AS %s%s%s,", formFieldLinkedTable, bDelimiter, sqlColumnName,
+                                    eDelimiter, bDelimiter, key, eDelimiter)).append(separator);
+                    sbSelect.append(
+                            String.format("%s.%s%s%s AS %s%s%s,", srcTableAlis, bDelimiter, disPlayField, eDelimiter,
+                                    bDelimiter, key, eDelimiter)).append(separator);
 
                     // from 中同时增加关联表
                     sbFrom.append(joinType).append(srcTable);
@@ -1140,7 +1174,9 @@ public class TemplateService extends BaseService implements ITemplateService {
                         sbFrom.append(" AS ").append(srcTableAlisAs);
                     }
 
-                    sbFrom.append(String.format(" ON %s.%s%s%s = %s.%s%s%s ", formFieldLinkedTable, bDelimiter, sqlColumnName, eDelimiter, srcTableAlis, bDelimiter, srcField, eDelimiter))
+                    sbFrom.append(
+                            String.format(" ON %s.%s%s%s = %s.%s%s%s ", formFieldLinkedTable, bDelimiter, sqlColumnName,
+                                    eDelimiter, srcTableAlis, bDelimiter, srcField, eDelimiter))
                             .append(separator);
 
                 } else if (lookUpType != null && lookUpType == 5) {
@@ -1148,14 +1184,17 @@ public class TemplateService extends BaseService implements ITemplateService {
                     // 普通引用其他表的其他字段-
                     // 主要为了避免为4即引用他表数据时，需引用多个字段时关联表重复问题。依附于=4时存在,即模板中肯定存在lookUpType=4的字段模板
 
-                    sbSelect.append(String.format("%s.%s%s%s AS %s%s%s,", srcTableAlis, bDelimiter, disPlayField, eDelimiter, bDelimiter, key, eDelimiter)).append(separator);
+                    sbSelect.append(
+                            String.format("%s.%s%s%s AS %s%s%s,", srcTableAlis, bDelimiter, disPlayField, eDelimiter,
+                                    bDelimiter, key, eDelimiter)).append(separator);
 
                 } else {
-                    sbSelect.append(String.format("%s.%s%s%s AS %s%s%s,", formFieldLinkedTable, bDelimiter, sqlColumnName, eDelimiter, bDelimiter, key, eDelimiter)).append(separator);
+                    sbSelect.append(
+                            String.format("%s.%s%s%s AS %s%s%s,", formFieldLinkedTable, bDelimiter, sqlColumnName,
+                                    eDelimiter, bDelimiter, key, eDelimiter)).append(separator);
                 }
             }
         }
-
 
         String select = sbSelect.toString().trim();
         select = select.substring(0, select.length() - 1);
@@ -1192,7 +1231,6 @@ public class TemplateService extends BaseService implements ITemplateService {
         // 子表资料描述信息
         Map<String, Object> formEntries = (Map<String, Object>) template.get("formClassEntry");
 
-
         // 数据库字段-关键字处理
         Map<String, String> dbDelimiter = getDBDelimiter();
         String bDelimiter = dbDelimiter.get("bDelimiter");
@@ -1227,7 +1265,6 @@ public class TemplateService extends BaseService implements ITemplateService {
         StringBuilder sbSelect = new StringBuilder();
         StringBuilder sbFrom = new StringBuilder();
         String separator = System.getProperty("line.separator");
-
 
         sbSelect.append("SELECT").append(separator);
         sbFrom.append("FROM ").append(selTable).append(separator);
@@ -1282,13 +1319,18 @@ public class TemplateService extends BaseService implements ITemplateService {
 
                 // 基础资料/辅助资料引用类型-主表中记录关联字段值一般是id
                 // 查询出主表中记录的关联字段值
-                sbSelect.append(String.format("%s.%s%s%s AS %s%s%s,", selTable, bDelimiter, sqlColumnName, eDelimiter, bDelimiter, key, eDelimiter)).append(separator);
+                sbSelect.append(String.format("%s.%s%s%s AS %s%s%s,", selTable, bDelimiter, sqlColumnName, eDelimiter,
+                        bDelimiter, key, eDelimiter)).append(separator);
                 // 查询出关联表该显示的值
-                sbSelect.append(String.format("%s.%s%s%s AS %s%s%s,", srcTableAlis, bDelimiter, disPlayField, eDelimiter, bDelimiter, key + "_DspName", eDelimiter)).append(separator);
+                sbSelect.append(
+                        String.format("%s.%s%s%s AS %s%s%s,", srcTableAlis, bDelimiter, disPlayField, eDelimiter,
+                                bDelimiter, key + "_DspName", eDelimiter)).append(separator);
                 // 如果增加配置了关联表扩展显示值，则一并查询出
                 if (displayExt != null && !"".equals(displayExt.trim())) {
                     // 代码显示字段
-                    sbSelect.append(String.format("%s.%s%s%s AS %s%s%s,", srcTableAlis, bDelimiter, displayExt, eDelimiter, bDelimiter, key + "_NmbName", eDelimiter)).append(separator);
+                    sbSelect.append(
+                            String.format("%s.%s%s%s AS %s%s%s,", srcTableAlis, bDelimiter, displayExt, eDelimiter,
+                                    bDelimiter, key + "_NmbName", eDelimiter)).append(separator);
                 }
 
                 // from 中同时增加关联表
@@ -1299,7 +1341,9 @@ public class TemplateService extends BaseService implements ITemplateService {
                     sbFrom.append(" AS ").append(srcTableAlisAs);
                 }
                 // 主表与关联表的关联条件
-                sbFrom.append(String.format(" ON %s.%s%s%s = %s.%s%s%s ", selTable, bDelimiter, sqlColumnName, eDelimiter, srcTableAlis, bDelimiter, srcField, eDelimiter))
+                sbFrom.append(
+                        String.format(" ON %s.%s%s%s = %s.%s%s%s ", selTable, bDelimiter, sqlColumnName, eDelimiter,
+                                srcTableAlis, bDelimiter, srcField, eDelimiter))
                         .append(separator);
 
                 if (filter != null && !"".equals(filter.trim())) {
@@ -1321,7 +1365,8 @@ public class TemplateService extends BaseService implements ITemplateService {
                 FormFields lookUpTypeFormField = getFormField(lookUpClassId, disPlayField);
 
                 if (lookUpTypeFormField == null) {
-                    throw new BusinessLogicRunTimeException(String.format("classId=%s, key=%s 的disPlayField配置错误，请联系管理员", classId, key));
+                    throw new BusinessLogicRunTimeException(
+                            String.format("classId=%s, key=%s 的disPlayField配置错误，请联系管理员", classId, key));
                 }
 
                 String nameEx = lookUpTypeFormField.getName();
@@ -1332,14 +1377,18 @@ public class TemplateService extends BaseService implements ITemplateService {
 
                 if (needSave) {
                     // 需要保存的携带属性值直接从主表查询
-                    sbSelect.append(String.format("%s.%s%s%s AS %s%s%s,", selTable, bDelimiter, sqlColumnName, eDelimiter, bDelimiter, key, eDelimiter)).append(separator);
+                    sbSelect.append(
+                            String.format("%s.%s%s%s AS %s%s%s,", selTable, bDelimiter, sqlColumnName, eDelimiter,
+                                    bDelimiter, key, eDelimiter)).append(separator);
 
                 } else {
                     // 不需要保存的引用字段关联查询
                     if (lookUpTypeEx != null && lookUpTypeEx > 0) {
 
                         // 附加属性又是引用类型的情况--取显示字段并关联表
-                        sbSelect.append(String.format("%s.%s%s%s AS %s%s%s,", srcTableAlis, bDelimiter, nameEx, eDelimiter, bDelimiter, key, eDelimiter)).append(separator);
+                        sbSelect.append(
+                                String.format("%s.%s%s%s AS %s%s%s,", srcTableAlis, bDelimiter, nameEx, eDelimiter,
+                                        bDelimiter, key, eDelimiter)).append(separator);
 
                         // from 中同时增加关联表
                         sbFrom.append(joinTypeEx).append(srcTableEx);
@@ -1347,19 +1396,24 @@ public class TemplateService extends BaseService implements ITemplateService {
                         // 关联表的别名
                         sbFrom.append(" AS ").append(srcTableAlis);
 
-                        sbFrom.append(String.format(" ON %s.%s%s%s = %s.%s%s%s ", srcTableEx, bDelimiter, srcFieldEx, eDelimiter, srcTableAlis, bDelimiter, srcFieldEx, eDelimiter))
+                        sbFrom.append(String.format(" ON %s.%s%s%s = %s.%s%s%s ", srcTableEx, bDelimiter, srcFieldEx,
+                                eDelimiter, srcTableAlis, bDelimiter, srcFieldEx, eDelimiter))
                                 .append(separator);
                     } else {
                         // 普通属性
-                        sbSelect.append(String.format("%s.%s%s%s AS %s%s%s,", srcTableAlis, bDelimiter, disPlayField, eDelimiter, bDelimiter, key, eDelimiter)).append(separator);
+                        sbSelect.append(String.format("%s.%s%s%s AS %s%s%s,", srcTableAlis, bDelimiter, disPlayField,
+                                eDelimiter, bDelimiter, key, eDelimiter)).append(separator);
                     }
 
                 }
 
             } else if (lookUpType == 4) {
                 // 普通引用-引用其他表数据
-                sbSelect.append(String.format("%s.%s%s%s AS %s%s%s,", selTable, bDelimiter, sqlColumnName, eDelimiter, bDelimiter, key, eDelimiter)).append(separator);
-                sbSelect.append(String.format("%s.%s%s%s AS %s%s%s,", srcTableAlis, bDelimiter, disPlayField, eDelimiter, bDelimiter, key + "_DspName", eDelimiter)).append(separator);
+                sbSelect.append(String.format("%s.%s%s%s AS %s%s%s,", selTable, bDelimiter, sqlColumnName, eDelimiter,
+                        bDelimiter, key, eDelimiter)).append(separator);
+                sbSelect.append(
+                        String.format("%s.%s%s%s AS %s%s%s,", srcTableAlis, bDelimiter, disPlayField, eDelimiter,
+                                bDelimiter, key + "_DspName", eDelimiter)).append(separator);
 
                 // from 中同时增加关联表
                 sbFrom.append(joinType).append(srcTable);
@@ -1369,7 +1423,9 @@ public class TemplateService extends BaseService implements ITemplateService {
                     sbFrom.append(" AS ").append(srcTableAlisAs);
                 }
 
-                sbFrom.append(String.format(" ON %s.%s%s%s = %s.%s%s%s ", selTable, bDelimiter, sqlColumnName, eDelimiter, srcTableAlis, bDelimiter, srcField, eDelimiter))
+                sbFrom.append(
+                        String.format(" ON %s.%s%s%s = %s.%s%s%s ", selTable, bDelimiter, sqlColumnName, eDelimiter,
+                                srcTableAlis, bDelimiter, srcField, eDelimiter))
                         .append(separator);
 
             } else if (lookUpType == 5) {
@@ -1377,10 +1433,13 @@ public class TemplateService extends BaseService implements ITemplateService {
                 // 普通引用其他表的其他字段-
                 // 主要为了避免为4即引用他表数据时，需引用多个字段时关联表重复问题。依附于=4时存在,即模板中肯定存在lookUpType=4的字段模板
 
-                sbSelect.append(String.format("%s.%s%s%s AS %s%s%s,", srcTableAlis, bDelimiter, disPlayField, eDelimiter, bDelimiter, key, eDelimiter)).append(separator);
+                sbSelect.append(
+                        String.format("%s.%s%s%s AS %s%s%s,", srcTableAlis, bDelimiter, disPlayField, eDelimiter,
+                                bDelimiter, key, eDelimiter)).append(separator);
 
             } else {
-                sbSelect.append(String.format("%s.%s%s%s AS %s%s%s,", selTable, bDelimiter, sqlColumnName, eDelimiter, bDelimiter, key, eDelimiter)).append(separator);
+                sbSelect.append(String.format("%s.%s%s%s AS %s%s%s,", selTable, bDelimiter, sqlColumnName, eDelimiter,
+                        bDelimiter, key, eDelimiter)).append(separator);
             }
         }
 
@@ -1478,7 +1537,6 @@ public class TemplateService extends BaseService implements ITemplateService {
             // 第一个条件忽略连接关系
             linkType = i == 0 ? Condition.LinkTypeEnum.NULL : linkType;
 
-
             // 左括号-可能有多个，如 "(("，甚至"((("等复杂查询,默认"("
             String leftParenTheses = condition.getLeftParenTheses();
 
@@ -1559,59 +1617,59 @@ public class TemplateService extends BaseService implements ITemplateService {
 
             switch (ctrlTypeEnum) {
 
-                case INTEGER:
-                    break;
-                case DECIMAL:
-                    break;
-                case CHECKBOX:
-                    break;
-                case SELECT:
-                    break;
-                case F7:
-                    break;
-                case CASCADE:
-                    break;
-                case MOBILE:
-                    break;
-                case PHONE:
-                    break;
-                case TEXT:
-                case TEXTAREA:
-                    if (logicOperator == Condition.LogicOperatorEnum.LIKE) {
-                        // 不处理，调用者控制左匹配%xxx或右匹配xxx%或全匹配%xxx%
-                        //value = "%" + value + "%";
-                    } else if (logicOperator == Condition.LogicOperatorEnum.IN) {
-                        // 不适用此系统动态查询方式，对于IN，手工拼接脚本
-                        preValue = "(";
-                        sufValue = ")";
-                        skip = true;
+            case INTEGER:
+                break;
+            case DECIMAL:
+                break;
+            case CHECKBOX:
+                break;
+            case SELECT:
+                break;
+            case F7:
+                break;
+            case CASCADE:
+                break;
+            case MOBILE:
+                break;
+            case PHONE:
+                break;
+            case TEXT:
+            case TEXTAREA:
+                if (logicOperator == Condition.LogicOperatorEnum.LIKE) {
+                    // 不处理，调用者控制左匹配%xxx或右匹配xxx%或全匹配%xxx%
+                    //value = "%" + value + "%";
+                } else if (logicOperator == Condition.LogicOperatorEnum.IN) {
+                    // 不适用此系统动态查询方式，对于IN，手工拼接脚本
+                    preValue = "(";
+                    sufValue = ")";
+                    skip = true;
+                }
+                break;
+            case DATETIME:
+                if (logicOperator == Condition.LogicOperatorEnum.LESS_OR_EQUAL) {
+                    if (!Common.isLongDate(String.valueOf(value))) {
+                        // 由于数据库中日期可能存储有时分秒，过滤天时过滤到当前23:59:59
+                        value = value + " 23:59:59";
                     }
-                    break;
-                case DATETIME:
-                    if (logicOperator == Condition.LogicOperatorEnum.LESS_OR_EQUAL) {
-                        if (!Common.isLongDate(String.valueOf(value))) {
-                            // 由于数据库中日期可能存储有时分秒，过滤天时过滤到当前23:59:59
-                            value = value + " 23:59:59";
-                        }
-                    } else if (logicOperator == Condition.LogicOperatorEnum.GREATER_OR_EQUAL) {
-                        if (!Common.isLongDate(String.valueOf(value))) {
-                            value = value + " 00:00:00";
-                        }
+                } else if (logicOperator == Condition.LogicOperatorEnum.GREATER_OR_EQUAL) {
+                    if (!Common.isLongDate(String.valueOf(value))) {
+                        value = value + " 00:00:00";
                     }
-                    break;
-                case SEX:
-                    break;
-                case PASSWORD:
-                    break;
-                case WHETHER:
-                    // boolean b = value.equals("是") ? true : false;
-                    // 此类字段数据库中一般要求用bit类型,即非0即1
-                    value = "是".equals(value) ? "1" : "否".equals(value) ? "0" : "2";
-                    break;
-                case MONEY:
-                    break;
-                default:
-                    break;
+                }
+                break;
+            case SEX:
+                break;
+            case PASSWORD:
+                break;
+            case WHETHER:
+                // boolean b = value.equals("是") ? true : false;
+                // 此类字段数据库中一般要求用bit类型,即非0即1
+                value = "是".equals(value) ? "1" : "否".equals(value) ? "0" : "2";
+                break;
+            case MONEY:
+                break;
+            default:
+                break;
             }
             /*
             switch (ctrlTypeEnum) {
@@ -1725,17 +1783,24 @@ public class TemplateService extends BaseService implements ITemplateService {
 
             if (skip) {
                 // 手工脚本-主要是IN过滤类型MyBatis不好格式化参数
-                sbWhere.append(separator).append(String.format("%s %s %s.%s%s%s %s %s %s %s %s ", linkType.getName(), leftParenTheses, tableName, bDelimiter, fieldName, eDelimiter, logicOperator.getOperator(), preValue, value,
-                        sufValue, rightParenTheses));
+                sbWhere.append(separator).append(String
+                        .format("%s %s %s.%s%s%s %s %s %s %s %s ", linkType.getName(), leftParenTheses, tableName,
+                                bDelimiter, fieldName, eDelimiter, logicOperator.getOperator(), preValue, value,
+                                sufValue, rightParenTheses));
             } else {
                 // 动态脚本
 
-                if (logicOperator == Condition.LogicOperatorEnum.NULL || logicOperator == Condition.LogicOperatorEnum.NOT_NULL) {
+                if (logicOperator == Condition.LogicOperatorEnum.NULL ||
+                        logicOperator == Condition.LogicOperatorEnum.NOT_NULL) {
                     // is null || is not null 不需要比较值
-                    sbWhere.append(separator).append(String.format("%s %s %s.%s%s%s %s %s", linkType.getName(), leftParenTheses, tableName, bDelimiter, fieldName, eDelimiter, logicOperator.getOperator(), rightParenTheses));
+                    sbWhere.append(separator).append(String
+                            .format("%s %s %s.%s%s%s %s %s", linkType.getName(), leftParenTheses, tableName, bDelimiter,
+                                    fieldName, eDelimiter, logicOperator.getOperator(), rightParenTheses));
                 } else {
-                    sbWhere.append(separator).append(String.format("%s %s %s.%s%s%s %s %s %s %s %s ", linkType.getName(), leftParenTheses, tableName, bDelimiter, fieldName, eDelimiter, logicOperator.getOperator(), preValue,
-                            "#{" + fieldKey + i + "}", sufValue, rightParenTheses));
+                    sbWhere.append(separator).append(String
+                            .format("%s %s %s.%s%s%s %s %s %s %s %s ", linkType.getName(), leftParenTheses, tableName,
+                                    bDelimiter, fieldName, eDelimiter, logicOperator.getOperator(), preValue,
+                                    "#{" + fieldKey + i + "}", sufValue, rightParenTheses));
                     // 格式化参数
                     sqlParams.put(fieldKey + i, value);
                 }
@@ -1825,7 +1890,8 @@ public class TemplateService extends BaseService implements ITemplateService {
                 fieldName = disPlayField;
             }
 
-            sbOrderBy.append(separator).append(String.format("%s.%s%s%s %s,", tableName, bDelimiter, fieldName, eDelimiter, orderDirection));
+            sbOrderBy.append(separator).append(String
+                    .format("%s.%s%s%s %s,", tableName, bDelimiter, fieldName, eDelimiter, orderDirection));
 
         }
 
@@ -1963,7 +2029,8 @@ public class TemplateService extends BaseService implements ITemplateService {
      * @param primaryValue 主键值
      * @return Map<String, Object>
      */
-    private Map<String, Object> prepareAddMap(JsonNode data, Map<String, FormFields> formFields, String tableName, String primaryKey, Long primaryValue) {
+    private Map<String, Object> prepareAddMap(JsonNode data, Map<String, FormFields> formFields, String tableName,
+            String primaryKey, Long primaryValue) {
 
         return prepareAddMap(data, formFields, tableName, primaryKey, primaryValue, null, null);
 
@@ -1981,7 +2048,8 @@ public class TemplateService extends BaseService implements ITemplateService {
      * @param foreignValue 子表外键value(主表主键值)
      * @return Map<String, Object>
      */
-    private Map<String, Object> prepareAddMap(JsonNode data, Map<String, FormFields> formFields, String tableName, String primaryKey, Long primaryValue, String foreignKey, Long foreignValue) {
+    private Map<String, Object> prepareAddMap(JsonNode data, Map<String, FormFields> formFields, String tableName,
+            String primaryKey, Long primaryValue, String foreignKey, Long foreignValue) {
 
         Map<String, Object> ret = new HashMap<String, Object>(8);
         Map<String, Object> fieldValuesParams = new HashMap<String, Object>(16);
@@ -2048,7 +2116,6 @@ public class TemplateService extends BaseService implements ITemplateService {
         fieldValues.append(",").append("#{").append(primaryKey).append("}");
         fieldValuesParams.put(primaryKey, primaryValue);
 
-
         String fieldStr = fieldNames.length() > 0 ? fieldNames.toString().substring(1) : "";
         String valueStr = fieldValues.length() > 0 ? fieldValues.toString().substring(1) : "";
 
@@ -2086,7 +2153,8 @@ public class TemplateService extends BaseService implements ITemplateService {
         for (String key : formEntries.keySet()) {
 
             // key 等于1或2或3...
-            Map<String, FormFields> formFields = (Map<String, FormFields>) ((Map<String, Object>) template.get("formFields")).get(key);
+            Map<String, FormFields> formFields = (Map<String, FormFields>) ((Map<String, Object>) template
+                    .get("formFields")).get(key);
 
             JsonNode entryData = jsonEntry.path(key);
 
@@ -2098,7 +2166,6 @@ public class TemplateService extends BaseService implements ITemplateService {
         }
 
     }
-
 
     /**
      * 保存或删除分录数据
@@ -2141,7 +2208,8 @@ public class TemplateService extends BaseService implements ITemplateService {
                 Long entryId = getId();
 
                 // 准备保存模板
-                Map<String, Object> statement = prepareAddMap(data, formFields, entryTableName, primaryKey, entryId, foreignKey, id);
+                Map<String, Object> statement = prepareAddMap(data, formFields, entryTableName, primaryKey, entryId,
+                        foreignKey, id);
 
                 Map<String, Object> sqlMap = new HashMap<String, Object>();
 
@@ -2149,7 +2217,6 @@ public class TemplateService extends BaseService implements ITemplateService {
                 String fieldStr = statement.get("fieldStr").toString();
                 String valueStr = statement.get("valueStr").toString();
                 Map<String, Object> sqlParams = (Map<String, Object>) statement.get("sqlParams");
-
 
                 if (!"".equals(fieldStr)) {
 
@@ -2193,7 +2260,9 @@ public class TemplateService extends BaseService implements ITemplateService {
 
                 Map<String, Object> sqlMap = new HashMap<String, Object>();
 
-                String sql = "update " + tableName + " set " + kvStr + " where " + primaryColumnName + "= #{" + primaryKey + "}";
+                String sql =
+                        "update " + tableName + " set " + kvStr + " where " + primaryColumnName + "= #{" + primaryKey +
+                                "}";
 
                 // 完整带参数的sql
                 sqlMap.put("sql", sql);
@@ -2234,7 +2303,8 @@ public class TemplateService extends BaseService implements ITemplateService {
      * @param id               主键值
      * @return Map<String, Object>
      */
-    private Map<String, Object> prepareEditMap(JsonNode data, Map<String, FormFields> formFields, String primaryTableName, String primaryKey, Long id) {
+    private Map<String, Object> prepareEditMap(JsonNode data, Map<String, FormFields> formFields,
+            String primaryTableName, String primaryKey, Long id) {
 
         Map<String, Object> sqlParams = new HashMap<String, Object>();
 
@@ -2303,60 +2373,59 @@ public class TemplateService extends BaseService implements ITemplateService {
      */
     private Object transformValue(JsonNode dataNode, CtrlTypeEnum ctrlType) {
 
-
         Object value;
 
         switch (ctrlType) {
 
-            case INTEGER:
-                value = dataNode.asLong();
-                break;
-            case DECIMAL:
-                value = dataNode.asDouble(0.00D);
-                break;
-            case CHECKBOX:
-                value = dataNode.asInt(0);
-                break;
-            case SELECT:
-                value = dataNode.asInt(0);
-                break;
-            case F7:
-                value = dataNode.asLong();
-                break;
-            case CASCADE:
-                value = dataNode.asLong();
-                break;
-            case MOBILE:
-                value = dataNode.asText("");
-                break;
-            case PHONE:
-                value = dataNode.asText("");
-                break;
-            case TEXT:
-                value = dataNode.asText("");
-                break;
-            case TEXTAREA:
-                value = dataNode.asText("");
-                break;
-            case DATETIME:
-                value = dataNode.asText("");
-                break;
-            case SEX:
-                value = dataNode.asInt(0);
-                break;
-            case PASSWORD:
-                value = dataNode.asText("");
-                break;
-            case WHETHER:
-                value = dataNode.asInt(0);
-                break;
-            case MONEY:
-                value = dataNode.asDouble(0.00D);
-                break;
-            default:
-                // 默认文本
-                value = dataNode.asText("");
-                break;
+        case INTEGER:
+            value = dataNode.asLong();
+            break;
+        case DECIMAL:
+            value = dataNode.asDouble(0.00D);
+            break;
+        case CHECKBOX:
+            value = dataNode.asInt(0);
+            break;
+        case SELECT:
+            value = dataNode.asInt(0);
+            break;
+        case F7:
+            value = dataNode.asLong();
+            break;
+        case CASCADE:
+            value = dataNode.asLong();
+            break;
+        case MOBILE:
+            value = dataNode.asText("");
+            break;
+        case PHONE:
+            value = dataNode.asText("");
+            break;
+        case TEXT:
+            value = dataNode.asText("");
+            break;
+        case TEXTAREA:
+            value = dataNode.asText("");
+            break;
+        case DATETIME:
+            value = dataNode.asText("");
+            break;
+        case SEX:
+            value = dataNode.asInt(0);
+            break;
+        case PASSWORD:
+            value = dataNode.asText("");
+            break;
+        case WHETHER:
+            value = dataNode.asInt(0);
+            break;
+        case MONEY:
+            value = dataNode.asDouble(0.00D);
+            break;
+        default:
+            // 默认文本
+            value = dataNode.asText("");
+            break;
         }
 
         return value;
