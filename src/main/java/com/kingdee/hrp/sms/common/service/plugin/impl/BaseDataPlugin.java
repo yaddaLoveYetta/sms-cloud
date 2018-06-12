@@ -4,8 +4,6 @@ import com.kingdee.hrp.sms.common.dao.generate.UserMapper;
 import com.kingdee.hrp.sms.common.model.User;
 import com.kingdee.hrp.sms.common.model.UserExample;
 import com.kingdee.hrp.sms.common.pojo.Condition;
-import com.kingdee.hrp.sms.common.service.ITemplateService;
-import com.kingdee.hrp.sms.common.service.plugin.IPlugIn;
 import com.kingdee.hrp.sms.common.service.plugin.PlugInAdpter;
 import com.kingdee.hrp.sms.common.service.plugin.PlugInRet;
 import com.kingdee.hrp.sms.util.Environ;
@@ -14,10 +12,10 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
 import java.util.*;
 
 /**
+ * 基础资料通用插件，主要根据用户组织类别做数据隔离
  * @author yadda
  */
 @Service

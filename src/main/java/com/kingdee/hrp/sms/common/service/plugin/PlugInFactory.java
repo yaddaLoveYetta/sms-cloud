@@ -45,15 +45,15 @@ public class PlugInFactory implements IPlugIn, InitializingBean, ApplicationCont
 
         Class<?> type;
 
-        // 反射
         synchronized (PlugInFactory.class) {
+
             for (String name : names) {
 
                 type = applicationContext.getType(name);
 
                 if (PlugInFactory.class.isAssignableFrom(type)) {
                     // 为了规范PlugInFactory调用插件的逻辑，PlugInFactory也实现了IPlugIn接口
-                    // 但PlugInFactory不是业务插件
+                    // 但PlugInFactory不是业务插件,不将其放入插件列表
                     continue;
                 }
 
@@ -66,13 +66,9 @@ public class PlugInFactory implements IPlugIn, InitializingBean, ApplicationCont
                     }
                 }
             }
+
             // 插件执行顺序排序
-            Collections.sort(plugIns, new Comparator<IPlugIn>() {
-                @Override
-                public int compare(IPlugIn o1, IPlugIn o2) {
-                    return o1.getIndex().compareTo(o2.getIndex());
-                }
-            });
+            plugIns.sort((p1, p2) -> p1.getIndex().compareTo(p2.getIndex()));
 
         }
     }
@@ -197,7 +193,7 @@ public class PlugInFactory implements IPlugIn, InitializingBean, ApplicationCont
      */
     @Override
     public PlugInRet beforeEntryModify(int classId, String primaryId, String entryId, Map<String, Object> formTemplate,
-            JsonNode data) {
+                                       JsonNode data) {
 
         PlugInRet plugInRet = new PlugInRet();
 
@@ -249,6 +245,7 @@ public class PlugInFactory implements IPlugIn, InitializingBean, ApplicationCont
      * @param ids          删除的内码集合
      * @return PlugInRet
      */
+    @Override
     public PlugInRet beforeDelete(int classId, Map<String, Object> formTemplate, List<Long> ids) {
 
         PlugInRet plugInRet = new PlugInRet();
@@ -279,7 +276,7 @@ public class PlugInFactory implements IPlugIn, InitializingBean, ApplicationCont
      */
     @Override
     public PlugInRet beforeEntryDelete(int classId, String primaryId, String entryId,
-            Map<String, Object> formTemplate) {
+                                       Map<String, Object> formTemplate) {
 
         PlugInRet plugInRet = new PlugInRet();
 
