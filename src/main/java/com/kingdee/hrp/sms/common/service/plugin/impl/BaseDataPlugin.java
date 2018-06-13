@@ -4,6 +4,7 @@ import com.kingdee.hrp.sms.common.dao.generate.UserMapper;
 import com.kingdee.hrp.sms.common.model.User;
 import com.kingdee.hrp.sms.common.model.UserExample;
 import com.kingdee.hrp.sms.common.pojo.Condition;
+import com.kingdee.hrp.sms.common.pojo.UserRoleTypeEnum;
 import com.kingdee.hrp.sms.common.service.plugin.PlugInAdpter;
 import com.kingdee.hrp.sms.common.service.plugin.PlugInRet;
 import com.kingdee.hrp.sms.util.Environ;
@@ -16,6 +17,7 @@ import java.util.*;
 
 /**
  * 基础资料通用插件，主要根据用户组织类别做数据隔离
+ *
  * @author yadda
  */
 @Service
@@ -133,34 +135,52 @@ public class BaseDataPlugin extends PlugInAdpter implements InitializingBean {
         Integer userRoleType = getUserRoleType();
         Long linkOrg = getUserLinkOrg();
 
-        if (userRoleType == 1) {
+        if (userRoleType.equals(UserRoleTypeEnum.SYSTEM.getNumber())) {
             // 系统角色类别放开所有数据查看权限
             return ret;
         }
 
-        if (classId == 1001 || classId == 1002) {
-            // 用户、角色
-            String fieldKey = userRoleType == 2 ? "org_hospital" : "org_supplier";
+        if (userRoleType.equals(UserRoleTypeEnum.HOSPITAL.getNumber())) {
+            // 当前是医院角色的用户在操作
 
-            Condition condition = new Condition();
-            condition.setLinkType(Condition.LinkTypeEnum.AND);
-            condition.setFieldKey(fieldKey);
-            condition.setLogicOperator(Condition.LogicOperatorEnum.EQUAL);
-            condition.setValue(linkOrg);
-            condition.setNeedConvert(false);
-            ret.add(condition);
+            if (classId == 1001 || classId == 1002) {
+                // 用户、角色
+                Condition condition = new Condition();
+                condition.setLinkType(Condition.LinkTypeEnum.AND);
+                condition.setFieldKey("org_hospital");
+                condition.setLogicOperator(Condition.LogicOperatorEnum.EQUAL);
+                condition.setValue(linkOrg);
+                condition.setNeedConvert(false);
+                ret.add(condition);
+            }
+
+            if (classId == 1004 || classId == 1005 || classId == 1006) {
+                // 供应商类别、医院供应商
+                Condition condition = new Condition();
+                condition.setLinkType(Condition.LinkTypeEnum.AND);
+                condition.setFieldKey("org");
+                condition.setLogicOperator(Condition.LogicOperatorEnum.EQUAL);
+                condition.setValue(linkOrg);
+                condition.setNeedConvert(false);
+                ret.add(condition);
+            }
+
         }
 
-        if ((classId == 1004 || classId == 1005 || classId == 1006) && userRoleType == 2) {
-            // 供应商类别、医院供应商
+        if (userRoleType.equals(UserRoleTypeEnum.SUPPLIER.getNumber())) {
+            // 当前是供应商角色的用户在操作
 
-            Condition condition = new Condition();
-            condition.setLinkType(Condition.LinkTypeEnum.AND);
-            condition.setFieldKey("org");
-            condition.setLogicOperator(Condition.LogicOperatorEnum.EQUAL);
-            condition.setValue(linkOrg);
-            condition.setNeedConvert(false);
-            ret.add(condition);
+            if (classId == 1001 || classId == 1002) {
+                // 用户、角色
+                Condition condition = new Condition();
+                condition.setLinkType(Condition.LinkTypeEnum.AND);
+                condition.setFieldKey("org_supplier");
+                condition.setLogicOperator(Condition.LogicOperatorEnum.EQUAL);
+                condition.setValue(linkOrg);
+                condition.setNeedConvert(false);
+                ret.add(condition);
+            }
+
         }
 
         return ret;
