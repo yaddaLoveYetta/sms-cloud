@@ -276,7 +276,7 @@ public class TemplateService extends BaseService implements ITemplateService {
             conditions.addAll(pluginConditions);
         }
         PlugInRet plugInRet = plugInFactory.beforeQuery(classId, template, conditions);
-        if (plugInRet.getCode() != 200) {
+        if (plugInRet.getCode() != StatusCode.SUCCESS) {
             throw new BusinessLogicRunTimeException(plugInRet.getMsg());
         }
 
