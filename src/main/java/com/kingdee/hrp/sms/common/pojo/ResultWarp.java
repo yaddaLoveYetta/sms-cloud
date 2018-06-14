@@ -12,7 +12,7 @@ public class ResultWarp implements Serializable {
     /**
      * 默认成功
      */
-    private int code = 200;
+    private int code = StatusCode.SUCCESS;
     /**
      * 返回消息(不成功时必须要有消息)
      */
