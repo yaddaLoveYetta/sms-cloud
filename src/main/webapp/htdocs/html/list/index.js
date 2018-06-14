@@ -272,7 +272,7 @@
                         title: '角色-' + list[0].data.name + '-权限管理',
                         url: './html/role/index.html',
                         width: $(window).width() * 0.8,
-                        height: $(window).height(),
+                        height: 600,
                         button: [{
                             value: '取消授权',
                             className: 'sms-cancel-btn'
