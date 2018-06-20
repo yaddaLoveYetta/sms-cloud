@@ -76,10 +76,10 @@ public class ResultWarp implements Serializable {
 
     @Override
     public String toString() {
-        if (data != null) {
-            return "ResultWarp [code=" + code + ", msg=" + msg + ", data=" + data.toString() + "]";
-        }
-        return "ResultWarp [code=" + code + ", msg=" + msg + ", data=" + data + "]";
-
+        return "ResultWarp{" +
+                "code=" + code +
+                ", msg='" + msg + '\'' +
+                ", data=" + data +
+                '}';
     }
 }

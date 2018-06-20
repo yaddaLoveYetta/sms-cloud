@@ -1,6 +1,8 @@
 package com.kingdee.hrp.sms.common.pojo;
 
 /**
+ * 单据状态值
+ *
  * @author yadda
  */
 

@@ -7,6 +7,7 @@ import java.io.Serializable;
 
 /**
  * 列表查询where条件对象
+ * @author yadda
  */
 public class Condition implements Serializable {
 
@@ -98,6 +99,18 @@ public class Condition implements Serializable {
         this.needConvert = needConvert;
     }
 
+    @Override
+    public String toString() {
+        return "Condition{" +
+                "linkType=" + linkType +
+                ", leftParenTheses='" + leftParenTheses + '\'' +
+                ", fieldKey='" + fieldKey + '\'' +
+                ", logicOperator=" + logicOperator +
+                ", value=" + value +
+                ", rightParenTheses='" + rightParenTheses + '\'' +
+                ", needConvert=" + needConvert +
+                '}';
+    }
 
     /**
      * 条件链接类型

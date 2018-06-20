@@ -67,8 +67,7 @@ public class ResponseAspect {
         ret = warpResult(ret);
 
         // 将业务返回值包装成固定的返回类型格式ResultWarp
-        ResultWarp result = new ResultWarp();
-        result.setData(ret);
+        ResultWarp result = new ResultWarp(ret);
 
         HttpServletResponse response = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getResponse();
         // test

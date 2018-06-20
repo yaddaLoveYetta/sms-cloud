@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 /**
  * 列表查询排序条件对象
+ * @author yadda
  */
 public class Sort implements Serializable {
 
@@ -31,6 +32,13 @@ public class Sort implements Serializable {
         this.direction = direction;
     }
 
+    @Override
+    public String toString() {
+        return "Sort{" +
+                "fieldKey='" + fieldKey + '\'' +
+                ", direction=" + direction +
+                '}';
+    }
 
     public enum DirectionEnum implements Serializable {
 

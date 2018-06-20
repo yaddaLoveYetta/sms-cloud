@@ -29,4 +29,10 @@ public class NoJsonWarp implements Serializable {
         this.value = value;
     }
 
+    @Override
+    public String toString() {
+        return "NoJsonWarp{" +
+                "value=" + value +
+                '}';
+    }
 }

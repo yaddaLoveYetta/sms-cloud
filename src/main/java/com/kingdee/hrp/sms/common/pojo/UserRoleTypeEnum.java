@@ -2,10 +2,23 @@ package com.kingdee.hrp.sms.common.pojo;
 
 /**
  * 用户角色类型枚举
+ *
+ * @author yadda
  */
 public enum UserRoleTypeEnum {
 
-    SYSTEM(1, "系统管理员"), HOSPITAL(2, "医院"), SUPPLIER(3, "供应商");
+    /**
+     * 系统管理员角色类型
+     */
+    SYSTEM(1, "系统管理员"),
+    /**
+     * 医院角色类型
+     */
+    HOSPITAL(2, "医院"),
+    /**
+     * 供应商角色类型
+     */
+    SUPPLIER(3, "供应商");
 
     private Integer number;
     private String name;
@@ -26,8 +39,7 @@ public enum UserRoleTypeEnum {
         this.name = name;
     }
 
-
-    private UserRoleTypeEnum(int number, String name) {
+    UserRoleTypeEnum(int number, String name) {
         this.number = number;
         this.name = name;
     }

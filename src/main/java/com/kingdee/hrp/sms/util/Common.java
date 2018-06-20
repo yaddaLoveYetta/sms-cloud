@@ -24,7 +24,9 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
+/**
+ * @author yadda
+ */
 public class Common {
 
     /**
@@ -64,7 +66,6 @@ public class Common {
         return result;
     }
 
-
     /**
      * 将一个 JavaBean 对象转化为一个  Map
      *
@@ -96,7 +97,6 @@ public class Common {
         }
         return returnMap;
     }
-
 
     /**
      * 将一个 Map 对象转化为一个 JavaBean
@@ -202,7 +202,7 @@ public class Common {
         if (baseCode.indexOf(check) == -1) {
             return false;
         }
-        int[] wi = {1, 3, 9, 27, 19, 26, 16, 17, 20, 29, 25, 13, 8, 24, 10, 30, 28};
+        int[] wi = { 1, 3, 9, 27, 19, 26, 16, 17, 20, 29, 25, 13, 8, 24, 10, 30, 28 };
         int sum = 0;
         for (int i = 0; i < 17; i++) {
             Character key = businessCodeArray[i];
@@ -214,7 +214,6 @@ public class Common {
         int value = 31 - sum % 31;
         return value == codes.get(check);
     }
-
 
     public static void main(String[] args) throws ParseException {
 
