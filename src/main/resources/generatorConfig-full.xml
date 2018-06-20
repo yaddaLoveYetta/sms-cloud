@@ -4,6 +4,7 @@
          "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
 
 <generatorConfiguration>
+
 	<!-- 数据库驱动包位置 mybatis-generator:generate -->
 	<classPathEntry location="D:\java\maven-repo\com\microsoft\sqlserver\mssql-jdbc\6.1.0.jre8\mssql-jdbc-6.1.0.jre8.jar" />
 

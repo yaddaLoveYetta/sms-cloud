@@ -5,8 +5,9 @@
 
 <generatorConfiguration>
 
-    <classPathEntry location="D:\java\maven-repo\mysql\mysql-connector-java\5.1.44\mysql-connector-java-5.1.44.jar"/>
-    <!--<classPathEntry location="D:\Java\apache-maven-3.3.9\repository\mysql\mysql-connector-java\5.1.44\mysql-connector-java-5.1.44.jar"/>-->
+    <properties resource="classpath:/config/jdbc-mysql.properties"/>
+
+    <!--<classPathEntry location="D:\java\maven-repo\mysql\mysql-connector-java\5.1.44\mysql-connector-java-5.1.44.jar"/>-->
 
     <context id="MSSQL_Tables2Java" targetRuntime="MyBatis3">
 
@@ -17,6 +18,8 @@
         <property name="javaFormatter" value="org.mybatis.generator.api.dom.DefaultJavaFormatter"/>
         <property name="xmlFormatter" value="org.mybatis.generator.api.dom.DefaultXmlFormatter"/>
         <property name="autoDelimitKeywords" value="true"/>
+
+        <!-- beginningDelimiter和endingDelimiter：指明数据库的用于标记数据库对象名的符号，比如ORACLE就是双引号，MYSQL默认是`反引号； -->
         <property name="beginningDelimiter" value="`"/>
         <property name="endingDelimiter" value="`"/>
 
@@ -27,15 +30,21 @@
         <plugin type="com.itfsw.mybatis.generator.plugins.ModelColumnPlugin"/>
         <commentGenerator>
             <property name="suppressDate" value="false"/>
+            <!--  关闭自动生成的注释  -->
             <property name="suppressAllComments" value="true"/>
         </commentGenerator>
 
-        <jdbcConnection driverClass="com.mysql.jdbc.Driver" connectionURL="jdbc:mysql://127.0.0.1:3306/hrp-sms"
-                        userId="root" password="775885">
+        <!--        <jdbcConnection driverClass="com.mysql.jdbc.Driver" connectionURL="jdbc:mysql://127.0.0.1:3306/hrp-sms"
+                                userId="root" password="775885">
+                </jdbcConnection>-->
+
+        <jdbcConnection driverClass="${jdbc.driverClass}" connectionURL="${jdbc.jdbcUrl}"
+                        userId="${jdbc.user}" password="${jdbc.password}">
+            <!-- 针对oracle数据库 -->
+            <property name="remarksReporting" value="true"></property>
+            <!-- 针对mysql数据库 -->
+            <property name="useInformationSchema" value="true"></property>
         </jdbcConnection>
-        <!-- <jdbcConnection driverClass="com.microsoft.sqlserver.jdbc.SQLServerDriver" connectionURL="jdbc:sqlserver://127.0.0.1:52663;database=hrp-sms" -->
-        <!-- userId="sa" password="yadda0925"> -->
-        <!-- </jdbcConnection> -->
 
         <javaTypeResolver type="org.mybatis.generator.internal.types.JavaTypeResolverDefaultImpl">
 
@@ -176,4 +185,5 @@
         </table>
 
     </context>
+
 </generatorConfiguration> 
