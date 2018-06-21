@@ -13,6 +13,7 @@ define('Login', function (require, module, exports) {
     var btn = document.getElementById('btn-login');
     var txtUser = document.getElementById('txt-user');
     var txtPassword = document.getElementById('txt-password');
+    var txtCode = document.getElementById('txt-code');
 
 
     function login() {
@@ -37,12 +38,15 @@ define('Login', function (require, module, exports) {
             return false;
         }
 
+        var code = txtCode.value;
+
         $(btn).addClass('disabled').html('正在登录...');
 
 
         SMS.Login.login({
             userName: user,
-            password: password
+            password: SMS.MD5.encrypt(password),
+            code: code
         }, function (user, data, json) { //成功
 
             location.href = 'master.html';

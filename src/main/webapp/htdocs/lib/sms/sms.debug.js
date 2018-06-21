@@ -620,6 +620,39 @@
             getUrl: function () {
                 var meta = mapper.get(this);
                 return meta.url;
+            },
+            /**
+             * get请求方式的完整带参数url
+             * @param data
+             * @returns {*}
+             */
+            getUrlWithGetParams: function (data) {
+
+                var meta = mapper.get(this);
+
+                var url = meta.url;
+
+                data = data || meta.data;
+
+                if (data) {
+
+                    data = $.Object.map(data, function (key, value) {
+
+                        if (typeof value == 'object' && value) { // 子对象编码成 JSON
+                            // 字符串
+                            return $.Object.toJson(value);
+                        }
+
+                        // 其他的
+                        return value; // 原样返回
+                    });
+
+                    data = $.Object.toQueryString(data);
+
+                    url += '?' + data;
+                }
+
+                return url;
             }
         };
 
@@ -4470,10 +4503,7 @@
 
             var api = new API(defaults.apiLogin);
 
-            api.get({
-                userName: data.userName,
-                password: MD5.encrypt(data.password)
-            });
+            api.get(data);
 
             api.on('success', function (data, json) { // 成功
 

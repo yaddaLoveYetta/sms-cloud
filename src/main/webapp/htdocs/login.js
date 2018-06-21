@@ -1,9 +1,13 @@
 //控制器
 ;(function ($, MiniQuery, sms) {
 
+    var SMS = require('SMS');
     var Login = require('Login');
     var WarnTip = require('WarnTip');
     var Register = require('Register');
+    var API = SMS.require("API");
+
+    var $vCode = $('#img-code');
 
     Login.init();
 
@@ -55,7 +59,21 @@
         }, {offset: '85%'});
     };
 
+    $vCode.click(function () {
+
+        var api = new API({
+            name: 'user/getVerificationCode',
+            data: {
+                r: Math.random()
+            }
+        });
+
+        $vCode.attr("src", api.getUrlWithGetParams());
+    });
+
     contentWayPoint();
+
+    $vCode.click();
 
     Register.render();
 

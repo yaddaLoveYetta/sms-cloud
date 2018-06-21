@@ -6,6 +6,7 @@ import com.kingdee.hrp.sms.common.model.Role;
 import com.kingdee.hrp.sms.common.model.User;
 import com.kingdee.hrp.sms.system.user.service.IUserService;
 import com.kingdee.hrp.sms.util.Common;
+import com.kingdee.hrp.sms.util.ValidateCode;
 import com.kingdee.hrp.sms.util.SessionUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,7 +16,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.awt.image.RenderedImage;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -33,6 +38,10 @@ public class UserController {
 
     private static Logger logger = LoggerFactory.getLogger(UserController.class);
 
+    /**
+     * 图形验证码放到session中的key
+     */
+    public static final String VERIFICATION_CODE_KEY = "VERIFICATION_CODE_KEY";
 
     @Resource
     private IUserService userService;
@@ -60,15 +69,20 @@ public class UserController {
      *
      * @param userName 用户名
      * @param password 密码
+     * @param code     验证码
      */
     @RequestMapping("login")
     @ResponseBody
-    public Map<String, Object> login(String userName, String password, HttpServletRequest request) {
+    public Map<String, Object> login(String userName, String password, String code, HttpServletRequest request) {
 
-        Map<String, Object> ret = new HashMap<>();
+        Map<String, Object> ret = new HashMap<>(8);
 
         if ("".equals(userName) || "".equals(password)) {
             throw new BusinessLogicRunTimeException("用户名或密码不能为空!");
+        }
+
+        if (!checkVerificationCode(code, request.getSession(true))) {
+            throw new BusinessLogicRunTimeException("验证码错误!");
         }
 
         User user = userService.login(userName, password);
@@ -184,7 +198,8 @@ public class UserController {
      */
     @RequestMapping(value = "getMessage")
     @ResponseBody
-    public Map<String, Object> getMessage(Integer type, @RequestParam(defaultValue = "10") Integer pageSize, @RequestParam(defaultValue = "1") Integer pageNo) {
+    public Map<String, Object> getMessage(Integer type, @RequestParam(defaultValue = "10") Integer pageSize,
+            @RequestParam(defaultValue = "1") Integer pageNo) {
 
         type = type == null ? -1 : type;
 
@@ -209,6 +224,50 @@ public class UserController {
 
         userService.setMessageProcessed(id);
         return true;
+
+    }
+
+    /**
+     * 获取登陆时验证码
+     *
+     * @param request  HttpServletRequest
+     * @param response HttpServletResponse
+     */
+    @RequestMapping(value = "getVerificationCode")
+    public void getVerificationCode(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+        //设置相应类型,告诉浏览器输出的内容为图片
+        response.setContentType("image/jpeg");
+        //设置响应头信息，告诉浏览器不要缓存此内容
+        response.setHeader("Pragma", "No-cache");
+        response.setHeader("Cache-Control", "no-cache");
+        response.setDateHeader("Expire", 0);
+
+        ValidateCode validateCode = new ValidateCode();
+        try {
+            //获取图形验证码信息
+            Map<String, Object> verificationCode = validateCode.getRandomCode(95, 25, 20, 5);
+
+            // 将验证码放到session中，用于登陆时验证
+            request.getSession().setAttribute(VERIFICATION_CODE_KEY, verificationCode.get("code").toString());
+            // 将内存中的图片通过流动形式输出到客户端
+            ImageIO.write((RenderedImage) verificationCode.get("image"), "JPEG", response.getOutputStream());
+
+        } catch (Exception e) {
+            logger.error("获取图形验证码错误:" + e.getMessage(), e);
+            throw e;
+        }
+    }
+
+    /**
+     * 登录页面校验验证码
+     */
+    @RequestMapping(value = "checkVerificationCode")
+    @ResponseBody
+    public Boolean checkVerificationCode(String inputCode, HttpSession session) {
+        //从session中获取随机数
+        String random = (String) session.getAttribute(VERIFICATION_CODE_KEY);
+        return random.equalsIgnoreCase(inputCode);
 
     }
 }

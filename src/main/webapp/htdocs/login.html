@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>易供应-云端上的供应链管理平台</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="shortcut icon" href="css/img/favicon.ico" type="image/x-icon" >
+    <link rel="shortcut icon" href="css/img/favicon.ico" type="image/x-icon">
 
     <link rel="stylesheet" href="css/global.debug.css" type="text/css"/>
     <link rel="stylesheet" href="css/bootstrap.css">
@@ -40,6 +40,13 @@
                     <label for="txt-password" class="sr-only">密码</label>
                     <input type="password" class="form-control" id="txt-password" placeholder="密码" autocomplete="off">
                 </div>
+
+                <div class="form-inline form-group">
+                    <input type="text" class="form-control" id="txt-code" placeholder="验证码"
+                           autocomplete="off">
+                    <img id="img-code" src="" alt="点击更换验证码">
+                </div>
+
                 <!--                <div class="form-group">
 
                                     <label for="remember"><input type="checkbox" id="remember"> 记住我</label>
