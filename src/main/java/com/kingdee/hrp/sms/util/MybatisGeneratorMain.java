@@ -90,16 +90,13 @@ public class MybatisGeneratorMain {
             return null;
         }
         String[] strings = line.split(",");
+
         // 第一列为开关，只是是否操作该行
         boolean enable = Boolean.valueOf(strings[0]);
-
-        if (!enable) {
-            return null;
-        }
-
         // 第二列表名
         String tableName = strings[1];
-        if (StringUtils.isBlank(tableName)) {
+
+        if (!enable || StringUtils.isBlank(tableName)) {
             return null;
         }
 

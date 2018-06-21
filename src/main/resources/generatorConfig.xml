@@ -5,7 +5,7 @@
 
 <generatorConfiguration>
 
-    <properties resource="classpath:/config/jdbc-mysql.properties"/>
+    <properties resource="config/jdbc-mysql.properties"/>
 
     <!--<classPathEntry location="D:\java\maven-repo\mysql\mysql-connector-java\5.1.44\mysql-connector-java-5.1.44.jar"/>-->
 
