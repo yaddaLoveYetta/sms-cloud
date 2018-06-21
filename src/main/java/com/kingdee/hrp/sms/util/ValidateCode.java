@@ -23,7 +23,6 @@ public class ValidateCode {
 
     private Random random = new Random();
 
-
     /**
      * 获得颜色
      *
@@ -81,8 +80,8 @@ public class ValidateCode {
 
             graphics.setFont(new Font("Fixedsys", Font.CENTER_BASELINE, 22));
             graphics.setColor(getRandColor());
-            graphics.translate(random.nextInt(3), random.nextInt(3));
-            graphics.drawString(randomCode, 13 * i, 16);
+            graphics.translate(random.nextInt(5), random.nextInt(5));
+            graphics.drawString(randomCode, (width / (codeNum + 1)) * i, 16);
 
         }
 
