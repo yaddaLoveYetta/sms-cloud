@@ -56,7 +56,7 @@ public class ResponseAspect {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
-    private static Set<String> TYPES = new HashSet<String>(32s);
+    private static Set<String> TYPES = new HashSet<String>(32);
 
     static {
         TYPES.add("java.lang.Integer");
