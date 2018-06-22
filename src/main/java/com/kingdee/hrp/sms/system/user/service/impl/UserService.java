@@ -9,6 +9,7 @@ import com.kingdee.hrp.sms.common.exception.BusinessLogicRunTimeException;
 import com.kingdee.hrp.sms.common.filter.SmsPropertyPlaceholderConfigurer;
 import com.kingdee.hrp.sms.common.model.*;
 import com.kingdee.hrp.sms.common.pojo.BaseStatusEnum;
+import com.kingdee.hrp.sms.common.pojo.UserRoleTypeEnum;
 import com.kingdee.hrp.sms.common.service.BaseService;
 import com.kingdee.hrp.sms.system.user.service.IUserService;
 import com.kingdee.hrp.sms.util.Common;
@@ -92,7 +93,7 @@ public class UserService extends BaseService implements IUserService {
 
         if (null == creditCodeJsonNode || !StringUtils.isNotBlank(creditCodeJsonNode.asText())) {
             String msg = "";
-            if (userType == 2) {
+            if (userType == UserRoleTypeEnum.HOSPITAL.getNumber().intValue()) {
                 msg = "缺少医疗机构登记号";
             } else {
                 msg = "缺少企业统一信用代码";
@@ -118,9 +119,9 @@ public class UserService extends BaseService implements IUserService {
 
         // 记录新增医院/供应商基础资料内码-新增用户关联时用
         Long org = 0L;
-        if (userType == 1) {
+        if (userType == UserRoleTypeEnum.SYSTEM.getNumber().intValue()) {
             throw new BusinessLogicRunTimeException("暂不提供系统用户注册权限!");
-        } else if (userType == 2) {
+        } else if (userType == UserRoleTypeEnum.HOSPITAL.getNumber().intValue()) {
             // 医院用户注册
             HospitalMapper hospitalMapper = sqlSession.getMapper(HospitalMapper.class);
             org = getId();
@@ -132,7 +133,7 @@ public class UserService extends BaseService implements IUserService {
             hospital.setId(org);
 
             hospitalMapper.insertSelective(hospital);
-        } else if (userType == 3) {
+        } else if (userType == UserRoleTypeEnum.SUPPLIER.getNumber().intValue()) {
             // 供应商注册
             SupplierMapper supplierMapper = sqlSession.getMapper(SupplierMapper.class);
             org = getId();
@@ -204,9 +205,9 @@ public class UserService extends BaseService implements IUserService {
 
         String roleTypeName = "";
 
-        if (role.getType() == 2) {
+        if (role.getType() == UserRoleTypeEnum.HOSPITAL.getNumber().intValue()) {
             roleTypeName = "hospital";
-        } else if (role.getType() == 3) {
+        } else if (role.getType() == UserRoleTypeEnum.SUPPLIER.getNumber().intValue()) {
             roleTypeName = "supplier";
         } else {
             //return;
@@ -420,23 +421,11 @@ public class UserService extends BaseService implements IUserService {
         //1：获取菜单数据
         MenuMapper menuMapper = sqlSession.getMapper(MenuMapper.class);
 
-        // --condition for test
-/*        MenuExample menuExample = new MenuExample();
-        MenuExample.Criteria criteria = menuExample.createCriteria();
-        criteria.andIdEqualTo(8);
-        MenuExample.Criteria criteria2 = menuExample.createCriteria();
-        criteria2.andParentIdEqualTo(8);
-        menuExample.or(criteria2);*/
-
         List<Menu> menus = menuMapper.selectByExample(null);
 
         // 2：获取功能权限数据
         FormActionMapper formActionMapper = sqlSession.getMapper(FormActionMapper.class);
 
-        // --condition for test
-/*        FormActionExample formActionExample = new FormActionExample();
-        FormActionExample.Criteria formActionExampleCriteria = formActionExample.createCriteria();
-        formActionExampleCriteria.andClassIdEqualTo(1001);*/
         List<FormAction> formActions = formActionMapper.selectByExample(null);
 
         // 3：获取该角色所有功能授权结果
