@@ -21,6 +21,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import java.io.IOException;
 import java.util.*;
@@ -44,7 +45,7 @@ public class UserService extends BaseService implements IUserService {
      * @param registerInfo 用户注册信息
      */
     @Override
-    @Transactional(rollbackFor = { Exception.class })
+    @Transactional(rollbackFor = {Exception.class})
     public void register(Map<String, Object> registerInfo) throws IOException {
 
         ObjectMapper mapper = Environ.getBean(ObjectMapper.class);
@@ -292,7 +293,7 @@ public class UserService extends BaseService implements IUserService {
 
         List<User> list = userMapper.selectByExample(userExample);
 
-        if (null == list) {
+        if (CollectionUtils.isEmpty(list)) {
             logger.error("用户名或密码错误!");
             throw new BusinessLogicRunTimeException("用户名或密码错误!");
         }
@@ -368,7 +369,7 @@ public class UserService extends BaseService implements IUserService {
     }
 
     @Override
-    @Transactional(rollbackFor = { Exception.class })
+    @Transactional(rollbackFor = {Exception.class})
     public Boolean editPwd(Long userId, String oldPwd, String newPwd) {
 
         User user = null;
@@ -496,7 +497,7 @@ public class UserService extends BaseService implements IUserService {
      * @return list
      */
     private List<Map<String, Object>> toTree(List<Menu> menus, List<FormAction> formActions,
-            Map<Integer, AccessControl> accessControlsMap, int parentId, Role role) {
+                                             Map<Integer, AccessControl> accessControlsMap, int parentId, Role role) {
 
         List<Map<String, Object>> ret = new ArrayList<>();
 
@@ -599,7 +600,7 @@ public class UserService extends BaseService implements IUserService {
      */
     @Override
     public Map<String, Object> getMessage(Integer userRoleType, Long org, Integer type, Integer pageSize,
-            Integer pageNo) {
+                                          Integer pageNo) {
 
         Map<String, Object> ret = new HashMap<>(16);
 

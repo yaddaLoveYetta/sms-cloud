@@ -265,7 +265,7 @@ public class UserController {
         ValidateCode validateCode = new ValidateCode();
         try {
             //获取图形验证码信息
-            Map<String, Object> verificationCode = validateCode.getRandomCode(95, 50, 20, 5);
+            Map<String, Object> verificationCode = validateCode.getRandomCode(130, 50, 20, 5);
 
             // 将验证码放到session中，用于登陆时验证
             request.getSession().setAttribute(VERIFICATION_CODE_KEY, verificationCode.get("code").toString());

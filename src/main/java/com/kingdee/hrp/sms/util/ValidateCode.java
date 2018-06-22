@@ -78,10 +78,10 @@ public class ValidateCode {
             String randomCode = getRandomCode();
             code += randomCode;
 
-            graphics.setFont(new Font("Fixedsys", Font.CENTER_BASELINE, 22));
+            graphics.setFont(new Font("Microsoft YaHei", Font.ITALIC + Font.BOLD, 22));
             graphics.setColor(getRandColor());
-            graphics.translate(random.nextInt(5), random.nextInt(5));
-            graphics.drawString(randomCode, (width / (codeNum + 1)) * i, 16);
+            graphics.translate(random.nextInt(3), random.nextInt(3));
+            graphics.drawString(randomCode, 20 * i, 30);
 
         }
 
