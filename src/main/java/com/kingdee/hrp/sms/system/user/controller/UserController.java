@@ -24,6 +24,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.awt.image.RenderedImage;
 import java.io.IOException;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -61,6 +62,8 @@ public class UserController {
     @ResponseBody
     public Boolean register(@RequestParam Map<String, Object> registerInfo) throws IOException {
 
+        logger.info("用户注册提交参数:" + registerInfo);
+
         userService.register(registerInfo);
         return true;
 
@@ -77,13 +80,17 @@ public class UserController {
     @ResponseBody
     public Map<String, Object> login(String userName, String password, String code, HttpServletRequest request) {
 
+        logger.info(String.format("用户登录提交参数:userName=%s,password=%s,code=%s", userName, password, code));
+
         Map<String, Object> ret = new HashMap<>(8);
 
         if (StringUtils.isBlank(userName) || StringUtils.isBlank(password)) {
+            logger.error("用户名或密码不能为空!");
             throw new BusinessLogicRunTimeException("用户名或密码不能为空!");
         }
 
         if (!checkVerificationCode(code, request.getSession(true))) {
+            logger.error("验证码错误!");
             throw new BusinessLogicRunTimeException("验证码错误!");
         }
 
@@ -134,7 +141,15 @@ public class UserController {
     @RequestMapping("logout")
     @ResponseBody
     public Boolean logout(HttpServletRequest request) {
-        request.getSession().removeAttribute("user");
+
+        HttpSession session = request.getSession();
+
+        Enumeration<String> attributeNames = session.getAttributeNames();
+
+        while (attributeNames.hasMoreElements()) {
+            session.removeAttribute(attributeNames.nextElement());
+        }
+
         logger.info("注销成功");
         return true;
     }
@@ -150,6 +165,8 @@ public class UserController {
     @RequestMapping("editPwd")
     @ResponseBody
     public Boolean editPwd(Long userId, String oldPwd, String newPwd) {
+
+        logger.info(String.format("用户修改密码提交参数:userId=%s,oldPwd=%s,newPwd=%s", userId, oldPwd, newPwd));
 
         if (userService.editPwd(userId, oldPwd, newPwd)) {
             logger.info("密码修改成功");
@@ -193,7 +210,7 @@ public class UserController {
     }
 
     /**
-     * 获取消息通知(未处理的)
+     * 获取消息通知
      *
      * @param type 消息类别 （0未处理，1已处理，其他值全部）
      * @return List<Map<String, Object>>

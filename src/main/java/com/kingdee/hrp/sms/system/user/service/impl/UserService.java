@@ -11,11 +11,14 @@ import com.kingdee.hrp.sms.common.model.*;
 import com.kingdee.hrp.sms.common.pojo.BaseStatusEnum;
 import com.kingdee.hrp.sms.common.pojo.UserRoleTypeEnum;
 import com.kingdee.hrp.sms.common.service.BaseService;
+import com.kingdee.hrp.sms.system.user.controller.UserController;
 import com.kingdee.hrp.sms.system.user.service.IUserService;
 import com.kingdee.hrp.sms.util.Common;
 import com.kingdee.hrp.sms.util.Environ;
 import com.kingdee.hrp.sms.util.Pinyin4jUtil;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,6 +32,8 @@ import java.util.*;
 
 @Service
 public class UserService extends BaseService implements IUserService {
+
+    private static Logger logger = LoggerFactory.getLogger(UserService.class);
 
     /**
      * 用户注册
@@ -62,30 +67,35 @@ public class UserService extends BaseService implements IUserService {
         JsonNode orgNameJsonNode = jsonNode.get("orgName");
 
         if (null == userTypeJsonNode || userTypeJsonNode.asInt() <= 0) {
+            logger.error("缺少注册用户类别");
             throw new BusinessLogicRunTimeException("缺少注册用户类别");
         } else {
             userType = userTypeJsonNode.asInt();
         }
 
         if (null == userNameJsonNode || !StringUtils.isNotBlank(userNameJsonNode.asText())) {
+            logger.error("缺少用户名");
             throw new BusinessLogicRunTimeException("缺少用户名");
         } else {
             userName = userNameJsonNode.asText();
         }
 
         if (null == passwordJsonNode || !StringUtils.isNotBlank(passwordJsonNode.asText())) {
+            logger.error("缺少密码");
             throw new BusinessLogicRunTimeException("缺少密码");
         } else {
             password = passwordJsonNode.asText();
         }
 
         if (null == nameJsonNode || !StringUtils.isNotBlank(nameJsonNode.asText())) {
+            logger.error("缺少真实姓名");
             throw new BusinessLogicRunTimeException("缺少真实姓名");
         } else {
             name = nameJsonNode.asText();
         }
 
         if (null == mobileJsonNode || !StringUtils.isNotBlank(mobileJsonNode.asText())) {
+            logger.error("缺少手机号码");
             throw new BusinessLogicRunTimeException("缺少手机号码");
         } else {
             mobile = mobileJsonNode.asText();
@@ -94,8 +104,10 @@ public class UserService extends BaseService implements IUserService {
         if (null == creditCodeJsonNode || !StringUtils.isNotBlank(creditCodeJsonNode.asText())) {
             String msg = "";
             if (userType == UserRoleTypeEnum.HOSPITAL.getNumber().intValue()) {
+                logger.error("缺少医疗机构登记号");
                 msg = "缺少医疗机构登记号";
             } else {
+                logger.error("缺少企业统一信用代码");
                 msg = "缺少企业统一信用代码";
             }
             throw new BusinessLogicRunTimeException(msg);
@@ -104,6 +116,7 @@ public class UserService extends BaseService implements IUserService {
         }
 
         if (null == orgNameJsonNode || !StringUtils.isNotBlank(orgNameJsonNode.asText())) {
+            logger.error("缺少企业名称");
             throw new BusinessLogicRunTimeException("缺少企业名称");
         } else {
             orgName = orgNameJsonNode.asText();
@@ -112,6 +125,7 @@ public class UserService extends BaseService implements IUserService {
         Boolean userExist = this.check(userName);
 
         if (userExist) {
+            logger.error("该用户名已被注册");
             throw new BusinessLogicRunTimeException("该用户名已被注册,请换一个用户名!");
         }
 
@@ -210,23 +224,22 @@ public class UserService extends BaseService implements IUserService {
         } else if (role.getType() == UserRoleTypeEnum.SUPPLIER.getNumber().intValue()) {
             roleTypeName = "supplier";
         } else {
-            //return;
+            logger.error("不支持该类别角色默认权限设置");
             throw new BusinessLogicRunTimeException("不支持该类别角色默认权限设置");
         }
 
         String defaultPermission = SmsPropertyPlaceholderConfigurer.getContextProperty(roleTypeName);
 
         if (defaultPermission == null || "".equals(defaultPermission.trim())) {
+            logger.error(String.format("不存在[%s]默认权限配置，请检查权限配置文件!", roleTypeName));
             throw new BusinessLogicRunTimeException(String.format("不存在[%s]默认权限配置，请检查权限配置文件!", roleTypeName));
         }
 
         ObjectMapper mapper = Environ.getBean(ObjectMapper.class);
         JsonNode defaultPermissions = mapper.readTree(defaultPermission);
 
-/*        JavaType javaType = objectMapper.getTypeFactory().constructParametricType(List.class, HashMap.class);
-        List<Map<String, Object>> defaultPermissionList = objectMapper.readValue(defaultPermission, javaType);*/
-
         if (!defaultPermissions.isArray()) {
+            logger.error(String.format("[%s]默认权限配置错误，请检查权限配置文件!", roleTypeName));
             throw new BusinessLogicRunTimeException(String.format("[%s]默认权限配置错误，请检查权限配置文件!", roleTypeName));
         }
 
@@ -280,16 +293,19 @@ public class UserService extends BaseService implements IUserService {
         List<User> list = userMapper.selectByExample(userExample);
 
         if (null == list) {
+            logger.error("用户名或密码错误!");
             throw new BusinessLogicRunTimeException("用户名或密码错误!");
         }
 
         if (list.size() > 1) {
             // 用户名是唯一的-只可能有一个用户
+            logger.error("账户数据异常[用户名重复]，请联系管理员");
             throw new BusinessLogicRunTimeException("账户数据异常[用户名重复]，请联系管理员!");
         }
 
         User user = list.get(0);
         if (user.getStatus()) {
+            logger.error("你的账户已经被禁用，请联系管理员!");
             throw new BusinessLogicRunTimeException("你的账户已经被禁用，请联系管理员!");
         }
 
