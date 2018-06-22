@@ -7,6 +7,7 @@ import javassist.*;
 import javassist.bytecode.CodeAttribute;
 import javassist.bytecode.LocalVariableAttribute;
 import javassist.bytecode.MethodInfo;
+import org.apache.ibatis.jdbc.Null;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.Signature;
@@ -24,14 +25,13 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.lang.reflect.Field;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * 负责将返回转换成统一消息格式
@@ -86,16 +86,16 @@ public class ResponseAspect {
     }
 
     /**
-     * controller方法执行前的参数日志处理
+     * Controller中所有@ResponseBody方法执行前的参数日志处理
      */
     @Before(value = "responseBodyPointCut()")
     public void doBeforeLog(JoinPoint pjp) throws Throwable {
 
         Signature signature = pjp.getSignature();
 
-        if (signature instanceof MethodSignature) {
+/*        if (signature instanceof MethodSignature) {
             logger.info("signature is MethodSignature");
-        }
+        }*/
 
         String classType = pjp.getTarget().getClass().getName();
         Class<?> clazz = Class.forName(classType);
@@ -108,10 +108,10 @@ public class ResponseAspect {
 
         // 参数名列表
         String[] paramNames = getFieldsName(this.getClass(), clazzName, methodName);
-        // 日志内容
+        // 参数内容
         String logContent = buildLogContent(paramNames, pjp.getArgs());
 
-        logger.info("clazzName: " + clazzName + ", methodName:" + methodName + ", param:" + logContent);
+        logger.info("调用方法：" + clazzName + "." + methodName + " 参数：" + logContent);
 
     }
 
@@ -208,23 +208,38 @@ public class ResponseAspect {
     private static String buildLogContent(String[] paramNames, Object[] args) {
 
         StringBuilder sb = new StringBuilder();
-        boolean clazzFlag = true;
+        //boolean clazzFlag = true;
 
         for (int k = 0; k < args.length; k++) {
 
             Object arg = args[k];
 
-            sb.append(paramNames[k] + " ");
+            sb.append(paramNames[k]);
+
+            if (null == arg) {
+                sb.append("=null").append("; ");
+                continue;
+            }
             // 获取对象类型
+            Class<?> argClass = arg.getClass();
             String typeName = arg.getClass().getTypeName();
 
             if (TYPES.contains(typeName)) {
-                sb.append("=" + arg + "; ");
+                sb.append("=").append(arg).append("; ");
+                continue;
             }
 
-            if (clazzFlag) {
-                sb.append(getFieldsValue(arg));
+            if (argClass.isAssignableFrom(HttpServletRequest.class) ||
+                    argClass.isAssignableFrom(HttpServletResponse.class)) {
+                sb.append("=").append(arg).append("; ");
+                continue;
             }
+            // eg Map，List javabean override Object.toString()
+            sb.append("=").append(arg.toString()).append("; ");
+
+/*            if (clazzFlag) {
+                sb.append(getFieldsValue(arg));
+            }*/
         }
 
         return sb.toString();

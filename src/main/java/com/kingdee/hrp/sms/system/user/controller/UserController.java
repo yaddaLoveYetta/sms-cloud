@@ -89,7 +89,7 @@ public class UserController {
             throw new BusinessLogicRunTimeException("用户名或密码不能为空!");
         }
 
-        if (!checkVerificationCode(code, request.getSession(true))) {
+        if (StringUtils.isBlank(code) || !checkVerificationCode(code, request.getSession(true))) {
             logger.error("验证码错误!");
             throw new BusinessLogicRunTimeException("验证码错误!");
         }
