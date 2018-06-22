@@ -4,10 +4,12 @@ import com.kingdee.hrp.sms.common.exception.BusinessLogicRunTimeException;
 import com.kingdee.hrp.sms.common.model.AccessControl;
 import com.kingdee.hrp.sms.common.model.Role;
 import com.kingdee.hrp.sms.common.model.User;
+import com.kingdee.hrp.sms.common.pojo.UserRoleTypeEnum;
 import com.kingdee.hrp.sms.system.user.service.IUserService;
 import com.kingdee.hrp.sms.util.Common;
 import com.kingdee.hrp.sms.util.ValidateCode;
 import com.kingdee.hrp.sms.util.SessionUtil;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -77,7 +79,7 @@ public class UserController {
 
         Map<String, Object> ret = new HashMap<>(8);
 
-        if ("".equals(userName) || "".equals(password)) {
+        if (StringUtils.isBlank(userName) || StringUtils.isBlank(password)) {
             throw new BusinessLogicRunTimeException("用户名或密码不能为空!");
         }
 
@@ -90,16 +92,16 @@ public class UserController {
         if (null != user) {
 
             Long org = user.getOrg();
-            // 一个用户可以对应多个角色
+            // 一个用户可以对应多个角色-但多个角色都属于同一个类型
             List<Role> roles = userService.getUserRole(user.getId());
 
             // 获取用户所属的组织信息(医院/供应商)
             Object userLinkOrg = null;
-            if (roles.get(0).getType() == 2) {
+            if (roles.get(0).getType() == UserRoleTypeEnum.HOSPITAL.getNumber().intValue()) {
                 // 医院角色
                 userLinkOrg = userService.getUserLinkHospital(user.getOrg());
             }
-            if (roles.get(0).getType() == 3) {
+            if (roles.get(0).getType() == UserRoleTypeEnum.SUPPLIER.getNumber().intValue()) {
                 // 供应商角色
                 userLinkOrg = userService.getUserLinkSupplier(user.getOrg());
             }

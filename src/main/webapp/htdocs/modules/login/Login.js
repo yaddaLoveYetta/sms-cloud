@@ -40,6 +40,12 @@ define('Login', function (require, module, exports) {
 
         var code = txtCode.value;
 
+        if (!code) {
+            txtCode.focus();
+            WarnTip.show('请输入验证码');
+            return false;
+        }
+
         $(btn).addClass('disabled').html('正在登录...');
 
 

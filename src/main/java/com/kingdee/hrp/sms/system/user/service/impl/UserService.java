@@ -29,7 +29,6 @@ import java.util.*;
 @Service
 public class UserService extends BaseService implements IUserService {
 
-
     /**
      * 用户注册
      * 1:根据注册用户类别新增一基础资料，eg：对于供应商类别，新增一供应商信息，对于医院类别，新增一医院信息
@@ -39,7 +38,7 @@ public class UserService extends BaseService implements IUserService {
      * @param registerInfo 用户注册信息
      */
     @Override
-    @Transactional(rollbackFor = {Exception.class})
+    @Transactional(rollbackFor = { Exception.class })
     public void register(Map<String, Object> registerInfo) throws IOException {
 
         ObjectMapper mapper = Environ.getBean(ObjectMapper.class);
@@ -114,7 +113,6 @@ public class UserService extends BaseService implements IUserService {
         if (userExist) {
             throw new BusinessLogicRunTimeException("该用户名已被注册,请换一个用户名!");
         }
-
 
         //1: 新增医院/供应商基础资料
 
@@ -265,7 +263,7 @@ public class UserService extends BaseService implements IUserService {
      *
      * @param username 用户账号
      * @param password 用户密码 (MD5)
-     * @return
+     * @return User
      */
     @Override
     public User login(String username, String password) {
@@ -277,19 +275,24 @@ public class UserService extends BaseService implements IUserService {
 
         criteria.andUserNameEqualTo(username);
         criteria.andPasswordEqualTo(password);
-        // 非禁用用户
-        // criteria.andStatusEqualTo(false);
 
         List<User> list = userMapper.selectByExample(userExample);
-        if (list != null && list.size() > 0) {
 
-            User user = list.get(0);
-            if (user.getStatus()) {
-                throw new BusinessLogicRunTimeException("你的账户已经被禁用，请联系管理员!");
-            }
-            return user;
+        if (null == list) {
+            throw new BusinessLogicRunTimeException("用户名或密码错误!");
         }
-        throw new BusinessLogicRunTimeException("用户名或密码错误!");
+
+        if (list.size() > 1) {
+            // 用户名是唯一的-只可能有一个用户
+            throw new BusinessLogicRunTimeException("账户数据异常[用户名重复]，请联系管理员!");
+        }
+
+        User user = list.get(0);
+        if (user.getStatus()) {
+            throw new BusinessLogicRunTimeException("你的账户已经被禁用，请联系管理员!");
+        }
+
+        return user;
     }
 
     /**
@@ -316,7 +319,6 @@ public class UserService extends BaseService implements IUserService {
         RoleExample roleExample = new RoleExample();
         RoleExample.Criteria roleExampleCriteria = roleExample.createCriteria();
         roleExampleCriteria.andIdIn(userRoleIds);
-
 
         return roleMapper.selectByExample(roleExample);
     }
@@ -349,12 +351,11 @@ public class UserService extends BaseService implements IUserService {
     }
 
     @Override
-    @Transactional(rollbackFor = {Exception.class})
+    @Transactional(rollbackFor = { Exception.class })
     public Boolean editPwd(Long userId, String oldPwd, String newPwd) {
 
         User user = null;
         UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
-
 
         UserExample example = new UserExample();
         UserExample.Criteria criteria = example.createCriteria();
@@ -427,7 +428,6 @@ public class UserService extends BaseService implements IUserService {
         criteria2.andParentIdEqualTo(8);
         menuExample.or(criteria2);*/
 
-
         List<Menu> menus = menuMapper.selectByExample(null);
 
         // 2：获取功能权限数据
@@ -490,7 +490,8 @@ public class UserService extends BaseService implements IUserService {
      * @param parentId          菜单父节点id(传0)
      * @return list
      */
-    private List<Map<String, Object>> toTree(List<Menu> menus, List<FormAction> formActions, Map<Integer, AccessControl> accessControlsMap, int parentId, Role role) {
+    private List<Map<String, Object>> toTree(List<Menu> menus, List<FormAction> formActions,
+            Map<Integer, AccessControl> accessControlsMap, int parentId, Role role) {
 
         List<Map<String, Object>> ret = new ArrayList<>();
 
@@ -581,7 +582,6 @@ public class UserService extends BaseService implements IUserService {
         return ret;
     }
 
-
     /**
      * 获取消息通知
      *
@@ -593,7 +593,8 @@ public class UserService extends BaseService implements IUserService {
      * @return Map
      */
     @Override
-    public Map<String, Object> getMessage(Integer userRoleType, Long org, Integer type, Integer pageSize, Integer pageNo) {
+    public Map<String, Object> getMessage(Integer userRoleType, Long org, Integer type, Integer pageSize,
+            Integer pageNo) {
 
         Map<String, Object> ret = new HashMap<>(16);
 
@@ -611,7 +612,6 @@ public class UserService extends BaseService implements IUserService {
             // 已处理消息
             criteria.andStatusEqualTo(BaseStatusEnum.PROCESSED.getNumber());
         }
-
 
         example.setOrderByClause("`date` DESC");
 

@@ -1,9 +1,9 @@
 package com.kingdee.hrp.sms.util;
 
-
 import com.kingdee.hrp.sms.common.exception.SessionLostRuntimeException;
 import com.kingdee.hrp.sms.common.model.Role;
 import com.kingdee.hrp.sms.common.model.User;
+import com.kingdee.hrp.sms.common.pojo.UserRoleTypeEnum;
 
 import java.util.HashMap;
 import java.util.List;
@@ -25,7 +25,6 @@ public final class SessionUtil {
      * @param key
      * @param value
      * @return void
-     * @Title set
      * @date 2017-05-30 01:03:36 星期二
      */
     public static void set(String key, Object value) {
@@ -45,7 +44,6 @@ public final class SessionUtil {
      *
      * @param key
      * @return void
-     * @Title remove
      * @date 2017-05-30 01:03:05 星期二
      */
     public static void remove(String key) {
@@ -64,7 +62,6 @@ public final class SessionUtil {
      *
      * @param key
      * @return Object
-     * @Title get
      * @date 2017-05-30 01:03:50 星期二
      */
     public static Object get(String key) {
@@ -96,7 +93,6 @@ public final class SessionUtil {
      * 获取当前线程用户-同session中保存的用户
      *
      * @return User
-     * @Title getUser
      * @date 2017-05-30 01:04:05 星期二
      */
     public static User getUser() {
@@ -116,7 +112,6 @@ public final class SessionUtil {
      * 一个用户可能有多个角色
      *
      * @return Long
-     * @Title getUserRole
      * @date 2017-05-30 01:04:05 星期二
      */
     public static List<Role> getUserRole() {
@@ -157,12 +152,11 @@ public final class SessionUtil {
      * 如果该用户所述角色不是供应商角色，返回-1
      *
      * @return String
-     * @Title getUserLinkSupplier
      * @date 2017-06-02 17:37:44 星期五
      */
     public static Long getUserLinkSupplier() {
         // 1: 系统角色 2: 医院角色 3: 供应商角色
-        if (getUserRoleType() != 3) {
+        if (getUserRoleType() != UserRoleTypeEnum.SUPPLIER.getNumber().intValue()) {
             return -1L;
         }
         return getUserRole().get(0).getOrg();
@@ -174,12 +168,11 @@ public final class SessionUtil {
      * 如果该用户所述角色不是供应商角色，返回-1
      *
      * @return String
-     * @Title getUserLinkSupplier
      * @date 2017-06-02 17:37:44 星期五
      */
     public static Long getUserLinkHospital() {
         // 1: 系统角色 2: 医院角色 3: 供应商角色
-        if (getUserRoleType() != 2) {
+        if (getUserRoleType() != UserRoleTypeEnum.HOSPITAL.getNumber().intValue()) {
             return -1L;
         }
         return getUserRole().get(0).getOrg();
@@ -189,7 +182,6 @@ public final class SessionUtil {
      * 获取当前线程用户名
      *
      * @return String
-     * @Title getUserName
      * @date 2017-05-30 01:05:11 星期二
      */
     public static String getUserName() {
@@ -202,7 +194,6 @@ public final class SessionUtil {
      * 获取当前线程用户id
      *
      * @return Long
-     * @Title getUserId
      * @date 2017-05-30 01:05:24 星期二
      */
     public static Long getUserId() {

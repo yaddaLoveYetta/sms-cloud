@@ -94,7 +94,7 @@ public class ValidateCode {
     }
 
     /**
-     * 绘制字符串
+     * 随机获取字符
      *
      * @return 一个字符String
      */
@@ -113,16 +113,6 @@ public class ValidateCode {
         int xl = random.nextInt(30);
         int yl = random.nextInt(20);
         g.drawLine(x, y, x + xl, y + yl);
-    }
-
-    /**
-     * 获取随机的字符
-     *
-     * @param num int
-     * @return String
-     */
-    public String getRandomString(int num) {
-        return String.valueOf(randomStr.charAt(num));
     }
 
 }
