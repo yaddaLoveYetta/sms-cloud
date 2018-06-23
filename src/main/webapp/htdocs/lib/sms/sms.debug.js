@@ -4382,6 +4382,7 @@
 
                 var txtUser;
                 var txtPassword;
+                var txtCode;
 
                 var user = getLast();
 
@@ -4389,14 +4390,30 @@
 
                     var btn = dialog.find('[data-id="ok"]');
                     var html = btn.html();
+                    var span = dialog.find('[data-field="msg"]').hide();
+
+                    if (!txtUser.value) {
+                        txtUser.focus();
+                        span.html('请输入用户名').show();
+                        return false;
+                    }
+                    if (!txtPassword.value) {
+                        txtPassword.focus();
+                        span.html('请输入密码').show();
+                        return false;
+                    }
+                    if (!txtCode.value) {
+                        txtCode.focus();
+                        span.html('请输入验证码').show();
+                        return false;
+                    }
 
                     btn.html('登录中...').attr('disabled', true);
 
-                    var span = dialog.find('[data-field="msg"]').hide();
-
                     login({
                         'userName': txtUser.value,
-                        'password': txtPassword.value
+                        'password': txtPassword.value,
+                        'code': txtCode.value
 
                     }, function (data, json) {
 
@@ -4447,6 +4464,8 @@
 
                         txtUser = this.find('[data-field="user"]').get(0);
                         txtPassword = this.find('[data-field="password"]').get(0);
+                        txtCode = this.find('[data-field="code"]').get(0);
+                        var img = this.find('[data-field="img"]').get(0);
 
                         $(txtUser).on('keydown', function (event) {
                             if (event.keyCode === 13) {
@@ -4459,6 +4478,25 @@
                                 submit(self);
                             }
                         });
+
+                        $(txtCode).on('keydown', function (event) {
+                            if (event.keyCode === 13) {
+                                submit(self);
+                            }
+                        });
+
+                        $(img).on('click', function (event) {
+                            var api = new API({
+                                name: 'user/getVerificationCode',
+                                data: {
+                                    r: Math.random()
+                                }
+                            });
+
+                            $(img).attr("src", api.getUrlWithGetParams());
+                        });
+
+                        $(img).click();
                     },
 
                     onfocus: function () {
@@ -4470,7 +4508,7 @@
                                 txtUser.focus();
                             }
                         }, 100);
-                    },
+                    }
                 });
 
                 dialog.showModal();
@@ -4503,7 +4541,11 @@
 
             var api = new API(defaults.apiLogin);
 
-            api.get(data);
+            api.get({
+                userName: data.userName,
+                password: MD5.encrypt(data.password),
+                code: data.code
+            });
 
             api.on('success', function (data, json) { // 成功
 

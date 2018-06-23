@@ -1119,6 +1119,18 @@ label {
     width: 200px;
 }
 
+.login-box .input-panel.code input {
+    font-size: 16px;
+    display: inline-block;
+    width: 100px;
+}
+
+.login-box .input-panel.code img {
+    font-size: 16px;
+    display: inline-block;
+    width: 100px;
+}
+
 .login-box .input-panel .iconfont {
     font-size: 18px;
     padding: 5px;

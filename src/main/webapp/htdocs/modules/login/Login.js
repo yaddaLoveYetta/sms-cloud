@@ -51,7 +51,7 @@ define('Login', function (require, module, exports) {
 
         SMS.Login.login({
             userName: user,
-            password: SMS.MD5.encrypt(password),
+            password: password,
             code: code
         }, function (user, data, json) { //成功
 

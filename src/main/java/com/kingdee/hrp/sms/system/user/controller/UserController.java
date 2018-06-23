@@ -218,7 +218,7 @@ public class UserController {
     @RequestMapping(value = "getMessage")
     @ResponseBody
     public Map<String, Object> getMessage(Integer type, @RequestParam(defaultValue = "10") Integer pageSize,
-            @RequestParam(defaultValue = "1") Integer pageNo) {
+                                          @RequestParam(defaultValue = "1") Integer pageNo) {
 
         type = type == null ? -1 : type;
 
@@ -286,7 +286,7 @@ public class UserController {
     public Boolean checkVerificationCode(String inputCode, HttpSession session) {
         //从session中获取随机数
         String random = (String) session.getAttribute(VERIFICATION_CODE_KEY);
-        return random.equalsIgnoreCase(inputCode);
+        return null != random && random.equalsIgnoreCase(inputCode);
 
     }
 }
