@@ -73,6 +73,21 @@ public interface IUserService extends Serializable {
     List<Map<String, Object>> getRolePermissions(Long roleId);
 
     /**
+     * 根据角色id获取授权结果
+     *
+     * @param roleId 角色id
+     * @return Map<Integer, AccessControl>
+     */
+    Map<Integer, AccessControl> getAccessControl(Long roleId);
+
+    /**
+     * 获取用户所有权限集合（用户有多个角色时将权限做和，||运算）
+     *
+     * @return 权限授权结果
+     */
+    Map<Integer, Integer> getAccessControl();
+
+    /**
      * 保存角色权限
      *
      * @param roleId            角色id

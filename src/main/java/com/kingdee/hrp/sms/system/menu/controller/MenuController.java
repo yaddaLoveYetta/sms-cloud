@@ -28,37 +28,4 @@ public class MenuController {
         return menuService.getMenusByParentId(parentId);
     }
 
-    @ResponseBody
-    @RequestMapping(value = "a")
-    public void a() {
-        return;
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "b")
-    public String b() {
-        return new String("hello word");
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "c")
-    public Map c() {
-        return null;
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "d")
-    public String d(HttpServletRequest request) {
-
-        System.out.println(request.getParameter("parentId"));
-
-        return "parentId=" + request.getParameter("parentId");
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "e")
-    public String e(HttpServletRequest request) {
-
-        throw new BusinessLogicRunTimeException("业务处理异常");
-    }
 }

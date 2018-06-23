@@ -16,6 +16,7 @@ import com.kingdee.hrp.sms.system.user.service.IUserService;
 import com.kingdee.hrp.sms.util.Common;
 import com.kingdee.hrp.sms.util.Environ;
 import com.kingdee.hrp.sms.util.Pinyin4jUtil;
+import com.kingdee.hrp.sms.util.SessionUtil;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,7 +46,7 @@ public class UserService extends BaseService implements IUserService {
      * @param registerInfo 用户注册信息
      */
     @Override
-    @Transactional(rollbackFor = {Exception.class})
+    @Transactional(rollbackFor = { Exception.class })
     public void register(Map<String, Object> registerInfo) throws IOException {
 
         ObjectMapper mapper = Environ.getBean(ObjectMapper.class);
@@ -369,7 +370,7 @@ public class UserService extends BaseService implements IUserService {
     }
 
     @Override
-    @Transactional(rollbackFor = {Exception.class})
+    @Transactional(rollbackFor = { Exception.class })
     public Boolean editPwd(Long userId, String oldPwd, String newPwd) {
 
         User user = null;
@@ -446,20 +447,93 @@ public class UserService extends BaseService implements IUserService {
         List<FormAction> formActions = formActionMapper.selectByExample(null);
 
         // 3：获取该角色所有功能授权结果
+
+        Map<Integer, AccessControl> accessControlsMap = getAccessControl(roleId);
+
+        // 4：根据-菜单数据-权限数据-功能授权结果 构建当前角色功能授权数据结构
+        List<Map<String, Object>> ret = toTree(menus, formActions, accessControlsMap, 0, role);
+
+        return ret;
+    }
+
+    @Override
+    public Map<Integer, AccessControl> getAccessControl(Long roleId) {
+
+        // 授权结果转成Map好操作
+        Map<Integer, AccessControl> ret = new HashMap<Integer, AccessControl>(32);
+
         AccessControlMapper accessControlMapper = sqlSession.getMapper(AccessControlMapper.class);
         AccessControlExample accessControlExample = new AccessControlExample();
         AccessControlExample.Criteria accessControlExampleCriteria = accessControlExample.createCriteria();
         accessControlExampleCriteria.andRoleIdEqualTo(roleId);
 
         List<AccessControl> accessControls = accessControlMapper.selectByExample(accessControlExample);
-        // 授权结果转成Map好操作
-        Map<Integer, AccessControl> accessControlsMap = new HashMap<Integer, AccessControl>(32);
+
         for (AccessControl accessControl : accessControls) {
-            accessControlsMap.put(accessControl.getClassId(), accessControl);
+            ret.put(accessControl.getClassId(), accessControl);
         }
 
-        // 4：根据-菜单数据-权限数据-功能授权结果 构建当前角色功能授权数据结构
-        List<Map<String, Object>> ret = toTree(menus, formActions, accessControlsMap, 0, role);
+        return ret;
+    }
+
+    /**
+     * 获取用户所有权限集合（用户有多个角色时将权限做和，||运算）
+     *
+     * @return 权限授权结果
+     */
+    @Override
+    public Map<Integer, Integer> getAccessControl() {
+
+        Map<Integer, Integer> ret = new HashMap<>(32);
+
+        List<Role> userRole = SessionUtil.getUserRole();
+
+        List<Map<Integer, AccessControl>> roleAccessControlList = new ArrayList<>();
+
+        for (Role role : userRole) {
+            Map<Integer, AccessControl> accessControl = getAccessControl(role.getId());
+            roleAccessControlList.add(accessControl);
+        }
+
+        if (roleAccessControlList.size() == 1) {
+            // 用户只有一个角色
+            Map<Integer, AccessControl> roleAccessControl = roleAccessControlList.get(0);
+            for (Map.Entry<Integer, AccessControl> roleAccessControlEntry : roleAccessControl.entrySet()) {
+                ret.put(roleAccessControlEntry.getKey(), roleAccessControlEntry.getValue().getAccessMask());
+            }
+
+        }
+
+        if (roleAccessControlList.size() > 1) {
+
+            Map<Integer, AccessControl> temp = new HashMap<>();
+            // 用户有多个角色
+            for (Map<Integer, AccessControl> roleAccessControlItem : roleAccessControlList) {
+                // 这里只为获取用户所有有权限的class_id
+                temp.putAll(roleAccessControlItem);
+            }
+
+            for (Map.Entry<Integer, AccessControl> roleAccessControlEntry : temp.entrySet()) {
+
+                Integer classId = roleAccessControlEntry.getKey();
+                // 设置合成前默认值
+                Integer allAccessMask = 0;
+
+                // 合成多角色对相同classId的权限掩码
+                for (Map<Integer, AccessControl> roleAccessControlItem : roleAccessControlList) {
+
+                    if (roleAccessControlItem.containsKey(classId)) {
+                        // 或运算合成总权限
+                        allAccessMask = allAccessMask | roleAccessControlItem.get(classId).getAccessMask();
+                    }
+
+                }
+
+                ret.put(classId, allAccessMask);
+
+            }
+
+        }
 
         return ret;
     }
@@ -497,7 +571,7 @@ public class UserService extends BaseService implements IUserService {
      * @return list
      */
     private List<Map<String, Object>> toTree(List<Menu> menus, List<FormAction> formActions,
-                                             Map<Integer, AccessControl> accessControlsMap, int parentId, Role role) {
+            Map<Integer, AccessControl> accessControlsMap, int parentId, Role role) {
 
         List<Map<String, Object>> ret = new ArrayList<>();
 
@@ -600,7 +674,7 @@ public class UserService extends BaseService implements IUserService {
      */
     @Override
     public Map<String, Object> getMessage(Integer userRoleType, Long org, Integer type, Integer pageSize,
-                                          Integer pageNo) {
+            Integer pageNo) {
 
         Map<String, Object> ret = new HashMap<>(16);
 
