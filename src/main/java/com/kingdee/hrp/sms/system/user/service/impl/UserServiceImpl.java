@@ -18,13 +18,20 @@ import com.kingdee.hrp.sms.util.Environ;
 import com.kingdee.hrp.sms.util.Pinyin4jUtil;
 import com.kingdee.hrp.sms.util.SessionUtil;
 import org.apache.commons.lang.StringUtils;
+import org.dom4j.Attribute;
+import org.dom4j.Document;
+import org.dom4j.DocumentException;
+import org.dom4j.Element;
+import org.dom4j.io.SAXReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
+import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.*;
 
 /**
@@ -49,199 +56,28 @@ public class UserServiceImpl extends BaseService implements UserService {
     @Transactional(rollbackFor = {Exception.class})
     public void register(RegisterModel registerModel) throws IOException {
 
+        // 1:参数校验
+        validateRegisterModel(registerModel);
 
-        if (UserRoleTypeEnum.getUserRoleTypeEnum(registerModel.getUserType()) == UserRoleTypeEnum.NOT_SUPPORT) {
-            logger.error("缺少或错误的注册用户类别");
-            throw new BusinessLogicRunTimeException("缺少或错误的注册用户类别");
-        }
-
-        if (StringUtils.isBlank(registerModel.getUserName())) {
-            logger.error("缺少用户名");
-            throw new BusinessLogicRunTimeException("缺少用户名");
-        }
-
-        if (StringUtils.isBlank(registerModel.getPassword())) {
-            logger.error("缺少密码");
-            throw new BusinessLogicRunTimeException("缺少密码");
-        }
-
-        if (StringUtils.isBlank(registerModel.getName())) {
-            logger.error("缺少真实姓名");
-            throw new BusinessLogicRunTimeException("缺少真实姓名");
-        }
-
-        if (StringUtils.isBlank(registerModel.getMobile())) {
-            logger.error("缺少手机号码");
-            throw new BusinessLogicRunTimeException("缺少手机号码");
-        }
-
-        if (registerModel.getUserType() == UserRoleTypeEnum.HOSPITAL.getNumber().intValue()
-                && StringUtils.isBlank(registerModel.getRegistrationNo())) {
-            logger.error("缺少医疗机构登记号");
-            throw new BusinessLogicRunTimeException("缺少医疗机构登记号");
-        }
-
-        if (registerModel.getUserType() == UserRoleTypeEnum.SUPPLIER.getNumber().intValue()
-                && StringUtils.isBlank(registerModel.getCreditCode())) {
-            logger.error("缺少企业统一信用代码");
-            throw new BusinessLogicRunTimeException("缺少企业统一信用代码");
-        }
-
-
-        if (StringUtils.isBlank(registerModel.getOrgName())) {
-            logger.error("缺少企业名称");
-            throw new BusinessLogicRunTimeException("缺少企业名称");
-        }
-
-        if (check(registerModel.getUserName())) {
-            logger.error("该用户名已被注册");
-            throw new BusinessLogicRunTimeException("该用户名已被注册,请换一个用户名!");
-        }
-
-        //1: 新增医院/供应商基础资料
-
-        // 记录新增医院/供应商基础资料内码-新增用户关联时用
-        Long org = 0L;
-        if (registerModel.getUserType() == UserRoleTypeEnum.SYSTEM.getNumber().intValue()) {
-            throw new BusinessLogicRunTimeException("暂不提供系统用户注册权限!");
-        } else if (registerModel.getUserType() == UserRoleTypeEnum.HOSPITAL.getNumber().intValue()) {
-            // 医院用户注册
-            HospitalMapper hospitalMapper = sqlSession.getMapper(HospitalMapper.class);
-            org = getId();
-
-            Hospital hospital = new Hospital();
-            hospital.setName(registerModel.getOrgName());
-            // 用医院名称拼音简写做代码
-            hospital.setNumber(Pinyin4jUtil.converterToFirstSpell(registerModel.getOrgName()));
-            hospital.setRegistrationNo(registerModel.getRegistrationNo());
-            hospital.setId(org);
-
-            hospitalMapper.insertSelective(hospital);
-        } else if (registerModel.getUserType() == UserRoleTypeEnum.SUPPLIER.getNumber().intValue()) {
-            // 供应商注册
-            SupplierMapper supplierMapper = sqlSession.getMapper(SupplierMapper.class);
-            org = getId();
-
-            Supplier supplier = new Supplier();
-            supplier.setName(registerModel.getOrgName());
-            // 用公司名称拼音简写做代码
-            supplier.setNumber(Pinyin4jUtil.converterToFirstSpell(registerModel.getOrgName()));
-            supplier.setCreditCode(registerModel.getCreditCode());
-            supplier.setId(org);
-
-            supplierMapper.insertSelective(supplier);
-        } else {
-            throw new BusinessLogicRunTimeException("错误的用户类别!");
-        }
+        //2: 新增医院/供应商基础资料
+        Long orgId = generateOrg(registerModel);
 
         // 2；为org新增一个顶级角色
-        //记录新增角色id，用户关联时用
-        Long roleId = getId();
-        RoleMapper roleMapper = sqlSession.getMapper(RoleMapper.class);
+        Role role = generateRole(registerModel, orgId);
 
-        Role role = new Role();
-        role.setId(roleId);
-        role.setName(registerModel.getOrgName() + "-管理员");
-        role.setNumber(Pinyin4jUtil.converterToFirstSpell(registerModel.getOrgName()));
-        role.setOrg(org);
-        role.setType(registerModel.getUserType());
-        role.setUserDefine(true);
+        // 3:新增注册用户,将1步中新增组织，2步中新增角色绑定到此用户
+        User user = generateUser(registerModel, orgId, role);
 
-        roleMapper.insert(role);
+
+        // ======================其他对新增用户的关联处理项=================================
+
         // 给生成的角色授默认权限(角色类别的全部可用权限)
         setDefaultPermission(role);
 
-        // 3:新增注册用户,将1步中新增组织，2步中新增角色绑定到此用户
-        UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
-        // 保存下用户id，生成用户角色子表时用
-        Long userId = getId();
-
-        User user = new User();
-        user.setPassword(registerModel.getPassword());
-        user.setId(userId);
-        // 注册的用户都是管理员
-        user.setIsAdmin(true);
-        user.setMobile(registerModel.getMobile());
-        user.setName(registerModel.getName());
-        user.setUserName(registerModel.getUserName());
-        user.setOrg(org);
-
-        userMapper.insertSelective(user);
-
-        // 生成用户角色子表
-        UserEntryMapper userEntryMapper = sqlSession.getMapper(UserEntryMapper.class);
-
-        UserEntry userEntry = new UserEntry();
-        userEntry.setId(getId());
-        userEntry.setParent(userId);
-        userEntry.setRole(roleId);
-
-        userEntryMapper.insertSelective(userEntry);
-
+        // 给生成的医院/供应商组织设置系统默认参数
+        setDefaultSystemSetting(registerModel.getUserType(), orgId);
     }
 
-    /**
-     * 根据角色的类别设置角色默认授权结果
-     * 只支持贵供应商与医院角色类别的默认权限设置，其他角色类别跑出异常
-     *
-     * @param role 角色
-     */
-    private void setDefaultPermission(Role role) throws IOException {
-
-        String roleTypeName = "";
-
-        if (role.getType() == UserRoleTypeEnum.HOSPITAL.getNumber().intValue()) {
-            roleTypeName = "hospital";
-        } else if (role.getType() == UserRoleTypeEnum.SUPPLIER.getNumber().intValue()) {
-            roleTypeName = "supplier";
-        } else {
-            logger.error("不支持该类别角色默认权限设置");
-            throw new BusinessLogicRunTimeException("不支持该类别角色默认权限设置");
-        }
-
-        String defaultPermission = SmsPropertyPlaceholderConfigurer.getContextProperty(roleTypeName);
-
-        if (defaultPermission == null || "".equals(defaultPermission.trim())) {
-            logger.error(String.format("不存在[%s]默认权限配置，请检查权限配置文件!", roleTypeName));
-            throw new BusinessLogicRunTimeException(String.format("不存在[%s]默认权限配置，请检查权限配置文件!", roleTypeName));
-        }
-
-        ObjectMapper mapper = Environ.getBean(ObjectMapper.class);
-        JsonNode defaultPermissions = mapper.readTree(defaultPermission);
-
-        if (!defaultPermissions.isArray()) {
-            logger.error(String.format("[%s]默认权限配置错误，请检查权限配置文件!", roleTypeName));
-            throw new BusinessLogicRunTimeException(String.format("[%s]默认权限配置错误，请检查权限配置文件!", roleTypeName));
-        }
-
-        List<AccessControl> accessControlList = new ArrayList<AccessControl>();
-
-        for (JsonNode permission : defaultPermissions) {
-
-            int classId = permission.path("classId").asInt(0);
-            int accessMask = permission.path("accessMask").asInt(0);
-
-            if (classId <= 0) {
-                // ignore error conf
-                continue;
-            }
-
-            AccessControl accessControl = new AccessControl();
-            accessControl.setRoleId(role.getId());
-            accessControl.setClassId(classId);
-            accessControl.setAccessMask(accessMask);
-
-            accessControlList.add(accessControl);
-        }
-
-        AccessControlMapper accessControlMapper = sqlSession.getMapper(AccessControlMapper.class);
-        // 授权结果插入数据库--暂时走单条循环插入，应该自写mapper批量插入
-        for (AccessControl accessControl : accessControlList) {
-            accessControlMapper.insertSelective(accessControl);
-        }
-        // accessControlMapper.batchInsert(accessControlList);
-
-    }
 
     /**
      * 用户登录
@@ -791,4 +627,323 @@ public class UserServiceImpl extends BaseService implements UserService {
 
     }
 
+    /**
+     * 校验注册参数
+     *
+     * @param registerModel 前端提交的注册参数
+     */
+    private void validateRegisterModel(RegisterModel registerModel) {
+
+        if (UserRoleTypeEnum.getUserRoleTypeEnum(registerModel.getUserType()) == UserRoleTypeEnum.NOT_SUPPORT) {
+            logger.error("缺少或错误的注册用户类别");
+            throw new BusinessLogicRunTimeException("缺少或错误的注册用户类别");
+        }
+
+        if (StringUtils.isBlank(registerModel.getUserName())) {
+            logger.error("缺少用户名");
+            throw new BusinessLogicRunTimeException("缺少用户名");
+        }
+
+        if (StringUtils.isBlank(registerModel.getPassword())) {
+            logger.error("缺少密码");
+            throw new BusinessLogicRunTimeException("缺少密码");
+        }
+
+        if (StringUtils.isBlank(registerModel.getName())) {
+            logger.error("缺少真实姓名");
+            throw new BusinessLogicRunTimeException("缺少真实姓名");
+        }
+
+        if (StringUtils.isBlank(registerModel.getMobile())) {
+            logger.error("缺少手机号码");
+            throw new BusinessLogicRunTimeException("缺少手机号码");
+        }
+
+        if (registerModel.getUserType() == UserRoleTypeEnum.HOSPITAL.getNumber().intValue()
+                && StringUtils.isBlank(registerModel.getRegistrationNo())) {
+            logger.error("缺少医疗机构登记号");
+            throw new BusinessLogicRunTimeException("缺少医疗机构登记号");
+        }
+
+        if (registerModel.getUserType() == UserRoleTypeEnum.SUPPLIER.getNumber().intValue()
+                && StringUtils.isBlank(registerModel.getCreditCode())) {
+            logger.error("缺少企业统一信用代码");
+            throw new BusinessLogicRunTimeException("缺少企业统一信用代码");
+        }
+
+        if (StringUtils.isBlank(registerModel.getOrgName())) {
+            logger.error("缺少企业名称");
+            throw new BusinessLogicRunTimeException("缺少企业名称");
+        }
+
+        if (check(registerModel.getUserName())) {
+            logger.error("该用户名已被注册");
+            throw new BusinessLogicRunTimeException("该用户名已被注册,请换一个用户名!");
+        }
+    }
+
+    /**
+     * 新增医院/供应商基础资料
+     *
+     * @param registerModel 前端提交的注册信息
+     * @return 新增的医院/供应商基础资料id
+     */
+    private Long generateOrg(RegisterModel registerModel) {
+
+        Long orgId;
+        if (registerModel.getUserType() == UserRoleTypeEnum.SYSTEM.getNumber().intValue()) {
+            throw new BusinessLogicRunTimeException("暂不提供系统用户注册权限!");
+        } else if (registerModel.getUserType() == UserRoleTypeEnum.HOSPITAL.getNumber().intValue()) {
+            // 医院用户注册
+            HospitalMapper hospitalMapper = sqlSession.getMapper(HospitalMapper.class);
+            orgId = getId();
+
+            Hospital hospital = new Hospital();
+            hospital.setName(registerModel.getOrgName());
+            // 用医院名称拼音简写做代码
+            hospital.setNumber(Pinyin4jUtil.converterToFirstSpell(registerModel.getOrgName()));
+            hospital.setRegistrationNo(registerModel.getRegistrationNo());
+            hospital.setId(orgId);
+
+            hospitalMapper.insertSelective(hospital);
+        } else if (registerModel.getUserType() == UserRoleTypeEnum.SUPPLIER.getNumber().intValue()) {
+            // 供应商注册
+            SupplierMapper supplierMapper = sqlSession.getMapper(SupplierMapper.class);
+            orgId = getId();
+
+            Supplier supplier = new Supplier();
+            supplier.setName(registerModel.getOrgName());
+            // 用公司名称拼音简写做代码
+            supplier.setNumber(Pinyin4jUtil.converterToFirstSpell(registerModel.getOrgName()));
+            supplier.setCreditCode(registerModel.getCreditCode());
+            supplier.setId(orgId);
+
+            supplierMapper.insertSelective(supplier);
+        } else {
+            throw new BusinessLogicRunTimeException("错误的用户类别!");
+        }
+
+        return orgId;
+
+    }
+
+    /**
+     * 新增归属orgId的角色
+     *
+     * @param registerModel 前端提交的注册信息
+     * @param orgId         医院/供应商基础资料id
+     * @return 新增的角色基础资料
+     */
+    private Role generateRole(RegisterModel registerModel, Long orgId) throws IOException {
+
+        Long roleId = getId();
+        RoleMapper roleMapper = sqlSession.getMapper(RoleMapper.class);
+
+        Role role = new Role();
+        role.setId(roleId);
+        role.setName(registerModel.getOrgName() + "-管理员");
+        role.setNumber(Pinyin4jUtil.converterToFirstSpell(registerModel.getOrgName()));
+        role.setOrg(orgId);
+        role.setType(registerModel.getUserType());
+        role.setUserDefine(true);
+
+        return role;
+    }
+
+    /**
+     * 新增归属orgId的用户
+     *
+     * @param registerModel 前端提交的注册信息
+     * @param orgId         医院/供应商基础资料id
+     * @return 新增用户基础资料
+     */
+    private User generateUser(RegisterModel registerModel, Long orgId, Role role) {
+
+        UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+
+        Long userId = getId();
+
+        User user = new User();
+        user.setPassword(registerModel.getPassword());
+        user.setId(userId);
+        // 注册的用户都是管理员
+        user.setIsAdmin(true);
+        user.setMobile(registerModel.getMobile());
+        user.setName(registerModel.getName());
+        user.setUserName(registerModel.getUserName());
+        user.setOrg(orgId);
+
+        userMapper.insertSelective(user);
+
+
+        // 生成用户角色子表
+        UserEntryMapper userEntryMapper = sqlSession.getMapper(UserEntryMapper.class);
+
+        UserEntry userEntry = new UserEntry();
+        userEntry.setId(getId());
+        userEntry.setParent(userId);
+        userEntry.setRole(role.getId());
+
+        userEntryMapper.insertSelective(userEntry);
+
+        return user;
+    }
+
+    /**
+     * 根据角色的类别设置角色默认授权结果
+     * 只支持贵供应商与医院角色类别的默认权限设置，其他角色类别跑出异常
+     *
+     * @param role 角色
+     */
+    private void setDefaultPermission(Role role) throws IOException {
+
+        String roleTypeName = "";
+
+        if (role.getType() == UserRoleTypeEnum.HOSPITAL.getNumber().intValue()) {
+            roleTypeName = "hospital";
+        } else if (role.getType() == UserRoleTypeEnum.SUPPLIER.getNumber().intValue()) {
+            roleTypeName = "supplier";
+        } else {
+            logger.error("不支持该类别角色默认权限设置");
+            throw new BusinessLogicRunTimeException("不支持该类别角色默认权限设置");
+        }
+
+        String defaultPermission = SmsPropertyPlaceholderConfigurer.getContextProperty(roleTypeName);
+
+        if (defaultPermission == null || "".equals(defaultPermission.trim())) {
+            logger.error(String.format("不存在[%s]默认权限配置，请检查权限配置文件!", roleTypeName));
+            throw new BusinessLogicRunTimeException(String.format("不存在[%s]默认权限配置，请检查权限配置文件!", roleTypeName));
+        }
+
+        ObjectMapper mapper = Environ.getBean(ObjectMapper.class);
+        JsonNode defaultPermissions = mapper.readTree(defaultPermission);
+
+        if (!defaultPermissions.isArray()) {
+            logger.error(String.format("[%s]默认权限配置错误，请检查权限配置文件!", roleTypeName));
+            throw new BusinessLogicRunTimeException(String.format("[%s]默认权限配置错误，请检查权限配置文件!", roleTypeName));
+        }
+
+        List<AccessControl> accessControlList = new ArrayList<AccessControl>();
+
+        for (JsonNode permission : defaultPermissions) {
+
+            int classId = permission.path("classId").asInt(0);
+            int accessMask = permission.path("accessMask").asInt(0);
+
+            if (classId <= 0) {
+                // ignore error conf
+                continue;
+            }
+
+            AccessControl accessControl = new AccessControl();
+            accessControl.setRoleId(role.getId());
+            accessControl.setClassId(classId);
+            accessControl.setAccessMask(accessMask);
+
+            accessControlList.add(accessControl);
+        }
+
+        AccessControlMapper accessControlMapper = sqlSession.getMapper(AccessControlMapper.class);
+        // 授权结果插入数据库--暂时走单条循环插入，应该自写mapper批量插入
+        for (AccessControl accessControl : accessControlList) {
+            accessControlMapper.insertSelective(accessControl);
+        }
+        // accessControlMapper.batchInsert(accessControlList);
+
+    }
+
+    /**
+     * 给医院/供应商设置默认系统参数（注册时使用）
+     *
+     * @param userType 用户类别
+     * @param orgId    医院或供应商基础资料id
+     */
+    private void setDefaultSystemSetting(Integer userType, Long orgId) {
+
+        String configPath = Thread.currentThread().getContextClassLoader().getResource("config/defaultSettings.xml").getPath();
+
+        SAXReader saxReader = new SAXReader();
+
+        try {
+
+            Document document = saxReader.read(new File(configPath));
+
+            List<SystemSetting> systemSettings = parserSystemSettings(document, orgId);
+
+            // systemSettings正确定校验 TODO
+
+            SystemSettingMapper systemSettingMapper = sqlSession.getMapper(SystemSettingMapper.class);
+
+            systemSettingMapper.batchInsert(systemSettings);
+
+        } catch (DocumentException e) {
+            logger.error("解析系统参数配置xml错误:" + e.getMessage(), e);
+            throw new BusinessLogicRunTimeException("解析系统参数配置xml错误:" + e.getMessage(), e);
+        }
+
+    }
+
+    /**
+     * 从xml解析系统参数默认配置
+     *
+     * @param document 系统参数配置文件
+     * @param orgId    组织id
+     * @return 组织的系统默认参数列表
+     */
+    private List<SystemSetting> parserSystemSettings(Document document, Long orgId) {
+
+        List<SystemSetting> systemSettings = new ArrayList<>();
+
+        Element ele = document.getRootElement();
+
+        List<Element> eleList = ele.elements();
+
+        //循环处理每一个系统参数配置
+        for (Element element : eleList) {
+
+            SystemSetting systemSetting = new SystemSetting();
+
+            systemSetting.setOrg(orgId);
+
+            List<Attribute> attrList = element.attributes();
+
+            for (Attribute attr : attrList) {
+
+                //每循环一次，解析此节点的一个【属性=值】
+                String name = attr.getName();
+                String value = attr.getValue();
+
+                Object targetValue = null;
+
+                try {
+
+                    Field field = systemSetting.getClass().getDeclaredField(name);
+
+                    if (field.getType().equals(Integer.class)) {
+                        targetValue = Integer.parseInt(value);
+                    }
+                    if (field.getType().equals(Long.class)) {
+                        targetValue = Long.parseLong(value);
+                    }
+                    if (field.getType().equals(Boolean.class)) {
+                        targetValue = Boolean.parseBoolean(value);
+                    }
+
+                    field.setAccessible(true);
+                    field.set(systemSetting, value);
+
+                } catch (NoSuchFieldException e) {
+                    // 多余配置忽略
+                    continue;
+                } catch (IllegalAccessException e) {
+                    logger.error("系统参数xml配置转换异常" + e.getMessage(), e);
+                    throw new BusinessLogicRunTimeException("系统参数xml配置转换异常" + e.getMessage(), e);
+                }
+            }
+
+            systemSettings.add(systemSetting);
+        }
+
+        return systemSettings;
+    }
 }

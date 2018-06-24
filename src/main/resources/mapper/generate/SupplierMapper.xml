@@ -743,4 +743,608 @@
       )
     </foreach>
   </insert>
+  <resultMap id="BaseResultMap" type="com.kingdee.hrp.sms.common.model.Supplier">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="number" jdbcType="VARCHAR" property="number" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="credit_code" jdbcType="VARCHAR" property="creditCode" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="introduction" jdbcType="VARCHAR" property="introduction" />
+    <result column="development_experience" jdbcType="VARCHAR" property="developmentExperience" />
+    <result column="legal_person" jdbcType="VARCHAR" property="legalPerson" />
+    <result column="contacts" jdbcType="VARCHAR" property="contacts" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="company_type" jdbcType="VARCHAR" property="companyType" />
+    <result column="industry_type" jdbcType="VARCHAR" property="industryType" />
+    <result column="validity_period_begin" jdbcType="TIMESTAMP" property="validityPeriodBegin" />
+    <result column="validity_period_end" jdbcType="TIMESTAMP" property="validityPeriodEnd" />
+    <result column="issue_date" jdbcType="TIMESTAMP" property="issueDate" />
+    <result column="issue_agency" jdbcType="VARCHAR" property="issueAgency" />
+    <result column="main_business" jdbcType="VARCHAR" property="mainBusiness" />
+    <result column="account_bank" jdbcType="VARCHAR" property="accountBank" />
+    <result column="account_number" jdbcType="VARCHAR" property="accountNumber" />
+    <result column="account_address" jdbcType="VARCHAR" property="accountAddress" />
+    <result column="clearing_company" jdbcType="VARCHAR" property="clearingCompany" />
+    <result column="delivery_company" jdbcType="VARCHAR" property="deliveryCompany" />
+    <result column="clearing_currency" jdbcType="VARCHAR" property="clearingCurrency" />
+    <result column="clearing_type" jdbcType="VARCHAR" property="clearingType" />
+    <result column="payment_type" jdbcType="VARCHAR" property="paymentType" />
+    <result column="province" jdbcType="INTEGER" property="province" />
+    <result column="city" jdbcType="INTEGER" property="city" />
+    <result column="district" jdbcType="INTEGER" property="district" />
+    <result column="logo" jdbcType="VARCHAR" property="logo" />
+    <result column="status" jdbcType="BIT" property="status" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, `number`, `name`, credit_code, address, introduction, development_experience, 
+    legal_person, contacts, phone, company_type, industry_type, validity_period_begin, 
+    validity_period_end, issue_date, issue_agency, main_business, account_bank, account_number, 
+    account_address, clearing_company, delivery_company, clearing_currency, clearing_type, 
+    payment_type, province, city, district, logo, `status`
+  </sql>
+  <select id="selectByExample" parameterType="com.kingdee.hrp.sms.common.model.SupplierExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_supplier
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_supplier
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_supplier
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.kingdee.hrp.sms.common.model.SupplierExample">
+    delete from t_supplier
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.kingdee.hrp.sms.common.model.Supplier">
+    insert into t_supplier (id, `number`, `name`, 
+      credit_code, address, introduction, 
+      development_experience, legal_person, contacts, 
+      phone, company_type, industry_type, 
+      validity_period_begin, validity_period_end, 
+      issue_date, issue_agency, main_business, 
+      account_bank, account_number, account_address, 
+      clearing_company, delivery_company, clearing_currency, 
+      clearing_type, payment_type, province, 
+      city, district, logo, 
+      `status`)
+    values (#{id,jdbcType=BIGINT}, #{number,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{creditCode,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{introduction,jdbcType=VARCHAR}, 
+      #{developmentExperience,jdbcType=VARCHAR}, #{legalPerson,jdbcType=VARCHAR}, #{contacts,jdbcType=VARCHAR}, 
+      #{phone,jdbcType=VARCHAR}, #{companyType,jdbcType=VARCHAR}, #{industryType,jdbcType=VARCHAR}, 
+      #{validityPeriodBegin,jdbcType=TIMESTAMP}, #{validityPeriodEnd,jdbcType=TIMESTAMP}, 
+      #{issueDate,jdbcType=TIMESTAMP}, #{issueAgency,jdbcType=VARCHAR}, #{mainBusiness,jdbcType=VARCHAR}, 
+      #{accountBank,jdbcType=VARCHAR}, #{accountNumber,jdbcType=VARCHAR}, #{accountAddress,jdbcType=VARCHAR}, 
+      #{clearingCompany,jdbcType=VARCHAR}, #{deliveryCompany,jdbcType=VARCHAR}, #{clearingCurrency,jdbcType=VARCHAR}, 
+      #{clearingType,jdbcType=VARCHAR}, #{paymentType,jdbcType=VARCHAR}, #{province,jdbcType=INTEGER}, 
+      #{city,jdbcType=INTEGER}, #{district,jdbcType=INTEGER}, #{logo,jdbcType=VARCHAR}, 
+      #{status,jdbcType=BIT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.kingdee.hrp.sms.common.model.Supplier">
+    insert into t_supplier
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="number != null">
+        `number`,
+      </if>
+      <if test="name != null">
+        `name`,
+      </if>
+      <if test="creditCode != null">
+        credit_code,
+      </if>
+      <if test="address != null">
+        address,
+      </if>
+      <if test="introduction != null">
+        introduction,
+      </if>
+      <if test="developmentExperience != null">
+        development_experience,
+      </if>
+      <if test="legalPerson != null">
+        legal_person,
+      </if>
+      <if test="contacts != null">
+        contacts,
+      </if>
+      <if test="phone != null">
+        phone,
+      </if>
+      <if test="companyType != null">
+        company_type,
+      </if>
+      <if test="industryType != null">
+        industry_type,
+      </if>
+      <if test="validityPeriodBegin != null">
+        validity_period_begin,
+      </if>
+      <if test="validityPeriodEnd != null">
+        validity_period_end,
+      </if>
+      <if test="issueDate != null">
+        issue_date,
+      </if>
+      <if test="issueAgency != null">
+        issue_agency,
+      </if>
+      <if test="mainBusiness != null">
+        main_business,
+      </if>
+      <if test="accountBank != null">
+        account_bank,
+      </if>
+      <if test="accountNumber != null">
+        account_number,
+      </if>
+      <if test="accountAddress != null">
+        account_address,
+      </if>
+      <if test="clearingCompany != null">
+        clearing_company,
+      </if>
+      <if test="deliveryCompany != null">
+        delivery_company,
+      </if>
+      <if test="clearingCurrency != null">
+        clearing_currency,
+      </if>
+      <if test="clearingType != null">
+        clearing_type,
+      </if>
+      <if test="paymentType != null">
+        payment_type,
+      </if>
+      <if test="province != null">
+        province,
+      </if>
+      <if test="city != null">
+        city,
+      </if>
+      <if test="district != null">
+        district,
+      </if>
+      <if test="logo != null">
+        logo,
+      </if>
+      <if test="status != null">
+        `status`,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="number != null">
+        #{number,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="creditCode != null">
+        #{creditCode,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="introduction != null">
+        #{introduction,jdbcType=VARCHAR},
+      </if>
+      <if test="developmentExperience != null">
+        #{developmentExperience,jdbcType=VARCHAR},
+      </if>
+      <if test="legalPerson != null">
+        #{legalPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="contacts != null">
+        #{contacts,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="companyType != null">
+        #{companyType,jdbcType=VARCHAR},
+      </if>
+      <if test="industryType != null">
+        #{industryType,jdbcType=VARCHAR},
+      </if>
+      <if test="validityPeriodBegin != null">
+        #{validityPeriodBegin,jdbcType=TIMESTAMP},
+      </if>
+      <if test="validityPeriodEnd != null">
+        #{validityPeriodEnd,jdbcType=TIMESTAMP},
+      </if>
+      <if test="issueDate != null">
+        #{issueDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="issueAgency != null">
+        #{issueAgency,jdbcType=VARCHAR},
+      </if>
+      <if test="mainBusiness != null">
+        #{mainBusiness,jdbcType=VARCHAR},
+      </if>
+      <if test="accountBank != null">
+        #{accountBank,jdbcType=VARCHAR},
+      </if>
+      <if test="accountNumber != null">
+        #{accountNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="accountAddress != null">
+        #{accountAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="clearingCompany != null">
+        #{clearingCompany,jdbcType=VARCHAR},
+      </if>
+      <if test="deliveryCompany != null">
+        #{deliveryCompany,jdbcType=VARCHAR},
+      </if>
+      <if test="clearingCurrency != null">
+        #{clearingCurrency,jdbcType=VARCHAR},
+      </if>
+      <if test="clearingType != null">
+        #{clearingType,jdbcType=VARCHAR},
+      </if>
+      <if test="paymentType != null">
+        #{paymentType,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null">
+        #{province,jdbcType=INTEGER},
+      </if>
+      <if test="city != null">
+        #{city,jdbcType=INTEGER},
+      </if>
+      <if test="district != null">
+        #{district,jdbcType=INTEGER},
+      </if>
+      <if test="logo != null">
+        #{logo,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.kingdee.hrp.sms.common.model.SupplierExample" resultType="java.lang.Long">
+    select count(*) from t_supplier
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update t_supplier
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.number != null">
+        `number` = #{record.number,jdbcType=VARCHAR},
+      </if>
+      <if test="record.name != null">
+        `name` = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.creditCode != null">
+        credit_code = #{record.creditCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.address != null">
+        address = #{record.address,jdbcType=VARCHAR},
+      </if>
+      <if test="record.introduction != null">
+        introduction = #{record.introduction,jdbcType=VARCHAR},
+      </if>
+      <if test="record.developmentExperience != null">
+        development_experience = #{record.developmentExperience,jdbcType=VARCHAR},
+      </if>
+      <if test="record.legalPerson != null">
+        legal_person = #{record.legalPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="record.contacts != null">
+        contacts = #{record.contacts,jdbcType=VARCHAR},
+      </if>
+      <if test="record.phone != null">
+        phone = #{record.phone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.companyType != null">
+        company_type = #{record.companyType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.industryType != null">
+        industry_type = #{record.industryType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.validityPeriodBegin != null">
+        validity_period_begin = #{record.validityPeriodBegin,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.validityPeriodEnd != null">
+        validity_period_end = #{record.validityPeriodEnd,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.issueDate != null">
+        issue_date = #{record.issueDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.issueAgency != null">
+        issue_agency = #{record.issueAgency,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mainBusiness != null">
+        main_business = #{record.mainBusiness,jdbcType=VARCHAR},
+      </if>
+      <if test="record.accountBank != null">
+        account_bank = #{record.accountBank,jdbcType=VARCHAR},
+      </if>
+      <if test="record.accountNumber != null">
+        account_number = #{record.accountNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.accountAddress != null">
+        account_address = #{record.accountAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="record.clearingCompany != null">
+        clearing_company = #{record.clearingCompany,jdbcType=VARCHAR},
+      </if>
+      <if test="record.deliveryCompany != null">
+        delivery_company = #{record.deliveryCompany,jdbcType=VARCHAR},
+      </if>
+      <if test="record.clearingCurrency != null">
+        clearing_currency = #{record.clearingCurrency,jdbcType=VARCHAR},
+      </if>
+      <if test="record.clearingType != null">
+        clearing_type = #{record.clearingType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.paymentType != null">
+        payment_type = #{record.paymentType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.province != null">
+        province = #{record.province,jdbcType=INTEGER},
+      </if>
+      <if test="record.city != null">
+        city = #{record.city,jdbcType=INTEGER},
+      </if>
+      <if test="record.district != null">
+        district = #{record.district,jdbcType=INTEGER},
+      </if>
+      <if test="record.logo != null">
+        logo = #{record.logo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null">
+        `status` = #{record.status,jdbcType=BIT},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update t_supplier
+    set id = #{record.id,jdbcType=BIGINT},
+      `number` = #{record.number,jdbcType=VARCHAR},
+      `name` = #{record.name,jdbcType=VARCHAR},
+      credit_code = #{record.creditCode,jdbcType=VARCHAR},
+      address = #{record.address,jdbcType=VARCHAR},
+      introduction = #{record.introduction,jdbcType=VARCHAR},
+      development_experience = #{record.developmentExperience,jdbcType=VARCHAR},
+      legal_person = #{record.legalPerson,jdbcType=VARCHAR},
+      contacts = #{record.contacts,jdbcType=VARCHAR},
+      phone = #{record.phone,jdbcType=VARCHAR},
+      company_type = #{record.companyType,jdbcType=VARCHAR},
+      industry_type = #{record.industryType,jdbcType=VARCHAR},
+      validity_period_begin = #{record.validityPeriodBegin,jdbcType=TIMESTAMP},
+      validity_period_end = #{record.validityPeriodEnd,jdbcType=TIMESTAMP},
+      issue_date = #{record.issueDate,jdbcType=TIMESTAMP},
+      issue_agency = #{record.issueAgency,jdbcType=VARCHAR},
+      main_business = #{record.mainBusiness,jdbcType=VARCHAR},
+      account_bank = #{record.accountBank,jdbcType=VARCHAR},
+      account_number = #{record.accountNumber,jdbcType=VARCHAR},
+      account_address = #{record.accountAddress,jdbcType=VARCHAR},
+      clearing_company = #{record.clearingCompany,jdbcType=VARCHAR},
+      delivery_company = #{record.deliveryCompany,jdbcType=VARCHAR},
+      clearing_currency = #{record.clearingCurrency,jdbcType=VARCHAR},
+      clearing_type = #{record.clearingType,jdbcType=VARCHAR},
+      payment_type = #{record.paymentType,jdbcType=VARCHAR},
+      province = #{record.province,jdbcType=INTEGER},
+      city = #{record.city,jdbcType=INTEGER},
+      district = #{record.district,jdbcType=INTEGER},
+      logo = #{record.logo,jdbcType=VARCHAR},
+      `status` = #{record.status,jdbcType=BIT}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.kingdee.hrp.sms.common.model.Supplier">
+    update t_supplier
+    <set>
+      <if test="number != null">
+        `number` = #{number,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        `name` = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="creditCode != null">
+        credit_code = #{creditCode,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="introduction != null">
+        introduction = #{introduction,jdbcType=VARCHAR},
+      </if>
+      <if test="developmentExperience != null">
+        development_experience = #{developmentExperience,jdbcType=VARCHAR},
+      </if>
+      <if test="legalPerson != null">
+        legal_person = #{legalPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="contacts != null">
+        contacts = #{contacts,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="companyType != null">
+        company_type = #{companyType,jdbcType=VARCHAR},
+      </if>
+      <if test="industryType != null">
+        industry_type = #{industryType,jdbcType=VARCHAR},
+      </if>
+      <if test="validityPeriodBegin != null">
+        validity_period_begin = #{validityPeriodBegin,jdbcType=TIMESTAMP},
+      </if>
+      <if test="validityPeriodEnd != null">
+        validity_period_end = #{validityPeriodEnd,jdbcType=TIMESTAMP},
+      </if>
+      <if test="issueDate != null">
+        issue_date = #{issueDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="issueAgency != null">
+        issue_agency = #{issueAgency,jdbcType=VARCHAR},
+      </if>
+      <if test="mainBusiness != null">
+        main_business = #{mainBusiness,jdbcType=VARCHAR},
+      </if>
+      <if test="accountBank != null">
+        account_bank = #{accountBank,jdbcType=VARCHAR},
+      </if>
+      <if test="accountNumber != null">
+        account_number = #{accountNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="accountAddress != null">
+        account_address = #{accountAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="clearingCompany != null">
+        clearing_company = #{clearingCompany,jdbcType=VARCHAR},
+      </if>
+      <if test="deliveryCompany != null">
+        delivery_company = #{deliveryCompany,jdbcType=VARCHAR},
+      </if>
+      <if test="clearingCurrency != null">
+        clearing_currency = #{clearingCurrency,jdbcType=VARCHAR},
+      </if>
+      <if test="clearingType != null">
+        clearing_type = #{clearingType,jdbcType=VARCHAR},
+      </if>
+      <if test="paymentType != null">
+        payment_type = #{paymentType,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null">
+        province = #{province,jdbcType=INTEGER},
+      </if>
+      <if test="city != null">
+        city = #{city,jdbcType=INTEGER},
+      </if>
+      <if test="district != null">
+        district = #{district,jdbcType=INTEGER},
+      </if>
+      <if test="logo != null">
+        logo = #{logo,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        `status` = #{status,jdbcType=BIT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.kingdee.hrp.sms.common.model.Supplier">
+    update t_supplier
+    set `number` = #{number,jdbcType=VARCHAR},
+      `name` = #{name,jdbcType=VARCHAR},
+      credit_code = #{creditCode,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      introduction = #{introduction,jdbcType=VARCHAR},
+      development_experience = #{developmentExperience,jdbcType=VARCHAR},
+      legal_person = #{legalPerson,jdbcType=VARCHAR},
+      contacts = #{contacts,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      company_type = #{companyType,jdbcType=VARCHAR},
+      industry_type = #{industryType,jdbcType=VARCHAR},
+      validity_period_begin = #{validityPeriodBegin,jdbcType=TIMESTAMP},
+      validity_period_end = #{validityPeriodEnd,jdbcType=TIMESTAMP},
+      issue_date = #{issueDate,jdbcType=TIMESTAMP},
+      issue_agency = #{issueAgency,jdbcType=VARCHAR},
+      main_business = #{mainBusiness,jdbcType=VARCHAR},
+      account_bank = #{accountBank,jdbcType=VARCHAR},
+      account_number = #{accountNumber,jdbcType=VARCHAR},
+      account_address = #{accountAddress,jdbcType=VARCHAR},
+      clearing_company = #{clearingCompany,jdbcType=VARCHAR},
+      delivery_company = #{deliveryCompany,jdbcType=VARCHAR},
+      clearing_currency = #{clearingCurrency,jdbcType=VARCHAR},
+      clearing_type = #{clearingType,jdbcType=VARCHAR},
+      payment_type = #{paymentType,jdbcType=VARCHAR},
+      province = #{province,jdbcType=INTEGER},
+      city = #{city,jdbcType=INTEGER},
+      district = #{district,jdbcType=INTEGER},
+      logo = #{logo,jdbcType=VARCHAR},
+      `status` = #{status,jdbcType=BIT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
 </mapper>

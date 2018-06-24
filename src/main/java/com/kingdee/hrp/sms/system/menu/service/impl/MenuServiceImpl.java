@@ -126,7 +126,7 @@ public class MenuServiceImpl extends BaseService implements MenuService {
             }
 
             for (Menu item : ret) {
-                if (item.getParentId() == menu.getId()) {
+                if (item.getParentId() == menu.getId().intValue()) {
                     existSubMenu = true;
                     break;
                 }

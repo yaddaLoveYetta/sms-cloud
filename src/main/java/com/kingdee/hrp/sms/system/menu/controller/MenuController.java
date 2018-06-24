@@ -1,13 +1,13 @@
 package com.kingdee.hrp.sms.system.menu.controller;
 
-import com.kingdee.hrp.sms.system.menu.service.MenuService;
 import com.kingdee.hrp.sms.common.model.Menu;
+import com.kingdee.hrp.sms.system.menu.service.MenuService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
-import java.util.*;
+import java.util.List;
 
 /**
  * @author yadda<silenceisok@163.com>
