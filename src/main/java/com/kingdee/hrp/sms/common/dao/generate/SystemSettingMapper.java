@@ -3,9 +3,8 @@ package com.kingdee.hrp.sms.common.dao.generate;
 import com.kingdee.hrp.sms.common.model.SystemSetting;
 import com.kingdee.hrp.sms.common.model.SystemSettingExample;
 import com.kingdee.hrp.sms.common.model.SystemSettingKey;
-import org.apache.ibatis.annotations.Param;
-
 import java.util.List;
+import org.apache.ibatis.annotations.Param;
 
 public interface SystemSettingMapper {
     long countByExample(SystemSettingExample example);

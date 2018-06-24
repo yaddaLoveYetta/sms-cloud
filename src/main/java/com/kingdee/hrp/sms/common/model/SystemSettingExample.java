@@ -644,63 +644,63 @@ public class SystemSettingExample {
             return (Criteria) this;
         }
 
-        public Criteria andReadonlyIsNull() {
-            addCriterion("readOnly is null");
+        public Criteria andReadOnlyIsNull() {
+            addCriterion("read_only is null");
             return (Criteria) this;
         }
 
-        public Criteria andReadonlyIsNotNull() {
-            addCriterion("readOnly is not null");
+        public Criteria andReadOnlyIsNotNull() {
+            addCriterion("read_only is not null");
             return (Criteria) this;
         }
 
-        public Criteria andReadonlyEqualTo(Boolean value) {
-            addCriterion("readOnly =", value, "readonly");
+        public Criteria andReadOnlyEqualTo(Boolean value) {
+            addCriterion("read_only =", value, "readOnly");
             return (Criteria) this;
         }
 
-        public Criteria andReadonlyNotEqualTo(Boolean value) {
-            addCriterion("readOnly <>", value, "readonly");
+        public Criteria andReadOnlyNotEqualTo(Boolean value) {
+            addCriterion("read_only <>", value, "readOnly");
             return (Criteria) this;
         }
 
-        public Criteria andReadonlyGreaterThan(Boolean value) {
-            addCriterion("readOnly >", value, "readonly");
+        public Criteria andReadOnlyGreaterThan(Boolean value) {
+            addCriterion("read_only >", value, "readOnly");
             return (Criteria) this;
         }
 
-        public Criteria andReadonlyGreaterThanOrEqualTo(Boolean value) {
-            addCriterion("readOnly >=", value, "readonly");
+        public Criteria andReadOnlyGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("read_only >=", value, "readOnly");
             return (Criteria) this;
         }
 
-        public Criteria andReadonlyLessThan(Boolean value) {
-            addCriterion("readOnly <", value, "readonly");
+        public Criteria andReadOnlyLessThan(Boolean value) {
+            addCriterion("read_only <", value, "readOnly");
             return (Criteria) this;
         }
 
-        public Criteria andReadonlyLessThanOrEqualTo(Boolean value) {
-            addCriterion("readOnly <=", value, "readonly");
+        public Criteria andReadOnlyLessThanOrEqualTo(Boolean value) {
+            addCriterion("read_only <=", value, "readOnly");
             return (Criteria) this;
         }
 
-        public Criteria andReadonlyIn(List<Boolean> values) {
-            addCriterion("readOnly in", values, "readonly");
+        public Criteria andReadOnlyIn(List<Boolean> values) {
+            addCriterion("read_only in", values, "readOnly");
             return (Criteria) this;
         }
 
-        public Criteria andReadonlyNotIn(List<Boolean> values) {
-            addCriterion("readOnly not in", values, "readonly");
+        public Criteria andReadOnlyNotIn(List<Boolean> values) {
+            addCriterion("read_only not in", values, "readOnly");
             return (Criteria) this;
         }
 
-        public Criteria andReadonlyBetween(Boolean value1, Boolean value2) {
-            addCriterion("readOnly between", value1, value2, "readonly");
+        public Criteria andReadOnlyBetween(Boolean value1, Boolean value2) {
+            addCriterion("read_only between", value1, value2, "readOnly");
             return (Criteria) this;
         }
 
-        public Criteria andReadonlyNotBetween(Boolean value1, Boolean value2) {
-            addCriterion("readOnly not between", value1, value2, "readonly");
+        public Criteria andReadOnlyNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("read_only not between", value1, value2, "readOnly");
             return (Criteria) this;
         }
     }

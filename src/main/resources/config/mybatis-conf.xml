@@ -74,15 +74,12 @@
         <mapper resource="mapper/generate/RoleTypeMapper.xml"/>
         <mapper resource="mapper/generate/MenuMapper.xml"/>
         <mapper resource="mapper/generate/AccessControlMapper.xml"/>
-
         <mapper resource="mapper/generate/FormClassMapper.xml"/>
         <mapper resource="mapper/generate/FormClassEntryMapper.xml"/>
         <mapper resource="mapper/generate/FormActionMapper.xml"/>
         <mapper resource="mapper/generate/FormFieldsMapper.xml"/>
-
         <mapper resource="mapper/generate/AssistanceMapper.xml"/>
         <mapper resource="mapper/generate/AssistanceTypeMapper.xml"/>
-
         <mapper resource="mapper/generate/HospitalMapper.xml"/>
         <mapper resource="mapper/generate/SupplierMapper.xml"/>
         <mapper resource="mapper/generate/HospitalSupplierMapper.xml"/>
@@ -90,6 +87,7 @@
         <mapper resource="mapper/generate/PartnerMapper.xml"/>
         <mapper resource="mapper/generate/CooperationApplyMapper.xml"/>
         <mapper resource="mapper/generate/MessageMapper.xml"/>
+        <mapper resource="mapper/generate/SystemSettingMapper.xml"/>
 
         <!-- =============================== 生成工具生成Mapper ========================end==== -->
 

@@ -128,7 +128,7 @@ define('Register', function (require, module, exports) {
 
         var data = {};
 
-        var type = $('input[name=user_type]:checked').val();
+        var type = Number($('input[name=user_type]:checked').val());
 
         if (type > 0) {
             data.userType = type;

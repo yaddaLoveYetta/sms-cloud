@@ -18,7 +18,6 @@ import com.kingdee.hrp.sms.util.Environ;
 import com.kingdee.hrp.sms.util.Pinyin4jUtil;
 import com.kingdee.hrp.sms.util.SessionUtil;
 import org.apache.commons.lang.StringUtils;
-import org.dom4j.Attribute;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
@@ -747,6 +746,8 @@ public class UserServiceImpl extends BaseService implements UserService {
         role.setType(registerModel.getUserType());
         role.setUserDefine(true);
 
+        roleMapper.insertSelective(role);
+
         return role;
     }
 
@@ -896,28 +897,44 @@ public class UserServiceImpl extends BaseService implements UserService {
 
         Element ele = document.getRootElement();
 
-        List<Element> eleList = ele.elements();
+        List<Element> settingItems = ele.elements();
 
         //循环处理每一个系统参数配置
-        for (Element element : eleList) {
+        for (Element settingItem : settingItems) {
 
             SystemSetting systemSetting = new SystemSetting();
 
             systemSetting.setOrg(orgId);
 
-            List<Attribute> attrList = element.attributes();
+            List<Element> settingItemDetails = settingItem.elements();
 
-            for (Attribute attr : attrList) {
+            for (Element settingItemDetail : settingItemDetails) {
 
-                //每循环一次，解析此节点的一个【属性=值】
-                String name = attr.getName();
-                String value = attr.getValue();
+                String name = settingItemDetail.getName();
+                String value = settingItemDetail.getStringValue();
 
-                Object targetValue = null;
-
+                Object targetValue = value;
+                Class<?> clazz = SystemSetting.class;
                 try {
 
-                    Field field = systemSetting.getClass().getDeclaredField(name);
+                    Field field = null;
+                    // 获取SystemSetting属性，可能在是其表主键父类
+                    for (; clazz != Object.class; clazz = clazz.getSuperclass()) {
+
+                        try {
+                            field = clazz.getDeclaredField(name);
+                            break;
+                        } catch (Exception e) {
+                            //这里甚么都不要做！并且这里的异常必须这样写，不能抛出去。
+                            //如果这里的异常打印或者往外抛，则就不会执行clazz = clazz.getSuperclass(),最后就不会进入到父类中了
+                            // 多余配置忽略
+                            continue;
+                        }
+                    }
+
+                    if (field == null) {
+                        continue;
+                    }
 
                     if (field.getType().equals(Integer.class)) {
                         targetValue = Integer.parseInt(value);
@@ -930,11 +947,8 @@ public class UserServiceImpl extends BaseService implements UserService {
                     }
 
                     field.setAccessible(true);
-                    field.set(systemSetting, value);
+                    field.set(systemSetting, targetValue);
 
-                } catch (NoSuchFieldException e) {
-                    // 多余配置忽略
-                    continue;
                 } catch (IllegalAccessException e) {
                     logger.error("系统参数xml配置转换异常" + e.getMessage(), e);
                     throw new BusinessLogicRunTimeException("系统参数xml配置转换异常" + e.getMessage(), e);

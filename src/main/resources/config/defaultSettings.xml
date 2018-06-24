@@ -8,21 +8,41 @@
  -->
 <settings>
     <setting>
+
+        <ttt>0</ttt>
         <!--参数类类目，通常用于区分个模块的参数 -->
-        <category></category>
+        <category>sys</category>
         <!-- 参数显示名称-->
-        <name></name>
+        <name>ERP回调地址</name>
         <!--参数名 -->
-        <key></key>
+        <key>notifyUrl</key>
         <!--参数简要描述 -->
-        <desc></desc>
+        <desc>SMS在约定的业务节点会对notifyUrl发起回调，做到线上线下数据得交互</desc>
         <!--参数默认值 -->
-        <value></value>
+        <value>eg:http://www.baidu.com</value>
         <!--参数排序 -->
-        <index></index>
+        <index>1</index>
         <!--参数解析规则 -->
-        <explanation></explanation>
+        <explanation>{ctlType:text}</explanation>
         <!--参数是否只读参数 -->
-        <readOnly></readOnly>
+        <readOnly>0</readOnly>
+    </setting>
+    <setting>
+        <!--参数类类目，通常用于区分个模块的参数 -->
+        <category>sc</category>
+        <!-- 参数显示名称-->
+        <name>单价精度</name>
+        <!--参数名 -->
+        <key>priceAccuracy</key>
+        <!--参数简要描述 -->
+        <desc>处理单价时，保留的小数位数</desc>
+        <!--参数默认值 -->
+        <value>2</value>
+        <!--参数排序 -->
+        <index>2</index>
+        <!--参数解析规则 -->
+        <explanation>{ctlType:number}</explanation>
+        <!--参数是否只读参数 -->
+        <readOnly>0</readOnly>
     </setting>
 </settings>
