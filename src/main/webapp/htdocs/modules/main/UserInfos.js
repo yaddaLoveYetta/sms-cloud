@@ -28,7 +28,7 @@ define('UserInfos', function (require, module, exports) {
         //批量填充
         SMS.Template.fill({
             '#li-user-infos': {
-                icon: 'icon-unie64d' ,
+                icon: 'icon-unie64d',
                 name: user.name
             }
         });
@@ -78,7 +78,8 @@ define('UserInfos', function (require, module, exports) {
                         return; //取消注销
                     }
 
-                    btn.innerHTML = '注销中...';
+                    $(btn).find('span').html('注销中...');
+                    //btn.innerHTML = '注销中...';
                     $(btn).addClass('disabled');
 
                     SMS.Login.logout(function (user, data, json) { //成功

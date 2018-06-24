@@ -21,7 +21,7 @@
             <map key-type="java.lang.String">
                 <!-- 如果请求中包含以下路径，则不进行拦截 -->
                 <entry value-type="java.lang.String" key="/manager/user/login" value="/manager/user/login"/>
-                <entry value-type="java.lang.String" key="/manager/user/login" value="/manager/user/logout"/>
+                <entry value-type="java.lang.String" key="/manager/user/logout" value="/manager/user/logout"/>
                 <entry value-type="java.lang.String" key="/manager/user/register" value="/manager/user/register"/>
                 <entry value-type="java.lang.String" key="/manager/user/getVerificationCode" value="/manager/user/getVerificationCode"/>
             </map>

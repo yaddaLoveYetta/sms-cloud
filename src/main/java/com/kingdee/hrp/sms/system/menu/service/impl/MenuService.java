@@ -3,6 +3,7 @@ package com.kingdee.hrp.sms.system.menu.service.impl;
 import com.kingdee.hrp.sms.common.dao.generate.FormActionMapper;
 import com.kingdee.hrp.sms.common.dao.generate.MenuMapper;
 import com.kingdee.hrp.sms.common.model.*;
+import com.kingdee.hrp.sms.common.pojo.AccessMaskEnum;
 import com.kingdee.hrp.sms.common.pojo.UserRoleTypeEnum;
 import com.kingdee.hrp.sms.system.menu.service.IMenuService;
 import com.kingdee.hrp.sms.common.service.BaseService;
@@ -17,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -68,20 +70,19 @@ public class MenuService extends BaseService implements IMenuService {
         }
 
         // 查询t_form_action 用于检验用户类别是否拥有menu的查看权（没有查看权限菜单不显示）
-
         FormActionMapper formActionMapper = sqlSession.getMapper(FormActionMapper.class);
-
         FormActionExample formActionExample = new FormActionExample();
         FormActionExample.Criteria criteria = formActionExample.createCriteria();
         // 只查询查看权限，有查看权限才可能需要显示菜单
-        criteria.andAccessMaskEqualTo(1);
+        criteria.andAccessMaskEqualTo(AccessMaskEnum.VIEW.getNumber());
 
         List<FormAction> formActions = formActionMapper.selectByExample(formActionExample);
 
-        // 获取用户所有权限
+        // 获取用户所有角色的授权结果
         IUserService userService = Environ.getBean(IUserService.class);
         Map<Integer, Integer> roleAccessControl = userService.getAccessControl();
 
+        // 迭代过滤菜单项
         for (Menu menu : menus) {
 
             Integer formActionId = menu.getFormActionId();
@@ -100,7 +101,7 @@ public class MenuService extends BaseService implements IMenuService {
                 if (formActionId == formActionClassId.intValue() && ((userRoleType & ownerType) == userRoleType)) {
                     // 是这个用户类别可见的菜单
                     Integer accessMask = roleAccessControl.get(formActionId);
-                    if (accessMask != null && (accessMask & 1) == 1) {
+                    if (accessMask != null && (accessMask & AccessMaskEnum.VIEW.getNumber()) == AccessMaskEnum.VIEW.getNumber()) {
                         // 查看权限是1，判断是否有查看权限(此处为有权限)
                         ret.add(menu);
                         break;
@@ -109,6 +110,33 @@ public class MenuService extends BaseService implements IMenuService {
                 }
 
             }
+        }
+
+        // 二次过滤，将没有二级菜单的一级菜单过滤掉
+        Iterator<Menu> iterator = ret.iterator();
+
+        while (iterator.hasNext()) {
+
+            Menu menu = iterator.next();
+            // 表示是否存在二级菜单
+            boolean existSubMenu = false;
+
+            if (menu.getParentId() != 0) {
+                continue;
+            }
+
+            for (Menu item : ret) {
+                if (item.getParentId() == menu.getId()) {
+                    existSubMenu = true;
+                    break;
+                }
+            }
+
+            if (!existSubMenu) {
+                // 用户对该一级菜单的所有二级菜单都没有权限查看，则该一级菜单不显示
+                iterator.remove();
+            }
+
         }
 
         return ret;

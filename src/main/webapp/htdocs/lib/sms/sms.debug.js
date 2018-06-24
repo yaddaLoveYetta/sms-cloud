@@ -6194,7 +6194,7 @@
          */
         function show(info, caption, showClose) {
 
-            info = $.String.format('<div style="padding: 20px 20px;max-width:500px;max-height:300px;overflow: scroll;"><code>{0}</code></div>', info);
+            info = $.String.format('<div style="padding: 20px 20px;max-width:500px;max-height:300px;overflow: auto;"><code>{0}</code></div>', info);
 
             Dialog.use(function (Dialog) {
                 var config = {

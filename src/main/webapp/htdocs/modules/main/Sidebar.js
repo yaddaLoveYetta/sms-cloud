@@ -11,6 +11,7 @@ define('Sidebar', function (require, module, exports) {
     var API = SMS.require("API");
     var Tips = SMS.Tips;
     var user = SMS.Login.get();
+    var MessageBox = SMS.require('MessageBox');
 
     var emitter = MiniQuery.Event.create();
 
@@ -64,10 +65,10 @@ define('Sidebar', function (require, module, exports) {
             },
             'fail': function (code, msg, json) {
                 var s = $.String.format('{0} (错误码: {1})', msg, code);
-                SMS.Tips.error(s);
+                MessageBox.show(s, '金蝶提示-出错了', true);
             },
             'error': function () {
-                SMS.Tips.error('网络繁忙，请重试!');
+                MessageBox.show('网络繁忙，请重试!', '金蝶提示', true);
             },
         });
 
