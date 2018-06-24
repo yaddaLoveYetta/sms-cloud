@@ -5,7 +5,7 @@
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="number" jdbcType="VARCHAR" property="number" />
     <result column="name" jdbcType="VARCHAR" property="name" />
-    <result column="credit_code" jdbcType="VARCHAR" property="creditCode" />
+    <result column="registration_no" jdbcType="VARCHAR" property="registrationNo" />
     <result column="address" jdbcType="VARCHAR" property="address" />
     <result column="introduction" jdbcType="VARCHAR" property="introduction" />
     <result column="medical_subjects" jdbcType="VARCHAR" property="medicalSubjects" />
@@ -82,7 +82,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, `number`, `name`, credit_code, address, introduction, medical_subjects, principal, 
+    id, `number`, `name`, registration_no, address, introduction, medical_subjects, principal, 
     issue_agency, legal_person, province, city, district, issue_date, validity_period_begin, 
     validity_period_end, logo, `status`, contacts, phone
   </sql>
@@ -118,14 +118,14 @@
   </delete>
   <insert id="insert" parameterType="com.kingdee.hrp.sms.common.model.Hospital">
     insert into t_hospital (id, `number`, `name`, 
-      credit_code, address, introduction, 
+      registration_no, address, introduction, 
       medical_subjects, principal, issue_agency, 
       legal_person, province, city, 
       district, issue_date, validity_period_begin, 
       validity_period_end, logo, `status`, 
       contacts, phone)
     values (#{id,jdbcType=BIGINT}, #{number,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
-      #{creditCode,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{introduction,jdbcType=VARCHAR}, 
+      #{registrationNo,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{introduction,jdbcType=VARCHAR}, 
       #{medicalSubjects,jdbcType=VARCHAR}, #{principal,jdbcType=VARCHAR}, #{issueAgency,jdbcType=VARCHAR}, 
       #{legalPerson,jdbcType=VARCHAR}, #{province,jdbcType=INTEGER}, #{city,jdbcType=INTEGER}, 
       #{district,jdbcType=INTEGER}, #{issueDate,jdbcType=TIMESTAMP}, #{validityPeriodBegin,jdbcType=TIMESTAMP}, 
@@ -144,8 +144,8 @@
       <if test="name != null">
         `name`,
       </if>
-      <if test="creditCode != null">
-        credit_code,
+      <if test="registrationNo != null">
+        registration_no,
       </if>
       <if test="address != null">
         address,
@@ -206,8 +206,8 @@
       <if test="name != null">
         #{name,jdbcType=VARCHAR},
       </if>
-      <if test="creditCode != null">
-        #{creditCode,jdbcType=VARCHAR},
+      <if test="registrationNo != null">
+        #{registrationNo,jdbcType=VARCHAR},
       </if>
       <if test="address != null">
         #{address,jdbcType=VARCHAR},
@@ -277,8 +277,8 @@
       <if test="record.name != null">
         `name` = #{record.name,jdbcType=VARCHAR},
       </if>
-      <if test="record.creditCode != null">
-        credit_code = #{record.creditCode,jdbcType=VARCHAR},
+      <if test="record.registrationNo != null">
+        registration_no = #{record.registrationNo,jdbcType=VARCHAR},
       </if>
       <if test="record.address != null">
         address = #{record.address,jdbcType=VARCHAR},
@@ -338,7 +338,7 @@
     set id = #{record.id,jdbcType=BIGINT},
       `number` = #{record.number,jdbcType=VARCHAR},
       `name` = #{record.name,jdbcType=VARCHAR},
-      credit_code = #{record.creditCode,jdbcType=VARCHAR},
+      registration_no = #{record.registrationNo,jdbcType=VARCHAR},
       address = #{record.address,jdbcType=VARCHAR},
       introduction = #{record.introduction,jdbcType=VARCHAR},
       medical_subjects = #{record.medicalSubjects,jdbcType=VARCHAR},
@@ -368,8 +368,8 @@
       <if test="name != null">
         `name` = #{name,jdbcType=VARCHAR},
       </if>
-      <if test="creditCode != null">
-        credit_code = #{creditCode,jdbcType=VARCHAR},
+      <if test="registrationNo != null">
+        registration_no = #{registrationNo,jdbcType=VARCHAR},
       </if>
       <if test="address != null">
         address = #{address,jdbcType=VARCHAR},
@@ -426,7 +426,7 @@
     update t_hospital
     set `number` = #{number,jdbcType=VARCHAR},
       `name` = #{name,jdbcType=VARCHAR},
-      credit_code = #{creditCode,jdbcType=VARCHAR},
+      registration_no = #{registrationNo,jdbcType=VARCHAR},
       address = #{address,jdbcType=VARCHAR},
       introduction = #{introduction,jdbcType=VARCHAR},
       medical_subjects = #{medicalSubjects,jdbcType=VARCHAR},
@@ -452,13 +452,13 @@
       @project https://github.com/itfsw/mybatis-generator-plugin
     -->
     insert into t_hospital
-    (id, `number`, `name`, credit_code, address, introduction, medical_subjects, principal, 
-      issue_agency, legal_person, province, city, district, issue_date, validity_period_begin, 
+    (id, `number`, `name`, registration_no, address, introduction, medical_subjects, 
+      principal, issue_agency, legal_person, province, city, district, issue_date, validity_period_begin, 
       validity_period_end, logo, `status`, contacts, phone)
     values
     <foreach collection="list" item="item" separator=",">
       (#{item.id,jdbcType=BIGINT}, #{item.number,jdbcType=VARCHAR}, #{item.name,jdbcType=VARCHAR}, 
-        #{item.creditCode,jdbcType=VARCHAR}, #{item.address,jdbcType=VARCHAR}, #{item.introduction,jdbcType=VARCHAR}, 
+        #{item.registrationNo,jdbcType=VARCHAR}, #{item.address,jdbcType=VARCHAR}, #{item.introduction,jdbcType=VARCHAR}, 
         #{item.medicalSubjects,jdbcType=VARCHAR}, #{item.principal,jdbcType=VARCHAR}, #{item.issueAgency,jdbcType=VARCHAR}, 
         #{item.legalPerson,jdbcType=VARCHAR}, #{item.province,jdbcType=INTEGER}, #{item.city,jdbcType=INTEGER}, 
         #{item.district,jdbcType=INTEGER}, #{item.issueDate,jdbcType=TIMESTAMP}, #{item.validityPeriodBegin,jdbcType=TIMESTAMP}, 
@@ -490,8 +490,8 @@
         <if test="'name' == column.value">
           #{item.name,jdbcType=VARCHAR}
         </if>
-        <if test="'credit_code' == column.value">
-          #{item.creditCode,jdbcType=VARCHAR}
+        <if test="'registration_no' == column.value">
+          #{item.registrationNo,jdbcType=VARCHAR}
         </if>
         <if test="'address' == column.value">
           #{item.address,jdbcType=VARCHAR}

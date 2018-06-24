@@ -4,11 +4,12 @@ import com.kingdee.hrp.sms.common.exception.BusinessLogicRunTimeException;
 import com.kingdee.hrp.sms.common.model.AccessControl;
 import com.kingdee.hrp.sms.common.model.Role;
 import com.kingdee.hrp.sms.common.model.User;
+import com.kingdee.hrp.sms.common.pojo.RegisterModel;
 import com.kingdee.hrp.sms.common.pojo.UserRoleTypeEnum;
-import com.kingdee.hrp.sms.system.user.service.IUserService;
+import com.kingdee.hrp.sms.system.user.service.UserService;
 import com.kingdee.hrp.sms.util.Common;
-import com.kingdee.hrp.sms.util.ValidateCode;
 import com.kingdee.hrp.sms.util.SessionUtil;
+import com.kingdee.hrp.sms.util.ValidateCode;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,7 +48,7 @@ public class UserController {
     public static final String VERIFICATION_CODE_KEY = "VERIFICATION_CODE_KEY";
 
     @Resource
-    private IUserService userService;
+    private UserService userService;
 
     /**
      * 用户注册
@@ -56,15 +57,15 @@ public class UserController {
      * 2:根据注册用户类别新增一角色(顶级角色)，eg对于供应商类别，新增一供应商角色并绑定给此用户，对于医院类别，新增一医院角色并绑定给此用户
      * 3:新增注册用户,将1步中新增组织，2步中新增角色绑定到此用户
      *
-     * @param registerInfo
+     * @param registerModel
      */
     @RequestMapping("register")
     @ResponseBody
-    public Boolean register(@RequestParam Map<String, Object> registerInfo) throws IOException {
+    public Boolean register(RegisterModel registerModel) throws IOException {
 
-        logger.info("用户注册提交参数:" + registerInfo);
+        logger.info("用户注册提交参数:" + registerModel);
 
-        userService.register(registerInfo);
+        userService.register(registerModel);
         return true;
 
     }

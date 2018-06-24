@@ -8,7 +8,7 @@ import java.util.List;
  * @author yadda<silenceisok@163.com>
  * @since 2018/1/31
  */
-public interface IMenuService {
+public interface MenuService {
 
     /**
      * 根据parentId获取所有子菜单

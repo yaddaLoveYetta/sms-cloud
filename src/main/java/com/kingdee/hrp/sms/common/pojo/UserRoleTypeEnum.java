@@ -8,6 +8,10 @@ package com.kingdee.hrp.sms.common.pojo;
 public enum UserRoleTypeEnum {
 
     /**
+     * 不支持的用户类别
+     */
+    NOT_SUPPORT(0, "不支持的类别"),
+    /**
      * 系统管理员角色类型
      */
     SYSTEM(1, "系统管理员"),
@@ -42,6 +46,16 @@ public enum UserRoleTypeEnum {
     UserRoleTypeEnum(int number, String name) {
         this.number = number;
         this.name = name;
+    }
+
+    public static UserRoleTypeEnum getUserRoleTypeEnum(int number) {
+
+        for (UserRoleTypeEnum userRoleTypeEnum : UserRoleTypeEnum.values()) {
+            if (userRoleTypeEnum.number == number) {
+                return userRoleTypeEnum;
+            }
+        }
+        return UserRoleTypeEnum.NOT_SUPPORT;
     }
 
 }

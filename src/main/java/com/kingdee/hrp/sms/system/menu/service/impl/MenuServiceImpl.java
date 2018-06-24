@@ -2,17 +2,17 @@ package com.kingdee.hrp.sms.system.menu.service.impl;
 
 import com.kingdee.hrp.sms.common.dao.generate.FormActionMapper;
 import com.kingdee.hrp.sms.common.dao.generate.MenuMapper;
-import com.kingdee.hrp.sms.common.model.*;
+import com.kingdee.hrp.sms.common.model.FormAction;
+import com.kingdee.hrp.sms.common.model.FormActionExample;
+import com.kingdee.hrp.sms.common.model.Menu;
+import com.kingdee.hrp.sms.common.model.MenuExample;
 import com.kingdee.hrp.sms.common.pojo.AccessMaskEnum;
 import com.kingdee.hrp.sms.common.pojo.UserRoleTypeEnum;
-import com.kingdee.hrp.sms.system.menu.service.IMenuService;
 import com.kingdee.hrp.sms.common.service.BaseService;
-import com.kingdee.hrp.sms.system.user.service.IUserService;
-import com.kingdee.hrp.sms.system.user.service.impl.UserService;
+import com.kingdee.hrp.sms.system.menu.service.MenuService;
+import com.kingdee.hrp.sms.system.user.service.UserService;
 import com.kingdee.hrp.sms.util.Environ;
 import com.kingdee.hrp.sms.util.SessionUtil;
-import com.sun.tools.doclint.Env;
-import org.apache.ibatis.jdbc.Null;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -27,9 +27,9 @@ import java.util.Map;
  * @since 2018/1/31
  */
 @Service
-public class MenuService extends BaseService implements IMenuService {
+public class MenuServiceImpl extends BaseService implements MenuService {
 
-    private static Logger logger = LoggerFactory.getLogger(MenuService.class);
+    private static Logger logger = LoggerFactory.getLogger(MenuServiceImpl.class);
 
     /**
      * 根据用户角色类别及parentId获取所有子菜单
@@ -79,7 +79,7 @@ public class MenuService extends BaseService implements IMenuService {
         List<FormAction> formActions = formActionMapper.selectByExample(formActionExample);
 
         // 获取用户所有角色的授权结果
-        IUserService userService = Environ.getBean(IUserService.class);
+        UserService userService = Environ.getBean(UserService.class);
         Map<Integer, Integer> roleAccessControl = userService.getAccessControl();
 
         // 迭代过滤菜单项

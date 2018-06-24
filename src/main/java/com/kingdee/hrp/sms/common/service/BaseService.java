@@ -1,11 +1,5 @@
 package com.kingdee.hrp.sms.common.service;
 
-import com.kingdee.hrp.sms.common.model.AccessControl;
-import com.kingdee.hrp.sms.common.model.Role;
-import com.kingdee.hrp.sms.system.menu.service.impl.MenuService;
-import com.kingdee.hrp.sms.system.user.service.IUserService;
-import com.kingdee.hrp.sms.util.Environ;
-import com.kingdee.hrp.sms.util.SessionUtil;
 import com.kingdee.hrp.sms.util.SnowFlake;
 import org.apache.ibatis.session.SqlSession;
 import org.slf4j.Logger;
@@ -13,7 +7,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.*;
 
 /**
  * @author yadda

@@ -305,73 +305,73 @@ public class HospitalExample {
             return (Criteria) this;
         }
 
-        public Criteria andCreditCodeIsNull() {
-            addCriterion("credit_code is null");
+        public Criteria andRegistrationNoIsNull() {
+            addCriterion("registration_no is null");
             return (Criteria) this;
         }
 
-        public Criteria andCreditCodeIsNotNull() {
-            addCriterion("credit_code is not null");
+        public Criteria andRegistrationNoIsNotNull() {
+            addCriterion("registration_no is not null");
             return (Criteria) this;
         }
 
-        public Criteria andCreditCodeEqualTo(String value) {
-            addCriterion("credit_code =", value, "creditCode");
+        public Criteria andRegistrationNoEqualTo(String value) {
+            addCriterion("registration_no =", value, "registrationNo");
             return (Criteria) this;
         }
 
-        public Criteria andCreditCodeNotEqualTo(String value) {
-            addCriterion("credit_code <>", value, "creditCode");
+        public Criteria andRegistrationNoNotEqualTo(String value) {
+            addCriterion("registration_no <>", value, "registrationNo");
             return (Criteria) this;
         }
 
-        public Criteria andCreditCodeGreaterThan(String value) {
-            addCriterion("credit_code >", value, "creditCode");
+        public Criteria andRegistrationNoGreaterThan(String value) {
+            addCriterion("registration_no >", value, "registrationNo");
             return (Criteria) this;
         }
 
-        public Criteria andCreditCodeGreaterThanOrEqualTo(String value) {
-            addCriterion("credit_code >=", value, "creditCode");
+        public Criteria andRegistrationNoGreaterThanOrEqualTo(String value) {
+            addCriterion("registration_no >=", value, "registrationNo");
             return (Criteria) this;
         }
 
-        public Criteria andCreditCodeLessThan(String value) {
-            addCriterion("credit_code <", value, "creditCode");
+        public Criteria andRegistrationNoLessThan(String value) {
+            addCriterion("registration_no <", value, "registrationNo");
             return (Criteria) this;
         }
 
-        public Criteria andCreditCodeLessThanOrEqualTo(String value) {
-            addCriterion("credit_code <=", value, "creditCode");
+        public Criteria andRegistrationNoLessThanOrEqualTo(String value) {
+            addCriterion("registration_no <=", value, "registrationNo");
             return (Criteria) this;
         }
 
-        public Criteria andCreditCodeLike(String value) {
-            addCriterion("credit_code like", value, "creditCode");
+        public Criteria andRegistrationNoLike(String value) {
+            addCriterion("registration_no like", value, "registrationNo");
             return (Criteria) this;
         }
 
-        public Criteria andCreditCodeNotLike(String value) {
-            addCriterion("credit_code not like", value, "creditCode");
+        public Criteria andRegistrationNoNotLike(String value) {
+            addCriterion("registration_no not like", value, "registrationNo");
             return (Criteria) this;
         }
 
-        public Criteria andCreditCodeIn(List<String> values) {
-            addCriterion("credit_code in", values, "creditCode");
+        public Criteria andRegistrationNoIn(List<String> values) {
+            addCriterion("registration_no in", values, "registrationNo");
             return (Criteria) this;
         }
 
-        public Criteria andCreditCodeNotIn(List<String> values) {
-            addCriterion("credit_code not in", values, "creditCode");
+        public Criteria andRegistrationNoNotIn(List<String> values) {
+            addCriterion("registration_no not in", values, "registrationNo");
             return (Criteria) this;
         }
 
-        public Criteria andCreditCodeBetween(String value1, String value2) {
-            addCriterion("credit_code between", value1, value2, "creditCode");
+        public Criteria andRegistrationNoBetween(String value1, String value2) {
+            addCriterion("registration_no between", value1, value2, "registrationNo");
             return (Criteria) this;
         }
 
-        public Criteria andCreditCodeNotBetween(String value1, String value2) {
-            addCriterion("credit_code not between", value1, value2, "creditCode");
+        public Criteria andRegistrationNoNotBetween(String value1, String value2) {
+            addCriterion("registration_no not between", value1, value2, "registrationNo");
             return (Criteria) this;
         }
 

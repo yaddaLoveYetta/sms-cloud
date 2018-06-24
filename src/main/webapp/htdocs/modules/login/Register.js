@@ -95,58 +95,6 @@ define('Register', function (require, module, exports) {
 
         // Initialize the leaveStep event
         $(registerWizard).on("leaveStep", function (e, anchorObject, stepNumber, stepDirection) {
-
-            switch (stepNumber) {
-                case 0:
-                /*                    if ($('input[name=user_type]:checked').val() > 0) {
-                                        //转下一步
-                                        return true;
-                                    }
-                                    else {
-                                        MessageBox.show('请选择注册用户类别!', '金蝶提示', true);
-                                        return false;
-                                    }
-                                    break;*/
-
-                case 1:
-
-                    /*                    var validate = true;
-
-                                        var validate_list = ['userName', 'password', 'name', 'mobile'];
-
-                                        $.Array.keep(validate_list, function (fieldName, index) {
-
-                                            var $target = $('#' + fieldName);
-                                            var v = $target.val();
-
-                                            var msgElement = document.getElementById(fieldName + '-msg');
-
-                                            if (!v) {
-
-                                                validate = false;
-
-                                                if (!$(msgElement).hasClass('show')) {
-                                                    $(msgElement).toggleClass('show');
-                                                }
-                                                $(msgElement).html($target.attr('placeholder'));
-
-                                            } else {
-
-                                                $(msgElement).html('');
-                                                if ($(msgElement).hasClass('show')) {
-                                                    $(msgElement).toggleClass('show');
-                                                }
-                                            }
-
-                                        });
-
-                                        if (!validate && stepDirection === 'forward') {
-                                            return false;
-                                        }*/
-
-                    break;
-            }
-
         });
 
         // Initialize the beginReset event
@@ -211,11 +159,17 @@ define('Register', function (require, module, exports) {
             MessageBox.show('企业统一信用代码不正确!', '金蝶提示', true);
             fn && fn(false);
             return;
-        } else {
+        }
+        if (type === 2) {
+            // 医院用户注册提交的是医疗机构登记号
+            data['registrationNo'] = creditCode;
+        } else if (type === 3) {
+            // 供应商注册提交企业统一信用代码
             data['creditCode'] = creditCode;
         }
 
-        var validate_list = ['userName', 'password', 'name', 'orgName', 'creditCode'];
+
+        var validate_list = ['userName', 'password', 'name', 'orgName'];
 
         $.Array.each(validate_list, function (fieldName, index) {
 

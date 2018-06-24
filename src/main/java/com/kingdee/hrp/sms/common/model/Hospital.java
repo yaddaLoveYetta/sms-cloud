@@ -10,7 +10,7 @@ public class Hospital extends RootModel {
 
     private String name;
 
-    private String creditCode;
+    private String registrationNo;
 
     private String address;
 
@@ -68,12 +68,12 @@ public class Hospital extends RootModel {
         this.name = name == null ? null : name.trim();
     }
 
-    public String getCreditCode() {
-        return creditCode;
+    public String getRegistrationNo() {
+        return registrationNo;
     }
 
-    public void setCreditCode(String creditCode) {
-        this.creditCode = creditCode == null ? null : creditCode.trim();
+    public void setRegistrationNo(String registrationNo) {
+        this.registrationNo = registrationNo == null ? null : registrationNo.trim();
     }
 
     public String getAddress() {
@@ -215,7 +215,7 @@ public class Hospital extends RootModel {
         id("id"),
         number("number"),
         name("name"),
-        creditCode("credit_code"),
+        registrationNo("registration_no"),
         address("address"),
         introduction("introduction"),
         medicalSubjects("medical_subjects"),
