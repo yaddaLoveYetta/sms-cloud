@@ -3,7 +3,7 @@ package com.kingdee.hrp.sms.common.controller;
 import com.kingdee.hrp.sms.common.exception.BusinessLogicRunTimeException;
 import com.kingdee.hrp.sms.common.pojo.Condition;
 import com.kingdee.hrp.sms.common.pojo.Sort;
-import com.kingdee.hrp.sms.common.service.ITemplateService;
+import com.kingdee.hrp.sms.common.service.TemplateService;
 import com.kingdee.hrp.sms.util.Common;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
@@ -28,7 +28,7 @@ import java.util.Map;
 public class TemplateController {
 
     @Resource
-    private ITemplateService templateService;
+    private TemplateService templateService;
 
     /**
      * 查询单据模板数据

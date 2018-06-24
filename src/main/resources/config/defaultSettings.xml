@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+
+    系统参数项：
+    当新注册用户（供应商，医院）后同时需要新增一份系统参数插入数据库中
+    此文件描述了所有系统参数及默认值等信息
+ -->
+<settings >
+    <setting>
+        <!--参数类类目，通常用于区分个模块的参数 -->
+        <category></category>
+        <!-- 参数显示名称-->
+        <name></name>
+        <!--参数名 -->
+        <key></key>
+        <!--参数简要描述 -->
+        <desc></desc>
+        <!--参数默认值 -->
+        <value></value>
+        <!--参数排序 -->
+        <index></index>
+        <!--参数解析规则 -->
+        <explanation></explanation>
+        <!--参数是否只读参数 -->
+        <readOnly></readOnly>
+    </setting>
+</settings>

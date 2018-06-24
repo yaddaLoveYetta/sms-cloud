@@ -14,7 +14,7 @@ import java.util.Set;
  * @ClassName PlugInAdpter
  * @date 2018-02-27 17:32:12 星期四
  */
-public abstract class PlugInAdpter implements IPlugIn {
+public abstract class PlugInAdpter implements PlugIn {
 
     PlugInRet result = new PlugInRet();
 

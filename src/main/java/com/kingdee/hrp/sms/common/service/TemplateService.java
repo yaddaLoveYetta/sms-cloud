@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-public interface ITemplateService {
+public interface TemplateService {
 
     /**
      * 查询基础资料/单据模板数据

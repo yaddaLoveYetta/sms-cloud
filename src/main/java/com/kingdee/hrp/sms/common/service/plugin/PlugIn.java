@@ -18,10 +18,10 @@ import java.util.Set;
  * 操作后的数据校验，关联操作等等跟业务相关但又缺乏共性的逻辑<br>
  *
  * @author yadda
- * @ClassName IPlugIn
+ * @ClassName PlugIn
  * @date 2017-04-27 17:40:40 星期四
  */
-public interface IPlugIn {
+public interface PlugIn {
 
     /**
      * 插件序号-同一个业务上绑定多插件时确定插件的执行顺序

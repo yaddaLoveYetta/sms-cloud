@@ -16,9 +16,8 @@ import com.kingdee.hrp.sms.common.pojo.CtrlTypeEnum;
 import com.kingdee.hrp.sms.common.pojo.Sort;
 import com.kingdee.hrp.sms.common.pojo.StatusCode;
 import com.kingdee.hrp.sms.common.service.BaseService;
-import com.kingdee.hrp.sms.common.service.ITemplateService;
-import com.kingdee.hrp.sms.common.service.plugin.IPlugIn;
-import com.kingdee.hrp.sms.common.service.plugin.PlugInFactory;
+import com.kingdee.hrp.sms.common.service.TemplateService;
+import com.kingdee.hrp.sms.common.service.plugin.PlugIn;
 import com.kingdee.hrp.sms.common.service.plugin.PlugInRet;
 import com.kingdee.hrp.sms.util.Common;
 import com.kingdee.hrp.sms.util.Environ;
@@ -33,10 +32,10 @@ import java.io.IOException;
 import java.util.*;
 
 @Service
-public class TemplateService extends BaseService implements ITemplateService {
+public class TemplateServiceImpl extends BaseService implements TemplateService {
 
     @Resource(name = "plugInFactory")
-    private IPlugIn plugInFactory;
+    private PlugIn plugInFactory;
 
     /**
      * 查询基础资料/单据模板数据

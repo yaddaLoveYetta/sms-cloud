@@ -19,14 +19,14 @@ import java.util.*;
  * @date 2018-02-27 17:31:28 星期四
  */
 @Service(value = "plugInFactory")
-public class PlugInFactory implements IPlugIn, InitializingBean, ApplicationContextAware {
+public class PlugInFactory implements PlugIn, InitializingBean, ApplicationContextAware {
 
     private ApplicationContext applicationContext;
 
     /**
      * 存放所有的插件序列
      */
-    private static List<IPlugIn> plugIns = new ArrayList<IPlugIn>();
+    private static List<PlugIn> plugIns = new ArrayList<PlugIn>();
 
     /**
      * 1. 实例化()构造函数;
@@ -59,9 +59,9 @@ public class PlugInFactory implements IPlugIn, InitializingBean, ApplicationCont
                     continue;
                 }
 
-                if (IPlugIn.class.isAssignableFrom(type)) {
+                if (PlugIn.class.isAssignableFrom(type)) {
 
-                    IPlugIn plugIn = applicationContext.getBean(name, IPlugIn.class);
+                    PlugIn plugIn = applicationContext.getBean(name, PlugIn.class);
 
                     if (!plugIns.contains(plugIn)) {
                         plugIns.add(plugIn);
@@ -116,7 +116,7 @@ public class PlugInFactory implements IPlugIn, InitializingBean, ApplicationCont
 
         PlugInRet plugInRet = new PlugInRet();
 
-        for (IPlugIn plugIn : plugIns) {
+        for (PlugIn plugIn : plugIns) {
             if (plugIn.getClassIdSet() != null && plugIn.getClassIdSet().contains(classId)) {
                 plugInRet = plugIn.beforeSave(classId, formTemplate, data);
                 if (plugInRet.getCode() != StatusCode.SUCCESS) {
@@ -142,7 +142,7 @@ public class PlugInFactory implements IPlugIn, InitializingBean, ApplicationCont
 
         PlugInRet plugInRet = new PlugInRet();
 
-        for (IPlugIn plugIn : plugIns) {
+        for (PlugIn plugIn : plugIns) {
             if (plugIn.getClassIdSet() != null && plugIn.getClassIdSet().contains(classId)) {
                 plugInRet = plugIn.afterSave(classId, id, data);
                 if (plugInRet.getCode() != StatusCode.SUCCESS) {
@@ -168,7 +168,7 @@ public class PlugInFactory implements IPlugIn, InitializingBean, ApplicationCont
 
         PlugInRet plugInRet = new PlugInRet();
 
-        for (IPlugIn plugIn : plugIns) {
+        for (PlugIn plugIn : plugIns) {
             if (plugIn.getClassIdSet() != null && plugIn.getClassIdSet().contains(classId)) {
                 plugInRet = plugIn.beforeModify(classId, id, formTemplate, data);
                 if (plugInRet.getCode() != StatusCode.SUCCESS) {
@@ -199,7 +199,7 @@ public class PlugInFactory implements IPlugIn, InitializingBean, ApplicationCont
 
         PlugInRet plugInRet = new PlugInRet();
 
-        for (IPlugIn plugIn : plugIns) {
+        for (PlugIn plugIn : plugIns) {
             if (plugIn.getClassIdSet() != null && plugIn.getClassIdSet().contains(classId)) {
                 plugInRet = plugIn.beforeEntryModify(classId, primaryId, entryId, formTemplate, data);
                 if (plugInRet.getCode() != StatusCode.SUCCESS) {
@@ -226,7 +226,7 @@ public class PlugInFactory implements IPlugIn, InitializingBean, ApplicationCont
 
         PlugInRet plugInRet = new PlugInRet();
 
-        for (IPlugIn plugIn : plugIns) {
+        for (PlugIn plugIn : plugIns) {
             if (plugIn.getClassIdSet() != null && plugIn.getClassIdSet().contains(classId)) {
                 plugInRet = plugIn.afterModify(classId, id, formTemplate, data);
                 if (plugInRet.getCode() != StatusCode.SUCCESS) {
@@ -252,7 +252,7 @@ public class PlugInFactory implements IPlugIn, InitializingBean, ApplicationCont
 
         PlugInRet plugInRet = new PlugInRet();
 
-        for (IPlugIn plugIn : plugIns) {
+        for (PlugIn plugIn : plugIns) {
             if (plugIn.getClassIdSet() != null && plugIn.getClassIdSet().contains(classId)) {
                 plugInRet = plugIn.beforeDelete(classId, formTemplate, ids);
                 if (plugInRet.getCode() != StatusCode.SUCCESS) {
@@ -282,7 +282,7 @@ public class PlugInFactory implements IPlugIn, InitializingBean, ApplicationCont
 
         PlugInRet plugInRet = new PlugInRet();
 
-        for (IPlugIn plugIn : plugIns) {
+        for (PlugIn plugIn : plugIns) {
             if (plugIn.getClassIdSet() != null && plugIn.getClassIdSet().contains(classId)) {
                 plugInRet = plugIn.beforeEntryDelete(classId, primaryId, entryId, formTemplate);
                 if (plugInRet.getCode() != StatusCode.SUCCESS) {
@@ -308,7 +308,7 @@ public class PlugInFactory implements IPlugIn, InitializingBean, ApplicationCont
 
         PlugInRet plugInRet = new PlugInRet();
 
-        for (IPlugIn plugIn : plugIns) {
+        for (PlugIn plugIn : plugIns) {
             if (plugIn.getClassIdSet() != null && plugIn.getClassIdSet().contains(classId)) {
                 plugInRet = plugIn.afterDelete(classId, formTemplate, ids);
                 if (plugInRet.getCode() != StatusCode.SUCCESS) {
@@ -334,7 +334,7 @@ public class PlugInFactory implements IPlugIn, InitializingBean, ApplicationCont
 
         PlugInRet plugInRet = new PlugInRet();
 
-        for (IPlugIn plugIn : plugIns) {
+        for (PlugIn plugIn : plugIns) {
             if (plugIn.getClassIdSet() != null && plugIn.getClassIdSet().contains(classId)) {
                 plugInRet = plugIn.beforeQuery(classId, formTemplate, conditons);
                 if (plugInRet.getCode() != StatusCode.SUCCESS) {
@@ -359,7 +359,7 @@ public class PlugInFactory implements IPlugIn, InitializingBean, ApplicationCont
 
         PlugInRet plugInRet = new PlugInRet();
 
-        for (IPlugIn plugIn : plugIns) {
+        for (PlugIn plugIn : plugIns) {
             if (plugIn.getClassIdSet() != null && plugIn.getClassIdSet().contains(classId)) {
                 plugInRet = plugIn.afterQuery(classId, list);
                 if (plugInRet.getCode() != StatusCode.SUCCESS) {
@@ -385,7 +385,7 @@ public class PlugInFactory implements IPlugIn, InitializingBean, ApplicationCont
 
         List<Condition> pluginConditions = new ArrayList<Condition>();
 
-        for (IPlugIn plugIn : plugIns) {
+        for (PlugIn plugIn : plugIns) {
             if (plugIn.getClassIdSet() != null && plugIn.getClassIdSet().contains(classId)) {
 
                 List<Condition> c = plugIn.getConditions(classId, formTemplate, conditons);
@@ -412,7 +412,7 @@ public class PlugInFactory implements IPlugIn, InitializingBean, ApplicationCont
 
         PlugInRet plugInRet = new PlugInRet();
 
-        for (IPlugIn plugIn : plugIns) {
+        for (PlugIn plugIn : plugIns) {
             if (plugIn.getClassIdSet() != null && plugIn.getClassIdSet().contains(classId)) {
                 plugInRet = plugIn.beforeForbid(classId, template, ids, operateType);
                 if (plugInRet.getCode() != StatusCode.SUCCESS) {
@@ -439,7 +439,7 @@ public class PlugInFactory implements IPlugIn, InitializingBean, ApplicationCont
     public PlugInRet afterForbid(Integer classId, Map<String, Object> template, List<Long> ids, Integer operateType) {
         PlugInRet plugInRet = new PlugInRet();
 
-        for (IPlugIn plugIn : plugIns) {
+        for (PlugIn plugIn : plugIns) {
             if (plugIn.getClassIdSet() != null && plugIn.getClassIdSet().contains(classId)) {
                 plugInRet = plugIn.afterForbid(classId, template, ids, operateType);
                 if (plugInRet.getCode() != StatusCode.SUCCESS) {
