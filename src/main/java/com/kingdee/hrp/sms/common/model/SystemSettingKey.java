@@ -1,15 +1,17 @@
 package com.kingdee.hrp.sms.common.model;
 
-import com.kingdee.hrp.sms.common.RootModel;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class SystemSettingKey extends RootModel {
+public class SystemSettingKey implements Serializable {
     private Long org;
 
     private String category;
 
     private String key;
+
+    private static final long serialVersionUID = 1L;
 
     public Long getOrg() {
         return org;
@@ -33,6 +35,20 @@ public class SystemSettingKey extends RootModel {
 
     public void setKey(String key) {
         this.key = key == null ? null : key.trim();
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(getClass().getSimpleName());
+        sb.append(" [");
+        sb.append("Hash = ").append(hashCode());
+        sb.append(", org=").append(org);
+        sb.append(", category=").append(category);
+        sb.append(", key=").append(key);
+        sb.append(", serialVersionUID=").append(serialVersionUID);
+        sb.append("]");
+        return sb.toString();
     }
 
     /**

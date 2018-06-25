@@ -1,10 +1,10 @@
 package com.kingdee.hrp.sms.common.model;
 
-import com.kingdee.hrp.sms.common.RootModel;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class Item extends RootModel {
+public class Item implements Serializable {
     private Long id;
 
     private String number;
@@ -24,6 +24,8 @@ public class Item extends RootModel {
     private Boolean status;
 
     private String image;
+
+    private static final long serialVersionUID = 1L;
 
     public Long getId() {
         return id;
@@ -103,6 +105,27 @@ public class Item extends RootModel {
 
     public void setImage(String image) {
         this.image = image == null ? null : image.trim();
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(getClass().getSimpleName());
+        sb.append(" [");
+        sb.append("Hash = ").append(hashCode());
+        sb.append(", id=").append(id);
+        sb.append(", number=").append(number);
+        sb.append(", name=").append(name);
+        sb.append(", specification=").append(specification);
+        sb.append(", manufacturer=").append(manufacturer);
+        sb.append(", isHighConsumable=").append(isHighConsumable);
+        sb.append(", isLotNumber=").append(isLotNumber);
+        sb.append(", org=").append(org);
+        sb.append(", status=").append(status);
+        sb.append(", image=").append(image);
+        sb.append(", serialVersionUID=").append(serialVersionUID);
+        sb.append("]");
+        return sb.toString();
     }
 
     /**

@@ -1,9 +1,10 @@
 package com.kingdee.hrp.sms.common.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class FormFields extends FormFieldsKey {
+public class FormFields extends FormFieldsKey implements Serializable {
     private Integer page;
 
     private String name;
@@ -57,6 +58,8 @@ public class FormFields extends FormFieldsKey {
     private Integer isCondition;
 
     private Integer isCount;
+
+    private static final long serialVersionUID = 1L;
 
     public Integer getPage() {
         return page;
@@ -272,6 +275,44 @@ public class FormFields extends FormFieldsKey {
 
     public void setIsCount(Integer isCount) {
         this.isCount = isCount;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(getClass().getSimpleName());
+        sb.append(" [");
+        sb.append("Hash = ").append(hashCode());
+        sb.append(", page=").append(page);
+        sb.append(", name=").append(name);
+        sb.append(", sqlColumnName=").append(sqlColumnName);
+        sb.append(", dataType=").append(dataType);
+        sb.append(", ctrlType=").append(ctrlType);
+        sb.append(", ctrlIndex=").append(ctrlIndex);
+        sb.append(", index=").append(index);
+        sb.append(", display=").append(display);
+        sb.append(", showWidth=").append(showWidth);
+        sb.append(", lookUpType=").append(lookUpType);
+        sb.append(", lookUpClassId=").append(lookUpClassId);
+        sb.append(", srcTable=").append(srcTable);
+        sb.append(", srcTableAlis=").append(srcTableAlis);
+        sb.append(", srcField=").append(srcField);
+        sb.append(", displayField=").append(displayField);
+        sb.append(", displayExt=").append(displayExt);
+        sb.append(", joinType=").append(joinType);
+        sb.append(", filter=").append(filter);
+        sb.append(", defaultValue=").append(defaultValue);
+        sb.append(", maxValue=").append(maxValue);
+        sb.append(", minValue=").append(minValue);
+        sb.append(", mustInput=").append(mustInput);
+        sb.append(", needSave=").append(needSave);
+        sb.append(", length=").append(length);
+        sb.append(", lock=").append(lock);
+        sb.append(", isCondition=").append(isCondition);
+        sb.append(", isCount=").append(isCount);
+        sb.append(", serialVersionUID=").append(serialVersionUID);
+        sb.append("]");
+        return sb.toString();
     }
 
     /**

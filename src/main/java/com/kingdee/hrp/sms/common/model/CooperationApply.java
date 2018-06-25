@@ -1,11 +1,11 @@
 package com.kingdee.hrp.sms.common.model;
 
-import com.kingdee.hrp.sms.common.RootModel;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 
-public class CooperationApply extends RootModel {
+public class CooperationApply implements Serializable {
     private Long id;
 
     private Long supplier;
@@ -15,6 +15,8 @@ public class CooperationApply extends RootModel {
     private Date date;
 
     private Integer status;
+
+    private static final long serialVersionUID = 1L;
 
     public Long getId() {
         return id;
@@ -54,6 +56,22 @@ public class CooperationApply extends RootModel {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(getClass().getSimpleName());
+        sb.append(" [");
+        sb.append("Hash = ").append(hashCode());
+        sb.append(", id=").append(id);
+        sb.append(", supplier=").append(supplier);
+        sb.append(", hospital=").append(hospital);
+        sb.append(", date=").append(date);
+        sb.append(", status=").append(status);
+        sb.append(", serialVersionUID=").append(serialVersionUID);
+        sb.append("]");
+        return sb.toString();
     }
 
     /**

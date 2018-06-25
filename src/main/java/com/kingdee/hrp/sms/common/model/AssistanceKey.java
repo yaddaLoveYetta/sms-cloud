@@ -1,13 +1,15 @@
 package com.kingdee.hrp.sms.common.model;
 
-import com.kingdee.hrp.sms.common.RootModel;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class AssistanceKey extends RootModel {
+public class AssistanceKey implements Serializable {
     private Integer detailId;
 
     private Integer typeId;
+
+    private static final long serialVersionUID = 1L;
 
     public Integer getDetailId() {
         return detailId;
@@ -23,6 +25,19 @@ public class AssistanceKey extends RootModel {
 
     public void setTypeId(Integer typeId) {
         this.typeId = typeId;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(getClass().getSimpleName());
+        sb.append(" [");
+        sb.append("Hash = ").append(hashCode());
+        sb.append(", detailId=").append(detailId);
+        sb.append(", typeId=").append(typeId);
+        sb.append(", serialVersionUID=").append(serialVersionUID);
+        sb.append("]");
+        return sb.toString();
     }
 
     /**

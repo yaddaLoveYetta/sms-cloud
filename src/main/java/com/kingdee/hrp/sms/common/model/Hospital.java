@@ -1,11 +1,11 @@
 package com.kingdee.hrp.sms.common.model;
 
-import com.kingdee.hrp.sms.common.RootModel;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 
-public class Hospital extends RootModel {
+public class Hospital implements Serializable {
     private Long id;
 
     private String number;
@@ -45,6 +45,8 @@ public class Hospital extends RootModel {
     private String contacts;
 
     private String phone;
+
+    private static final long serialVersionUID = 1L;
 
     public Long getId() {
         return id;
@@ -204,6 +206,37 @@ public class Hospital extends RootModel {
 
     public void setPhone(String phone) {
         this.phone = phone == null ? null : phone.trim();
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(getClass().getSimpleName());
+        sb.append(" [");
+        sb.append("Hash = ").append(hashCode());
+        sb.append(", id=").append(id);
+        sb.append(", number=").append(number);
+        sb.append(", name=").append(name);
+        sb.append(", registrationNo=").append(registrationNo);
+        sb.append(", address=").append(address);
+        sb.append(", introduction=").append(introduction);
+        sb.append(", medicalSubjects=").append(medicalSubjects);
+        sb.append(", principal=").append(principal);
+        sb.append(", issueAgency=").append(issueAgency);
+        sb.append(", legalPerson=").append(legalPerson);
+        sb.append(", province=").append(province);
+        sb.append(", city=").append(city);
+        sb.append(", district=").append(district);
+        sb.append(", issueDate=").append(issueDate);
+        sb.append(", validityPeriodBegin=").append(validityPeriodBegin);
+        sb.append(", validityPeriodEnd=").append(validityPeriodEnd);
+        sb.append(", logo=").append(logo);
+        sb.append(", status=").append(status);
+        sb.append(", contacts=").append(contacts);
+        sb.append(", phone=").append(phone);
+        sb.append(", serialVersionUID=").append(serialVersionUID);
+        sb.append("]");
+        return sb.toString();
     }
 
     /**

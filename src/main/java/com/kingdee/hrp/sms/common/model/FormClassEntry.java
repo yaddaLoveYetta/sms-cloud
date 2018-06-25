@@ -1,9 +1,10 @@
 package com.kingdee.hrp.sms.common.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class FormClassEntry extends FormClassEntryKey {
+public class FormClassEntry extends FormClassEntryKey implements Serializable {
     private String name;
 
     private String tableName;
@@ -15,6 +16,8 @@ public class FormClassEntry extends FormClassEntryKey {
     private String joinType;
 
     private String desc;
+
+    private static final long serialVersionUID = 1L;
 
     public String getName() {
         return name;
@@ -62,6 +65,23 @@ public class FormClassEntry extends FormClassEntryKey {
 
     public void setDesc(String desc) {
         this.desc = desc == null ? null : desc.trim();
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(getClass().getSimpleName());
+        sb.append(" [");
+        sb.append("Hash = ").append(hashCode());
+        sb.append(", name=").append(name);
+        sb.append(", tableName=").append(tableName);
+        sb.append(", primaryKey=").append(primaryKey);
+        sb.append(", foreignKey=").append(foreignKey);
+        sb.append(", joinType=").append(joinType);
+        sb.append(", desc=").append(desc);
+        sb.append(", serialVersionUID=").append(serialVersionUID);
+        sb.append("]");
+        return sb.toString();
     }
 
     /**

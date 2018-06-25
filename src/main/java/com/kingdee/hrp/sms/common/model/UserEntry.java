@@ -1,15 +1,17 @@
 package com.kingdee.hrp.sms.common.model;
 
-import com.kingdee.hrp.sms.common.RootModel;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class UserEntry extends RootModel {
+public class UserEntry implements Serializable {
     private Long id;
 
     private Long parent;
 
     private Long role;
+
+    private static final long serialVersionUID = 1L;
 
     public Long getId() {
         return id;
@@ -33,6 +35,20 @@ public class UserEntry extends RootModel {
 
     public void setRole(Long role) {
         this.role = role;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(getClass().getSimpleName());
+        sb.append(" [");
+        sb.append("Hash = ").append(hashCode());
+        sb.append(", id=").append(id);
+        sb.append(", parent=").append(parent);
+        sb.append(", role=").append(role);
+        sb.append(", serialVersionUID=").append(serialVersionUID);
+        sb.append("]");
+        return sb.toString();
     }
 
     /**

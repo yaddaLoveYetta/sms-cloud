@@ -1,10 +1,13 @@
 package com.kingdee.hrp.sms.common.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class AccessControl extends AccessControlKey {
+public class AccessControl extends AccessControlKey implements Serializable {
     private Integer accessMask;
+
+    private static final long serialVersionUID = 1L;
 
     public Integer getAccessMask() {
         return accessMask;
@@ -12,6 +15,18 @@ public class AccessControl extends AccessControlKey {
 
     public void setAccessMask(Integer accessMask) {
         this.accessMask = accessMask;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(getClass().getSimpleName());
+        sb.append(" [");
+        sb.append("Hash = ").append(hashCode());
+        sb.append(", accessMask=").append(accessMask);
+        sb.append(", serialVersionUID=").append(serialVersionUID);
+        sb.append("]");
+        return sb.toString();
     }
 
     /**

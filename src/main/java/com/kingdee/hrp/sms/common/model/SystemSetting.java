@@ -1,9 +1,10 @@
 package com.kingdee.hrp.sms.common.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class SystemSetting extends SystemSettingKey {
+public class SystemSetting extends SystemSettingKey implements Serializable {
     private String name;
 
     private String desc;
@@ -15,6 +16,8 @@ public class SystemSetting extends SystemSettingKey {
     private String explanation;
 
     private Boolean readOnly;
+
+    private static final long serialVersionUID = 1L;
 
     public String getName() {
         return name;
@@ -62,6 +65,23 @@ public class SystemSetting extends SystemSettingKey {
 
     public void setReadOnly(Boolean readOnly) {
         this.readOnly = readOnly;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(getClass().getSimpleName());
+        sb.append(" [");
+        sb.append("Hash = ").append(hashCode());
+        sb.append(", name=").append(name);
+        sb.append(", desc=").append(desc);
+        sb.append(", value=").append(value);
+        sb.append(", index=").append(index);
+        sb.append(", explanation=").append(explanation);
+        sb.append(", readOnly=").append(readOnly);
+        sb.append(", serialVersionUID=").append(serialVersionUID);
+        sb.append("]");
+        return sb.toString();
     }
 
     /**

@@ -1,11 +1,11 @@
 package com.kingdee.hrp.sms.common.model;
 
-import com.kingdee.hrp.sms.common.RootModel;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 
-public class Supplier extends RootModel {
+public class Supplier implements Serializable {
     private Long id;
 
     private String number;
@@ -65,6 +65,8 @@ public class Supplier extends RootModel {
     private String logo;
 
     private Boolean status;
+
+    private static final long serialVersionUID = 1L;
 
     public Long getId() {
         return id;
@@ -304,6 +306,47 @@ public class Supplier extends RootModel {
 
     public void setStatus(Boolean status) {
         this.status = status;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(getClass().getSimpleName());
+        sb.append(" [");
+        sb.append("Hash = ").append(hashCode());
+        sb.append(", id=").append(id);
+        sb.append(", number=").append(number);
+        sb.append(", name=").append(name);
+        sb.append(", creditCode=").append(creditCode);
+        sb.append(", address=").append(address);
+        sb.append(", introduction=").append(introduction);
+        sb.append(", developmentExperience=").append(developmentExperience);
+        sb.append(", legalPerson=").append(legalPerson);
+        sb.append(", contacts=").append(contacts);
+        sb.append(", phone=").append(phone);
+        sb.append(", companyType=").append(companyType);
+        sb.append(", industryType=").append(industryType);
+        sb.append(", validityPeriodBegin=").append(validityPeriodBegin);
+        sb.append(", validityPeriodEnd=").append(validityPeriodEnd);
+        sb.append(", issueDate=").append(issueDate);
+        sb.append(", issueAgency=").append(issueAgency);
+        sb.append(", mainBusiness=").append(mainBusiness);
+        sb.append(", accountBank=").append(accountBank);
+        sb.append(", accountNumber=").append(accountNumber);
+        sb.append(", accountAddress=").append(accountAddress);
+        sb.append(", clearingCompany=").append(clearingCompany);
+        sb.append(", deliveryCompany=").append(deliveryCompany);
+        sb.append(", clearingCurrency=").append(clearingCurrency);
+        sb.append(", clearingType=").append(clearingType);
+        sb.append(", paymentType=").append(paymentType);
+        sb.append(", province=").append(province);
+        sb.append(", city=").append(city);
+        sb.append(", district=").append(district);
+        sb.append(", logo=").append(logo);
+        sb.append(", status=").append(status);
+        sb.append(", serialVersionUID=").append(serialVersionUID);
+        sb.append("]");
+        return sb.toString();
     }
 
     /**

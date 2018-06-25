@@ -1,13 +1,15 @@
 package com.kingdee.hrp.sms.common.model;
 
-import com.kingdee.hrp.sms.common.RootModel;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class FormActionKey extends RootModel {
+public class FormActionKey implements Serializable {
     private Integer classId;
 
     private Integer accessMask;
+
+    private static final long serialVersionUID = 1L;
 
     public Integer getClassId() {
         return classId;
@@ -23,6 +25,19 @@ public class FormActionKey extends RootModel {
 
     public void setAccessMask(Integer accessMask) {
         this.accessMask = accessMask;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(getClass().getSimpleName());
+        sb.append(" [");
+        sb.append("Hash = ").append(hashCode());
+        sb.append(", classId=").append(classId);
+        sb.append(", accessMask=").append(accessMask);
+        sb.append(", serialVersionUID=").append(serialVersionUID);
+        sb.append("]");
+        return sb.toString();
     }
 
     /**

@@ -1,15 +1,17 @@
 package com.kingdee.hrp.sms.common.model;
 
-import com.kingdee.hrp.sms.common.RootModel;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class AssistanceType extends RootModel {
+public class AssistanceType implements Serializable {
     private Integer id;
 
     private String name;
 
     private String desc;
+
+    private static final long serialVersionUID = 1L;
 
     public Integer getId() {
         return id;
@@ -33,6 +35,20 @@ public class AssistanceType extends RootModel {
 
     public void setDesc(String desc) {
         this.desc = desc == null ? null : desc.trim();
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(getClass().getSimpleName());
+        sb.append(" [");
+        sb.append("Hash = ").append(hashCode());
+        sb.append(", id=").append(id);
+        sb.append(", name=").append(name);
+        sb.append(", desc=").append(desc);
+        sb.append(", serialVersionUID=").append(serialVersionUID);
+        sb.append("]");
+        return sb.toString();
     }
 
     /**

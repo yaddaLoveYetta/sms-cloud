@@ -1,10 +1,10 @@
 package com.kingdee.hrp.sms.common.model;
 
-import com.kingdee.hrp.sms.common.RootModel;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class Menu extends RootModel {
+public class Menu implements Serializable {
     private Integer id;
 
     private String name;
@@ -22,6 +22,8 @@ public class Menu extends RootModel {
     private Boolean visible;
 
     private Integer formActionId;
+
+    private static final long serialVersionUID = 1L;
 
     public Integer getId() {
         return id;
@@ -93,6 +95,26 @@ public class Menu extends RootModel {
 
     public void setFormActionId(Integer formActionId) {
         this.formActionId = formActionId;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(getClass().getSimpleName());
+        sb.append(" [");
+        sb.append("Hash = ").append(hashCode());
+        sb.append(", id=").append(id);
+        sb.append(", name=").append(name);
+        sb.append(", index=").append(index);
+        sb.append(", icon=").append(icon);
+        sb.append(", url=").append(url);
+        sb.append(", parentId=").append(parentId);
+        sb.append(", desc=").append(desc);
+        sb.append(", visible=").append(visible);
+        sb.append(", formActionId=").append(formActionId);
+        sb.append(", serialVersionUID=").append(serialVersionUID);
+        sb.append("]");
+        return sb.toString();
     }
 
     /**

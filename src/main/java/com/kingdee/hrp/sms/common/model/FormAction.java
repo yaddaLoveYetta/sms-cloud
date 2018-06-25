@@ -1,9 +1,10 @@
 package com.kingdee.hrp.sms.common.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class FormAction extends FormActionKey {
+public class FormAction extends FormActionKey implements Serializable {
     private String name;
 
     private String nameModify;
@@ -27,6 +28,8 @@ public class FormAction extends FormActionKey {
     private String iconModify;
 
     private String desc;
+
+    private static final long serialVersionUID = 1L;
 
     public String getName() {
         return name;
@@ -122,6 +125,29 @@ public class FormAction extends FormActionKey {
 
     public void setDesc(String desc) {
         this.desc = desc == null ? null : desc.trim();
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(getClass().getSimpleName());
+        sb.append(" [");
+        sb.append("Hash = ").append(hashCode());
+        sb.append(", name=").append(name);
+        sb.append(", nameModify=").append(nameModify);
+        sb.append(", text=").append(text);
+        sb.append(", textModify=").append(textModify);
+        sb.append(", index=").append(index);
+        sb.append(", accessUse=").append(accessUse);
+        sb.append(", display=").append(display);
+        sb.append(", ownerType=").append(ownerType);
+        sb.append(", group=").append(group);
+        sb.append(", icon=").append(icon);
+        sb.append(", iconModify=").append(iconModify);
+        sb.append(", desc=").append(desc);
+        sb.append(", serialVersionUID=").append(serialVersionUID);
+        sb.append("]");
+        return sb.toString();
     }
 
     /**

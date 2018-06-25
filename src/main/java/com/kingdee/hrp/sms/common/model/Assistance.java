@@ -1,9 +1,10 @@
 package com.kingdee.hrp.sms.common.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class Assistance extends AssistanceKey {
+public class Assistance extends AssistanceKey implements Serializable {
     private String number;
 
     private String name;
@@ -11,6 +12,8 @@ public class Assistance extends AssistanceKey {
     private Boolean enable;
 
     private Integer index;
+
+    private static final long serialVersionUID = 1L;
 
     public String getNumber() {
         return number;
@@ -42,6 +45,21 @@ public class Assistance extends AssistanceKey {
 
     public void setIndex(Integer index) {
         this.index = index;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(getClass().getSimpleName());
+        sb.append(" [");
+        sb.append("Hash = ").append(hashCode());
+        sb.append(", number=").append(number);
+        sb.append(", name=").append(name);
+        sb.append(", enable=").append(enable);
+        sb.append(", index=").append(index);
+        sb.append(", serialVersionUID=").append(serialVersionUID);
+        sb.append("]");
+        return sb.toString();
     }
 
     /**

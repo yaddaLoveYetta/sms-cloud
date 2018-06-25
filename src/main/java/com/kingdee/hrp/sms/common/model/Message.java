@@ -1,11 +1,11 @@
 package com.kingdee.hrp.sms.common.model;
 
-import com.kingdee.hrp.sms.common.RootModel;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 
-public class Message extends RootModel {
+public class Message implements Serializable {
     private Long id;
 
     private Long senderOrg;
@@ -25,6 +25,8 @@ public class Message extends RootModel {
     private String data;
 
     private Integer status;
+
+    private static final long serialVersionUID = 1L;
 
     public Long getId() {
         return id;
@@ -104,6 +106,27 @@ public class Message extends RootModel {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(getClass().getSimpleName());
+        sb.append(" [");
+        sb.append("Hash = ").append(hashCode());
+        sb.append(", id=").append(id);
+        sb.append(", senderOrg=").append(senderOrg);
+        sb.append(", senderType=").append(senderType);
+        sb.append(", receiverType=").append(receiverType);
+        sb.append(", receiverOrg=").append(receiverOrg);
+        sb.append(", type=").append(type);
+        sb.append(", topic=").append(topic);
+        sb.append(", date=").append(date);
+        sb.append(", data=").append(data);
+        sb.append(", status=").append(status);
+        sb.append(", serialVersionUID=").append(serialVersionUID);
+        sb.append("]");
+        return sb.toString();
     }
 
     /**
