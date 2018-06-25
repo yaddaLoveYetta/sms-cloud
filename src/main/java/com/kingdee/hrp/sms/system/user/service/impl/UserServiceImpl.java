@@ -52,7 +52,7 @@ public class UserServiceImpl extends BaseService implements UserService {
      * @param registerModel 用户注册信息
      */
     @Override
-    @Transactional(rollbackFor = { Exception.class })
+    @Transactional(rollbackFor = {Exception.class})
     public void register(RegisterModel registerModel) throws IOException {
 
         // 1:参数校验
@@ -73,7 +73,10 @@ public class UserServiceImpl extends BaseService implements UserService {
         setDefaultPermission(role);
 
         // 给生成的医院/供应商组织设置系统默认参数
-        setDefaultSystemSetting(registerModel.getUserType(), orgId);
+        if (registerModel.getUserType() != UserRoleTypeEnum.SYSTEM.getNumber().intValue()) {
+            setDefaultSystemSetting(registerModel.getUserType(), orgId);
+        }
+
     }
 
     /**
@@ -172,7 +175,7 @@ public class UserServiceImpl extends BaseService implements UserService {
     }
 
     @Override
-    @Transactional(rollbackFor = { Exception.class })
+    @Transactional(rollbackFor = {Exception.class})
     public Boolean editPwd(Long userId, String oldPwd, String newPwd) {
 
         User user = null;
@@ -373,7 +376,7 @@ public class UserServiceImpl extends BaseService implements UserService {
      * @return list
      */
     private List<Map<String, Object>> toTree(List<Menu> menus, List<FormAction> formActions,
-            Map<Integer, AccessControl> accessControlsMap, int parentId, Role role) {
+                                             Map<Integer, AccessControl> accessControlsMap, int parentId, Role role) {
 
         List<Map<String, Object>> ret = new ArrayList<>();
 
@@ -476,7 +479,7 @@ public class UserServiceImpl extends BaseService implements UserService {
      */
     @Override
     public Map<String, Object> getMessage(Integer userRoleType, Long org, Integer type, Integer pageSize,
-            Integer pageNo) {
+                                          Integer pageNo) {
 
         Map<String, Object> ret = new HashMap<>(16);
 
@@ -867,7 +870,7 @@ public class UserServiceImpl extends BaseService implements UserService {
 
             Document document = saxReader.read(new File(configPath));
 
-            List<SystemSetting> systemSettings = parserSystemSettings(document, orgId);
+            List<SystemSetting> systemSettings = parserSystemSettings(document, userType, orgId);
 
             // systemSettings正确定校验 TODO
 
@@ -889,7 +892,7 @@ public class UserServiceImpl extends BaseService implements UserService {
      * @param orgId    组织id
      * @return 组织的系统默认参数列表
      */
-    private List<SystemSetting> parserSystemSettings(Document document, Long orgId) {
+    private List<SystemSetting> parserSystemSettings(Document document, Integer ownerType, Long orgId) {
 
         List<SystemSetting> systemSettings = new ArrayList<>();
 
@@ -899,6 +902,13 @@ public class UserServiceImpl extends BaseService implements UserService {
 
         //循环处理每一个系统参数配置
         for (Element settingItem : settingItems) {
+
+            String settingOwnerType = settingItem.attribute("ownerType").getValue();
+
+            if ("all".equalsIgnoreCase(settingOwnerType) || !ownerType.toString().equalsIgnoreCase(settingOwnerType)) {
+                //不是该类用户的配置参数
+                continue;
+            }
 
             SystemSetting systemSetting = new SystemSetting();
 

@@ -5,9 +5,13 @@
     系统参数项：
     当新注册用户（供应商，医院）后同时需要新增一份系统参数插入数据库中
     此文件描述了所有系统参数及默认值等信息,除了org不明确（注册时确定），其他项都应该赋值，否则视为错误配置
+
+    setting的ownerType标识该参数是属于哪类用户
+    system：系统用户 hospital：医院用户 supplier：供应商用户 all:全部用户类别适用
  -->
 <settings>
-    <setting>
+
+    <setting ownerType="system">
 
         <ttt>0</ttt>
         <!--参数类类目，通常用于区分个模块的参数 -->
@@ -27,7 +31,7 @@
         <!--参数是否只读参数 -->
         <readOnly>0</readOnly>
     </setting>
-    <setting>
+    <setting ownerType="all">
         <!--参数类类目，通常用于区分个模块的参数 -->
         <category>sc</category>
         <!-- 参数显示名称-->
