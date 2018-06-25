@@ -52,7 +52,7 @@ public class UserServiceImpl extends BaseService implements UserService {
      * @param registerModel 用户注册信息
      */
     @Override
-    @Transactional(rollbackFor = {Exception.class})
+    @Transactional(rollbackFor = { Exception.class })
     public void register(RegisterModel registerModel) throws IOException {
 
         // 1:参数校验
@@ -67,7 +67,6 @@ public class UserServiceImpl extends BaseService implements UserService {
         // 3:新增注册用户,将1步中新增组织，2步中新增角色绑定到此用户
         User user = generateUser(registerModel, orgId, role);
 
-
         // ======================其他对新增用户的关联处理项=================================
 
         // 给生成的角色授默认权限(角色类别的全部可用权限)
@@ -76,7 +75,6 @@ public class UserServiceImpl extends BaseService implements UserService {
         // 给生成的医院/供应商组织设置系统默认参数
         setDefaultSystemSetting(registerModel.getUserType(), orgId);
     }
-
 
     /**
      * 用户登录
@@ -174,7 +172,7 @@ public class UserServiceImpl extends BaseService implements UserService {
     }
 
     @Override
-    @Transactional(rollbackFor = {Exception.class})
+    @Transactional(rollbackFor = { Exception.class })
     public Boolean editPwd(Long userId, String oldPwd, String newPwd) {
 
         User user = null;
@@ -375,7 +373,7 @@ public class UserServiceImpl extends BaseService implements UserService {
      * @return list
      */
     private List<Map<String, Object>> toTree(List<Menu> menus, List<FormAction> formActions,
-                                             Map<Integer, AccessControl> accessControlsMap, int parentId, Role role) {
+            Map<Integer, AccessControl> accessControlsMap, int parentId, Role role) {
 
         List<Map<String, Object>> ret = new ArrayList<>();
 
@@ -478,7 +476,7 @@ public class UserServiceImpl extends BaseService implements UserService {
      */
     @Override
     public Map<String, Object> getMessage(Integer userRoleType, Long org, Integer type, Integer pageSize,
-                                          Integer pageNo) {
+            Integer pageNo) {
 
         Map<String, Object> ret = new HashMap<>(16);
 
@@ -497,7 +495,7 @@ public class UserServiceImpl extends BaseService implements UserService {
             criteria.andStatusEqualTo(BaseStatusEnum.PROCESSED.getNumber());
         }
 
-        example.setOrderByClause("`date` DESC");
+        example.orderBy(Message.Column.date.desc());
 
         if (pageNo == 1) {
             // 查询第一页数据是查询出总记录数
@@ -776,7 +774,6 @@ public class UserServiceImpl extends BaseService implements UserService {
 
         userMapper.insertSelective(user);
 
-
         // 生成用户角色子表
         UserEntryMapper userEntryMapper = sqlSession.getMapper(UserEntryMapper.class);
 
@@ -861,7 +858,8 @@ public class UserServiceImpl extends BaseService implements UserService {
      */
     private void setDefaultSystemSetting(Integer userType, Long orgId) {
 
-        String configPath = Thread.currentThread().getContextClassLoader().getResource("config/defaultSettings.xml").getPath();
+        String configPath = Thread.currentThread().getContextClassLoader().getResource("config/defaultSettings.xml")
+                .getPath();
 
         SAXReader saxReader = new SAXReader();
 

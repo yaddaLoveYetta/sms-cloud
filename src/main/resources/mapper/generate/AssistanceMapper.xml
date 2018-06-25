@@ -246,29 +246,29 @@
     -->
     insert into t_assistance (
     <foreach collection="selective" item="column" separator=",">
-      ${column.value}
+      ${column.escapedColumnName}
     </foreach>
     )
     values
     <foreach collection="list" item="item" separator=",">
       (
       <foreach collection="selective" item="column" separator=",">
-        <if test="'detail_id' == column.value">
+        <if test="'detail_id'.toString() == column.value">
           #{item.detailId,jdbcType=INTEGER}
         </if>
-        <if test="'type_id' == column.value">
+        <if test="'type_id'.toString() == column.value">
           #{item.typeId,jdbcType=INTEGER}
         </if>
-        <if test="'number' == column.value">
+        <if test="'number'.toString() == column.value">
           #{item.number,jdbcType=VARCHAR}
         </if>
-        <if test="'name' == column.value">
+        <if test="'name'.toString() == column.value">
           #{item.name,jdbcType=VARCHAR}
         </if>
-        <if test="'enable' == column.value">
+        <if test="'enable'.toString() == column.value">
           #{item.enable,jdbcType=BIT}
         </if>
-        <if test="'index' == column.value">
+        <if test="'index'.toString() == column.value">
           #{item.index,jdbcType=INTEGER}
         </if>
       </foreach>

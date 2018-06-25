@@ -620,98 +620,98 @@
     -->
     insert into t_form_fields (
     <foreach collection="selective" item="column" separator=",">
-      ${column.value}
+      ${column.escapedColumnName}
     </foreach>
     )
     values
     <foreach collection="list" item="item" separator=",">
       (
       <foreach collection="selective" item="column" separator=",">
-        <if test="'class_id' == column.value">
+        <if test="'class_id'.toString() == column.value">
           #{item.classId,jdbcType=INTEGER}
         </if>
-        <if test="'key' == column.value">
+        <if test="'key'.toString() == column.value">
           #{item.key,jdbcType=VARCHAR}
         </if>
-        <if test="'page' == column.value">
+        <if test="'page'.toString() == column.value">
           #{item.page,jdbcType=INTEGER}
         </if>
-        <if test="'name' == column.value">
+        <if test="'name'.toString() == column.value">
           #{item.name,jdbcType=VARCHAR}
         </if>
-        <if test="'sql_column_name' == column.value">
+        <if test="'sql_column_name'.toString() == column.value">
           #{item.sqlColumnName,jdbcType=VARCHAR}
         </if>
-        <if test="'data_type' == column.value">
+        <if test="'data_type'.toString() == column.value">
           #{item.dataType,jdbcType=INTEGER}
         </if>
-        <if test="'ctrl_type' == column.value">
+        <if test="'ctrl_type'.toString() == column.value">
           #{item.ctrlType,jdbcType=INTEGER}
         </if>
-        <if test="'ctrl_index' == column.value">
+        <if test="'ctrl_index'.toString() == column.value">
           #{item.ctrlIndex,jdbcType=INTEGER}
         </if>
-        <if test="'index' == column.value">
+        <if test="'index'.toString() == column.value">
           #{item.index,jdbcType=INTEGER}
         </if>
-        <if test="'display' == column.value">
+        <if test="'display'.toString() == column.value">
           #{item.display,jdbcType=INTEGER}
         </if>
-        <if test="'show_width' == column.value">
+        <if test="'show_width'.toString() == column.value">
           #{item.showWidth,jdbcType=INTEGER}
         </if>
-        <if test="'look_up_type' == column.value">
+        <if test="'look_up_type'.toString() == column.value">
           #{item.lookUpType,jdbcType=INTEGER}
         </if>
-        <if test="'look_up_class_id' == column.value">
+        <if test="'look_up_class_id'.toString() == column.value">
           #{item.lookUpClassId,jdbcType=INTEGER}
         </if>
-        <if test="'src_table' == column.value">
+        <if test="'src_table'.toString() == column.value">
           #{item.srcTable,jdbcType=VARCHAR}
         </if>
-        <if test="'src_table_alis' == column.value">
+        <if test="'src_table_alis'.toString() == column.value">
           #{item.srcTableAlis,jdbcType=VARCHAR}
         </if>
-        <if test="'src_field' == column.value">
+        <if test="'src_field'.toString() == column.value">
           #{item.srcField,jdbcType=VARCHAR}
         </if>
-        <if test="'display_field' == column.value">
+        <if test="'display_field'.toString() == column.value">
           #{item.displayField,jdbcType=VARCHAR}
         </if>
-        <if test="'display_ext' == column.value">
+        <if test="'display_ext'.toString() == column.value">
           #{item.displayExt,jdbcType=VARCHAR}
         </if>
-        <if test="'join_type' == column.value">
+        <if test="'join_type'.toString() == column.value">
           #{item.joinType,jdbcType=VARCHAR}
         </if>
-        <if test="'filter' == column.value">
+        <if test="'filter'.toString() == column.value">
           #{item.filter,jdbcType=VARCHAR}
         </if>
-        <if test="'default_value' == column.value">
+        <if test="'default_value'.toString() == column.value">
           #{item.defaultValue,jdbcType=VARCHAR}
         </if>
-        <if test="'max_value' == column.value">
+        <if test="'max_value'.toString() == column.value">
           #{item.maxValue,jdbcType=DOUBLE}
         </if>
-        <if test="'min_value' == column.value">
+        <if test="'min_value'.toString() == column.value">
           #{item.minValue,jdbcType=DOUBLE}
         </if>
-        <if test="'must_input' == column.value">
+        <if test="'must_input'.toString() == column.value">
           #{item.mustInput,jdbcType=INTEGER}
         </if>
-        <if test="'need_save' == column.value">
+        <if test="'need_save'.toString() == column.value">
           #{item.needSave,jdbcType=BIT}
         </if>
-        <if test="'length' == column.value">
+        <if test="'length'.toString() == column.value">
           #{item.length,jdbcType=INTEGER}
         </if>
-        <if test="'lock' == column.value">
+        <if test="'lock'.toString() == column.value">
           #{item.lock,jdbcType=INTEGER}
         </if>
-        <if test="'is_condition' == column.value">
+        <if test="'is_condition'.toString() == column.value">
           #{item.isCondition,jdbcType=INTEGER}
         </if>
-        <if test="'is_count' == column.value">
+        <if test="'is_count'.toString() == column.value">
           #{item.isCount,jdbcType=INTEGER}
         </if>
       </foreach>

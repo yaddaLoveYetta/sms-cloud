@@ -3,9 +3,8 @@ package com.kingdee.hrp.sms.common.dao.generate;
 import com.kingdee.hrp.sms.common.model.AccessControl;
 import com.kingdee.hrp.sms.common.model.AccessControlExample;
 import com.kingdee.hrp.sms.common.model.AccessControlKey;
-import org.apache.ibatis.annotations.Param;
-
 import java.util.List;
+import org.apache.ibatis.annotations.Param;
 
 public interface AccessControlMapper {
     long countByExample(AccessControlExample example);

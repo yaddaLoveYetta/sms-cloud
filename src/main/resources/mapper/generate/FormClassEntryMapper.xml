@@ -280,35 +280,35 @@
     -->
     insert into t_form_class_entry (
     <foreach collection="selective" item="column" separator=",">
-      ${column.value}
+      ${column.escapedColumnName}
     </foreach>
     )
     values
     <foreach collection="list" item="item" separator=",">
       (
       <foreach collection="selective" item="column" separator=",">
-        <if test="'class_id' == column.value">
+        <if test="'class_id'.toString() == column.value">
           #{item.classId,jdbcType=INTEGER}
         </if>
-        <if test="'entry_index' == column.value">
+        <if test="'entry_index'.toString() == column.value">
           #{item.entryIndex,jdbcType=INTEGER}
         </if>
-        <if test="'name' == column.value">
+        <if test="'name'.toString() == column.value">
           #{item.name,jdbcType=VARCHAR}
         </if>
-        <if test="'table_name' == column.value">
+        <if test="'table_name'.toString() == column.value">
           #{item.tableName,jdbcType=VARCHAR}
         </if>
-        <if test="'primary_key' == column.value">
+        <if test="'primary_key'.toString() == column.value">
           #{item.primaryKey,jdbcType=VARCHAR}
         </if>
-        <if test="'foreign_key' == column.value">
+        <if test="'foreign_key'.toString() == column.value">
           #{item.foreignKey,jdbcType=VARCHAR}
         </if>
-        <if test="'join_type' == column.value">
+        <if test="'join_type'.toString() == column.value">
           #{item.joinType,jdbcType=VARCHAR}
         </if>
-        <if test="'desc' == column.value">
+        <if test="'desc'.toString() == column.value">
           #{item.desc,jdbcType=VARCHAR}
         </if>
       </foreach>

@@ -313,41 +313,41 @@
     -->
     insert into t_message (
     <foreach collection="selective" item="column" separator=",">
-      ${column.value}
+      ${column.escapedColumnName}
     </foreach>
     )
     values
     <foreach collection="list" item="item" separator=",">
       (
       <foreach collection="selective" item="column" separator=",">
-        <if test="'id' == column.value">
+        <if test="'id'.toString() == column.value">
           #{item.id,jdbcType=BIGINT}
         </if>
-        <if test="'sender_org' == column.value">
+        <if test="'sender_org'.toString() == column.value">
           #{item.senderOrg,jdbcType=BIGINT}
         </if>
-        <if test="'sender_type' == column.value">
+        <if test="'sender_type'.toString() == column.value">
           #{item.senderType,jdbcType=INTEGER}
         </if>
-        <if test="'receiver_type' == column.value">
+        <if test="'receiver_type'.toString() == column.value">
           #{item.receiverType,jdbcType=INTEGER}
         </if>
-        <if test="'receiver_org' == column.value">
+        <if test="'receiver_org'.toString() == column.value">
           #{item.receiverOrg,jdbcType=BIGINT}
         </if>
-        <if test="'type' == column.value">
+        <if test="'type'.toString() == column.value">
           #{item.type,jdbcType=INTEGER}
         </if>
-        <if test="'topic' == column.value">
+        <if test="'topic'.toString() == column.value">
           #{item.topic,jdbcType=VARCHAR}
         </if>
-        <if test="'date' == column.value">
+        <if test="'date'.toString() == column.value">
           #{item.date,jdbcType=TIMESTAMP}
         </if>
-        <if test="'data' == column.value">
+        <if test="'data'.toString() == column.value">
           #{item.data,jdbcType=VARCHAR}
         </if>
-        <if test="'status' == column.value">
+        <if test="'status'.toString() == column.value">
           #{item.status,jdbcType=INTEGER}
         </if>
       </foreach>

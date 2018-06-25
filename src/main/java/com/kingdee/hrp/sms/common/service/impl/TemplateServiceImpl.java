@@ -72,11 +72,10 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
 
         if (type == 1) {
             // 后端构建查询脚本时调用
-            fieldsExample.setOrderByClause("ctrl_Index");
-
+            fieldsExample.orderBy(FormFields.Column.ctrlIndex.asc());
         } else {
             // 前端处理显示顺序时调用
-            fieldsExample.setOrderByClause("`index`");
+            fieldsExample.orderBy(FormFields.Column.index.asc());
         }
 
         List<FormFields> headFields = formFieldsMapper.selectByExample(fieldsExample);
@@ -108,10 +107,9 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
             FormFieldsExample formFieldsExample = new FormFieldsExample();
             FormFieldsExample.Criteria formFieldsExampleCriteria = formFieldsExample.createCriteria();
 
-            formFieldsExampleCriteria.andClassIdEqualTo(classId);
-            formFieldsExampleCriteria.andPageEqualTo(entry.getEntryIndex());
+            formFieldsExampleCriteria.andClassIdEqualTo(classId).andPageEqualTo(entry.getEntryIndex());
 
-            formFieldsExample.setOrderByClause("`index`");
+            formFieldsExample.orderBy(FormFields.Column.index.asc());
 
             List<FormFields> entryIndexFieldsByExample = formFieldsMapper.selectByExample(formFieldsExample);
 
@@ -213,8 +211,8 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
         FormActionExample.Criteria criteria = formActionExample.createCriteria();
 
         criteria.andClassIdEqualTo(classId);
-        // 功能按钮按照index排序
-        formActionExample.setOrderByClause("`index`  ,`name` ");
+        // 功能按钮按照index,name排序
+        formActionExample.orderBy(FormAction.Column.index.asc(), FormAction.Column.name.asc());
 
         List<FormAction> formActions = formActionMapper.selectByExample(formActionExample);
 
@@ -1993,8 +1991,10 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
         if (page != -1) {
             fieldsCriteria.andPageEqualTo(page);
         }
+        //fieldsCriteria.andClassIdEqualTo(classId).andIf(page != -1, criteria -> criteria.andPageEqualTo(page));
+
         // 查询结果按照page index排序
-        fieldsExample.setOrderByClause(String.format("page, %sindex%s", bDelimiter, eDelimiter));
+        fieldsExample.orderBy(FormFields.Column.page.asc(), FormFields.Column.index.asc());
 
         List<FormFields> fieldsByExample = fieldsMapper.selectByExample(fieldsExample);
 

@@ -296,38 +296,38 @@
     -->
     insert into t_system_setting (
     <foreach collection="selective" item="column" separator=",">
-      ${column.value}
+      ${column.escapedColumnName}
     </foreach>
     )
     values
     <foreach collection="list" item="item" separator=",">
       (
       <foreach collection="selective" item="column" separator=",">
-        <if test="'org' == column.value">
+        <if test="'org'.toString() == column.value">
           #{item.org,jdbcType=BIGINT}
         </if>
-        <if test="'category' == column.value">
+        <if test="'category'.toString() == column.value">
           #{item.category,jdbcType=VARCHAR}
         </if>
-        <if test="'key' == column.value">
+        <if test="'key'.toString() == column.value">
           #{item.key,jdbcType=VARCHAR}
         </if>
-        <if test="'name' == column.value">
+        <if test="'name'.toString() == column.value">
           #{item.name,jdbcType=VARCHAR}
         </if>
-        <if test="'desc' == column.value">
+        <if test="'desc'.toString() == column.value">
           #{item.desc,jdbcType=VARCHAR}
         </if>
-        <if test="'value' == column.value">
+        <if test="'value'.toString() == column.value">
           #{item.value,jdbcType=VARCHAR}
         </if>
-        <if test="'index' == column.value">
+        <if test="'index'.toString() == column.value">
           #{item.index,jdbcType=INTEGER}
         </if>
-        <if test="'explanation' == column.value">
+        <if test="'explanation'.toString() == column.value">
           #{item.explanation,jdbcType=VARCHAR}
         </if>
-        <if test="'read_only' == column.value">
+        <if test="'read_only'.toString() == column.value">
           #{item.readOnly,jdbcType=BIT}
         </if>
       </foreach>

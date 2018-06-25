@@ -642,101 +642,101 @@
     -->
     insert into t_supplier (
     <foreach collection="selective" item="column" separator=",">
-      ${column.value}
+      ${column.escapedColumnName}
     </foreach>
     )
     values
     <foreach collection="list" item="item" separator=",">
       (
       <foreach collection="selective" item="column" separator=",">
-        <if test="'id' == column.value">
+        <if test="'id'.toString() == column.value">
           #{item.id,jdbcType=BIGINT}
         </if>
-        <if test="'number' == column.value">
+        <if test="'number'.toString() == column.value">
           #{item.number,jdbcType=VARCHAR}
         </if>
-        <if test="'name' == column.value">
+        <if test="'name'.toString() == column.value">
           #{item.name,jdbcType=VARCHAR}
         </if>
-        <if test="'credit_code' == column.value">
+        <if test="'credit_code'.toString() == column.value">
           #{item.creditCode,jdbcType=VARCHAR}
         </if>
-        <if test="'address' == column.value">
+        <if test="'address'.toString() == column.value">
           #{item.address,jdbcType=VARCHAR}
         </if>
-        <if test="'introduction' == column.value">
+        <if test="'introduction'.toString() == column.value">
           #{item.introduction,jdbcType=VARCHAR}
         </if>
-        <if test="'development_experience' == column.value">
+        <if test="'development_experience'.toString() == column.value">
           #{item.developmentExperience,jdbcType=VARCHAR}
         </if>
-        <if test="'legal_person' == column.value">
+        <if test="'legal_person'.toString() == column.value">
           #{item.legalPerson,jdbcType=VARCHAR}
         </if>
-        <if test="'contacts' == column.value">
+        <if test="'contacts'.toString() == column.value">
           #{item.contacts,jdbcType=VARCHAR}
         </if>
-        <if test="'phone' == column.value">
+        <if test="'phone'.toString() == column.value">
           #{item.phone,jdbcType=VARCHAR}
         </if>
-        <if test="'company_type' == column.value">
+        <if test="'company_type'.toString() == column.value">
           #{item.companyType,jdbcType=VARCHAR}
         </if>
-        <if test="'industry_type' == column.value">
+        <if test="'industry_type'.toString() == column.value">
           #{item.industryType,jdbcType=VARCHAR}
         </if>
-        <if test="'validity_period_begin' == column.value">
+        <if test="'validity_period_begin'.toString() == column.value">
           #{item.validityPeriodBegin,jdbcType=TIMESTAMP}
         </if>
-        <if test="'validity_period_end' == column.value">
+        <if test="'validity_period_end'.toString() == column.value">
           #{item.validityPeriodEnd,jdbcType=TIMESTAMP}
         </if>
-        <if test="'issue_date' == column.value">
+        <if test="'issue_date'.toString() == column.value">
           #{item.issueDate,jdbcType=TIMESTAMP}
         </if>
-        <if test="'issue_agency' == column.value">
+        <if test="'issue_agency'.toString() == column.value">
           #{item.issueAgency,jdbcType=VARCHAR}
         </if>
-        <if test="'main_business' == column.value">
+        <if test="'main_business'.toString() == column.value">
           #{item.mainBusiness,jdbcType=VARCHAR}
         </if>
-        <if test="'account_bank' == column.value">
+        <if test="'account_bank'.toString() == column.value">
           #{item.accountBank,jdbcType=VARCHAR}
         </if>
-        <if test="'account_number' == column.value">
+        <if test="'account_number'.toString() == column.value">
           #{item.accountNumber,jdbcType=VARCHAR}
         </if>
-        <if test="'account_address' == column.value">
+        <if test="'account_address'.toString() == column.value">
           #{item.accountAddress,jdbcType=VARCHAR}
         </if>
-        <if test="'clearing_company' == column.value">
+        <if test="'clearing_company'.toString() == column.value">
           #{item.clearingCompany,jdbcType=VARCHAR}
         </if>
-        <if test="'delivery_company' == column.value">
+        <if test="'delivery_company'.toString() == column.value">
           #{item.deliveryCompany,jdbcType=VARCHAR}
         </if>
-        <if test="'clearing_currency' == column.value">
+        <if test="'clearing_currency'.toString() == column.value">
           #{item.clearingCurrency,jdbcType=VARCHAR}
         </if>
-        <if test="'clearing_type' == column.value">
+        <if test="'clearing_type'.toString() == column.value">
           #{item.clearingType,jdbcType=VARCHAR}
         </if>
-        <if test="'payment_type' == column.value">
+        <if test="'payment_type'.toString() == column.value">
           #{item.paymentType,jdbcType=VARCHAR}
         </if>
-        <if test="'province' == column.value">
+        <if test="'province'.toString() == column.value">
           #{item.province,jdbcType=INTEGER}
         </if>
-        <if test="'city' == column.value">
+        <if test="'city'.toString() == column.value">
           #{item.city,jdbcType=INTEGER}
         </if>
-        <if test="'district' == column.value">
+        <if test="'district'.toString() == column.value">
           #{item.district,jdbcType=INTEGER}
         </if>
-        <if test="'logo' == column.value">
+        <if test="'logo'.toString() == column.value">
           #{item.logo,jdbcType=VARCHAR}
         </if>
-        <if test="'status' == column.value">
+        <if test="'status'.toString() == column.value">
           #{item.status,jdbcType=BIT}
         </if>
       </foreach>

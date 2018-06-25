@@ -313,41 +313,41 @@
     -->
     insert into t_item (
     <foreach collection="selective" item="column" separator=",">
-      ${column.value}
+      ${column.escapedColumnName}
     </foreach>
     )
     values
     <foreach collection="list" item="item" separator=",">
       (
       <foreach collection="selective" item="column" separator=",">
-        <if test="'id' == column.value">
+        <if test="'id'.toString() == column.value">
           #{item.id,jdbcType=BIGINT}
         </if>
-        <if test="'number' == column.value">
+        <if test="'number'.toString() == column.value">
           #{item.number,jdbcType=VARCHAR}
         </if>
-        <if test="'name' == column.value">
+        <if test="'name'.toString() == column.value">
           #{item.name,jdbcType=VARCHAR}
         </if>
-        <if test="'specification' == column.value">
+        <if test="'specification'.toString() == column.value">
           #{item.specification,jdbcType=VARCHAR}
         </if>
-        <if test="'manufacturer' == column.value">
+        <if test="'manufacturer'.toString() == column.value">
           #{item.manufacturer,jdbcType=VARCHAR}
         </if>
-        <if test="'is_high_consumable' == column.value">
+        <if test="'is_high_consumable'.toString() == column.value">
           #{item.isHighConsumable,jdbcType=BIT}
         </if>
-        <if test="'is_lot_number' == column.value">
+        <if test="'is_lot_number'.toString() == column.value">
           #{item.isLotNumber,jdbcType=BIT}
         </if>
-        <if test="'org' == column.value">
+        <if test="'org'.toString() == column.value">
           #{item.org,jdbcType=BIGINT}
         </if>
-        <if test="'status' == column.value">
+        <if test="'status'.toString() == column.value">
           #{item.status,jdbcType=BIT}
         </if>
-        <if test="'image' == column.value">
+        <if test="'image'.toString() == column.value">
           #{item.image,jdbcType=VARCHAR}
         </if>
       </foreach>

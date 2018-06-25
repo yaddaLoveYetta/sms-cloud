@@ -311,41 +311,41 @@
     -->
     insert into t_hospital_supplier (
     <foreach collection="selective" item="column" separator=",">
-      ${column.value}
+      ${column.escapedColumnName}
     </foreach>
     )
     values
     <foreach collection="list" item="item" separator=",">
       (
       <foreach collection="selective" item="column" separator=",">
-        <if test="'id' == column.value">
+        <if test="'id'.toString() == column.value">
           #{item.id,jdbcType=BIGINT}
         </if>
-        <if test="'number' == column.value">
+        <if test="'number'.toString() == column.value">
           #{item.number,jdbcType=VARCHAR}
         </if>
-        <if test="'name' == column.value">
+        <if test="'name'.toString() == column.value">
           #{item.name,jdbcType=VARCHAR}
         </if>
-        <if test="'org' == column.value">
+        <if test="'org'.toString() == column.value">
           #{item.org,jdbcType=BIGINT}
         </if>
-        <if test="'type' == column.value">
+        <if test="'type'.toString() == column.value">
           #{item.type,jdbcType=BIGINT}
         </if>
-        <if test="'province' == column.value">
+        <if test="'province'.toString() == column.value">
           #{item.province,jdbcType=INTEGER}
         </if>
-        <if test="'city' == column.value">
+        <if test="'city'.toString() == column.value">
           #{item.city,jdbcType=INTEGER}
         </if>
-        <if test="'district' == column.value">
+        <if test="'district'.toString() == column.value">
           #{item.district,jdbcType=INTEGER}
         </if>
-        <if test="'address' == column.value">
+        <if test="'address'.toString() == column.value">
           #{item.address,jdbcType=VARCHAR}
         </if>
-        <if test="'status' == column.value">
+        <if test="'status'.toString() == column.value">
           #{item.status,jdbcType=BIT}
         </if>
       </foreach>

@@ -296,38 +296,38 @@
     -->
     insert into t_menu (
     <foreach collection="selective" item="column" separator=",">
-      ${column.value}
+      ${column.escapedColumnName}
     </foreach>
     )
     values
     <foreach collection="list" item="item" separator=",">
       (
       <foreach collection="selective" item="column" separator=",">
-        <if test="'id' == column.value">
+        <if test="'id'.toString() == column.value">
           #{item.id,jdbcType=INTEGER}
         </if>
-        <if test="'name' == column.value">
+        <if test="'name'.toString() == column.value">
           #{item.name,jdbcType=VARCHAR}
         </if>
-        <if test="'index' == column.value">
+        <if test="'index'.toString() == column.value">
           #{item.index,jdbcType=INTEGER}
         </if>
-        <if test="'icon' == column.value">
+        <if test="'icon'.toString() == column.value">
           #{item.icon,jdbcType=VARCHAR}
         </if>
-        <if test="'url' == column.value">
+        <if test="'url'.toString() == column.value">
           #{item.url,jdbcType=VARCHAR}
         </if>
-        <if test="'parent_id' == column.value">
+        <if test="'parent_id'.toString() == column.value">
           #{item.parentId,jdbcType=INTEGER}
         </if>
-        <if test="'desc' == column.value">
+        <if test="'desc'.toString() == column.value">
           #{item.desc,jdbcType=VARCHAR}
         </if>
-        <if test="'visible' == column.value">
+        <if test="'visible'.toString() == column.value">
           #{item.visible,jdbcType=BIT}
         </if>
-        <if test="'form_action_id' == column.value">
+        <if test="'form_action_id'.toString() == column.value">
           #{item.formActionId,jdbcType=INTEGER}
         </if>
       </foreach>

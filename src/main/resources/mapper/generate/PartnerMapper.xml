@@ -246,29 +246,29 @@
     -->
     insert into t_partner (
     <foreach collection="selective" item="column" separator=",">
-      ${column.value}
+      ${column.escapedColumnName}
     </foreach>
     )
     values
     <foreach collection="list" item="item" separator=",">
       (
       <foreach collection="selective" item="column" separator=",">
-        <if test="'id' == column.value">
+        <if test="'id'.toString() == column.value">
           #{item.id,jdbcType=BIGINT}
         </if>
-        <if test="'link_org' == column.value">
+        <if test="'link_org'.toString() == column.value">
           #{item.linkOrg,jdbcType=BIGINT}
         </if>
-        <if test="'org' == column.value">
+        <if test="'org'.toString() == column.value">
           #{item.org,jdbcType=BIGINT}
         </if>
-        <if test="'check_status' == column.value">
+        <if test="'check_status'.toString() == column.value">
           #{item.checkStatus,jdbcType=INTEGER}
         </if>
-        <if test="'status' == column.value">
+        <if test="'status'.toString() == column.value">
           #{item.status,jdbcType=BIT}
         </if>
-        <if test="'type' == column.value">
+        <if test="'type'.toString() == column.value">
           #{item.type,jdbcType=BIT}
         </if>
       </foreach>

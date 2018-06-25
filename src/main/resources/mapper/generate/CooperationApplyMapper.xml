@@ -230,26 +230,26 @@
     -->
     insert into t_cooperation_apply (
     <foreach collection="selective" item="column" separator=",">
-      ${column.value}
+      ${column.escapedColumnName}
     </foreach>
     )
     values
     <foreach collection="list" item="item" separator=",">
       (
       <foreach collection="selective" item="column" separator=",">
-        <if test="'id' == column.value">
+        <if test="'id'.toString() == column.value">
           #{item.id,jdbcType=BIGINT}
         </if>
-        <if test="'supplier' == column.value">
+        <if test="'supplier'.toString() == column.value">
           #{item.supplier,jdbcType=BIGINT}
         </if>
-        <if test="'hospital' == column.value">
+        <if test="'hospital'.toString() == column.value">
           #{item.hospital,jdbcType=BIGINT}
         </if>
-        <if test="'date' == column.value">
+        <if test="'date'.toString() == column.value">
           #{item.date,jdbcType=TIMESTAMP}
         </if>
-        <if test="'status' == column.value">
+        <if test="'status'.toString() == column.value">
           #{item.status,jdbcType=INTEGER}
         </if>
       </foreach>

@@ -278,35 +278,35 @@
     -->
     insert into t_user (
     <foreach collection="selective" item="column" separator=",">
-      ${column.value}
+      ${column.escapedColumnName}
     </foreach>
     )
     values
     <foreach collection="list" item="item" separator=",">
       (
       <foreach collection="selective" item="column" separator=",">
-        <if test="'id' == column.value">
+        <if test="'id'.toString() == column.value">
           #{item.id,jdbcType=BIGINT}
         </if>
-        <if test="'name' == column.value">
+        <if test="'name'.toString() == column.value">
           #{item.name,jdbcType=VARCHAR}
         </if>
-        <if test="'user_name' == column.value">
+        <if test="'user_name'.toString() == column.value">
           #{item.userName,jdbcType=VARCHAR}
         </if>
-        <if test="'password' == column.value">
+        <if test="'password'.toString() == column.value">
           #{item.password,jdbcType=VARCHAR}
         </if>
-        <if test="'mobile' == column.value">
+        <if test="'mobile'.toString() == column.value">
           #{item.mobile,jdbcType=VARCHAR}
         </if>
-        <if test="'is_admin' == column.value">
+        <if test="'is_admin'.toString() == column.value">
           #{item.isAdmin,jdbcType=BIT}
         </if>
-        <if test="'org' == column.value">
+        <if test="'org'.toString() == column.value">
           #{item.org,jdbcType=BIGINT}
         </if>
-        <if test="'status' == column.value">
+        <if test="'status'.toString() == column.value">
           #{item.status,jdbcType=BIT}
         </if>
       </foreach>

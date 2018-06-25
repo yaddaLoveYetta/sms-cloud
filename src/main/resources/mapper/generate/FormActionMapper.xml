@@ -376,53 +376,53 @@
     -->
     insert into t_form_action (
     <foreach collection="selective" item="column" separator=",">
-      ${column.value}
+      ${column.escapedColumnName}
     </foreach>
     )
     values
     <foreach collection="list" item="item" separator=",">
       (
       <foreach collection="selective" item="column" separator=",">
-        <if test="'class_id' == column.value">
+        <if test="'class_id'.toString() == column.value">
           #{item.classId,jdbcType=INTEGER}
         </if>
-        <if test="'access_mask' == column.value">
+        <if test="'access_mask'.toString() == column.value">
           #{item.accessMask,jdbcType=INTEGER}
         </if>
-        <if test="'name' == column.value">
+        <if test="'name'.toString() == column.value">
           #{item.name,jdbcType=VARCHAR}
         </if>
-        <if test="'name_modify' == column.value">
+        <if test="'name_modify'.toString() == column.value">
           #{item.nameModify,jdbcType=VARCHAR}
         </if>
-        <if test="'text' == column.value">
+        <if test="'text'.toString() == column.value">
           #{item.text,jdbcType=VARCHAR}
         </if>
-        <if test="'text_modify' == column.value">
+        <if test="'text_modify'.toString() == column.value">
           #{item.textModify,jdbcType=VARCHAR}
         </if>
-        <if test="'index' == column.value">
+        <if test="'index'.toString() == column.value">
           #{item.index,jdbcType=INTEGER}
         </if>
-        <if test="'access_use' == column.value">
+        <if test="'access_use'.toString() == column.value">
           #{item.accessUse,jdbcType=INTEGER}
         </if>
-        <if test="'display' == column.value">
+        <if test="'display'.toString() == column.value">
           #{item.display,jdbcType=INTEGER}
         </if>
-        <if test="'owner_type' == column.value">
+        <if test="'owner_type'.toString() == column.value">
           #{item.ownerType,jdbcType=INTEGER}
         </if>
-        <if test="'group' == column.value">
+        <if test="'group'.toString() == column.value">
           #{item.group,jdbcType=INTEGER}
         </if>
-        <if test="'icon' == column.value">
+        <if test="'icon'.toString() == column.value">
           #{item.icon,jdbcType=VARCHAR}
         </if>
-        <if test="'icon_modify' == column.value">
+        <if test="'icon_modify'.toString() == column.value">
           #{item.iconModify,jdbcType=VARCHAR}
         </if>
-        <if test="'desc' == column.value">
+        <if test="'desc'.toString() == column.value">
           #{item.desc,jdbcType=VARCHAR}
         </if>
       </foreach>
