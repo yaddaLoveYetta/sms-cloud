@@ -23,7 +23,13 @@
         <property name="beginningDelimiter" value="`"/>
         <property name="endingDelimiter" value="`"/>
 
-        <!-- <plugin type="org.mybatis.generator.plugins.RowBoundsPlugin"></plugin> -->
+        <!-- 生成bean 实现序列化接口-->
+        <plugin type="org.mybatis.generator.plugins.SerializablePlugin"/>
+        <!-- 生成bean adds equals() and hashCode() 方法-->
+        <plugin type="org.mybatis.generator.plugins.EqualsHashCodePlugin"/>
+        <!-- 生成bean 覆盖toString方法-->
+        <plugin type="org.mybatis.generator.plugins.ToStringPlugin"/>
+
         <!-- 批量插入插件 -->
         <plugin type="com.itfsw.mybatis.generator.plugins.BatchInsertPlugin"/>
         <!-- 数据Model属性对应Column获取插件 -->
