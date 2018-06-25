@@ -11,10 +11,7 @@ import com.kingdee.hrp.sms.common.dao.generate.FormClassMapper;
 import com.kingdee.hrp.sms.common.dao.generate.FormFieldsMapper;
 import com.kingdee.hrp.sms.common.exception.BusinessLogicRunTimeException;
 import com.kingdee.hrp.sms.common.model.*;
-import com.kingdee.hrp.sms.common.pojo.Condition;
-import com.kingdee.hrp.sms.common.pojo.CtrlTypeEnum;
-import com.kingdee.hrp.sms.common.pojo.Sort;
-import com.kingdee.hrp.sms.common.pojo.StatusCode;
+import com.kingdee.hrp.sms.common.pojo.*;
 import com.kingdee.hrp.sms.common.service.BaseService;
 import com.kingdee.hrp.sms.common.service.TemplateService;
 import com.kingdee.hrp.sms.common.service.plugin.PlugIn;
@@ -146,24 +143,25 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
     @Override
     public List getFormAction(Integer classId, Integer type) {
 
-        Integer userRoleType = SessionUtil.getUserRoleType();
+        UserRoleTypeEnum userRoleType = SessionUtil.getUserRoleType();
+
         // 按钮可用性-跟FormFields 模板中display字段配置规则一致
-        int ownerType = userRoleType == 1 ? 1 : userRoleType == 2 ? 2 : 4;
+        int ownerType = userRoleType == UserRoleTypeEnum.SYSTEM ? 1 : userRoleType == UserRoleTypeEnum.HOSPITAL ? 2 : 4;
         // 按钮显示性
         int display = 0;
 
         if (type == 0) {
             // 查看
             switch (userRoleType) {
-            case 1:
+            case SYSTEM:
                 //系统管理员
                 display = 1;
                 break;
-            case 2:
+            case HOSPITAL:
                 //医院
                 display = 64;
                 break;
-            case 3:
+            case SUPPLIER:
                 //供应商
                 display = 8;
                 break;
@@ -173,15 +171,15 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
         } else if (type == 1) {
             // 新增
             switch (userRoleType) {
-            case 1:
+            case SYSTEM:
                 //系统管理员
                 display = 2;
                 break;
-            case 2:
+            case HOSPITAL:
                 //医院
                 display = 128;
                 break;
-            case 3:
+            case SUPPLIER:
                 //供应商
                 display = 16;
                 break;
@@ -191,15 +189,15 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
         } else if (type == 2) {
             // 编辑
             switch (userRoleType) {
-            case 1:
+            case SYSTEM:
                 //系统管理员
                 display = 4;
                 break;
-            case 2:
+            case HOSPITAL:
                 //医院
                 display = 256;
                 break;
-            case 3:
+            case SUPPLIER:
                 //供应商
                 display = 32;
                 break;
@@ -595,7 +593,6 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
     @Transactional(rollbackFor = Exception.class)
     public Long addItem(Integer classId, String data) throws IOException {
 
-        Integer userRoleType = SessionUtil.getUserRoleType();
         // 基础资料模板
         Map<String, Object> template = getFormTemplate(classId, 1);
         // 主表字段模板
@@ -987,14 +984,6 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
                             bDelimiter, foreignKey, eDelimiter, primaryTableName, bDelimiter, primaryKey,
                             eDelimiter)).append(separator);
         }
-
-        /*
-            用户角色类别-用于字段权限控制(前端有控制，此处简单不做处理)
-            1	系统管理员
-            2	医院
-            3	供应商
-            */
-        Integer userRoleType = SessionUtil.getUserRoleType();
 
         for (String pageIndex : formFieldsAll.keySet()) {
 

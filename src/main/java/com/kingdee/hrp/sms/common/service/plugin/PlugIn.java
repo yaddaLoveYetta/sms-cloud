@@ -2,6 +2,7 @@ package com.kingdee.hrp.sms.common.service.plugin;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.kingdee.hrp.sms.common.pojo.Condition;
+import com.kingdee.hrp.sms.common.pojo.UserRoleTypeEnum;
 import com.kingdee.hrp.sms.util.SessionUtil;
 
 import java.util.List;
@@ -185,11 +186,11 @@ public interface PlugIn {
      */
     default Long getUserLinkOrg() {
 
-        Integer userRoleType = SessionUtil.getUserRoleType();
-        if (userRoleType == 2) {
+        UserRoleTypeEnum userRoleType = SessionUtil.getUserRoleType();
+        if (userRoleType == UserRoleTypeEnum.HOSPITAL) {
             //医院角色
             return SessionUtil.getUserLinkHospital();
-        } else if (userRoleType == 3) {
+        } else if (userRoleType == UserRoleTypeEnum.SUPPLIER) {
             //供应商角色
             return SessionUtil.getUserLinkSupplier();
         }
@@ -201,7 +202,7 @@ public interface PlugIn {
      *
      * @return Integer
      */
-    default Integer getUserRoleType() {
+    default UserRoleTypeEnum getUserRoleType() {
         return SessionUtil.getUserRoleType();
     }
 }

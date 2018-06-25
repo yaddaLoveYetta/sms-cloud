@@ -132,15 +132,15 @@ public class BaseDataPlugin extends PlugInAdpter implements InitializingBean {
 
         List<Condition> ret = new ArrayList<Condition>();
 
-        Integer userRoleType = getUserRoleType();
+        UserRoleTypeEnum userRoleType = getUserRoleType();
         Long linkOrg = getUserLinkOrg();
 
-        if (userRoleType.equals(UserRoleTypeEnum.SYSTEM.getNumber())) {
+        if (userRoleType == UserRoleTypeEnum.SYSTEM) {
             // 系统角色类别放开所有数据查看权限
             return ret;
         }
 
-        if (userRoleType.equals(UserRoleTypeEnum.HOSPITAL.getNumber())) {
+        if (userRoleType == UserRoleTypeEnum.HOSPITAL) {
             // 当前是医院角色的用户在操作
 
             if (classId == 1001 || classId == 1002) {
@@ -167,7 +167,7 @@ public class BaseDataPlugin extends PlugInAdpter implements InitializingBean {
 
         }
 
-        if (userRoleType.equals(UserRoleTypeEnum.SUPPLIER.getNumber())) {
+        if (userRoleType == UserRoleTypeEnum.SUPPLIER) {
             // 当前是供应商角色的用户在操作
 
             if (classId == 1001 || classId == 1002) {

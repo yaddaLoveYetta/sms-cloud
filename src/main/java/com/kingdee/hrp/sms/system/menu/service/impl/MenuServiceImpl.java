@@ -55,19 +55,9 @@ public class MenuServiceImpl extends BaseService implements MenuService {
 
         List<Menu> menus = menuMapper.selectByExample(example);
 
-        Long userLinkOrg = 0L;
-        Integer userRoleType = SessionUtil.getUserRoleType();
-
-        if (userRoleType == UserRoleTypeEnum.SYSTEM.getNumber().intValue()) {
-            // 系统管理员
-            logger.info("系统用户所有菜单可见!");
-        } else if (userRoleType == UserRoleTypeEnum.HOSPITAL.getNumber().intValue()) {
-            // 医院
-            userLinkOrg = SessionUtil.getUserLinkHospital();
-        } else if (userRoleType == UserRoleTypeEnum.SUPPLIER.getNumber().intValue()) {
-            // 供应商
-            userLinkOrg = SessionUtil.getUserLinkSupplier();
-        }
+        UserRoleTypeEnum userRoleType = SessionUtil.getUserRoleType();
+        // 用户所属组织
+        Long userLinkOrg = SessionUtil.getUserLinkOrg();
 
         // 查询t_form_action 用于检验用户类别是否拥有menu的查看权（没有查看权限菜单不显示）
         FormActionMapper formActionMapper = sqlSession.getMapper(FormActionMapper.class);
@@ -98,10 +88,12 @@ public class MenuServiceImpl extends BaseService implements MenuService {
                 Integer formActionClassId = formAction.getClassId();
                 Integer ownerType = formAction.getOwnerType();
 
-                if (formActionId == formActionClassId.intValue() && ((userRoleType & ownerType) == userRoleType)) {
+                if (formActionId == formActionClassId.intValue() &&
+                        ((userRoleType.getNumber() & ownerType) == userRoleType.getNumber())) {
                     // 是这个用户类别可见的菜单
                     Integer accessMask = roleAccessControl.get(formActionId);
-                    if (accessMask != null && (accessMask & AccessMaskEnum.VIEW.getNumber()) == AccessMaskEnum.VIEW.getNumber()) {
+                    if (accessMask != null &&
+                            (accessMask & AccessMaskEnum.VIEW.getNumber()) == AccessMaskEnum.VIEW.getNumber()) {
                         // 查看权限是1，判断是否有查看权限(此处为有权限)
                         ret.add(menu);
                         break;

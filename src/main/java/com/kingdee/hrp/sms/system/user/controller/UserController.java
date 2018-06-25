@@ -219,13 +219,13 @@ public class UserController {
     @RequestMapping(value = "getMessage")
     @ResponseBody
     public Map<String, Object> getMessage(Integer type, @RequestParam(defaultValue = "10") Integer pageSize,
-                                          @RequestParam(defaultValue = "1") Integer pageNo) {
+            @RequestParam(defaultValue = "1") Integer pageNo) {
 
         type = type == null ? -1 : type;
 
         Map<String, Object> ret = new HashMap<String, Object>(32);
 
-        Integer userRoleType = SessionUtil.getUserRoleType();
+        Integer userRoleType = SessionUtil.getUserRoleType().getNumber();
         Long org = SessionUtil.getUser().getOrg();
 
         return userService.getMessage(userRoleType, org, type, pageSize, pageNo);

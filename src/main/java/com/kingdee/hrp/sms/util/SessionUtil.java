@@ -133,7 +133,8 @@ public final class SessionUtil {
      *
      * @return 用户角色类别
      */
-    public static Integer getUserRoleType() {
+
+    public static UserRoleTypeEnum getUserRoleType() {
 
         Object object = get("roles");
 
@@ -142,8 +143,21 @@ public final class SessionUtil {
         }
         List<Role> roles = (List<Role>) object;
 
-        return roles.get(0).getType();
+        Integer type = roles.get(0).getType();
 
+        return UserRoleTypeEnum.getUserRoleTypeEnum(type);
+
+    }
+
+    /**
+     * 获取当前线程用户角色类别代码
+     * 一个用户可能有多个角色，但多个角色都对应同一个类别(1: 系统角色 2: 医院角色 3: 供应商角色)
+     * 且归属于同一家供应商/医院
+     *
+     * @return 用户角色类别代码
+     */
+    public static Integer getUserRoleTypeNumber() {
+        return getUserRoleType().getNumber();
     }
 
     /**
@@ -156,7 +170,7 @@ public final class SessionUtil {
      */
     public static Long getUserLinkSupplier() {
         // 1: 系统角色 2: 医院角色 3: 供应商角色
-        if (getUserRoleType() != UserRoleTypeEnum.SUPPLIER.getNumber().intValue()) {
+        if (getUserRoleType() != UserRoleTypeEnum.SUPPLIER) {
             return -1L;
         }
         return getUserRole().get(0).getOrg();
@@ -172,7 +186,7 @@ public final class SessionUtil {
      */
     public static Long getUserLinkHospital() {
         // 1: 系统角色 2: 医院角色 3: 供应商角色
-        if (getUserRoleType() != UserRoleTypeEnum.HOSPITAL.getNumber().intValue()) {
+        if (getUserRoleType() != UserRoleTypeEnum.HOSPITAL) {
             return -1L;
         }
         return getUserRole().get(0).getOrg();
@@ -200,6 +214,15 @@ public final class SessionUtil {
 
         return getUser().getId();
 
+    }
+
+    /**
+     * 获取当前用户所属组织
+     *
+     * @return
+     */
+    public static Long getUserLinkOrg() {
+        return getUser().getOrg();
     }
 
 }
