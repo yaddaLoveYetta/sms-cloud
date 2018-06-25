@@ -8,44 +8,27 @@
     <link rel="stylesheet" href="../../../css/bootstrap.css" type="text/css"/>
     <link rel="stylesheet" href="../../../css/iconfont/iconfont.css">
 
-    <style type="text/css">
-        p {
-            padding: 5px;
-        }
+    <link rel="stylesheet" href="../../../css/sys/parameter/index.debug.css">
 
-        p > label:first-child {
-            margin-left: 5px;
-            display: inline-block;
-            width: 20em;
-            text-align: right;
-            cursor: pointer;
-        }
-
-        .edit-input {
-            width: 500px;
-        }
-
-        .select {
-            height: 23px;
-            padding: 0;
-        }
-    </style>
 </head>
 
 <body class="iframe">
 
 <div class="main-content">
-    <div id="div-content" class="content-box">
+    <div id="div-content" class="container-fluid head-content">
     </div>
 </div>
 
 <div id="div-Templat" class="hide">
-
     <!-- <temp>
         #--text.begin--#
-        <p>
-            <label title="{desc}">{name}：</label><input CurrVal='{CurrVal}' {disabled} type="text" CtlType={CtlType} name="{key}" id="{key}" category="{category}" placeholder="{name}" class="edit-input" value="{value}"/>
-        </p>
+        <div class="row form-group">
+            <label class="col-sm-2 ">
+                {name}：</label>
+            <div class="col-sm-6">
+                <input CurrVal='{CurrVal}' {disabled} type="text" CtlType={CtlType} name="{key}" id="{key}" category="{category}" placeholder="{name}" class="form-control" value="{value}" >
+            </div>
+        </div>
         #--text.end--#
 
         #--select.begin--#
