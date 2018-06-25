@@ -3,6 +3,7 @@ package com.kingdee.hrp.sms.common.controller;
 import com.kingdee.hrp.sms.common.model.SystemSetting;
 import com.kingdee.hrp.sms.common.service.SystemSettingService;
 import com.kingdee.hrp.sms.util.SessionUtil;
+import com.kingdee.hrp.sms.util.SystemSettingUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -33,6 +34,7 @@ public class SystemSettingController {
     public List<SystemSetting> getAllSystemSetting() {
 
         logger.info("查询系统参数");
+
         return systemSettingService.getAllSystemSetting(SessionUtil.getUser().getOrg());
 
     }
@@ -48,7 +50,8 @@ public class SystemSettingController {
     public SystemSetting getSystemSetting(String category, String key) {
 
         logger.info(String.format("查询单个系统参数category=%s,key=%s", category, key));
-        return systemSettingService.getSystemSetting(SessionUtil.getUser().getOrg(), category, key);
+        // 走缓存查
+        return SystemSettingUtils.getSystemSetting(category, key);
 
     }
 
