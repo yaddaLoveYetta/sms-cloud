@@ -11,7 +11,7 @@
     /**
      * input标签blur保存
      */
-    $(document).on("blur change click", ":input", function (ev) {
+    $(document).on("change", ":input", function (ev) {
         var value = "";
         var currVal = this.getAttribute("CurrVal");//this.getAttribute("CurrVal");
         var ctlType = this.getAttribute("CtlType").toLocaleLowerCase();

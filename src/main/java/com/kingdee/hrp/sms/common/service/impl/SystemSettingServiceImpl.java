@@ -25,6 +25,25 @@ public class SystemSettingServiceImpl extends BaseService implements SystemSetti
 
     private static Logger logger = LoggerFactory.getLogger(SystemSettingServiceImpl.class);
 
+
+    /**
+     * 系统启动后将所有系统参数放入缓存中
+     */
+    @PostConstruct
+    private void init() {
+
+        logger.info("查询所有系统参数放入缓存开始");
+
+        SystemSettingMapper systemSettingMapper = sqlSession.getMapper(SystemSettingMapper.class);
+
+        List<SystemSetting> systemSettings = systemSettingMapper.selectByExample(null);
+
+        // 放入工具类的缓存中
+        SystemSettingUtils.set(systemSettings);
+
+        logger.info("查询所有系统参数放入缓存结束");
+    }
+
     /**
      * 获取用户所有系统参数
      *
@@ -32,20 +51,18 @@ public class SystemSettingServiceImpl extends BaseService implements SystemSetti
      * @return List<SystemSetting>
      */
     @Override
-    @PostConstruct
     public List<SystemSetting> getAllSystemSetting(Long org) {
 
-        logger.info("查询多有参数开始");
+        logger.info("查询所有参数开始");
         SystemSettingMapper systemSettingMapper = sqlSession.getMapper(SystemSettingMapper.class);
         SystemSettingExample example = new SystemSettingExample();
 
         example.createCriteria().andOrgEqualTo(org).example().orderBy(SystemSetting.Column.index.asc());
 
         List<SystemSetting> systemSettings = systemSettingMapper.selectByExample(example);
-        // 放入工具类的缓存中
-        SystemSettingUtils.set(systemSettings);
 
-        logger.info("查询多有参数结束");
+
+        logger.info("查询所有参数结束");
 
         return systemSettings;
     }
@@ -87,7 +104,7 @@ public class SystemSettingServiceImpl extends BaseService implements SystemSetti
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void edit(Long org, String category, String key, String value) {
+    public void save(Long org, String category, String key, String value) {
 
         SystemSetting systemSetting = new SystemSetting();
 

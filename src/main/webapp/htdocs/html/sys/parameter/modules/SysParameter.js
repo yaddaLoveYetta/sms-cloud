@@ -49,7 +49,7 @@
         if (isShowLoading) {
             SMS.Tips.loading('数据加载中..');
         }
-        var api = new API("sys/getSysParams");
+        var api = new API("setting/getAll");
         api.post();
 
         api.on({
@@ -74,7 +74,7 @@
 
     var save = function (data, fn) {
 
-        var api = new API("sys/setSysParam");
+        var api = new API("setting/save");
         api.post({
             category: data.category,
             key: data.key,
@@ -166,6 +166,7 @@
 
         });
     };
+
     return {
         render: render,
         textArrayCtrl: textArrayCtrl,

@@ -1,7 +1,6 @@
 package com.kingdee.hrp.sms.common.service;
 
 import com.kingdee.hrp.sms.common.model.SystemSetting;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
@@ -35,5 +34,5 @@ public interface SystemSettingService {
      * @param key      参数名
      * @param value    参数值
      */
-    void edit(Long org, String category, String key, String value);
+    void save(Long org, String category, String key, String value);
 }

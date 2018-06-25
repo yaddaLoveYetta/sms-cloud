@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -31,6 +32,7 @@ public class SystemSettingController {
      * @return List<SystemSetting>
      */
     @RequestMapping(value = "getAll")
+    @ResponseBody
     public List<SystemSetting> getAllSystemSetting() {
 
         logger.info("查询系统参数");
@@ -47,6 +49,7 @@ public class SystemSettingController {
      * @return SystemSetting
      */
     @RequestMapping(value = "get")
+    @ResponseBody
     public SystemSetting getSystemSetting(String category, String key) {
 
         logger.info(String.format("查询单个系统参数category=%s,key=%s", category, key));
@@ -62,9 +65,10 @@ public class SystemSettingController {
      * @param key      参数名
      * @param value    参数值
      */
-    @RequestMapping(value = "edit")
-    public void edit(String category, String key, String value) {
+    @RequestMapping(value = "save")
+    @ResponseBody
+    public void save(String category, String key, String value) {
         logger.info(String.format("修改参数值category=%s,key=%s,value=%s", category, key, value));
-        systemSettingService.edit(SessionUtil.getUser().getOrg(), category, key, value);
+        systemSettingService.save(SessionUtil.getUser().getOrg(), category, key, value);
     }
 }

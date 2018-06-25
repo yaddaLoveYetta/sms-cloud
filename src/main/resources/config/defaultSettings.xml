@@ -27,7 +27,7 @@
         <!--参数排序 -->
         <index>1</index>
         <!--参数解析规则 -->
-        <explanation>{ctlType:text}</explanation>
+        <explanation>{"ctlType":"text"}</explanation>
         <!--参数是否只读参数 -->
         <readOnly>0</readOnly>
     </setting>
@@ -45,7 +45,7 @@
         <!--参数排序 -->
         <index>2</index>
         <!--参数解析规则 -->
-        <explanation>{ctlType:number}</explanation>
+        <explanation>{"ctlType":"int"}</explanation>
         <!--参数是否只读参数 -->
         <readOnly>0</readOnly>
     </setting>
