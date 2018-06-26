@@ -1,4 +1,4 @@
-﻿; (function () {
+﻿;(function () {
 
     var $ = require("$");
     var SysParameter = require("SysParameter");
@@ -8,13 +8,15 @@
     if (!SMS.Login.check(true)) {
         return;
     }
+
     /**
      * input标签blur保存
      */
+
     $(document).on("change", ":input", function (ev) {
         var value = "";
-        var currVal = this.getAttribute("CurrVal");//this.getAttribute("CurrVal");
-        var ctlType = this.getAttribute("CtlType").toLocaleLowerCase();
+        var currVal = this.getAttribute("currVal");
+        var ctlType = this.getAttribute("ctlType").toLocaleLowerCase();
         if ($.inArray(ctlType, SysParameter.selectArrayCtrl) >= 0 || $.inArray(ctlType, SysParameter.textArrayCtrl) >= 0) {
             //select || text
             if (ctlType === "int" || ctlType === "float") {
@@ -27,18 +29,20 @@
             var isCheck = $(this).is(":checked");
             value = Number(isCheck);
         }
+
         var data = {
             category: this.getAttribute("category"),
             key: this.getAttribute("name"),
             value: value
-        }
-        if (currVal == value) { //值未改变则不提交数据到后台
+        };
+
+        if (currVal === value) { //值未改变则不提交数据到后台
             return;
         }
+
         var thisDom = this;
         SysParameter.save(data, function () {
-            thisDom.setAttribute("CurrVal", value);
-            // refresh(false);
+            thisDom.setAttribute("currVal", value);
         });
         ev.stopPropagation();
     });
@@ -47,7 +51,8 @@
         SysParameter.render(function () {
             NumberField.render();
         }, isShowLoading);
-    };
+    }
 
     refresh(true);
+
 })();

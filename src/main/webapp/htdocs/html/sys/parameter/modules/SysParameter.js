@@ -6,13 +6,16 @@
     var API = SMS.require("API");
 
     var div = document.getElementById("div-content");
-    var divTemplat = document.getElementById("div-Templat");
+    var divTemplate = document.getElementById("div-template");
 
-    var textArrayCtrl = ['', 'text', 'input', 'number', 'int', 'float'];//文本框 控件集合
-    var selectArrayCtrl = ['selector', 'select'];
-    var checkArrayboxCtrl = ['checkbox'];
+    //文本框渲染类别
+    var textCtrl = ['', 'text', 'input', 'number', 'int', 'float'];
+    // 下拉选择框渲染类别
+    var selectCtrl = ['selector', 'select'];
+    // 选择框渲染类别
+    var checkBoxCtrl = ['checkbox'];
 
-    var samples = $.String.getTemplates(divTemplat.innerHTML, [
+    var samples = $.String.getTemplates(divTemplate.innerHTML, [
         {
             name: 'temp',
             begin: '<!--',
@@ -70,7 +73,7 @@
                 SMS.Tips.error('网络繁忙，请稍候再试');
             }
         });
-    }
+    };
 
     var save = function (data, fn) {
 
@@ -96,7 +99,7 @@
                 SMS.Tips.error('网络繁忙，请稍候再试');
             }
         });
-    }
+    };
 
     var render = function (fn, isShowDialogding) {
 
@@ -105,35 +108,40 @@
             div.innerHTML = $.Array.keep(sysParmentData, function (item, index) {
 
                 var explanation = $.Object.parseJson(item["explanation"]);
-                var ctlType = "";//控件类型
-                var optionList = [];//下拉集合列表
+                //控件类型-默认文本框呈现
+                var ctlType = "text";
+
                 if (explanation) {
                     ctlType = explanation.ctlType.toLocaleLowerCase() || "";
-                    optionList = explanation.list || [];
                 }
-                if ($.inArray(ctlType, textArrayCtrl) >= 0) { //Text
+
+                if ($.inArray(ctlType, textCtrl) >= 0) {
+                    //Text
                     return $.String.format(samples['t.text'], {
                         'desc': item.desc,
-                        'CtlType': ctlType,
+                        'ctlType': ctlType,
                         'key': item.key,
                         'name': item.name,
                         'category': item.category,
                         'value': item.value,
-                        'CurrVal': item.value,
+                        'currVal': item.value,
                         'disabled': Boolean(item.readOnly) ? "disabled" : ""
                     });
                 }
-                if ($.inArray(ctlType, selectArrayCtrl) >= 0) {
+                if ($.inArray(ctlType, selectCtrl) >= 0) {
+
+                    // 下拉框可选值列表
+                    var optionList = explanation.list || [];
 
                     //select
                     return $.String.format(samples['t.select'], {
                         'desc': item.desc,
-                        'CtlType': ctlType,
+                        'ctlType': ctlType,
                         'key': item.key,
                         'name': item.name,
                         'category': item.category,
                         'value': item.value,
-                        'CurrVal': item.value,
+                        'currVal': item.value,
                         'disabled': Boolean(item.readOnly) ? "disabled" : "",
                         'options': $.Array.keep(optionList, function (opiton, index) {
                             var key = Object.keys(opiton)[0] || "";
@@ -141,19 +149,20 @@
                             return $.String.format(samples['t.option'], {
                                 'value': key,
                                 'name': name,
-                                'selected': (item.FValue == key) ? "selected" : ""
+                                'selected': (item.value == key) ? "selected" : ""
                             });
                         }).join("")
                     });
                 }
 
-                if ($.inArray(ctlType, checkArrayboxCtrl) >= 0) { //checkbox
+                if ($.inArray(ctlType, checkBoxCtrl) >= 0) {
+                    //checkbox
                     return $.String.format(samples['t.checkbox'], {
                         'desc': item.desc,
-                        'CtlType': ctlType,
+                        'ctlType': ctlType,
                         'key': item.key,
                         'name': item.name,
-                        'CurrVal': item.value,
+                        'currVal': item.value,
                         'category': item.category,
                         'checked': Boolean(Number(item.value)) === true ? "checked" : "",
                         'disabled': Boolean(item.readOnly) ? "disabled" : ""
@@ -169,9 +178,9 @@
 
     return {
         render: render,
-        textArrayCtrl: textArrayCtrl,
-        selectArrayCtrl: selectArrayCtrl,
-        checkArrayboxCtrl: checkArrayboxCtrl,
+        textArrayCtrl: textCtrl,
+        selectArrayCtrl: selectCtrl,
+        checkArrayboxCtrl: checkBoxCtrl,
         save: save
     };
 });

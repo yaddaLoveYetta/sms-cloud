@@ -19,32 +19,39 @@
     </div>
 </div>
 
-<div id="div-Templat" class="hide">
+<div id="div-template" class="hide">
     <!-- <temp>
         #--text.begin--#
         <div class="row form-group">
             <label class="col-sm-2 ">
                 {name}：</label>
             <div class="col-sm-6">
-                <input CurrVal='{CurrVal}' {disabled} type="text" CtlType={CtlType} name="{key}" id="{key}" category="{category}" placeholder="{name}" class="form-control" value="{value}" >
+                <input currVal='{currVal}' {disabled} type="text" ctlType={ctlType} name="{key}" id="{key}" category="{category}" placeholder="{name}" class="form-control" value="{value}" >
             </div>
         </div>
         #--text.end--#
 
         #--select.begin--#
-        <p>
-            <label title="{desc}">{name}：</label><select  CurrVal='{CurrVal}' {disabled} name="{key}" CtlType={CtlType} id="{FKey}" class="select" category="{category}">
-                #--option.begin--#
-                <option value="{value}" {selected}>{name}</option>
-                #--option.end--#
-            </select>
-        </p>
+         <div class="row form-group">
+             <label class="col-sm-2 " title="{desc}">{name}：</label>
+             <div class="col-sm-3">
+                 <select class="form-control" currVal='{currVal}' {disabled} name="{key}" ctlType={ctlType} id="{key}" category="{category}">
+                     #--option.begin--#
+                    <option value="{value}" {selected}>{name}</option>
+                    #--option.end--#
+                </select>
+            </div>
+        </div>
         #--select.end--#
 
         #--checkbox.begin--#
-        <p>
-            <label title="{desc}">{name}：</label><input type="checkbox" CurrVal='{CurrVal}' {disabled} {checked} CtlType={CtlType} name="{key}" id="{FKey}" category="{category}" placeholder="{name}"/>
-        </p>
+
+        <div class="row form-group">
+            <label class="col-sm-2 " title="{desc}">{name}：</label>
+            <div class="col-sm-1">
+                <input class="checkbox" type="checkbox" currVal='{currVal}' {disabled} {checked} ctlType={ctlType} name="{key}" id="{key}" category="{category}" placeholder="{name}"/>
+            </div>
+        </div>
           #--checkbox.end--#
     </temp>
     -->

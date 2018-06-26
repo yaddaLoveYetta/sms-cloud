@@ -3,3 +3,8 @@
     text-align: right;
     padding-top: 7px;
 }
+
+.row > div > input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+}
