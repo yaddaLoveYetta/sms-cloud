@@ -1,7 +1,10 @@
 package com.kingdee.hrp.sms.common.service.plugin;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.kingdee.hrp.sms.common.controller.SystemSettingController;
 import com.kingdee.hrp.sms.common.pojo.Condition;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Map;
@@ -11,22 +14,13 @@ import java.util.Set;
  * 插件适配器
  *
  * @author yadda
- * @ClassName PlugInAdpter
  * @date 2018-02-27 17:32:12 星期四
  */
-public abstract class PlugInAdpter implements PlugIn {
+public abstract class AbstractPlugInAdapter implements PlugIn {
+
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     PlugInRet result = new PlugInRet();
-
-    /**
-     * 插件序号-同一个业务上绑定多插件时确定插件的执行顺序
-     *
-     * @return 插件序号，值越小越先执行
-     */
-    @Override
-    public Integer getIndex() {
-        return 0;
-    }
 
     /**
      * 获取当前插件支持的业务类型集合

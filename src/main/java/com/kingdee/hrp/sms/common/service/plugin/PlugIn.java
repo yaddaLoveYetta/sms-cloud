@@ -5,6 +5,7 @@ import com.kingdee.hrp.sms.common.pojo.Condition;
 import com.kingdee.hrp.sms.common.pojo.UserRoleTypeEnum;
 import com.kingdee.hrp.sms.util.SessionUtil;
 
+import java.security.PrivateKey;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -19,17 +20,31 @@ import java.util.Set;
  * 操作后的数据校验，关联操作等等跟业务相关但又缺乏共性的逻辑<br>
  *
  * @author yadda
- * @ClassName PlugIn
  * @date 2017-04-27 17:40:40 星期四
  */
 public interface PlugIn {
+
+    /**
+     * 插件名称
+     *
+     * @return 插件名称
+     */
+    String name();
+
+    /**
+     * 插件说明</br>
+     * 简单介绍下插件做了什么事情
+     *
+     * @return 插件说明
+     */
+    String description();
 
     /**
      * 插件序号-同一个业务上绑定多插件时确定插件的执行顺序
      *
      * @return 插件序号，值越小越先执行
      */
-    Integer getIndex();
+    Integer index();
 
     /**
      * 获取当前插件支持的业务类型集合

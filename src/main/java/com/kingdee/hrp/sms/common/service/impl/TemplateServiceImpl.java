@@ -10,6 +10,7 @@ import com.kingdee.hrp.sms.common.dao.generate.FormClassEntryMapper;
 import com.kingdee.hrp.sms.common.dao.generate.FormClassMapper;
 import com.kingdee.hrp.sms.common.dao.generate.FormFieldsMapper;
 import com.kingdee.hrp.sms.common.exception.BusinessLogicRunTimeException;
+import com.kingdee.hrp.sms.common.exception.PlugInRuntimeException;
 import com.kingdee.hrp.sms.common.model.*;
 import com.kingdee.hrp.sms.common.pojo.*;
 import com.kingdee.hrp.sms.common.service.BaseService;
@@ -20,7 +21,6 @@ import com.kingdee.hrp.sms.util.Common;
 import com.kingdee.hrp.sms.util.Environ;
 import com.kingdee.hrp.sms.util.SessionUtil;
 import org.apache.commons.lang.StringUtils;
-import org.apache.ibatis.plugin.PluginException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,6 +28,9 @@ import javax.annotation.Resource;
 import java.io.IOException;
 import java.util.*;
 
+/**
+ * @author yadda
+ */
 @Service
 public class TemplateServiceImpl extends BaseService implements TemplateService {
 
@@ -608,7 +611,7 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
         // 保存前插件事件
         PlugInRet plugInRet = plugInFactory.beforeSave(classId, template, jsonNode);
         if (plugInRet.getCode() != StatusCode.SUCCESS) {
-            throw new PluginException(plugInRet.getMsg());
+            throw new PlugInRuntimeException(plugInRet.getMsg());
         }
 
         // 主表主键key
@@ -643,7 +646,7 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
         // 新增后事件
         plugInRet = plugInFactory.afterSave(classId, id, jsonNode);
         if (plugInRet != null && plugInRet.getCode() != StatusCode.SUCCESS) {
-            throw new PluginException(plugInRet.getMsg());
+            throw new PlugInRuntimeException(plugInRet.getMsg());
         }
 
         return id;
@@ -680,7 +683,7 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
         // 修改前插件事件
         PlugInRet plugInRet = plugInFactory.beforeModify(classId, id, template, jsonNode);
         if (plugInRet.getCode() != StatusCode.SUCCESS) {
-            throw new PluginException(plugInRet.getMsg());
+            throw new PlugInRuntimeException(plugInRet.getMsg());
         }
 
         String primaryTableName = formClass.getTableName();
@@ -717,7 +720,7 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
         // 修改后 插件事件
         plugInRet = plugInFactory.afterModify(classId, id, template, jsonNode);
         if (plugInRet.getCode() != StatusCode.SUCCESS) {
-            throw new PluginException(plugInRet.getMsg());
+            throw new PlugInRuntimeException(plugInRet.getMsg());
         }
 
         return true;
@@ -754,7 +757,7 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
         // 删除前插件事件
         PlugInRet plugInRet = plugInFactory.beforeDelete(classId, template, ids);
         if (plugInRet.getCode() != StatusCode.SUCCESS) {
-            throw new PluginException(plugInRet.getMsg());
+            throw new PlugInRuntimeException(plugInRet.getMsg());
         }
         // 子表资料描述信息
         Map<String, Object> formEntries = (Map<String, Object>) template.get("formClassEntry");
@@ -773,7 +776,7 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
         // 删除后插件事件
         plugInRet = plugInFactory.afterDelete(classId, template, ids);
         if (plugInRet.getCode() != StatusCode.SUCCESS) {
-            throw new PluginException(plugInRet.getMsg());
+            throw new PlugInRuntimeException(plugInRet.getMsg());
         }
 
         return true;
@@ -810,7 +813,7 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
         // 禁用/反禁用前插件事件
         PlugInRet plugInRet = plugInFactory.beforeForbid(classId, template, ids, operateType);
         if (plugInRet.getCode() != StatusCode.SUCCESS) {
-            throw new PluginException(plugInRet.getMsg());
+            throw new PlugInRuntimeException(plugInRet.getMsg());
         }
 
         // 准备模板
@@ -825,7 +828,7 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
         // 禁用/反禁用后插件事件
         plugInRet = plugInFactory.afterForbid(classId, template, ids, operateType);
         if (plugInRet.getCode() != StatusCode.SUCCESS) {
-            throw new PluginException(plugInRet.getMsg());
+            throw new PlugInRuntimeException(plugInRet.getMsg());
         }
 
         return true;

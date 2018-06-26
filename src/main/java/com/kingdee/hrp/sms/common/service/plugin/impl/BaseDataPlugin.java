@@ -5,7 +5,7 @@ import com.kingdee.hrp.sms.common.model.User;
 import com.kingdee.hrp.sms.common.model.UserExample;
 import com.kingdee.hrp.sms.common.pojo.Condition;
 import com.kingdee.hrp.sms.common.pojo.UserRoleTypeEnum;
-import com.kingdee.hrp.sms.common.service.plugin.PlugInAdpter;
+import com.kingdee.hrp.sms.common.service.plugin.AbstractPlugInAdapter;
 import com.kingdee.hrp.sms.common.service.plugin.PlugInRet;
 import com.kingdee.hrp.sms.util.Environ;
 import org.apache.ibatis.session.SqlSession;
@@ -21,7 +21,7 @@ import java.util.*;
  * @author yadda
  */
 @Service
-public class BaseDataPlugin extends PlugInAdpter implements InitializingBean {
+public class BaseDataPlugin extends AbstractPlugInAdapter implements InitializingBean {
 
     /**
      * 插件支持的业务类别id集合，推荐的做法是一个插件只支持一个业务类别
@@ -30,12 +30,33 @@ public class BaseDataPlugin extends PlugInAdpter implements InitializingBean {
     private Set<Integer> classIdSet;
 
     /**
+     * 插件名称
+     *
+     * @return 插件名称
+     */
+    @Override
+    public String name() {
+        return "基础资料插件";
+    }
+
+    /**
+     * 插件说明</br>
+     * 简单介绍下插件做了什么事情
+     *
+     * @return 插件说明
+     */
+    @Override
+    public String description() {
+        return "主要实现getConditions处理用户之间的数据隔离";
+    }
+
+    /**
      * 插件序号-同一个业务上绑定多插件时确定插件的执行顺序
      *
      * @return 插件序号，值越小越先执行
      */
     @Override
-    public Integer getIndex() {
+    public Integer index() {
         return 1;
     }
 

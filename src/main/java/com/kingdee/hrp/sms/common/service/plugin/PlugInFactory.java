@@ -3,6 +3,8 @@ package com.kingdee.hrp.sms.common.service.plugin;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.kingdee.hrp.sms.common.pojo.Condition;
 import com.kingdee.hrp.sms.common.pojo.StatusCode;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContext;
@@ -21,6 +23,11 @@ import java.util.*;
 @Service(value = "plugInFactory")
 public class PlugInFactory implements PlugIn, InitializingBean, ApplicationContextAware {
 
+    private static Logger logger = LoggerFactory.getLogger(PlugInFactory.class);
+
+    /**
+     * spring context
+     */
     private ApplicationContext applicationContext;
 
     /**
@@ -62,7 +69,7 @@ public class PlugInFactory implements PlugIn, InitializingBean, ApplicationConte
                 if (PlugIn.class.isAssignableFrom(type)) {
 
                     PlugIn plugIn = applicationContext.getBean(name, PlugIn.class);
-
+                    logger.info("add a new plugin:" + plugIn.name());
                     if (!plugIns.contains(plugIn)) {
                         plugIns.add(plugIn);
                     }
@@ -70,7 +77,9 @@ public class PlugInFactory implements PlugIn, InitializingBean, ApplicationConte
             }
 
             // 插件执行顺序排序
-            plugIns.sort((p1, p2) -> p1.getIndex().compareTo(p2.getIndex()));
+            plugIns.sort((p1, p2) -> p1.index().compareTo(p2.index()));
+
+            logger.info(String.format("init %s plugin total", plugIns.size()));
 
         }
     }
@@ -84,12 +93,33 @@ public class PlugInFactory implements PlugIn, InitializingBean, ApplicationConte
     }
 
     /**
+     * 插件名称
+     *
+     * @return 插件名称
+     */
+    @Override
+    public String name() {
+        return null;
+    }
+
+    /**
+     * 插件说明</br>
+     * 简单介绍下插件做了什么事情
+     *
+     * @return 插件说明
+     */
+    @Override
+    public String description() {
+        return null;
+    }
+
+    /**
      * 插件序号-同一个业务上绑定多插件时确定插件的执行顺序
      *
      * @return 插件序号，值越小越先执行
      */
     @Override
-    public Integer getIndex() {
+    public Integer index() {
         return 0;
     }
 
