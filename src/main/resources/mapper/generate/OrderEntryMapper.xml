@@ -1,0 +1,530 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kingdee.hrp.sms.common.dao.generate.OrderEntryMapper">
+  <resultMap id="BaseResultMap" type="com.kingdee.hrp.sms.common.model.OrderEntry">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="parent" jdbcType="BIGINT" property="parent" />
+    <result column="sequence" jdbcType="INTEGER" property="sequence" />
+    <result column="material" jdbcType="BIGINT" property="material" />
+    <result column="unit" jdbcType="BIGINT" property="unit" />
+    <result column="qty" jdbcType="REAL" property="qty" />
+    <result column="confirm_qty" jdbcType="REAL" property="confirmQty" />
+    <result column="confirm_date" jdbcType="DATE" property="confirmDate" />
+    <result column="price" jdbcType="DECIMAL" property="price" />
+    <result column="amount" jdbcType="DECIMAL" property="amount" />
+    <result column="delivery_date" jdbcType="DATE" property="deliveryDate" />
+    <result column="confirm_delivery_date" jdbcType="DATE" property="confirmDeliveryDate" />
+    <result column="deliver_status" jdbcType="INTEGER" property="deliverStatus" />
+    <result column="deliver_qty" jdbcType="REAL" property="deliverQty" />
+    <result column="receive_status" jdbcType="INTEGER" property="receiveStatus" />
+    <result column="receive_qty" jdbcType="REAL" property="receiveQty" />
+    <result column="return_status" jdbcType="INTEGER" property="returnStatus" />
+    <result column="return_qty" jdbcType="REAL" property="returnQty" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, parent, `sequence`, material, unit, qty, confirm_qty, confirm_date, price, amount, 
+    delivery_date, confirm_delivery_date, deliver_status, deliver_qty, receive_status, 
+    receive_qty, return_status, return_qty, remark
+  </sql>
+  <select id="selectByExample" parameterType="com.kingdee.hrp.sms.common.model.OrderEntryExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_order_entry
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_order_entry
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_order_entry
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.kingdee.hrp.sms.common.model.OrderEntryExample">
+    delete from t_order_entry
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.kingdee.hrp.sms.common.model.OrderEntry">
+    insert into t_order_entry (id, parent, `sequence`, 
+      material, unit, qty, confirm_qty, 
+      confirm_date, price, amount, 
+      delivery_date, confirm_delivery_date, deliver_status, 
+      deliver_qty, receive_status, receive_qty, 
+      return_status, return_qty, remark
+      )
+    values (#{id,jdbcType=BIGINT}, #{parent,jdbcType=BIGINT}, #{sequence,jdbcType=INTEGER}, 
+      #{material,jdbcType=BIGINT}, #{unit,jdbcType=BIGINT}, #{qty,jdbcType=REAL}, #{confirmQty,jdbcType=REAL}, 
+      #{confirmDate,jdbcType=DATE}, #{price,jdbcType=DECIMAL}, #{amount,jdbcType=DECIMAL}, 
+      #{deliveryDate,jdbcType=DATE}, #{confirmDeliveryDate,jdbcType=DATE}, #{deliverStatus,jdbcType=INTEGER}, 
+      #{deliverQty,jdbcType=REAL}, #{receiveStatus,jdbcType=INTEGER}, #{receiveQty,jdbcType=REAL}, 
+      #{returnStatus,jdbcType=INTEGER}, #{returnQty,jdbcType=REAL}, #{remark,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.kingdee.hrp.sms.common.model.OrderEntry">
+    insert into t_order_entry
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="parent != null">
+        parent,
+      </if>
+      <if test="sequence != null">
+        `sequence`,
+      </if>
+      <if test="material != null">
+        material,
+      </if>
+      <if test="unit != null">
+        unit,
+      </if>
+      <if test="qty != null">
+        qty,
+      </if>
+      <if test="confirmQty != null">
+        confirm_qty,
+      </if>
+      <if test="confirmDate != null">
+        confirm_date,
+      </if>
+      <if test="price != null">
+        price,
+      </if>
+      <if test="amount != null">
+        amount,
+      </if>
+      <if test="deliveryDate != null">
+        delivery_date,
+      </if>
+      <if test="confirmDeliveryDate != null">
+        confirm_delivery_date,
+      </if>
+      <if test="deliverStatus != null">
+        deliver_status,
+      </if>
+      <if test="deliverQty != null">
+        deliver_qty,
+      </if>
+      <if test="receiveStatus != null">
+        receive_status,
+      </if>
+      <if test="receiveQty != null">
+        receive_qty,
+      </if>
+      <if test="returnStatus != null">
+        return_status,
+      </if>
+      <if test="returnQty != null">
+        return_qty,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="parent != null">
+        #{parent,jdbcType=BIGINT},
+      </if>
+      <if test="sequence != null">
+        #{sequence,jdbcType=INTEGER},
+      </if>
+      <if test="material != null">
+        #{material,jdbcType=BIGINT},
+      </if>
+      <if test="unit != null">
+        #{unit,jdbcType=BIGINT},
+      </if>
+      <if test="qty != null">
+        #{qty,jdbcType=REAL},
+      </if>
+      <if test="confirmQty != null">
+        #{confirmQty,jdbcType=REAL},
+      </if>
+      <if test="confirmDate != null">
+        #{confirmDate,jdbcType=DATE},
+      </if>
+      <if test="price != null">
+        #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="amount != null">
+        #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="deliveryDate != null">
+        #{deliveryDate,jdbcType=DATE},
+      </if>
+      <if test="confirmDeliveryDate != null">
+        #{confirmDeliveryDate,jdbcType=DATE},
+      </if>
+      <if test="deliverStatus != null">
+        #{deliverStatus,jdbcType=INTEGER},
+      </if>
+      <if test="deliverQty != null">
+        #{deliverQty,jdbcType=REAL},
+      </if>
+      <if test="receiveStatus != null">
+        #{receiveStatus,jdbcType=INTEGER},
+      </if>
+      <if test="receiveQty != null">
+        #{receiveQty,jdbcType=REAL},
+      </if>
+      <if test="returnStatus != null">
+        #{returnStatus,jdbcType=INTEGER},
+      </if>
+      <if test="returnQty != null">
+        #{returnQty,jdbcType=REAL},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.kingdee.hrp.sms.common.model.OrderEntryExample" resultType="java.lang.Long">
+    select count(*) from t_order_entry
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update t_order_entry
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.parent != null">
+        parent = #{record.parent,jdbcType=BIGINT},
+      </if>
+      <if test="record.sequence != null">
+        `sequence` = #{record.sequence,jdbcType=INTEGER},
+      </if>
+      <if test="record.material != null">
+        material = #{record.material,jdbcType=BIGINT},
+      </if>
+      <if test="record.unit != null">
+        unit = #{record.unit,jdbcType=BIGINT},
+      </if>
+      <if test="record.qty != null">
+        qty = #{record.qty,jdbcType=REAL},
+      </if>
+      <if test="record.confirmQty != null">
+        confirm_qty = #{record.confirmQty,jdbcType=REAL},
+      </if>
+      <if test="record.confirmDate != null">
+        confirm_date = #{record.confirmDate,jdbcType=DATE},
+      </if>
+      <if test="record.price != null">
+        price = #{record.price,jdbcType=DECIMAL},
+      </if>
+      <if test="record.amount != null">
+        amount = #{record.amount,jdbcType=DECIMAL},
+      </if>
+      <if test="record.deliveryDate != null">
+        delivery_date = #{record.deliveryDate,jdbcType=DATE},
+      </if>
+      <if test="record.confirmDeliveryDate != null">
+        confirm_delivery_date = #{record.confirmDeliveryDate,jdbcType=DATE},
+      </if>
+      <if test="record.deliverStatus != null">
+        deliver_status = #{record.deliverStatus,jdbcType=INTEGER},
+      </if>
+      <if test="record.deliverQty != null">
+        deliver_qty = #{record.deliverQty,jdbcType=REAL},
+      </if>
+      <if test="record.receiveStatus != null">
+        receive_status = #{record.receiveStatus,jdbcType=INTEGER},
+      </if>
+      <if test="record.receiveQty != null">
+        receive_qty = #{record.receiveQty,jdbcType=REAL},
+      </if>
+      <if test="record.returnStatus != null">
+        return_status = #{record.returnStatus,jdbcType=INTEGER},
+      </if>
+      <if test="record.returnQty != null">
+        return_qty = #{record.returnQty,jdbcType=REAL},
+      </if>
+      <if test="record.remark != null">
+        remark = #{record.remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update t_order_entry
+    set id = #{record.id,jdbcType=BIGINT},
+      parent = #{record.parent,jdbcType=BIGINT},
+      `sequence` = #{record.sequence,jdbcType=INTEGER},
+      material = #{record.material,jdbcType=BIGINT},
+      unit = #{record.unit,jdbcType=BIGINT},
+      qty = #{record.qty,jdbcType=REAL},
+      confirm_qty = #{record.confirmQty,jdbcType=REAL},
+      confirm_date = #{record.confirmDate,jdbcType=DATE},
+      price = #{record.price,jdbcType=DECIMAL},
+      amount = #{record.amount,jdbcType=DECIMAL},
+      delivery_date = #{record.deliveryDate,jdbcType=DATE},
+      confirm_delivery_date = #{record.confirmDeliveryDate,jdbcType=DATE},
+      deliver_status = #{record.deliverStatus,jdbcType=INTEGER},
+      deliver_qty = #{record.deliverQty,jdbcType=REAL},
+      receive_status = #{record.receiveStatus,jdbcType=INTEGER},
+      receive_qty = #{record.receiveQty,jdbcType=REAL},
+      return_status = #{record.returnStatus,jdbcType=INTEGER},
+      return_qty = #{record.returnQty,jdbcType=REAL},
+      remark = #{record.remark,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.kingdee.hrp.sms.common.model.OrderEntry">
+    update t_order_entry
+    <set>
+      <if test="parent != null">
+        parent = #{parent,jdbcType=BIGINT},
+      </if>
+      <if test="sequence != null">
+        `sequence` = #{sequence,jdbcType=INTEGER},
+      </if>
+      <if test="material != null">
+        material = #{material,jdbcType=BIGINT},
+      </if>
+      <if test="unit != null">
+        unit = #{unit,jdbcType=BIGINT},
+      </if>
+      <if test="qty != null">
+        qty = #{qty,jdbcType=REAL},
+      </if>
+      <if test="confirmQty != null">
+        confirm_qty = #{confirmQty,jdbcType=REAL},
+      </if>
+      <if test="confirmDate != null">
+        confirm_date = #{confirmDate,jdbcType=DATE},
+      </if>
+      <if test="price != null">
+        price = #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="amount != null">
+        amount = #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="deliveryDate != null">
+        delivery_date = #{deliveryDate,jdbcType=DATE},
+      </if>
+      <if test="confirmDeliveryDate != null">
+        confirm_delivery_date = #{confirmDeliveryDate,jdbcType=DATE},
+      </if>
+      <if test="deliverStatus != null">
+        deliver_status = #{deliverStatus,jdbcType=INTEGER},
+      </if>
+      <if test="deliverQty != null">
+        deliver_qty = #{deliverQty,jdbcType=REAL},
+      </if>
+      <if test="receiveStatus != null">
+        receive_status = #{receiveStatus,jdbcType=INTEGER},
+      </if>
+      <if test="receiveQty != null">
+        receive_qty = #{receiveQty,jdbcType=REAL},
+      </if>
+      <if test="returnStatus != null">
+        return_status = #{returnStatus,jdbcType=INTEGER},
+      </if>
+      <if test="returnQty != null">
+        return_qty = #{returnQty,jdbcType=REAL},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.kingdee.hrp.sms.common.model.OrderEntry">
+    update t_order_entry
+    set parent = #{parent,jdbcType=BIGINT},
+      `sequence` = #{sequence,jdbcType=INTEGER},
+      material = #{material,jdbcType=BIGINT},
+      unit = #{unit,jdbcType=BIGINT},
+      qty = #{qty,jdbcType=REAL},
+      confirm_qty = #{confirmQty,jdbcType=REAL},
+      confirm_date = #{confirmDate,jdbcType=DATE},
+      price = #{price,jdbcType=DECIMAL},
+      amount = #{amount,jdbcType=DECIMAL},
+      delivery_date = #{deliveryDate,jdbcType=DATE},
+      confirm_delivery_date = #{confirmDeliveryDate,jdbcType=DATE},
+      deliver_status = #{deliverStatus,jdbcType=INTEGER},
+      deliver_qty = #{deliverQty,jdbcType=REAL},
+      receive_status = #{receiveStatus,jdbcType=INTEGER},
+      receive_qty = #{receiveQty,jdbcType=REAL},
+      return_status = #{returnStatus,jdbcType=INTEGER},
+      return_qty = #{returnQty,jdbcType=REAL},
+      remark = #{remark,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <insert id="batchInsert" parameterType="map">
+    <!--
+      WARNING - @mbg.generated
+      This element is automatically generated by MyBatis Generator, do not modify.
+      @project https://github.com/itfsw/mybatis-generator-plugin
+    -->
+    insert into t_order_entry
+    (id, parent, `sequence`, material, unit, qty, confirm_qty, confirm_date, price, amount, 
+      delivery_date, confirm_delivery_date, deliver_status, deliver_qty, receive_status, 
+      receive_qty, return_status, return_qty, remark)
+    values
+    <foreach collection="list" item="item" separator=",">
+      (#{item.id,jdbcType=BIGINT}, #{item.parent,jdbcType=BIGINT}, #{item.sequence,jdbcType=INTEGER}, 
+        #{item.material,jdbcType=BIGINT}, #{item.unit,jdbcType=BIGINT}, #{item.qty,jdbcType=REAL}, 
+        #{item.confirmQty,jdbcType=REAL}, #{item.confirmDate,jdbcType=DATE}, #{item.price,jdbcType=DECIMAL}, 
+        #{item.amount,jdbcType=DECIMAL}, #{item.deliveryDate,jdbcType=DATE}, #{item.confirmDeliveryDate,jdbcType=DATE}, 
+        #{item.deliverStatus,jdbcType=INTEGER}, #{item.deliverQty,jdbcType=REAL}, #{item.receiveStatus,jdbcType=INTEGER}, 
+        #{item.receiveQty,jdbcType=REAL}, #{item.returnStatus,jdbcType=INTEGER}, #{item.returnQty,jdbcType=REAL}, 
+        #{item.remark,jdbcType=VARCHAR})
+    </foreach>
+  </insert>
+  <insert id="batchInsertSelective" parameterType="map">
+    <!--
+      WARNING - @mbg.generated
+      This element is automatically generated by MyBatis Generator, do not modify.
+      @project https://github.com/itfsw/mybatis-generator-plugin
+    -->
+    insert into t_order_entry (
+    <foreach collection="selective" item="column" separator=",">
+      ${column.escapedColumnName}
+    </foreach>
+    )
+    values
+    <foreach collection="list" item="item" separator=",">
+      (
+      <foreach collection="selective" item="column" separator=",">
+        <if test="'id'.toString() == column.value">
+          #{item.id,jdbcType=BIGINT}
+        </if>
+        <if test="'parent'.toString() == column.value">
+          #{item.parent,jdbcType=BIGINT}
+        </if>
+        <if test="'sequence'.toString() == column.value">
+          #{item.sequence,jdbcType=INTEGER}
+        </if>
+        <if test="'material'.toString() == column.value">
+          #{item.material,jdbcType=BIGINT}
+        </if>
+        <if test="'unit'.toString() == column.value">
+          #{item.unit,jdbcType=BIGINT}
+        </if>
+        <if test="'qty'.toString() == column.value">
+          #{item.qty,jdbcType=REAL}
+        </if>
+        <if test="'confirm_qty'.toString() == column.value">
+          #{item.confirmQty,jdbcType=REAL}
+        </if>
+        <if test="'confirm_date'.toString() == column.value">
+          #{item.confirmDate,jdbcType=DATE}
+        </if>
+        <if test="'price'.toString() == column.value">
+          #{item.price,jdbcType=DECIMAL}
+        </if>
+        <if test="'amount'.toString() == column.value">
+          #{item.amount,jdbcType=DECIMAL}
+        </if>
+        <if test="'delivery_date'.toString() == column.value">
+          #{item.deliveryDate,jdbcType=DATE}
+        </if>
+        <if test="'confirm_delivery_date'.toString() == column.value">
+          #{item.confirmDeliveryDate,jdbcType=DATE}
+        </if>
+        <if test="'deliver_status'.toString() == column.value">
+          #{item.deliverStatus,jdbcType=INTEGER}
+        </if>
+        <if test="'deliver_qty'.toString() == column.value">
+          #{item.deliverQty,jdbcType=REAL}
+        </if>
+        <if test="'receive_status'.toString() == column.value">
+          #{item.receiveStatus,jdbcType=INTEGER}
+        </if>
+        <if test="'receive_qty'.toString() == column.value">
+          #{item.receiveQty,jdbcType=REAL}
+        </if>
+        <if test="'return_status'.toString() == column.value">
+          #{item.returnStatus,jdbcType=INTEGER}
+        </if>
+        <if test="'return_qty'.toString() == column.value">
+          #{item.returnQty,jdbcType=REAL}
+        </if>
+        <if test="'remark'.toString() == column.value">
+          #{item.remark,jdbcType=VARCHAR}
+        </if>
+      </foreach>
+      )
+    </foreach>
+  </insert>
+</mapper>

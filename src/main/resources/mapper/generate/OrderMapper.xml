@@ -1,0 +1,473 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kingdee.hrp.sms.common.dao.generate.OrderMapper">
+  <resultMap id="BaseResultMap" type="com.kingdee.hrp.sms.common.model.Order">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="org" jdbcType="BIGINT" property="org" />
+    <result column="number" jdbcType="VARCHAR" property="number" />
+    <result column="origin_number" jdbcType="VARCHAR" property="originNumber" />
+    <result column="supplier" jdbcType="BIGINT" property="supplier" />
+    <result column="creater" jdbcType="BIGINT" property="creater" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="checker" jdbcType="BIGINT" property="checker" />
+    <result column="check_date" jdbcType="TIMESTAMP" property="checkDate" />
+    <result column="order_status" jdbcType="INTEGER" property="orderStatus" />
+    <result column="deliver_status" jdbcType="INTEGER" property="deliverStatus" />
+    <result column="receive_status" jdbcType="INTEGER" property="receiveStatus" />
+    <result column="return_status" jdbcType="INTEGER" property="returnStatus" />
+    <result column="amount" jdbcType="DECIMAL" property="amount" />
+    <result column="purchase_type" jdbcType="INTEGER" property="purchaseType" />
+    <result column="purchase_person" jdbcType="BIGINT" property="purchasePerson" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, org, `number`, origin_number, supplier, creater, create_date, checker, check_date, 
+    order_status, deliver_status, receive_status, return_status, amount, purchase_type, 
+    purchase_person
+  </sql>
+  <select id="selectByExample" parameterType="com.kingdee.hrp.sms.common.model.OrderExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_order
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_order
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_order
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.kingdee.hrp.sms.common.model.OrderExample">
+    delete from t_order
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.kingdee.hrp.sms.common.model.Order">
+    insert into t_order (id, org, `number`, 
+      origin_number, supplier, creater, 
+      create_date, checker, check_date, 
+      order_status, deliver_status, receive_status, 
+      return_status, amount, purchase_type, 
+      purchase_person)
+    values (#{id,jdbcType=BIGINT}, #{org,jdbcType=BIGINT}, #{number,jdbcType=VARCHAR}, 
+      #{originNumber,jdbcType=VARCHAR}, #{supplier,jdbcType=BIGINT}, #{creater,jdbcType=BIGINT}, 
+      #{createDate,jdbcType=TIMESTAMP}, #{checker,jdbcType=BIGINT}, #{checkDate,jdbcType=TIMESTAMP}, 
+      #{orderStatus,jdbcType=INTEGER}, #{deliverStatus,jdbcType=INTEGER}, #{receiveStatus,jdbcType=INTEGER}, 
+      #{returnStatus,jdbcType=INTEGER}, #{amount,jdbcType=DECIMAL}, #{purchaseType,jdbcType=INTEGER}, 
+      #{purchasePerson,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.kingdee.hrp.sms.common.model.Order">
+    insert into t_order
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="org != null">
+        org,
+      </if>
+      <if test="number != null">
+        `number`,
+      </if>
+      <if test="originNumber != null">
+        origin_number,
+      </if>
+      <if test="supplier != null">
+        supplier,
+      </if>
+      <if test="creater != null">
+        creater,
+      </if>
+      <if test="createDate != null">
+        create_date,
+      </if>
+      <if test="checker != null">
+        checker,
+      </if>
+      <if test="checkDate != null">
+        check_date,
+      </if>
+      <if test="orderStatus != null">
+        order_status,
+      </if>
+      <if test="deliverStatus != null">
+        deliver_status,
+      </if>
+      <if test="receiveStatus != null">
+        receive_status,
+      </if>
+      <if test="returnStatus != null">
+        return_status,
+      </if>
+      <if test="amount != null">
+        amount,
+      </if>
+      <if test="purchaseType != null">
+        purchase_type,
+      </if>
+      <if test="purchasePerson != null">
+        purchase_person,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="org != null">
+        #{org,jdbcType=BIGINT},
+      </if>
+      <if test="number != null">
+        #{number,jdbcType=VARCHAR},
+      </if>
+      <if test="originNumber != null">
+        #{originNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="supplier != null">
+        #{supplier,jdbcType=BIGINT},
+      </if>
+      <if test="creater != null">
+        #{creater,jdbcType=BIGINT},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="checker != null">
+        #{checker,jdbcType=BIGINT},
+      </if>
+      <if test="checkDate != null">
+        #{checkDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="orderStatus != null">
+        #{orderStatus,jdbcType=INTEGER},
+      </if>
+      <if test="deliverStatus != null">
+        #{deliverStatus,jdbcType=INTEGER},
+      </if>
+      <if test="receiveStatus != null">
+        #{receiveStatus,jdbcType=INTEGER},
+      </if>
+      <if test="returnStatus != null">
+        #{returnStatus,jdbcType=INTEGER},
+      </if>
+      <if test="amount != null">
+        #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="purchaseType != null">
+        #{purchaseType,jdbcType=INTEGER},
+      </if>
+      <if test="purchasePerson != null">
+        #{purchasePerson,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.kingdee.hrp.sms.common.model.OrderExample" resultType="java.lang.Long">
+    select count(*) from t_order
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update t_order
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.org != null">
+        org = #{record.org,jdbcType=BIGINT},
+      </if>
+      <if test="record.number != null">
+        `number` = #{record.number,jdbcType=VARCHAR},
+      </if>
+      <if test="record.originNumber != null">
+        origin_number = #{record.originNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.supplier != null">
+        supplier = #{record.supplier,jdbcType=BIGINT},
+      </if>
+      <if test="record.creater != null">
+        creater = #{record.creater,jdbcType=BIGINT},
+      </if>
+      <if test="record.createDate != null">
+        create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.checker != null">
+        checker = #{record.checker,jdbcType=BIGINT},
+      </if>
+      <if test="record.checkDate != null">
+        check_date = #{record.checkDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.orderStatus != null">
+        order_status = #{record.orderStatus,jdbcType=INTEGER},
+      </if>
+      <if test="record.deliverStatus != null">
+        deliver_status = #{record.deliverStatus,jdbcType=INTEGER},
+      </if>
+      <if test="record.receiveStatus != null">
+        receive_status = #{record.receiveStatus,jdbcType=INTEGER},
+      </if>
+      <if test="record.returnStatus != null">
+        return_status = #{record.returnStatus,jdbcType=INTEGER},
+      </if>
+      <if test="record.amount != null">
+        amount = #{record.amount,jdbcType=DECIMAL},
+      </if>
+      <if test="record.purchaseType != null">
+        purchase_type = #{record.purchaseType,jdbcType=INTEGER},
+      </if>
+      <if test="record.purchasePerson != null">
+        purchase_person = #{record.purchasePerson,jdbcType=BIGINT},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update t_order
+    set id = #{record.id,jdbcType=BIGINT},
+      org = #{record.org,jdbcType=BIGINT},
+      `number` = #{record.number,jdbcType=VARCHAR},
+      origin_number = #{record.originNumber,jdbcType=VARCHAR},
+      supplier = #{record.supplier,jdbcType=BIGINT},
+      creater = #{record.creater,jdbcType=BIGINT},
+      create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      checker = #{record.checker,jdbcType=BIGINT},
+      check_date = #{record.checkDate,jdbcType=TIMESTAMP},
+      order_status = #{record.orderStatus,jdbcType=INTEGER},
+      deliver_status = #{record.deliverStatus,jdbcType=INTEGER},
+      receive_status = #{record.receiveStatus,jdbcType=INTEGER},
+      return_status = #{record.returnStatus,jdbcType=INTEGER},
+      amount = #{record.amount,jdbcType=DECIMAL},
+      purchase_type = #{record.purchaseType,jdbcType=INTEGER},
+      purchase_person = #{record.purchasePerson,jdbcType=BIGINT}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.kingdee.hrp.sms.common.model.Order">
+    update t_order
+    <set>
+      <if test="org != null">
+        org = #{org,jdbcType=BIGINT},
+      </if>
+      <if test="number != null">
+        `number` = #{number,jdbcType=VARCHAR},
+      </if>
+      <if test="originNumber != null">
+        origin_number = #{originNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="supplier != null">
+        supplier = #{supplier,jdbcType=BIGINT},
+      </if>
+      <if test="creater != null">
+        creater = #{creater,jdbcType=BIGINT},
+      </if>
+      <if test="createDate != null">
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="checker != null">
+        checker = #{checker,jdbcType=BIGINT},
+      </if>
+      <if test="checkDate != null">
+        check_date = #{checkDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="orderStatus != null">
+        order_status = #{orderStatus,jdbcType=INTEGER},
+      </if>
+      <if test="deliverStatus != null">
+        deliver_status = #{deliverStatus,jdbcType=INTEGER},
+      </if>
+      <if test="receiveStatus != null">
+        receive_status = #{receiveStatus,jdbcType=INTEGER},
+      </if>
+      <if test="returnStatus != null">
+        return_status = #{returnStatus,jdbcType=INTEGER},
+      </if>
+      <if test="amount != null">
+        amount = #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="purchaseType != null">
+        purchase_type = #{purchaseType,jdbcType=INTEGER},
+      </if>
+      <if test="purchasePerson != null">
+        purchase_person = #{purchasePerson,jdbcType=BIGINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.kingdee.hrp.sms.common.model.Order">
+    update t_order
+    set org = #{org,jdbcType=BIGINT},
+      `number` = #{number,jdbcType=VARCHAR},
+      origin_number = #{originNumber,jdbcType=VARCHAR},
+      supplier = #{supplier,jdbcType=BIGINT},
+      creater = #{creater,jdbcType=BIGINT},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      checker = #{checker,jdbcType=BIGINT},
+      check_date = #{checkDate,jdbcType=TIMESTAMP},
+      order_status = #{orderStatus,jdbcType=INTEGER},
+      deliver_status = #{deliverStatus,jdbcType=INTEGER},
+      receive_status = #{receiveStatus,jdbcType=INTEGER},
+      return_status = #{returnStatus,jdbcType=INTEGER},
+      amount = #{amount,jdbcType=DECIMAL},
+      purchase_type = #{purchaseType,jdbcType=INTEGER},
+      purchase_person = #{purchasePerson,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <insert id="batchInsert" parameterType="map">
+    <!--
+      WARNING - @mbg.generated
+      This element is automatically generated by MyBatis Generator, do not modify.
+      @project https://github.com/itfsw/mybatis-generator-plugin
+    -->
+    insert into t_order
+    (id, org, `number`, origin_number, supplier, creater, create_date, checker, check_date, 
+      order_status, deliver_status, receive_status, return_status, amount, purchase_type, 
+      purchase_person)
+    values
+    <foreach collection="list" item="item" separator=",">
+      (#{item.id,jdbcType=BIGINT}, #{item.org,jdbcType=BIGINT}, #{item.number,jdbcType=VARCHAR}, 
+        #{item.originNumber,jdbcType=VARCHAR}, #{item.supplier,jdbcType=BIGINT}, #{item.creater,jdbcType=BIGINT}, 
+        #{item.createDate,jdbcType=TIMESTAMP}, #{item.checker,jdbcType=BIGINT}, #{item.checkDate,jdbcType=TIMESTAMP}, 
+        #{item.orderStatus,jdbcType=INTEGER}, #{item.deliverStatus,jdbcType=INTEGER}, #{item.receiveStatus,jdbcType=INTEGER}, 
+        #{item.returnStatus,jdbcType=INTEGER}, #{item.amount,jdbcType=DECIMAL}, #{item.purchaseType,jdbcType=INTEGER}, 
+        #{item.purchasePerson,jdbcType=BIGINT})
+    </foreach>
+  </insert>
+  <insert id="batchInsertSelective" parameterType="map">
+    <!--
+      WARNING - @mbg.generated
+      This element is automatically generated by MyBatis Generator, do not modify.
+      @project https://github.com/itfsw/mybatis-generator-plugin
+    -->
+    insert into t_order (
+    <foreach collection="selective" item="column" separator=",">
+      ${column.escapedColumnName}
+    </foreach>
+    )
+    values
+    <foreach collection="list" item="item" separator=",">
+      (
+      <foreach collection="selective" item="column" separator=",">
+        <if test="'id'.toString() == column.value">
+          #{item.id,jdbcType=BIGINT}
+        </if>
+        <if test="'org'.toString() == column.value">
+          #{item.org,jdbcType=BIGINT}
+        </if>
+        <if test="'number'.toString() == column.value">
+          #{item.number,jdbcType=VARCHAR}
+        </if>
+        <if test="'origin_number'.toString() == column.value">
+          #{item.originNumber,jdbcType=VARCHAR}
+        </if>
+        <if test="'supplier'.toString() == column.value">
+          #{item.supplier,jdbcType=BIGINT}
+        </if>
+        <if test="'creater'.toString() == column.value">
+          #{item.creater,jdbcType=BIGINT}
+        </if>
+        <if test="'create_date'.toString() == column.value">
+          #{item.createDate,jdbcType=TIMESTAMP}
+        </if>
+        <if test="'checker'.toString() == column.value">
+          #{item.checker,jdbcType=BIGINT}
+        </if>
+        <if test="'check_date'.toString() == column.value">
+          #{item.checkDate,jdbcType=TIMESTAMP}
+        </if>
+        <if test="'order_status'.toString() == column.value">
+          #{item.orderStatus,jdbcType=INTEGER}
+        </if>
+        <if test="'deliver_status'.toString() == column.value">
+          #{item.deliverStatus,jdbcType=INTEGER}
+        </if>
+        <if test="'receive_status'.toString() == column.value">
+          #{item.receiveStatus,jdbcType=INTEGER}
+        </if>
+        <if test="'return_status'.toString() == column.value">
+          #{item.returnStatus,jdbcType=INTEGER}
+        </if>
+        <if test="'amount'.toString() == column.value">
+          #{item.amount,jdbcType=DECIMAL}
+        </if>
+        <if test="'purchase_type'.toString() == column.value">
+          #{item.purchaseType,jdbcType=INTEGER}
+        </if>
+        <if test="'purchase_person'.toString() == column.value">
+          #{item.purchasePerson,jdbcType=BIGINT}
+        </if>
+      </foreach>
+      )
+    </foreach>
+  </insert>
+</mapper>
