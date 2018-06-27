@@ -192,6 +192,15 @@
              
         </table>
 
+        <table tableName="t_order" domainObjectName="Order">
+            <property name="useActualColumnNames" value="false"/>
+
+        </table>
+        <table tableName="t_order_entry" domainObjectName="OrderEntry">
+            <property name="useActualColumnNames" value="false"/>
+
+        </table>
+
     </context>
 
 </generatorConfiguration> 
