@@ -4,7 +4,7 @@ import com.kingdee.hrp.sms.common.dao.generate.UserMapper;
 import com.kingdee.hrp.sms.common.model.User;
 import com.kingdee.hrp.sms.common.model.UserExample;
 import com.kingdee.hrp.sms.common.pojo.Condition;
-import com.kingdee.hrp.sms.common.pojo.UserRoleTypeEnum;
+import com.kingdee.hrp.sms.common.enums.UserRoleType;
 import com.kingdee.hrp.sms.common.service.plugin.AbstractPlugInAdapter;
 import com.kingdee.hrp.sms.common.service.plugin.PlugInRet;
 import com.kingdee.hrp.sms.util.Environ;
@@ -153,15 +153,15 @@ public class BaseDataPlugin extends AbstractPlugInAdapter implements Initializin
 
         List<Condition> ret = new ArrayList<Condition>();
 
-        UserRoleTypeEnum userRoleType = getUserRoleType();
+        UserRoleType userRoleType = getUserRoleType();
         Long linkOrg = getUserLinkOrg();
 
-        if (userRoleType == UserRoleTypeEnum.SYSTEM) {
+        if (userRoleType == UserRoleType.SYSTEM) {
             // 系统角色类别放开所有数据查看权限
             return ret;
         }
 
-        if (userRoleType == UserRoleTypeEnum.HOSPITAL) {
+        if (userRoleType == UserRoleType.HOSPITAL) {
             // 当前是医院角色的用户在操作
 
             if (classId == 1001 || classId == 1002) {
@@ -188,7 +188,7 @@ public class BaseDataPlugin extends AbstractPlugInAdapter implements Initializin
 
         }
 
-        if (userRoleType == UserRoleTypeEnum.SUPPLIER) {
+        if (userRoleType == UserRoleType.SUPPLIER) {
             // 当前是供应商角色的用户在操作
 
             if (classId == 1001 || classId == 1002) {

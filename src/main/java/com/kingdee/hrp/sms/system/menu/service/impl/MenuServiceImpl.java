@@ -6,8 +6,8 @@ import com.kingdee.hrp.sms.common.model.FormAction;
 import com.kingdee.hrp.sms.common.model.FormActionExample;
 import com.kingdee.hrp.sms.common.model.Menu;
 import com.kingdee.hrp.sms.common.model.MenuExample;
-import com.kingdee.hrp.sms.common.pojo.AccessMaskEnum;
-import com.kingdee.hrp.sms.common.pojo.UserRoleTypeEnum;
+import com.kingdee.hrp.sms.common.enums.AccessMask;
+import com.kingdee.hrp.sms.common.enums.UserRoleType;
 import com.kingdee.hrp.sms.common.service.BaseService;
 import com.kingdee.hrp.sms.system.menu.service.MenuService;
 import com.kingdee.hrp.sms.system.user.service.UserService;
@@ -55,7 +55,7 @@ public class MenuServiceImpl extends BaseService implements MenuService {
 
         List<Menu> menus = menuMapper.selectByExample(example);
 
-        UserRoleTypeEnum userRoleType = SessionUtil.getUserRoleType();
+        UserRoleType userRoleType = SessionUtil.getUserRoleType();
         // 用户所属组织
         Long userLinkOrg = SessionUtil.getUserLinkOrg();
 
@@ -64,7 +64,7 @@ public class MenuServiceImpl extends BaseService implements MenuService {
         FormActionExample formActionExample = new FormActionExample();
         FormActionExample.Criteria criteria = formActionExample.createCriteria();
         // 只查询查看权限，有查看权限才可能需要显示菜单
-        criteria.andAccessMaskEqualTo(AccessMaskEnum.VIEW.getNumber());
+        criteria.andAccessMaskEqualTo(AccessMask.VIEW.getNumber());
 
         List<FormAction> formActions = formActionMapper.selectByExample(formActionExample);
 
@@ -93,7 +93,7 @@ public class MenuServiceImpl extends BaseService implements MenuService {
                     // 是这个用户类别可见的菜单
                     Integer accessMask = roleAccessControl.get(formActionId);
                     if (accessMask != null &&
-                            (accessMask & AccessMaskEnum.VIEW.getNumber()) == AccessMaskEnum.VIEW.getNumber()) {
+                            (accessMask & AccessMask.VIEW.getNumber()) == AccessMask.VIEW.getNumber()) {
                         // 查看权限是1，判断是否有查看权限(此处为有权限)
                         ret.add(menu);
                         break;

@@ -8,9 +8,9 @@ import com.kingdee.hrp.sms.common.dao.generate.*;
 import com.kingdee.hrp.sms.common.exception.BusinessLogicRunTimeException;
 import com.kingdee.hrp.sms.common.filter.SmsPropertyPlaceholderConfigurer;
 import com.kingdee.hrp.sms.common.model.*;
-import com.kingdee.hrp.sms.common.pojo.BaseStatusEnum;
+import com.kingdee.hrp.sms.common.enums.BaseStatus;
 import com.kingdee.hrp.sms.common.pojo.RegisterModel;
-import com.kingdee.hrp.sms.common.pojo.UserRoleTypeEnum;
+import com.kingdee.hrp.sms.common.enums.UserRoleType;
 import com.kingdee.hrp.sms.common.service.BaseService;
 import com.kingdee.hrp.sms.system.user.service.UserService;
 import com.kingdee.hrp.sms.util.Common;
@@ -73,7 +73,7 @@ public class UserServiceImpl extends BaseService implements UserService {
         setDefaultPermission(role);
 
         // 给生成的医院/供应商组织设置系统默认参数
-        if (registerModel.getUserType() != UserRoleTypeEnum.SYSTEM.getNumber().intValue()) {
+        if (registerModel.getUserType() != UserRoleType.SYSTEM.getNumber().intValue()) {
             setDefaultSystemSetting(registerModel.getUserType(), orgId);
         }
 
@@ -492,10 +492,10 @@ public class UserServiceImpl extends BaseService implements UserService {
         criteria.andReceiverOrgEqualTo(org);
         if (type == 0) {
             // 未处理消息
-            criteria.andStatusEqualTo(BaseStatusEnum.UN_PROCESSED.getNumber());
+            criteria.andStatusEqualTo(BaseStatus.UN_PROCESSED.getNumber());
         } else if (type == 1) {
             // 已处理消息
-            criteria.andStatusEqualTo(BaseStatusEnum.PROCESSED.getNumber());
+            criteria.andStatusEqualTo(BaseStatus.PROCESSED.getNumber());
         }
 
         example.orderBy(Message.Column.date.desc());
@@ -551,7 +551,7 @@ public class UserServiceImpl extends BaseService implements UserService {
                 Supplier supplier = mapper.selectByPrimaryKey(receiverOrg);
                 item.put("receiverOrg", supplier);
             }
-            item.put("status", BaseStatusEnum.getBaseStatusEnum(messageStatus).getName());
+            item.put("status", BaseStatus.getBaseStatus(messageStatus).getName());
 
             messageList.add(item);
         }
@@ -580,7 +580,7 @@ public class UserServiceImpl extends BaseService implements UserService {
 
         Message message = new Message();
         message.setId(id);
-        message.setStatus(BaseStatusEnum.PROCESSED.getNumber());
+        message.setStatus(BaseStatus.PROCESSED.getNumber());
 
         messageMapper.updateByPrimaryKeySelective(message);
     }
@@ -610,7 +610,7 @@ public class UserServiceImpl extends BaseService implements UserService {
             // 供应商
             cooperationApplyExampleCriteria.andSupplierEqualTo(org);
         }
-        cooperationApplyExampleCriteria.andStatusEqualTo(BaseStatusEnum.UN_PROCESSED.getNumber());
+        cooperationApplyExampleCriteria.andStatusEqualTo(BaseStatus.UN_PROCESSED.getNumber());
 
         List<CooperationApply> cooperationApplies = cooperationApplyMapper.selectByExample(cooperationApplyExample);
 
@@ -634,7 +634,7 @@ public class UserServiceImpl extends BaseService implements UserService {
      */
     private void validateRegisterModel(RegisterModel registerModel) {
 
-        if (UserRoleTypeEnum.getUserRoleTypeEnum(registerModel.getUserType()) == UserRoleTypeEnum.NOT_SUPPORT) {
+        if (UserRoleType.getUserRoleType(registerModel.getUserType()) == UserRoleType.NOT_SUPPORT) {
             logger.error("缺少或错误的注册用户类别");
             throw new BusinessLogicRunTimeException("缺少或错误的注册用户类别");
         }
@@ -659,13 +659,13 @@ public class UserServiceImpl extends BaseService implements UserService {
             throw new BusinessLogicRunTimeException("缺少手机号码");
         }
 
-        if (registerModel.getUserType() == UserRoleTypeEnum.HOSPITAL.getNumber().intValue()
+        if (registerModel.getUserType() == UserRoleType.HOSPITAL.getNumber().intValue()
                 && StringUtils.isBlank(registerModel.getRegistrationNo())) {
             logger.error("缺少医疗机构登记号");
             throw new BusinessLogicRunTimeException("缺少医疗机构登记号");
         }
 
-        if (registerModel.getUserType() == UserRoleTypeEnum.SUPPLIER.getNumber().intValue()
+        if (registerModel.getUserType() == UserRoleType.SUPPLIER.getNumber().intValue()
                 && StringUtils.isBlank(registerModel.getCreditCode())) {
             logger.error("缺少企业统一信用代码");
             throw new BusinessLogicRunTimeException("缺少企业统一信用代码");
@@ -691,9 +691,9 @@ public class UserServiceImpl extends BaseService implements UserService {
     private Long generateOrg(RegisterModel registerModel) {
 
         Long orgId;
-        if (registerModel.getUserType() == UserRoleTypeEnum.SYSTEM.getNumber().intValue()) {
+        if (registerModel.getUserType() == UserRoleType.SYSTEM.getNumber().intValue()) {
             throw new BusinessLogicRunTimeException("暂不提供系统用户注册权限!");
-        } else if (registerModel.getUserType() == UserRoleTypeEnum.HOSPITAL.getNumber().intValue()) {
+        } else if (registerModel.getUserType() == UserRoleType.HOSPITAL.getNumber().intValue()) {
             // 医院用户注册
             HospitalMapper hospitalMapper = sqlSession.getMapper(HospitalMapper.class);
             orgId = getId();
@@ -706,7 +706,7 @@ public class UserServiceImpl extends BaseService implements UserService {
             hospital.setId(orgId);
 
             hospitalMapper.insertSelective(hospital);
-        } else if (registerModel.getUserType() == UserRoleTypeEnum.SUPPLIER.getNumber().intValue()) {
+        } else if (registerModel.getUserType() == UserRoleType.SUPPLIER.getNumber().intValue()) {
             // 供应商注册
             SupplierMapper supplierMapper = sqlSession.getMapper(SupplierMapper.class);
             orgId = getId();
@@ -800,9 +800,9 @@ public class UserServiceImpl extends BaseService implements UserService {
 
         String roleTypeName = "";
 
-        if (role.getType() == UserRoleTypeEnum.HOSPITAL.getNumber().intValue()) {
+        if (role.getType() == UserRoleType.HOSPITAL.getNumber().intValue()) {
             roleTypeName = "hospital";
-        } else if (role.getType() == UserRoleTypeEnum.SUPPLIER.getNumber().intValue()) {
+        } else if (role.getType() == UserRoleType.SUPPLIER.getNumber().intValue()) {
             roleTypeName = "supplier";
         } else {
             logger.error("不支持该类别角色默认权限设置");

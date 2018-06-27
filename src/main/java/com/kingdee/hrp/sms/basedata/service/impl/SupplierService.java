@@ -7,8 +7,8 @@ import com.kingdee.hrp.sms.common.dao.generate.PartnerMapper;
 import com.kingdee.hrp.sms.common.dao.generate.SupplierMapper;
 import com.kingdee.hrp.sms.common.exception.BusinessLogicRunTimeException;
 import com.kingdee.hrp.sms.common.model.*;
-import com.kingdee.hrp.sms.common.pojo.BaseStatusEnum;
-import com.kingdee.hrp.sms.common.pojo.UserRoleTypeEnum;
+import com.kingdee.hrp.sms.common.enums.BaseStatus;
+import com.kingdee.hrp.sms.common.enums.UserRoleType;
 import com.kingdee.hrp.sms.common.service.BaseService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -88,7 +88,7 @@ public class SupplierService extends BaseService implements ISupplierService {
         apply.setId(applyId);
         apply.setSupplier(supplier);
         apply.setHospital(hospital);
-        apply.setStatus(BaseStatusEnum.UN_PROCESSED.getNumber());
+        apply.setStatus(BaseStatus.UN_PROCESSED.getNumber());
         apply.setDate(applyDate);
 
         mapper.insert(apply);
@@ -99,14 +99,14 @@ public class SupplierService extends BaseService implements ISupplierService {
         message.setId(getId());
         // 消息类别，参考t_assistance表type_id=40的记录
         message.setType(1);
-        message.setStatus(BaseStatusEnum.UN_PROCESSED.getNumber());
+        message.setStatus(BaseStatus.UN_PROCESSED.getNumber());
         message.setDate(applyDate);
         // 扩展数据中保存了申请id
         message.setData(applyId.toString());
 
-        message.setReceiverType(UserRoleTypeEnum.HOSPITAL.getNumber());
+        message.setReceiverType(UserRoleType.HOSPITAL.getNumber());
         message.setReceiverOrg(hospital);
-        message.setSenderType(UserRoleTypeEnum.SUPPLIER.getNumber());
+        message.setSenderType(UserRoleType.SUPPLIER.getNumber());
         message.setSenderOrg(supplier);
 
         message.setTopic("收到一个申请，希望成为您医院的供应商");

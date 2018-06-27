@@ -9,6 +9,8 @@ import com.kingdee.hrp.sms.common.dao.generate.FormActionMapper;
 import com.kingdee.hrp.sms.common.dao.generate.FormClassEntryMapper;
 import com.kingdee.hrp.sms.common.dao.generate.FormClassMapper;
 import com.kingdee.hrp.sms.common.dao.generate.FormFieldsMapper;
+import com.kingdee.hrp.sms.common.enums.CtrlType;
+import com.kingdee.hrp.sms.common.enums.UserRoleType;
 import com.kingdee.hrp.sms.common.exception.BusinessLogicRunTimeException;
 import com.kingdee.hrp.sms.common.exception.PlugInRuntimeException;
 import com.kingdee.hrp.sms.common.model.*;
@@ -144,10 +146,10 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
     @Override
     public List getFormAction(Integer classId, Integer type) {
 
-        UserRoleTypeEnum userRoleType = SessionUtil.getUserRoleType();
+        UserRoleType userRoleType = SessionUtil.getUserRoleType();
 
         // 按钮可用性-跟FormFields 模板中display字段配置规则一致
-        int ownerType = userRoleType == UserRoleTypeEnum.SYSTEM ? 1 : userRoleType == UserRoleTypeEnum.HOSPITAL ? 2 : 4;
+        int ownerType = userRoleType == UserRoleType.SYSTEM ? 1 : userRoleType == UserRoleType.HOSPITAL ? 2 : 4;
         // 按钮显示性
         int display = 0;
 
@@ -1596,12 +1598,12 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
             String fieldName = sqlColumnName;
 
             // 模板字段的数据类型(数字，本文，日期，布尔)
-            CtrlTypeEnum ctrlTypeEnum = CtrlTypeEnum.getTypeEnum(ctrlType);
+            CtrlType ctrlTypeEnum = CtrlType.getType(ctrlType);
 
             if (needConvert && lookUpType > 0) {
                 // 只有引用类型有转换与非转换情况
                 // 需要转换为名称查询的引用类型的查询条件，dataType可能不是文本类型，但条件值是文本，需要文本格式化，此处修正值格式化类型
-                ctrlTypeEnum = CtrlTypeEnum.TEXT;
+                ctrlTypeEnum = CtrlType.TEXT;
             }
 
             switch (ctrlTypeEnum) {
@@ -2087,7 +2089,7 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
             // 值
             JsonNode dataNode = data.findValue(key);
             // 目标转义值(默认String)
-            Object value = transformValue(dataNode, CtrlTypeEnum.getTypeEnum(formField.getCtrlType()));
+            Object value = transformValue(dataNode, CtrlType.getType(formField.getCtrlType()));
 
             // 子表的外键值为主表主键值，有后台生成
             if (key.equalsIgnoreCase(foreignKey)) {
@@ -2331,7 +2333,7 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
             // 值
             JsonNode dataNode = data.findValue(key);
             // 目标转义值(默认String)
-            Object value = transformValue(dataNode, CtrlTypeEnum.getTypeEnum(formField.getCtrlType()));
+            Object value = transformValue(dataNode, CtrlType.getType(formField.getCtrlType()));
 
             if (!StringUtils.isNotBlank(fieldName)) {
                 // 理论上不应该出现，执行到此可能是模板配置错误
@@ -2362,7 +2364,7 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
      * @param ctrlType 字段类型
      * @return 转换后的类型
      */
-    private Object transformValue(JsonNode dataNode, CtrlTypeEnum ctrlType) {
+    private Object transformValue(JsonNode dataNode, CtrlType ctrlType) {
 
         Object value;
 
