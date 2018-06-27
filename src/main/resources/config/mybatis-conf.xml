@@ -88,6 +88,8 @@
         <mapper resource="mapper/generate/CooperationApplyMapper.xml"/>
         <mapper resource="mapper/generate/MessageMapper.xml"/>
         <mapper resource="mapper/generate/SystemSettingMapper.xml"/>
+        <mapper resource="mapper/generate/OrderMapper.xml"/>
+        <mapper resource="mapper/generate/OrderEntryMapper.xml"/>
 
         <!-- =============================== 生成工具生成Mapper ========================end==== -->
 

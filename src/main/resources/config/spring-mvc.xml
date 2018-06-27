@@ -24,6 +24,7 @@
                 <entry value-type="java.lang.String" key="/manager/user/logout" value="/manager/user/logout"/>
                 <entry value-type="java.lang.String" key="/manager/user/register" value="/manager/user/register"/>
                 <entry value-type="java.lang.String" key="/manager/user/getVerificationCode" value="/manager/user/getVerificationCode"/>
+                <entry value-type="java.lang.String" key="/manager/order/getOrder" value="/manager/order/getOrder"/>
             </map>
         </property>
         <property name="clientUrls">
