@@ -69,7 +69,7 @@ public interface OrderService {
      *
      * @return OrderExample
      */
-    default OrderExample getOrderExample() {
+    default OrderExample.Criteria getOrderExample() {
 
         OrderExample orderExample = new OrderExample();
 
@@ -78,6 +78,6 @@ public interface OrderService {
             orderExample.createCriteria().andOrgEqualTo(SessionUtil.getUserLinkOrg());
         }
 
-        return orderExample;
+        return orderExample.getOredCriteria().get(0);
     }
 }

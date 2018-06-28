@@ -40,10 +40,10 @@ public class OrderServiceImpl extends BaseService implements OrderService {
 
         OrderMapper orderMapper = sqlSession.getMapper(OrderMapper.class);
 
-        OrderExample orderExample = getOrderExample();
+        OrderExample.Criteria criteria = getOrderExample();
 
-        orderExample.or(orderExample.createCriteria().andIdEqualTo(orderId));
-        List<Order> orders = orderMapper.selectByExample(orderExample);
+        criteria.andIdEqualTo(orderId);
+        List<Order> orders = orderMapper.selectByExample(criteria.example());
 
         if (CollectionUtils.isEmpty(orders)) {
             logger.error("不存在id为{}的订单", orderId);
