@@ -2,8 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kingdee.hrp.sms.common.dao.generate.AssistanceMapper">
   <resultMap id="BaseResultMap" type="com.kingdee.hrp.sms.common.model.Assistance">
-    <id column="detail_id" jdbcType="INTEGER" property="detailId" />
-    <id column="type_id" jdbcType="INTEGER" property="typeId" />
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <id column="type" jdbcType="INTEGER" property="type" />
     <result column="number" jdbcType="VARCHAR" property="number" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="enable" jdbcType="BIT" property="enable" />
@@ -68,7 +68,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    detail_id, type_id, `number`, `name`, `enable`, `index`
+    id, `type`, `number`, `name`, `enable`, `index`
   </sql>
   <select id="selectByExample" parameterType="com.kingdee.hrp.sms.common.model.AssistanceExample" resultMap="BaseResultMap">
     select
@@ -88,13 +88,13 @@
     select 
     <include refid="Base_Column_List" />
     from t_assistance
-    where detail_id = #{detailId,jdbcType=INTEGER}
-      and type_id = #{typeId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+      and `type` = #{type,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="com.kingdee.hrp.sms.common.model.AssistanceKey">
     delete from t_assistance
-    where detail_id = #{detailId,jdbcType=INTEGER}
-      and type_id = #{typeId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+      and `type` = #{type,jdbcType=INTEGER}
   </delete>
   <delete id="deleteByExample" parameterType="com.kingdee.hrp.sms.common.model.AssistanceExample">
     delete from t_assistance
@@ -103,19 +103,19 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.kingdee.hrp.sms.common.model.Assistance">
-    insert into t_assistance (detail_id, type_id, `number`, 
+    insert into t_assistance (id, `type`, `number`, 
       `name`, `enable`, `index`)
-    values (#{detailId,jdbcType=INTEGER}, #{typeId,jdbcType=INTEGER}, #{number,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{number,jdbcType=VARCHAR}, 
       #{name,jdbcType=VARCHAR}, #{enable,jdbcType=BIT}, #{index,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.kingdee.hrp.sms.common.model.Assistance">
     insert into t_assistance
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="detailId != null">
-        detail_id,
+      <if test="id != null">
+        id,
       </if>
-      <if test="typeId != null">
-        type_id,
+      <if test="type != null">
+        `type`,
       </if>
       <if test="number != null">
         `number`,
@@ -131,11 +131,11 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="detailId != null">
-        #{detailId,jdbcType=INTEGER},
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
       </if>
-      <if test="typeId != null">
-        #{typeId,jdbcType=INTEGER},
+      <if test="type != null">
+        #{type,jdbcType=INTEGER},
       </if>
       <if test="number != null">
         #{number,jdbcType=VARCHAR},
@@ -160,11 +160,11 @@
   <update id="updateByExampleSelective" parameterType="map">
     update t_assistance
     <set>
-      <if test="record.detailId != null">
-        detail_id = #{record.detailId,jdbcType=INTEGER},
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.typeId != null">
-        type_id = #{record.typeId,jdbcType=INTEGER},
+      <if test="record.type != null">
+        `type` = #{record.type,jdbcType=INTEGER},
       </if>
       <if test="record.number != null">
         `number` = #{record.number,jdbcType=VARCHAR},
@@ -185,8 +185,8 @@
   </update>
   <update id="updateByExample" parameterType="map">
     update t_assistance
-    set detail_id = #{record.detailId,jdbcType=INTEGER},
-      type_id = #{record.typeId,jdbcType=INTEGER},
+    set id = #{record.id,jdbcType=INTEGER},
+      `type` = #{record.type,jdbcType=INTEGER},
       `number` = #{record.number,jdbcType=VARCHAR},
       `name` = #{record.name,jdbcType=VARCHAR},
       `enable` = #{record.enable,jdbcType=BIT},
@@ -211,8 +211,8 @@
         `index` = #{index,jdbcType=INTEGER},
       </if>
     </set>
-    where detail_id = #{detailId,jdbcType=INTEGER}
-      and type_id = #{typeId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+      and `type` = #{type,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.kingdee.hrp.sms.common.model.Assistance">
     update t_assistance
@@ -220,8 +220,8 @@
       `name` = #{name,jdbcType=VARCHAR},
       `enable` = #{enable,jdbcType=BIT},
       `index` = #{index,jdbcType=INTEGER}
-    where detail_id = #{detailId,jdbcType=INTEGER}
-      and type_id = #{typeId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+      and `type` = #{type,jdbcType=INTEGER}
   </update>
   <insert id="batchInsert" parameterType="map">
     <!--
@@ -230,10 +230,10 @@
       @project https://github.com/itfsw/mybatis-generator-plugin
     -->
     insert into t_assistance
-    (detail_id, type_id, `number`, `name`, `enable`, `index`)
+    (id, `type`, `number`, `name`, `enable`, `index`)
     values
     <foreach collection="list" item="item" separator=",">
-      (#{item.detailId,jdbcType=INTEGER}, #{item.typeId,jdbcType=INTEGER}, #{item.number,jdbcType=VARCHAR}, 
+      (#{item.id,jdbcType=INTEGER}, #{item.type,jdbcType=INTEGER}, #{item.number,jdbcType=VARCHAR}, 
         #{item.name,jdbcType=VARCHAR}, #{item.enable,jdbcType=BIT}, #{item.index,jdbcType=INTEGER}
         )
     </foreach>
@@ -253,11 +253,11 @@
     <foreach collection="list" item="item" separator=",">
       (
       <foreach collection="selective" item="column" separator=",">
-        <if test="'detail_id'.toString() == column.value">
-          #{item.detailId,jdbcType=INTEGER}
+        <if test="'id'.toString() == column.value">
+          #{item.id,jdbcType=INTEGER}
         </if>
-        <if test="'type_id'.toString() == column.value">
-          #{item.typeId,jdbcType=INTEGER}
+        <if test="'type'.toString() == column.value">
+          #{item.type,jdbcType=INTEGER}
         </if>
         <if test="'number'.toString() == column.value">
           #{item.number,jdbcType=VARCHAR}

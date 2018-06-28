@@ -5,26 +5,26 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class AssistanceKey implements Serializable {
-    private Integer detailId;
+    private Integer id;
 
-    private Integer typeId;
+    private Integer type;
 
     private static final long serialVersionUID = 1L;
 
-    public Integer getDetailId() {
-        return detailId;
+    public Integer getId() {
+        return id;
     }
 
-    public void setDetailId(Integer detailId) {
-        this.detailId = detailId;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-    public Integer getTypeId() {
-        return typeId;
+    public Integer getType() {
+        return type;
     }
 
-    public void setTypeId(Integer typeId) {
-        this.typeId = typeId;
+    public void setType(Integer type) {
+        this.type = type;
     }
 
     @Override
@@ -33,8 +33,8 @@ public class AssistanceKey implements Serializable {
         sb.append(getClass().getSimpleName());
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
-        sb.append(", detailId=").append(detailId);
-        sb.append(", typeId=").append(typeId);
+        sb.append(", id=").append(id);
+        sb.append(", type=").append(type);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();
@@ -48,8 +48,8 @@ public class AssistanceKey implements Serializable {
      * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     public enum Column {
-        detailId("detail_id", "detailId", "INTEGER", false),
-        typeId("type_id", "typeId", "INTEGER", false),
+        id("id", "id", "INTEGER", false),
+        type("type", "type", "INTEGER", true),
         number("number", "number", "VARCHAR", true),
         name("name", "name", "VARCHAR", true),
         enable("enable", "enable", "BIT", true),

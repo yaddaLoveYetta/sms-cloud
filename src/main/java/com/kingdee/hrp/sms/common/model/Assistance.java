@@ -70,8 +70,8 @@ public class Assistance extends AssistanceKey implements Serializable {
      * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     public enum Column {
-        detailId("detail_id", "detailId", "INTEGER", false),
-        typeId("type_id", "typeId", "INTEGER", false),
+        id("id", "id", "INTEGER", false),
+        type("type", "type", "INTEGER", true),
         number("number", "number", "VARCHAR", true),
         name("name", "name", "VARCHAR", true),
         enable("enable", "enable", "BIT", true),
