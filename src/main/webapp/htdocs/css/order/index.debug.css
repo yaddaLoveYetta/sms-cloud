@@ -1,0 +1,52 @@
+.order-item {
+    border: 1px solid red;
+}
+
+.order-item > .row {
+    margin-left: 0px !important;
+    margin-right: 0px !important;
+}
+
+.order-item > .row > .form-inline {
+    padding: 5px;
+}
+
+.order-item > .row > .form-inline > label.status > i {
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.detail-content {
+    clear: both;
+    display: table;
+}
+
+.detail-content .td {
+    float: left;
+}
+
+.detail-content .td {
+    margin: 0 5px 0 5px;
+}
+
+.detail-content .td.td-chk {
+    min-width: 30px;
+    text-align: center;
+}
+
+.detail-content .td.td-item div {
+    margin-right: 10px;
+}
+
+.detail-content .td.td-item .item-img {
+    float: left;
+}
+
+.detail-content .td.td-item .item-info {
+    float: right;
+    min-width: 40px;
+    max-width: 200px;
+}
+.detail-content .td.td-item .item-info .item-other-info .promo-logos{
+    min-height: 20px;
+}
