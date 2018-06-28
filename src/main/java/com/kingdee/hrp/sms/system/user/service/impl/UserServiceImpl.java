@@ -5,12 +5,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.kingdee.hrp.sms.common.dao.generate.*;
+import com.kingdee.hrp.sms.common.enums.CooperationApplyStatus;
+import com.kingdee.hrp.sms.common.enums.MessageStatus;
+import com.kingdee.hrp.sms.common.enums.UserRoleType;
 import com.kingdee.hrp.sms.common.exception.BusinessLogicRunTimeException;
 import com.kingdee.hrp.sms.common.filter.SmsPropertyPlaceholderConfigurer;
 import com.kingdee.hrp.sms.common.model.*;
-import com.kingdee.hrp.sms.common.enums.BaseStatus;
 import com.kingdee.hrp.sms.common.pojo.RegisterModel;
-import com.kingdee.hrp.sms.common.enums.UserRoleType;
 import com.kingdee.hrp.sms.common.service.BaseService;
 import com.kingdee.hrp.sms.system.user.service.UserService;
 import com.kingdee.hrp.sms.util.Common;
@@ -492,10 +493,10 @@ public class UserServiceImpl extends BaseService implements UserService {
         criteria.andReceiverOrgEqualTo(org);
         if (type == 0) {
             // 未处理消息
-            criteria.andStatusEqualTo(BaseStatus.UN_PROCESSED.getNumber());
+            criteria.andStatusEqualTo(CooperationApplyStatus.UN_PROCESSED.getNumber());
         } else if (type == 1) {
             // 已处理消息
-            criteria.andStatusEqualTo(BaseStatus.PROCESSED.getNumber());
+            criteria.andStatusEqualTo(CooperationApplyStatus.PROCESSED.getNumber());
         }
 
         example.orderBy(Message.Column.date.desc());
@@ -551,7 +552,7 @@ public class UserServiceImpl extends BaseService implements UserService {
                 Supplier supplier = mapper.selectByPrimaryKey(receiverOrg);
                 item.put("receiverOrg", supplier);
             }
-            item.put("status", BaseStatus.getBaseStatus(messageStatus).getName());
+            item.put("status", CooperationApplyStatus.getCooperationApplyStatus(messageStatus).getName());
 
             messageList.add(item);
         }
@@ -580,7 +581,7 @@ public class UserServiceImpl extends BaseService implements UserService {
 
         Message message = new Message();
         message.setId(id);
-        message.setStatus(BaseStatus.PROCESSED.getNumber());
+        message.setStatus(MessageStatus.PROCESSED.getNumber());
 
         messageMapper.updateByPrimaryKeySelective(message);
     }
@@ -610,7 +611,7 @@ public class UserServiceImpl extends BaseService implements UserService {
             // 供应商
             cooperationApplyExampleCriteria.andSupplierEqualTo(org);
         }
-        cooperationApplyExampleCriteria.andStatusEqualTo(BaseStatus.UN_PROCESSED.getNumber());
+        cooperationApplyExampleCriteria.andStatusEqualTo(CooperationApplyStatus.UN_PROCESSED.getNumber());
 
         List<CooperationApply> cooperationApplies = cooperationApplyMapper.selectByExample(cooperationApplyExample);
 

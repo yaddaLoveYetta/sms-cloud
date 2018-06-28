@@ -5,7 +5,7 @@ package com.kingdee.hrp.sms.common.enums;
  *
  * @author yadda
  */
-
+@Deprecated
 public enum BaseStatus {
 
     NOT_SUPPORT(-1, "不支持的状态"), ADD(0, "新增"), SAVE(1, "保存"), UN_AUDITED(2, "未审核"), AUDITED(3, "已审核"),
