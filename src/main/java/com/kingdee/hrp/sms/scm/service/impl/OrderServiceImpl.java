@@ -22,7 +22,7 @@ import java.util.List;
  * @date 2018/6/27 23:44
  */
 @Service
-public class OrderServiceImpl extends BaseService implements OrderService {
+public class OrderServiceImpl extends AbstractOrderService implements OrderService {
 
     private static Logger logger = LoggerFactory.getLogger(OrderServiceImpl.class);
 

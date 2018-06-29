@@ -6,7 +6,9 @@ import com.kingdee.hrp.sms.common.model.OrderExample;
 import com.kingdee.hrp.sms.common.pojo.Condition;
 import com.kingdee.hrp.sms.common.pojo.Sort;
 import com.kingdee.hrp.sms.util.SessionUtil;
+import com.sun.jdi.PrimitiveValue;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 /**
@@ -16,6 +18,8 @@ import java.util.List;
  * @date 2018/6/27 23:41
  */
 public interface OrderService {
+
+    SimpleDateFormat sfDate = new SimpleDateFormat("yyyyMMddHHmmssSSS");
     /**
      * 获取一张订单信息
      *
@@ -32,52 +36,6 @@ public interface OrderService {
      * @param pageSize   分页大小
      * @param pageNo     当前页码
      */
-
     List<Order> getOrders(List<Condition> conditions, List<Sort> sorts, Integer pageSize, Integer pageNo);
 
-
-    /**
-     * 订单通用条件
-     * 主要是所属组织的数据过滤
-     * <p>
-     * 如果当前用户时系统管理员类型，不加组织条件
-     *
-     * @param orderExample OrderExample
-     * @return OrderExample
-     */
-    default OrderExample getOrderExample(OrderExample orderExample) {
-
-        if (SessionUtil.getUserRoleType() != UserRoleType.SYSTEM) {
-            // 供应商或医院时加org条件
-            if (orderExample.getOredCriteria().size() == 1) {
-                // 只有一个Criteria，将org添加加入该Criteria
-                orderExample.getOredCriteria().get(0).andOrgEqualTo(SessionUtil.getUserLinkOrg());
-            } else {
-                // 没有或多个Criteria，创建Criteria
-                if (SessionUtil.getUserRoleType() != UserRoleType.SYSTEM) {
-                    orderExample.createCriteria().andOrgEqualTo(SessionUtil.getUserLinkOrg());
-                }
-            }
-        }
-
-        return orderExample;
-    }
-
-    /**
-     * 订单通用条件
-     * 主要是所属组织的数据过滤
-     *
-     * @return OrderExample
-     */
-    default OrderExample.Criteria getOrderExample() {
-
-        OrderExample orderExample = new OrderExample();
-
-        if (SessionUtil.getUserRoleType() != UserRoleType.SYSTEM) {
-            // 供应商或医院时加org条件
-            orderExample.createCriteria().andOrgEqualTo(SessionUtil.getUserLinkOrg());
-        }
-
-        return orderExample.getOredCriteria().get(0);
-    }
 }

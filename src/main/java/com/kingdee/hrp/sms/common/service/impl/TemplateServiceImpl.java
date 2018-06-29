@@ -1523,10 +1523,10 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
             boolean skip = false;
 
             // AND OR 条件链接符号-默认AND
-            Condition.LinkTypeEnum linkType = condition.getLinkType();
+            Condition.LinkType linkType = condition.getLinkType();
 
             // 第一个条件忽略连接关系
-            linkType = i == 0 ? Condition.LinkTypeEnum.NULL : linkType;
+            linkType = i == 0 ? Condition.LinkType.NULL : linkType;
 
             // 左括号-可能有多个，如 "(("，甚至"((("等复杂查询,默认"("
             String leftParenTheses = condition.getLeftParenTheses();
@@ -1539,9 +1539,9 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
             }
 
             // 比较符号
-            Condition.LogicOperatorEnum logicOperator = condition.getLogicOperator();
+            Condition.LogicOperator logicOperator = condition.getLogicOperator();
 
-            if (logicOperator == Condition.LogicOperatorEnum.NOT_SUPPORT) {
+            if (logicOperator == Condition.LogicOperator.NOT_SUPPORT) {
                 throw new BusinessLogicRunTimeException("参数错误：condition必须包含正确的logicOperator");
             }
 
@@ -1626,10 +1626,10 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
                 break;
             case TEXT:
             case TEXTAREA:
-                if (logicOperator == Condition.LogicOperatorEnum.LIKE) {
+                if (logicOperator == Condition.LogicOperator.LIKE) {
                     // 不处理，调用者控制左匹配%xxx或右匹配xxx%或全匹配%xxx%
                     //value = "%" + value + "%";
-                } else if (logicOperator == Condition.LogicOperatorEnum.IN) {
+                } else if (logicOperator == Condition.LogicOperator.IN) {
                     // 不适用此系统动态查询方式，对于IN，手工拼接脚本
                     preValue = "(";
                     sufValue = ")";
@@ -1637,12 +1637,12 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
                 }
                 break;
             case DATETIME:
-                if (logicOperator == Condition.LogicOperatorEnum.LESS_OR_EQUAL) {
+                if (logicOperator == Condition.LogicOperator.LESS_OR_EQUAL) {
                     if (!Common.isLongDate(String.valueOf(value))) {
                         // 由于数据库中日期可能存储有时分秒，过滤天时过滤到当前23:59:59
                         value = value + " 23:59:59";
                     }
-                } else if (logicOperator == Condition.LogicOperatorEnum.GREATER_OR_EQUAL) {
+                } else if (logicOperator == Condition.LogicOperator.GREATER_OR_EQUAL) {
                     if (!Common.isLongDate(String.valueOf(value))) {
                         value = value + " 00:00:00";
                     }
@@ -1670,10 +1670,10 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
                     break;
                 case TEXT:
 
-                    if (logicOperator == Condition.LogicOperatorEnum.LIKE) {
+                    if (logicOperator == Condition.LogicOperator.LIKE) {
                         // 不处理，调用者控制左匹配%xxx或右匹配xxx%或全匹配%xxx%
                         //value = "%" + value + "%";
-                    } else if (logicOperator == Condition.LogicOperatorEnum.IN) {
+                    } else if (logicOperator == Condition.LogicOperator.IN) {
                         // 不适用此系统动态查询方式，对于IN，手工拼接脚本
                         preValue = "(";
                         sufValue = ")";
@@ -1681,12 +1681,12 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
                     }
                     break;
                 case TIME:
-                    if (logicOperator == Condition.LogicOperatorEnum.LESS_OR_EQUAL) {
+                    if (logicOperator == Condition.LogicOperator.LESS_OR_EQUAL) {
                         if (!Common.isLongDate(String.valueOf(value))) {
                             // 由于数据库中日期可能存储有时分秒，过滤天时过滤到当前23:59:59
                             value = value + " 23:59:59";
                         }
-                    } else if (logicOperator == Condition.LogicOperatorEnum.GREATER_OR_EQUAL) {
+                    } else if (logicOperator == Condition.LogicOperator.GREATER_OR_EQUAL) {
                         if (!Common.isLongDate(String.valueOf(value))) {
                             value = value + " 00:00:00";
                         }
@@ -1781,8 +1781,8 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
             } else {
                 // 动态脚本
 
-                if (logicOperator == Condition.LogicOperatorEnum.NULL ||
-                        logicOperator == Condition.LogicOperatorEnum.NOT_NULL) {
+                if (logicOperator == Condition.LogicOperator.NULL ||
+                        logicOperator == Condition.LogicOperator.NOT_NULL) {
                     // is null || is not null 不需要比较值
                     sbWhere.append(separator).append(String
                             .format("%s %s %s.%s%s%s %s %s", linkType.getName(), leftParenTheses, tableName, bDelimiter,

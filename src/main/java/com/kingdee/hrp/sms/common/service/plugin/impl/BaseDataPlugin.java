@@ -167,9 +167,9 @@ public class BaseDataPlugin extends AbstractPlugInAdapter implements Initializin
             if (classId == 1001 || classId == 1002) {
                 // 用户、角色
                 Condition condition = new Condition();
-                condition.setLinkType(Condition.LinkTypeEnum.AND);
+                condition.setLinkType(Condition.LinkType.AND);
                 condition.setFieldKey("org_hospital");
-                condition.setLogicOperator(Condition.LogicOperatorEnum.EQUAL);
+                condition.setLogicOperator(Condition.LogicOperator.EQUAL);
                 condition.setValue(linkOrg);
                 condition.setNeedConvert(false);
                 ret.add(condition);
@@ -178,9 +178,9 @@ public class BaseDataPlugin extends AbstractPlugInAdapter implements Initializin
             if (classId == 1004 || classId == 1005 || classId == 1006) {
                 // 供应商类别、医院供应商
                 Condition condition = new Condition();
-                condition.setLinkType(Condition.LinkTypeEnum.AND);
+                condition.setLinkType(Condition.LinkType.AND);
                 condition.setFieldKey("org");
-                condition.setLogicOperator(Condition.LogicOperatorEnum.EQUAL);
+                condition.setLogicOperator(Condition.LogicOperator.EQUAL);
                 condition.setValue(linkOrg);
                 condition.setNeedConvert(false);
                 ret.add(condition);
@@ -194,9 +194,9 @@ public class BaseDataPlugin extends AbstractPlugInAdapter implements Initializin
             if (classId == 1001 || classId == 1002) {
                 // 用户、角色
                 Condition condition = new Condition();
-                condition.setLinkType(Condition.LinkTypeEnum.AND);
+                condition.setLinkType(Condition.LinkType.AND);
                 condition.setFieldKey("org_supplier");
-                condition.setLogicOperator(Condition.LogicOperatorEnum.EQUAL);
+                condition.setLogicOperator(Condition.LogicOperator.EQUAL);
                 condition.setValue(linkOrg);
                 condition.setNeedConvert(false);
                 ret.add(condition);

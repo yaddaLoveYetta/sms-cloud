@@ -15,7 +15,7 @@ public class Condition implements Serializable {
     /**
      * 链接类型 And/Or,默认"AND"
      */
-    private LinkTypeEnum linkType = LinkTypeEnum.AND;
+    private LinkType linkType = LinkType.AND;
     /**
      * 左括号-可能有多个，如 "(("，甚至"((("等复杂查询,默认"("
      */
@@ -27,7 +27,7 @@ public class Condition implements Serializable {
     /**
      * 比较符号
      */
-    private LogicOperatorEnum logicOperator;
+    private LogicOperator logicOperator;
     /**
      * 比较值
      */
@@ -43,11 +43,11 @@ public class Condition implements Serializable {
      */
     private Boolean needConvert = true;
 
-    public LinkTypeEnum getLinkType() {
+    public LinkType getLinkType() {
         return linkType;
     }
 
-    public void setLinkType(LinkTypeEnum linkType) {
+    public void setLinkType(LinkType linkType) {
         this.linkType = linkType;
     }
 
@@ -67,11 +67,11 @@ public class Condition implements Serializable {
         this.fieldKey = fieldKey;
     }
 
-    public LogicOperatorEnum getLogicOperator() {
+    public LogicOperator getLogicOperator() {
         return logicOperator;
     }
 
-    public void setLogicOperator(LogicOperatorEnum logicOperator) {
+    public void setLogicOperator(LogicOperator logicOperator) {
         this.logicOperator = logicOperator;
     }
 
@@ -115,13 +115,13 @@ public class Condition implements Serializable {
     /**
      * 条件链接类型
      */
-    public enum LinkTypeEnum implements Serializable {
+    public enum LinkType implements Serializable {
 
         AND("AND"), OR("OR"), NULL(""), NOT_SUPPORT("NOT_SUPPORT");
 
         private String name;
 
-        LinkTypeEnum(String name) {
+        LinkType(String name) {
             this.name = name;
         }
 
@@ -135,21 +135,21 @@ public class Condition implements Serializable {
         }
 
         @JsonCreator
-        private static LinkTypeEnum getDirectionEnum(String name) {
+        private static LinkType getLinkType(String name) {
 
-            for (LinkTypeEnum linkTypeEnum : LinkTypeEnum.values()) {
-                if (linkTypeEnum.name.equalsIgnoreCase(name)) {
-                    return linkTypeEnum;
+            for (LinkType linkType : LinkType.values()) {
+                if (linkType.name.equalsIgnoreCase(name)) {
+                    return linkType;
                 }
             }
-            return LinkTypeEnum.NOT_SUPPORT;
+            return LinkType.NOT_SUPPORT;
         }
     }
 
     /**
      * 比较符号
      */
-    public enum LogicOperatorEnum implements Serializable {
+    public enum LogicOperator implements Serializable {
 
         EQUAL("ET", "=", "等于"), NOT_EQUAL("NET", "!=", "不等于"), LESS_THAN("LT", "<", "小于"), LESS_OR_EQUAL("LET", "<=", "小于或等于"),
         GREATER("GT", ">", "大于"), GREATER_OR_EQUAL("GET", ">=", "大于或等于"),NULL("BN","IS NULL","为空"),NOT_NULL("NBN","IS NOT NULL","不为空"),
@@ -161,7 +161,7 @@ public class Condition implements Serializable {
         private String description;
 
 
-        LogicOperatorEnum(String name, String operator, String description) {
+        LogicOperator(String name, String operator, String description) {
             this.name = name;
             this.operator = operator;
             this.description = description;
@@ -203,17 +203,17 @@ public class Condition implements Serializable {
          * 反序列化时的 初始化函数，入参为 对应该枚举的 json值
          *
          * @param name name
-         * @return LogicOperatorEnum
+         * @return LogicOperator
          */
         @JsonCreator
-        private static LogicOperatorEnum getLogicOperatorEnum(String name) {
+        private static LogicOperator geLogicOperator(String name) {
 
-            for (LogicOperatorEnum logicOperatorEnum : LogicOperatorEnum.values()) {
-                if (logicOperatorEnum.name.equalsIgnoreCase(name)) {
-                    return logicOperatorEnum;
+            for (LogicOperator logicOperator : LogicOperator.values()) {
+                if (logicOperator.name.equalsIgnoreCase(name)) {
+                    return logicOperator;
                 }
             }
-            return LogicOperatorEnum.NOT_SUPPORT;
+            return LogicOperator.NOT_SUPPORT;
         }
     }
 }
