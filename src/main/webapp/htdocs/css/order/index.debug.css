@@ -1,5 +1,9 @@
 .order-item {
-    border: 1px solid red;
+   /* border: 1px solid red;*/
+}
+
+.order-item p {
+    margin-bottom: 5px !important;
 }
 
 .order-item > .row {
@@ -7,11 +11,17 @@
     margin-right: 0px !important;
 }
 
+.order-item > .row.header {
+    border-left: 5px solid #2183a9;
+    background: #bac1c4;
+}
+
 .order-item > .row > .form-inline {
     padding: 5px;
 }
-.order-item > .row > .form-inline label{
-    margin-right: 5px;
+
+.order-item > .row.header > .form-inline label {
+    margin: 0 10px 0 10px;
 }
 
 .order-item > .row > .form-inline > label.status > i {
@@ -29,7 +39,7 @@
 }
 
 .detail-content .td {
-    margin: 0 5px 0 5px;
+    margin: 0px 10px 0 10px;
 }
 
 .detail-content .td.td-chk {
@@ -43,6 +53,8 @@
 
 .detail-content .td.td-item .item-img {
     float: left;
+    border: 1px solid #492c3f;
+    padding: 3px;
 }
 
 .detail-content .td.td-item .item-info {
@@ -50,6 +62,7 @@
     min-width: 40px;
     max-width: 200px;
 }
-.detail-content .td.td-item .item-info .item-other-info .promo-logos{
+
+.detail-content .td.td-item .item-info .item-other-info .promo-logos {
     min-height: 20px;
 }
