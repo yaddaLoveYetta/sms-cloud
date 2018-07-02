@@ -7,7 +7,6 @@ import com.kingdee.hrp.sms.util.SessionUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.sound.midi.Soundbank;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Random;
@@ -57,13 +56,15 @@ public abstract class AbstractOrderService extends BaseService {
     protected OrderExample.Criteria getOrderExample() {
 
         OrderExample orderExample = new OrderExample();
+        OrderExample.Criteria criteria = orderExample.createCriteria();
 
-        if (SessionUtil.getUserRoleType() != UserRoleType.SYSTEM) {
-            // 供应商或医院时加org条件
-            orderExample.createCriteria().andOrgEqualTo(SessionUtil.getUserLinkOrg());
+        if (SessionUtil.getUserRoleType()== UserRoleType.HOSPITAL) {
+            criteria.andOrgEqualTo(SessionUtil.getUserLinkOrg());
+        }else if (SessionUtil.getUserRoleType()==UserRoleType.SUPPLIER){
+            criteria.andSupplierEqualTo(SessionUtil.getUserLinkOrg());
         }
 
-        return orderExample.getOredCriteria().get(0);
+        return criteria;
     }
 
     /**

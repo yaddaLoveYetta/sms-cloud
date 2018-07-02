@@ -6,9 +6,9 @@ import com.kingdee.hrp.sms.common.model.Order;
 import com.kingdee.hrp.sms.common.model.OrderExample;
 import com.kingdee.hrp.sms.common.pojo.Condition;
 import com.kingdee.hrp.sms.common.pojo.Sort;
-import com.kingdee.hrp.sms.common.service.BaseService;
 import com.kingdee.hrp.sms.common.service.plugin.PlugIn;
 import com.kingdee.hrp.sms.scm.service.OrderService;
+import com.kingdee.hrp.sms.util.DBFieldFormatHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -65,6 +65,39 @@ public class OrderServiceImpl extends AbstractOrderService implements OrderServi
      */
     @Override
     public List<Order> getOrders(List<Condition> conditions, List<Sort> sorts, Integer pageSize, Integer pageNo) {
+
+        OrderMapper orderMapper = sqlSession.getMapper(OrderMapper.class);
+
+        OrderExample.Criteria criteria = getOrderExample();
+
+        // 解析条件
+        for (Condition condition : conditions) {
+
+            Condition.LinkType linkType = condition.getLinkType();
+            String leftParenTheses = condition.getLeftParenTheses();
+            String fieldKey = condition.getFieldKey();
+            Condition.LogicOperator logicOperator = condition.getLogicOperator();
+            Object value = condition.getValue();
+            String rightParenTheses = condition.getRightParenTheses();
+            Boolean needConvert = condition.getNeedConvert();
+
+            String fieldName = DBFieldFormatHelper.changeColumnToFieldName(fieldKey);
+
+            if ("numer".equalsIgnoreCase(fieldKey)) {
+                // 订单号过滤
+                switch (logicOperator) {
+                    case EQUAL:
+                        criteria.andNumberEqualTo(value.toString());
+                        break;
+                    default:
+                        criteria.andNumberEqualTo(value.toString());
+                }
+            }
+            //Order.Column
+        }
+
+
+        //parseConditions(criteria);
         return null;
     }
 }
