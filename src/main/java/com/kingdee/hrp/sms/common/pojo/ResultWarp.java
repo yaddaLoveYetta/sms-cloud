@@ -1,10 +1,17 @@
 package com.kingdee.hrp.sms.common.pojo;
 
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.Accessors;
+
 import java.io.Serializable;
 
 /**
  * @author yadda
  */
+@Getter
+@Setter
+@Accessors(chain = true)
 public class ResultWarp implements Serializable {
 
     private static final long serialVersionUID = -6963503022738848863L;
@@ -50,36 +57,4 @@ public class ResultWarp implements Serializable {
         this.data = data;
     }
 
-    public int getCode() {
-        return code;
-    }
-
-    public void setCode(int code) {
-        this.code = code;
-    }
-
-    public String getMsg() {
-        return msg;
-    }
-
-    public void setMsg(String message) {
-        this.msg = message;
-    }
-
-    public Object getData() {
-        return data;
-    }
-
-    public void setData(Object data) {
-        this.data = data;
-    }
-
-    @Override
-    public String toString() {
-        return "ResultWarp{" +
-                "code=" + code +
-                ", msg='" + msg + '\'' +
-                ", data=" + data +
-                '}';
-    }
 }

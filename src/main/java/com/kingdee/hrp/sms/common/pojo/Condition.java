@@ -2,15 +2,22 @@ package com.kingdee.hrp.sms.common.pojo;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 
 /**
  * 列表查询where条件对象
+ *
  * @author yadda
  */
+@Getter
+@Setter
+@Accessors(chain = true)
 public class Condition implements Serializable {
-
 
     /**
      * 链接类型 And/Or,默认"AND"
@@ -43,78 +50,10 @@ public class Condition implements Serializable {
      */
     private Boolean needConvert = true;
 
-    public LinkType getLinkType() {
-        return linkType;
-    }
-
-    public void setLinkType(LinkType linkType) {
-        this.linkType = linkType;
-    }
-
-    public String getLeftParenTheses() {
-        return leftParenTheses;
-    }
-
-    public void setLeftParenTheses(String leftParenTheses) {
-        this.leftParenTheses = leftParenTheses;
-    }
-
-    public String getFieldKey() {
-        return fieldKey;
-    }
-
-    public void setFieldKey(String fieldKey) {
-        this.fieldKey = fieldKey;
-    }
-
-    public LogicOperator getLogicOperator() {
-        return logicOperator;
-    }
-
-    public void setLogicOperator(LogicOperator logicOperator) {
-        this.logicOperator = logicOperator;
-    }
-
-    public Object getValue() {
-        return value;
-    }
-
-    public void setValue(Object value) {
-        this.value = value;
-    }
-
-    public String getRightParenTheses() {
-        return rightParenTheses;
-    }
-
-    public void setRightParenTheses(String rightParenTheses) {
-        this.rightParenTheses = rightParenTheses;
-    }
-
-    public Boolean getNeedConvert() {
-        return needConvert;
-    }
-
-    public void setNeedConvert(Boolean needConvert) {
-        this.needConvert = needConvert;
-    }
-
-    @Override
-    public String toString() {
-        return "Condition{" +
-                "linkType=" + linkType +
-                ", leftParenTheses='" + leftParenTheses + '\'' +
-                ", fieldKey='" + fieldKey + '\'' +
-                ", logicOperator=" + logicOperator +
-                ", value=" + value +
-                ", rightParenTheses='" + rightParenTheses + '\'' +
-                ", needConvert=" + needConvert +
-                '}';
-    }
-
     /**
      * 条件链接类型
      */
+    @ToString
     public enum LinkType implements Serializable {
 
         AND("AND"), OR("OR"), NULL(""), NOT_SUPPORT("NOT_SUPPORT");
@@ -151,8 +90,10 @@ public class Condition implements Serializable {
      */
     public enum LogicOperator implements Serializable {
 
-        EQUAL("ET", "=", "等于"), NOT_EQUAL("NET", "!=", "不等于"), LESS_THAN("LT", "<", "小于"), LESS_OR_EQUAL("LET", "<=", "小于或等于"),
-        GREATER("GT", ">", "大于"), GREATER_OR_EQUAL("GET", ">=", "大于或等于"),NULL("BN","IS NULL","为空"),NOT_NULL("NBN","IS NOT NULL","不为空"),
+        EQUAL("ET", "=", "等于"), NOT_EQUAL("NET", "!=", "不等于"), LESS_THAN("LT", "<", "小于"), LESS_OR_EQUAL("LET", "<=",
+                "小于或等于"),
+        GREATER("GT", ">", "大于"), GREATER_OR_EQUAL("GET", ">=", "大于或等于"), NULL("BN", "IS NULL", "为空"), NOT_NULL("NBN",
+                "IS NOT NULL", "不为空"),
         LIKE("BLT", "LIKE", "LIKE模糊匹配"), IN("IN", "IN", "包含于"),
         NOT_SUPPORT("NOT_SUPPORT", "NOT_SUPPORT", "不支持的比较符号");
 
@@ -160,13 +101,11 @@ public class Condition implements Serializable {
         private String operator;
         private String description;
 
-
         LogicOperator(String name, String operator, String description) {
             this.name = name;
             this.operator = operator;
             this.description = description;
         }
-
 
         public String getName() {
             return name;
@@ -197,7 +136,6 @@ public class Condition implements Serializable {
         public void setDescription(String description) {
             this.description = description;
         }
-
 
         /**
          * 反序列化时的 初始化函数，入参为 对应该枚举的 json值

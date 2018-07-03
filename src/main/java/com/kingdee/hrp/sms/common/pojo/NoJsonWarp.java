@@ -1,5 +1,9 @@
 package com.kingdee.hrp.sms.common.pojo;
 
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.Accessors;
+
 import java.io.Serializable;
 
 /**
@@ -7,6 +11,9 @@ import java.io.Serializable;
  *
  * @author yadda
  */
+@Getter
+@Setter
+@Accessors(chain = true)
 public class NoJsonWarp implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -17,22 +24,5 @@ public class NoJsonWarp implements Serializable {
     public NoJsonWarp(Object data) {
         super();
         this.value = data;
-    }
-
-
-    public Object getValue() {
-        return value;
-    }
-
-
-    public void setValue(Object value) {
-        this.value = value;
-    }
-
-    @Override
-    public String toString() {
-        return "NoJsonWarp{" +
-                "value=" + value +
-                '}';
     }
 }

@@ -1,11 +1,18 @@
 package com.kingdee.hrp.sms.common.pojo;
 
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.Accessors;
+
 import java.io.Serializable;
 
 /**
  * 列表查询排序条件对象
  * @author yadda
  */
+@Getter
+@Setter
+@Accessors(chain = true)
 public class Sort implements Serializable {
 
     private String fieldKey;
@@ -14,30 +21,6 @@ public class Sort implements Serializable {
     public Sort(String fieldKey, DirectionEnum direction) {
         this.fieldKey = fieldKey;
         this.direction = direction;
-    }
-
-    public String getFieldKey() {
-        return fieldKey;
-    }
-
-    public void setFieldKey(String fieldKey) {
-        this.fieldKey = fieldKey;
-    }
-
-    public DirectionEnum getDirection() {
-        return direction;
-    }
-
-    public void setDirection(DirectionEnum direction) {
-        this.direction = direction;
-    }
-
-    @Override
-    public String toString() {
-        return "Sort{" +
-                "fieldKey='" + fieldKey + '\'' +
-                ", direction=" + direction +
-                '}';
     }
 
     public enum DirectionEnum implements Serializable {

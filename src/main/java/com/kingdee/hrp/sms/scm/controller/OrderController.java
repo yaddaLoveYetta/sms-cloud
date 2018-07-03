@@ -1,11 +1,13 @@
 package com.kingdee.hrp.sms.scm.controller;
 
+import com.kingdee.hrp.sms.common.exception.BusinessLogicRunTimeException;
 import com.kingdee.hrp.sms.common.model.Order;
 import com.kingdee.hrp.sms.scm.service.OrderService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -34,6 +36,11 @@ public class OrderController {
     @ResponseBody
     public Order getOrder(Long orderId) {
 
+        Assert.notNull(orderId,"请提交正确的订单id");
+
+        if (orderId == null || orderId <= 0) {
+            throw new BusinessLogicRunTimeException("请提交正确的订单id");
+        }
         return orderService.getOrder(orderId);
 
     }
