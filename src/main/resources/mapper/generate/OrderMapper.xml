@@ -3,7 +3,7 @@
 <mapper namespace="com.kingdee.hrp.sms.common.dao.generate.OrderMapper">
   <resultMap id="BaseResultMap" type="com.kingdee.hrp.sms.common.model.Order">
     <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="org" jdbcType="BIGINT" property="org" />
+    <result column="hospital" jdbcType="BIGINT" property="hospital" />
     <result column="number" jdbcType="VARCHAR" property="number" />
     <result column="origin_number" jdbcType="VARCHAR" property="originNumber" />
     <result column="supplier" jdbcType="BIGINT" property="supplier" />
@@ -17,7 +17,7 @@
     <result column="return_status" jdbcType="INTEGER" property="returnStatus" />
     <result column="amount" jdbcType="DECIMAL" property="amount" />
     <result column="purchase_type" jdbcType="INTEGER" property="purchaseType" />
-    <result column="purchase_person" jdbcType="BIGINT" property="purchasePerson" />
+    <result column="purchaser" jdbcType="BIGINT" property="purchaser" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -78,9 +78,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, org, `number`, origin_number, supplier, creater, create_date, checker, check_date, 
+    id, hospital, `number`, origin_number, supplier, creater, create_date, checker, check_date, 
     order_status, deliver_status, receive_status, return_status, amount, purchase_type, 
-    purchase_person
+    purchaser
   </sql>
   <select id="selectByExample" parameterType="com.kingdee.hrp.sms.common.model.OrderExample" resultMap="BaseResultMap">
     select
@@ -113,18 +113,18 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.kingdee.hrp.sms.common.model.Order">
-    insert into t_order (id, org, `number`, 
+    insert into t_order (id, hospital, `number`, 
       origin_number, supplier, creater, 
       create_date, checker, check_date, 
       order_status, deliver_status, receive_status, 
       return_status, amount, purchase_type, 
-      purchase_person)
-    values (#{id,jdbcType=BIGINT}, #{org,jdbcType=BIGINT}, #{number,jdbcType=VARCHAR}, 
+      purchaser)
+    values (#{id,jdbcType=BIGINT}, #{hospital,jdbcType=BIGINT}, #{number,jdbcType=VARCHAR}, 
       #{originNumber,jdbcType=VARCHAR}, #{supplier,jdbcType=BIGINT}, #{creater,jdbcType=BIGINT}, 
       #{createDate,jdbcType=TIMESTAMP}, #{checker,jdbcType=BIGINT}, #{checkDate,jdbcType=TIMESTAMP}, 
       #{orderStatus,jdbcType=INTEGER}, #{deliverStatus,jdbcType=INTEGER}, #{receiveStatus,jdbcType=INTEGER}, 
       #{returnStatus,jdbcType=INTEGER}, #{amount,jdbcType=DECIMAL}, #{purchaseType,jdbcType=INTEGER}, 
-      #{purchasePerson,jdbcType=BIGINT})
+      #{purchaser,jdbcType=BIGINT})
   </insert>
   <insert id="insertSelective" parameterType="com.kingdee.hrp.sms.common.model.Order">
     insert into t_order
@@ -132,8 +132,8 @@
       <if test="id != null">
         id,
       </if>
-      <if test="org != null">
-        org,
+      <if test="hospital != null">
+        hospital,
       </if>
       <if test="number != null">
         `number`,
@@ -174,16 +174,16 @@
       <if test="purchaseType != null">
         purchase_type,
       </if>
-      <if test="purchasePerson != null">
-        purchase_person,
+      <if test="purchaser != null">
+        purchaser,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
         #{id,jdbcType=BIGINT},
       </if>
-      <if test="org != null">
-        #{org,jdbcType=BIGINT},
+      <if test="hospital != null">
+        #{hospital,jdbcType=BIGINT},
       </if>
       <if test="number != null">
         #{number,jdbcType=VARCHAR},
@@ -224,8 +224,8 @@
       <if test="purchaseType != null">
         #{purchaseType,jdbcType=INTEGER},
       </if>
-      <if test="purchasePerson != null">
-        #{purchasePerson,jdbcType=BIGINT},
+      <if test="purchaser != null">
+        #{purchaser,jdbcType=BIGINT},
       </if>
     </trim>
   </insert>
@@ -241,8 +241,8 @@
       <if test="record.id != null">
         id = #{record.id,jdbcType=BIGINT},
       </if>
-      <if test="record.org != null">
-        org = #{record.org,jdbcType=BIGINT},
+      <if test="record.hospital != null">
+        hospital = #{record.hospital,jdbcType=BIGINT},
       </if>
       <if test="record.number != null">
         `number` = #{record.number,jdbcType=VARCHAR},
@@ -283,8 +283,8 @@
       <if test="record.purchaseType != null">
         purchase_type = #{record.purchaseType,jdbcType=INTEGER},
       </if>
-      <if test="record.purchasePerson != null">
-        purchase_person = #{record.purchasePerson,jdbcType=BIGINT},
+      <if test="record.purchaser != null">
+        purchaser = #{record.purchaser,jdbcType=BIGINT},
       </if>
     </set>
     <if test="_parameter != null">
@@ -294,7 +294,7 @@
   <update id="updateByExample" parameterType="map">
     update t_order
     set id = #{record.id,jdbcType=BIGINT},
-      org = #{record.org,jdbcType=BIGINT},
+      hospital = #{record.hospital,jdbcType=BIGINT},
       `number` = #{record.number,jdbcType=VARCHAR},
       origin_number = #{record.originNumber,jdbcType=VARCHAR},
       supplier = #{record.supplier,jdbcType=BIGINT},
@@ -308,7 +308,7 @@
       return_status = #{record.returnStatus,jdbcType=INTEGER},
       amount = #{record.amount,jdbcType=DECIMAL},
       purchase_type = #{record.purchaseType,jdbcType=INTEGER},
-      purchase_person = #{record.purchasePerson,jdbcType=BIGINT}
+      purchaser = #{record.purchaser,jdbcType=BIGINT}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -316,8 +316,8 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.kingdee.hrp.sms.common.model.Order">
     update t_order
     <set>
-      <if test="org != null">
-        org = #{org,jdbcType=BIGINT},
+      <if test="hospital != null">
+        hospital = #{hospital,jdbcType=BIGINT},
       </if>
       <if test="number != null">
         `number` = #{number,jdbcType=VARCHAR},
@@ -358,15 +358,15 @@
       <if test="purchaseType != null">
         purchase_type = #{purchaseType,jdbcType=INTEGER},
       </if>
-      <if test="purchasePerson != null">
-        purchase_person = #{purchasePerson,jdbcType=BIGINT},
+      <if test="purchaser != null">
+        purchaser = #{purchaser,jdbcType=BIGINT},
       </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.kingdee.hrp.sms.common.model.Order">
     update t_order
-    set org = #{org,jdbcType=BIGINT},
+    set hospital = #{hospital,jdbcType=BIGINT},
       `number` = #{number,jdbcType=VARCHAR},
       origin_number = #{originNumber,jdbcType=VARCHAR},
       supplier = #{supplier,jdbcType=BIGINT},
@@ -380,7 +380,7 @@
       return_status = #{returnStatus,jdbcType=INTEGER},
       amount = #{amount,jdbcType=DECIMAL},
       purchase_type = #{purchaseType,jdbcType=INTEGER},
-      purchase_person = #{purchasePerson,jdbcType=BIGINT}
+      purchaser = #{purchaser,jdbcType=BIGINT}
     where id = #{id,jdbcType=BIGINT}
   </update>
   <insert id="batchInsert" parameterType="map">
@@ -390,17 +390,17 @@
       @project https://github.com/itfsw/mybatis-generator-plugin
     -->
     insert into t_order
-    (id, org, `number`, origin_number, supplier, creater, create_date, checker, check_date, 
-      order_status, deliver_status, receive_status, return_status, amount, purchase_type, 
-      purchase_person)
+    (id, hospital, `number`, origin_number, supplier, creater, create_date, checker, 
+      check_date, order_status, deliver_status, receive_status, return_status, amount, 
+      purchase_type, purchaser)
     values
     <foreach collection="list" item="item" separator=",">
-      (#{item.id,jdbcType=BIGINT}, #{item.org,jdbcType=BIGINT}, #{item.number,jdbcType=VARCHAR}, 
+      (#{item.id,jdbcType=BIGINT}, #{item.hospital,jdbcType=BIGINT}, #{item.number,jdbcType=VARCHAR}, 
         #{item.originNumber,jdbcType=VARCHAR}, #{item.supplier,jdbcType=BIGINT}, #{item.creater,jdbcType=BIGINT}, 
         #{item.createDate,jdbcType=TIMESTAMP}, #{item.checker,jdbcType=BIGINT}, #{item.checkDate,jdbcType=TIMESTAMP}, 
         #{item.orderStatus,jdbcType=INTEGER}, #{item.deliverStatus,jdbcType=INTEGER}, #{item.receiveStatus,jdbcType=INTEGER}, 
         #{item.returnStatus,jdbcType=INTEGER}, #{item.amount,jdbcType=DECIMAL}, #{item.purchaseType,jdbcType=INTEGER}, 
-        #{item.purchasePerson,jdbcType=BIGINT})
+        #{item.purchaser,jdbcType=BIGINT})
     </foreach>
   </insert>
   <insert id="batchInsertSelective" parameterType="map">
@@ -421,8 +421,8 @@
         <if test="'id'.toString() == column.value">
           #{item.id,jdbcType=BIGINT}
         </if>
-        <if test="'org'.toString() == column.value">
-          #{item.org,jdbcType=BIGINT}
+        <if test="'hospital'.toString() == column.value">
+          #{item.hospital,jdbcType=BIGINT}
         </if>
         <if test="'number'.toString() == column.value">
           #{item.number,jdbcType=VARCHAR}
@@ -463,8 +463,8 @@
         <if test="'purchase_type'.toString() == column.value">
           #{item.purchaseType,jdbcType=INTEGER}
         </if>
-        <if test="'purchase_person'.toString() == column.value">
-          #{item.purchasePerson,jdbcType=BIGINT}
+        <if test="'purchaser'.toString() == column.value">
+          #{item.purchaser,jdbcType=BIGINT}
         </if>
       </foreach>
       )
