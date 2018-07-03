@@ -35,11 +35,11 @@ public abstract class AbstractOrderService extends BaseService {
             // 供应商或医院时加org条件
             if (orderExample.getOredCriteria().size() == 1) {
                 // 只有一个Criteria，将org添加加入该Criteria
-                orderExample.getOredCriteria().get(0).andOrgEqualTo(SessionUtil.getUserLinkOrg());
+                orderExample.getOredCriteria().get(0).andHospitalEqualTo(SessionUtil.getUserLinkOrg());
             } else {
                 // 没有或多个Criteria，创建Criteria
                 if (SessionUtil.getUserRoleType() != UserRoleType.SYSTEM) {
-                    orderExample.createCriteria().andOrgEqualTo(SessionUtil.getUserLinkOrg());
+                    orderExample.createCriteria().andHospitalEqualTo(SessionUtil.getUserLinkOrg());
                 }
             }
         }
@@ -59,7 +59,7 @@ public abstract class AbstractOrderService extends BaseService {
         OrderExample.Criteria criteria = orderExample.createCriteria();
 
         if (SessionUtil.getUserRoleType()== UserRoleType.HOSPITAL) {
-            criteria.andOrgEqualTo(SessionUtil.getUserLinkOrg());
+            criteria.andHospitalEqualTo(SessionUtil.getUserLinkOrg());
         }else if (SessionUtil.getUserRoleType()==UserRoleType.SUPPLIER){
             criteria.andSupplierEqualTo(SessionUtil.getUserLinkOrg());
         }

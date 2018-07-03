@@ -8,15 +8,20 @@ import com.kingdee.hrp.sms.common.pojo.Condition;
 import com.kingdee.hrp.sms.common.pojo.Sort;
 import com.kingdee.hrp.sms.common.service.TemplateService;
 import com.kingdee.hrp.sms.common.service.plugin.PlugIn;
+import com.kingdee.hrp.sms.scm.model.OrderEntryModel;
+import com.kingdee.hrp.sms.scm.model.OrderModel;
+import com.kingdee.hrp.sms.scm.model.OrderOutModel;
 import com.kingdee.hrp.sms.scm.service.OrderService;
 import com.kingdee.hrp.sms.util.DBFieldFormatHelper;
 import com.kingdee.hrp.sms.util.Environ;
+import org.apache.commons.lang.reflect.FieldUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -41,7 +46,7 @@ public class OrderServiceImpl extends AbstractOrderService implements OrderServi
     @Override
     public Order getOrder(Long orderId) {
 
-        OrderMapper orderMapper = sqlSession.getMapper(OrderMapper.class);
+/*        OrderMapper orderMapper = sqlSession.getMapper(OrderMapper.class);
 
         OrderExample.Criteria criteria = getOrderExample();
 
@@ -53,14 +58,65 @@ public class OrderServiceImpl extends AbstractOrderService implements OrderServi
             throw new BusinessLogicRunTimeException(String.format("不存id为[%s]的订单", orderId));
         }
 
-        logger.info("getOrder,return：" + orders);
+        logger.info("getOrder,return：" + orders);*/
 
-        TemplateService templateService= Environ.getBean(TemplateService.class);
+        TemplateService templateService = Environ.getBean(TemplateService.class);
         Map<String, Object> item = templateService.getItemById(2001, orderId, null);
 
         // item转成order返回模型
+        OrderOutModel order = convert(item);
 
-        return orders.get(0);
+        return null;
+    }
+
+    /**
+     * 通用查询订单转成OrderOutModel对象
+     *
+     * @param item Map<String, Object>
+     * @return OrderOutModel
+     */
+    @SuppressWarnings("unchecked")
+    private OrderOutModel convert(Map<String, Object> item) {
+
+        OrderOutModel orderOutModel = new OrderOutModel();
+
+        OrderModel header = new OrderModel();
+        List<OrderEntryModel> entries = new ArrayList<>();
+
+        orderOutModel.setHeader(header).setEntries(entries);
+
+        for (OrderModel.FieldKeyLinkedColumn column : OrderModel.FieldKeyLinkedColumn.values()) {
+            String fieldName = column.getJavaProperty();
+            String fieldKey = column.getFieldKey();
+
+            // 数据库值
+            Object value = item.get(fieldKey);
+
+            Field field = FieldUtils.getField(Order.class, fieldName, true);
+
+            try {
+                FieldUtils.writeField(field, header, value, true);
+            } catch (IllegalAccessException e) {
+                logger.error("通用查询结果转换Order对象出错:" + e.getMessage(), e);
+                throw new BusinessLogicRunTimeException("通用查询结果转换Order对象出错:" + e.getMessage(), e);
+            }
+        }
+
+        // 打包分錄
+        List<Map<String, Object>> entryList = (List<Map<String, Object>>) ((Map<String, Object>) item.get("entry")).get("1");
+
+        for (Map<String, Object> entryItem : entryList) {
+            // entryItem是一條分錄
+            for (Map.Entry<String, Object> field : entryItem.entrySet()) {
+
+                String fieldKey = field.getKey();
+                Object value = field.getValue();
+
+                OrderModel.FieldKeyLinkedColumn column = OrderModel.FieldKeyLinkedColumn.getFieldKeyLinkedColumn(fieldKey);
+            }
+        }
+
+        return orderOutModel;
     }
 
     /**
