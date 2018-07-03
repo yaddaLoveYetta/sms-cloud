@@ -6,9 +6,11 @@ import com.kingdee.hrp.sms.common.model.Order;
 import com.kingdee.hrp.sms.common.model.OrderExample;
 import com.kingdee.hrp.sms.common.pojo.Condition;
 import com.kingdee.hrp.sms.common.pojo.Sort;
+import com.kingdee.hrp.sms.common.service.TemplateService;
 import com.kingdee.hrp.sms.common.service.plugin.PlugIn;
 import com.kingdee.hrp.sms.scm.service.OrderService;
 import com.kingdee.hrp.sms.util.DBFieldFormatHelper;
+import com.kingdee.hrp.sms.util.Environ;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -16,6 +18,7 @@ import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author yadda(silenceisok@163.com)
@@ -51,6 +54,11 @@ public class OrderServiceImpl extends AbstractOrderService implements OrderServi
         }
 
         logger.info("getOrder,return：" + orders);
+
+        TemplateService templateService= Environ.getBean(TemplateService.class);
+        Map<String, Object> item = templateService.getItemById(2001, orderId, null);
+
+        // item转成order返回模型
 
         return orders.get(0);
     }
