@@ -5,6 +5,7 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -16,12 +17,12 @@ import java.util.List;
 @Getter
 @ToString
 @Accessors(chain = true)
-public class OrderOutModel {
+public class OrderOutModel implements Serializable {
 
     /**
      * 单据头数据
      */
-    OrderModel header;
+    OrderHeaderModel header;
     /**
      * 分录数据
      */

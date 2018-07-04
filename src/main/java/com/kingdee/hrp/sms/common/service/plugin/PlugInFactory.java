@@ -407,18 +407,18 @@ public class PlugInFactory implements PlugIn, InitializingBean, ApplicationConte
      *
      * @param classId      业务类别
      * @param formTemplate 单据模板
-     * @param conditons    原始过滤条件
+     * @param conditions   原始过滤条件
      * @return 插件过滤条件
      */
     @Override
-    public List<Condition> getConditions(int classId, Map<String, Object> formTemplate, List<Condition> conditons) {
+    public List<Condition> getConditions(int classId, Map<String, Object> formTemplate, List<Condition> conditions) {
 
         List<Condition> pluginConditions = new ArrayList<Condition>();
 
         for (PlugIn plugIn : plugIns) {
             if (plugIn.getClassIdSet() != null && plugIn.getClassIdSet().contains(classId)) {
 
-                List<Condition> c = plugIn.getConditions(classId, formTemplate, conditons);
+                List<Condition> c = plugIn.getConditions(classId, formTemplate, conditions);
                 if (!CollectionUtils.isEmpty(c)) {
                     pluginConditions.addAll(c);
                 }
@@ -480,5 +480,33 @@ public class PlugInFactory implements PlugIn, InitializingBean, ApplicationConte
         }
 
         return plugInRet;
+    }
+
+    /**
+     * 审核/反审核时获取审核状态的字段模板key
+     * <p>
+     * 审核时系统设置该字段值为1，反审核时设置字段值为0
+     *
+     * @param classId 业务类型
+     * @return 审核状态字段key
+     */
+    @Override
+    public String checkFieldKey(Integer classId) {
+
+        String key = null;
+
+        for (PlugIn plugIn : plugIns) {
+            if (plugIn.getClassIdSet() != null && plugIn.getClassIdSet().contains(classId)) {
+
+                String temp = plugIn.checkFieldKey(classId);
+
+                if (null != temp) {
+                    key = temp;
+                }
+            }
+        }
+
+        return key;
+
     }
 }

@@ -69,17 +69,15 @@ public class OrderEntryModel extends OrderEntry {
         remark("remark", "remark", "remark"),
 
         // 引用类型字段，模板中携带，不占模板记录 column为空
-        materialName("material_DspName","","materialName"),
-        unitName("unit_DspName","","unitName"),
-        deliverStatusName("detail_deliver_status_DspName","","deliverStatusName"),
-        receiveStatusName("detail_receive_status_DspName","","receiveStatusName"),
-        returnStatusName("detail_return_status_DspName","","returnStatusName");
-
+        materialName("material_DspName", "", "materialName"),
+        unitName("unit_DspName", "", "unitName"),
+        deliverStatusName("detail_deliver_status_DspName", "", "deliverStatusName"),
+        receiveStatusName("detail_receive_status_DspName", "", "receiveStatusName"),
+        returnStatusName("detail_return_status_DspName", "", "returnStatusName");
 
         private String fieldKey;
         private String column;
         private String javaProperty;
-
 
         FieldKeyLinkedColumn(String fieldKey, String column, String javaProperty) {
             this.fieldKey = fieldKey;
@@ -87,9 +85,9 @@ public class OrderEntryModel extends OrderEntry {
             this.javaProperty = javaProperty;
         }
 
-        public static OrderModel.FieldKeyLinkedColumn getFieldKeyLinkedColumn(String fieldKey) {
+        public static OrderEntryModel.FieldKeyLinkedColumn getFieldKeyLinkedColumn(String fieldKey) {
 
-            for (OrderModel.FieldKeyLinkedColumn column : OrderModel.FieldKeyLinkedColumn.values()) {
+            for (OrderEntryModel.FieldKeyLinkedColumn column : OrderEntryModel.FieldKeyLinkedColumn.values()) {
                 if (column.getFieldKey().equals(fieldKey)) {
                     return column;
                 }

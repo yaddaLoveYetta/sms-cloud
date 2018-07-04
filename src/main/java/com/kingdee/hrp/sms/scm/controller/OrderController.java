@@ -36,12 +36,14 @@ public class OrderController {
     @ResponseBody
     public Order getOrder(Long orderId) {
 
-        Assert.notNull(orderId,"请提交正确的订单id");
+        Assert.notNull(orderId, "请提交正确的订单id");
 
-        if (orderId == null || orderId <= 0) {
+/*        if (orderId == null || orderId <= 0) {
             throw new BusinessLogicRunTimeException("请提交正确的订单id");
         }
-        return orderService.getOrder(orderId);
+        return orderService.getOrder(orderId);*/
+
+        return null;
 
     }
 }

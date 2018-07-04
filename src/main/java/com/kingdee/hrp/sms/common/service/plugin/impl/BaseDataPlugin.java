@@ -145,11 +145,11 @@ public class BaseDataPlugin extends AbstractPlugInAdapter implements Initializin
      *
      * @param classId      业务类别
      * @param formTemplate 单据模板
-     * @param conditons    原始过滤条件
+     * @param conditions    原始过滤条件
      * @return 插件过滤条件
      */
     @Override
-    public List<Condition> getConditions(int classId, Map<String, Object> formTemplate, List<Condition> conditons) {
+    public List<Condition> getConditions(int classId, Map<String, Object> formTemplate, List<Condition> conditions) {
 
         List<Condition> ret = new ArrayList<Condition>();
 

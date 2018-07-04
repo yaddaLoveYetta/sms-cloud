@@ -162,14 +162,14 @@ public interface PlugIn {
     public PlugInRet afterQuery(int classId, List<Map<String, Object>> list);
 
     /**
-     * 查询前插件查询条件
+     * 查询前插件查询条件处理
      *
      * @param classId      业务类别
      * @param formTemplate 单据模板
-     * @param conditons    原始过滤条件
+     * @param conditions   原始过滤条件
      * @return 插件过滤条件
      */
-    public List<Condition> getConditions(int classId, Map<String, Object> formTemplate, List<Condition> conditons);
+    public List<Condition> getConditions(int classId, Map<String, Object> formTemplate, List<Condition> conditions);
 
     /**
      * 禁用/反禁用前置事件（基础资料用）
@@ -192,6 +192,18 @@ public interface PlugIn {
      * @return PlugInRet
      */
     PlugInRet afterForbid(Integer classId, Map<String, Object> template, List<Long> ids, Integer operateType);
+
+    /**
+     * 审核/反审核时获取审核状态的字段模板key
+     * <p>
+     * 当业务单据关联多个插件时以取index最大且非返回null的插件返回
+     * <p>
+     * 审核时系统设置该字段值为1，反审核时设置字段值为0
+     *
+     * @param classId 业务类型
+     * @return 审核状态字段key
+     */
+    String checkFieldKey(Integer classId);
 
     /**
      * 获取当前用户关联的组织id(供应商/医院资料内码，系统用户返回0)

@@ -23,16 +23,6 @@ public abstract class AbstractPlugInAdapter implements PlugIn {
     PlugInRet result = new PlugInRet();
 
     /**
-     * 获取当前插件支持的业务类型集合
-     *
-     * @return 插件支持的业务类型classId集合
-     */
-    @Override
-    public Set<Integer> getClassIdSet() {
-        return null;
-    }
-
-    /**
      * 基础资料新增前操作
      *
      * @param classId      业务类型
@@ -177,11 +167,11 @@ public abstract class AbstractPlugInAdapter implements PlugIn {
      *
      * @param classId      业务类别
      * @param formTemplate 单据模板
-     * @param conditons    原始过滤条件
+     * @param conditions   原始过滤条件
      * @return 插件过滤条件
      */
     @Override
-    public List<Condition> getConditions(int classId, Map<String, Object> formTemplate, List<Condition> conditons) {
+    public List<Condition> getConditions(int classId, Map<String, Object> formTemplate, List<Condition> conditions) {
         return null;
     }
 
@@ -211,5 +201,20 @@ public abstract class AbstractPlugInAdapter implements PlugIn {
     @Override
     public PlugInRet afterForbid(Integer classId, Map<String, Object> template, List<Long> ids, Integer operateType) {
         return result;
+    }
+
+    /**
+     * 审核/反审核时获取审核状态的字段模板key
+     * <p>
+     * 当业务单据关联多个插件时以取index最大且非返回null的插件返回
+     * <p>
+     * 审核时系统设置该字段值为1，反审核时设置字段值为0
+     *
+     * @param classId 业务类型
+     * @return 审核状态字段key
+     */
+    @Override
+    public String checkFieldKey(Integer classId) {
+        return null;
     }
 }
