@@ -11,11 +11,12 @@ import com.kingdee.hrp.sms.common.pojo.Condition;
 import com.kingdee.hrp.sms.common.pojo.Sort;
 import com.kingdee.hrp.sms.common.service.TemplateService;
 import com.kingdee.hrp.sms.common.service.plugin.PlugIn;
+import com.kingdee.hrp.sms.scm.enums.OrderDeliveryStatus;
 import com.kingdee.hrp.sms.scm.enums.OrderStatus;
-import com.kingdee.hrp.sms.scm.model.OrderEntryModel;
-import com.kingdee.hrp.sms.scm.model.OrderHeaderModel;
-import com.kingdee.hrp.sms.scm.model.OrderModel;
-import com.kingdee.hrp.sms.scm.model.OrderOutModel;
+import com.kingdee.hrp.sms.scm.model.out.OrderEntryModel;
+import com.kingdee.hrp.sms.scm.model.out.OrderHeaderModel;
+import com.kingdee.hrp.sms.scm.model.out.OrderModel;
+import com.kingdee.hrp.sms.scm.model.out.OrderOutModel;
 import com.kingdee.hrp.sms.scm.service.OrderService;
 import org.apache.commons.lang.reflect.FieldUtils;
 import org.slf4j.Logger;
@@ -188,7 +189,7 @@ public class OrderServiceImpl extends AbstractOrderService implements OrderServi
      */
     @Override
     public Map<String, Object> getOrdersByTemplate(List<Condition> conditions, List<Sort> sorts, Integer pageSize,
-            Integer pageNo) {
+                                                   Integer pageNo) {
 
         return templateService.getItems(CLASS_ID, conditions, sorts, pageSize, pageNo);
     }
@@ -217,6 +218,23 @@ public class OrderServiceImpl extends AbstractOrderService implements OrderServi
      */
     @Override
     public Boolean edit(Long id, String data) throws IOException {
+
+        // 校验订单状态是否是新增状态，只有新增的订单可以修改 TODO
+
+        OrderMapper orderMapper = sqlSession.getMapper(OrderMapper.class);
+
+        Order order = orderMapper.selectByPrimaryKey(id);
+
+        if (null == order) {
+            logger.error("id：{}订单不存在", id);
+            throw new BusinessLogicRunTimeException("订单不存在" + id);
+        }
+
+        if (OrderStatus.getOrderStatus(order.getOrderStatus()) != OrderStatus.ADDED) {
+            logger.error("订单{}非新增状态，不可编辑", id);
+            throw new BusinessLogicRunTimeException("只可编辑新增状态的新单");
+        }
+
         return templateService.editItem(CLASS_ID, id, data);
     }
 
@@ -228,6 +246,22 @@ public class OrderServiceImpl extends AbstractOrderService implements OrderServi
      */
     @Override
     public Boolean delete(List<Long> ids) {
+
+        // 校验订单状态是否是新增状态，只有新增的订单可以删除
+        OrderMapper orderMapper = sqlSession.getMapper(OrderMapper.class);
+
+        OrderExample orderExample = new OrderExample();
+        // 只有新增状态的订单可删除
+        orderExample.createCriteria().andIdIn(ids).andOrderStatusEqualTo(OrderStatus.ADDED.getNumber());
+
+        List<Order> orders = orderMapper.selectByExample(orderExample);
+
+        if (orders.size() != ids.size()) {
+            // 选择要删除的订单中有非新增状态的，本次删除操作不处理
+            logger.error("只有新增状态的订单可删除，本次操作失败，请检查选中订单的状态ids:{}", ids);
+            throw new BusinessLogicRunTimeException("只有新增状态的订单可删除，本次操作失败，请检查选中订单的状态");
+        }
+
         return templateService.delItem(CLASS_ID, ids);
     }
 
@@ -241,6 +275,20 @@ public class OrderServiceImpl extends AbstractOrderService implements OrderServi
     public Boolean check(List<Long> ids) {
 
         OrderMapper orderMapper = sqlSession.getMapper(OrderMapper.class);
+
+        // 校验订单状态是否是新增状态，只有新增的订单可以审核
+        OrderExample orderExample = new OrderExample();
+        // 只有新增状态的订单可删除
+        orderExample.createCriteria().andIdIn(ids).andOrderStatusEqualTo(OrderStatus.ADDED.getNumber());
+
+        List<Order> orders = orderMapper.selectByExample(orderExample);
+
+        if (orders.size() != ids.size()) {
+            // 选择要审核的订单中有非新增状态的，本次审核操作不处理
+            logger.error("只有新增状态的订单可审核，本次操作失败，请检查选中订单的状态ids:{}", ids);
+            throw new BusinessLogicRunTimeException("只有新增状态的订单可审核，本次操作失败，请检查选中订单的状态");
+        }
+
 
         Order order = new Order();
 
@@ -264,6 +312,19 @@ public class OrderServiceImpl extends AbstractOrderService implements OrderServi
 
         OrderMapper orderMapper = sqlSession.getMapper(OrderMapper.class);
 
+        // 校验订单状态是否是已审核，只有已审核的订单可以反审核
+        OrderExample orderExample = new OrderExample();
+        // 只有新增状态的订单可删除
+        orderExample.createCriteria().andIdIn(ids).andOrderStatusEqualTo(OrderStatus.CHECKED.getNumber());
+
+        List<Order> orders = orderMapper.selectByExample(orderExample);
+
+        if (orders.size() != ids.size()) {
+            // 选择要审核的订单中有非新增状态的，本次审核操作不处理
+            logger.error("只有已审核状态的订单可反审核，本次操作失败，请检查选中订单的状态ids:{}", ids);
+            throw new BusinessLogicRunTimeException("只有已审核状态的订单可审核，本次操作失败，请检查选中订单的状态");
+        }
+
         Order order = new Order();
 
         for (Long id : ids) {
@@ -274,5 +335,128 @@ public class OrderServiceImpl extends AbstractOrderService implements OrderServi
         }
 
         return true;
+    }
+
+    /**
+     * make the order see by supplier
+     * <p>
+     * change the order status to pre confirmed
+     *
+     * @param ids list of orderId
+     * @return true if send success else false
+     */
+    @Override
+    public Boolean sendToSupplier(List<Long> ids) {
+
+        OrderMapper orderMapper = sqlSession.getMapper(OrderMapper.class);
+
+        // 校验订单状态是否是已审核，只有已审核的订单可以发送给供应商
+        OrderExample orderExample = new OrderExample();
+        // 只有新增状态的订单可删除
+        orderExample.createCriteria().andIdIn(ids).andOrderStatusEqualTo(OrderStatus.CHECKED.getNumber());
+
+        List<Order> orders = orderMapper.selectByExample(orderExample);
+
+        if (orders.size() != ids.size()) {
+            // 选择要审核的订单中有非新增状态的，本次审核操作不处理
+            logger.error("只有已审核状态的订单可发送给供应商，本次操作失败，请检查选中订单的状态ids:{}", ids);
+            throw new BusinessLogicRunTimeException("只有已审核状态的订单可发送给供应商，本次操作失败，请检查选中订单的状态");
+        }
+
+        Order order = new Order();
+
+        for (Long id : ids) {
+            order.setId(id);
+            // 反审核后订单回到新增状态
+            order.setOrderStatus(OrderStatus.TO_BE_CONFIRMED.getNumber());
+            orderMapper.updateByPrimaryKeySelective(order);
+        }
+
+        return true;
+
+    }
+
+    /**
+     * change the order status to confirmed
+     *
+     * @param ids list of orderId
+     * @return true if send success else false
+     */
+    @Override
+    public Boolean confirm(List<Long> ids) {
+
+        OrderMapper orderMapper = sqlSession.getMapper(OrderMapper.class);
+
+        // 校验订单状态是否是待确认，只有待确认的订单可以确认
+        OrderExample orderExample = new OrderExample();
+        // 只有待确认状态的订单可确认
+        orderExample.createCriteria().andIdIn(ids).andOrderStatusEqualTo(OrderStatus.TO_BE_CONFIRMED.getNumber());
+
+        List<Order> orders = orderMapper.selectByExample(orderExample);
+
+        if (orders.size() != ids.size()) {
+            // 选择要审核的订单中有非新增状态的，本次审核操作不处理
+            logger.error("只有待确认状态的订单可确认，本次操作失败，请检查选中订单的状态ids:{}", ids);
+            throw new BusinessLogicRunTimeException("只有待确认状态的订单可确认，本次操作失败，请检查选中订单的状态");
+        }
+
+        Order order = new Order();
+
+        for (Long id : ids) {
+            order.setId(id);
+            // 确认后订单状态到已确认
+            order.setOrderStatus(OrderStatus.CONFIRMED.getNumber());
+            orderMapper.updateByPrimaryKeySelective(order);
+        }
+
+        return true;
+    }
+
+    /**
+     * change the order status back to checked
+     *
+     * @param ids list of orderId
+     * @return true if send success else false
+     */
+    @Override
+    public Boolean unConfirm(List<Long> ids) {
+
+        OrderMapper orderMapper = sqlSession.getMapper(OrderMapper.class);
+
+        // 校验订单状态是否是已确认且未发货，只有已确认且未发货的订单可以反确认
+        OrderExample orderExample = new OrderExample();
+        // 只有已确认且未发货状态的订单可反确认
+        orderExample.createCriteria().andIdIn(ids).andOrderStatusEqualTo(OrderStatus.CONFIRMED.getNumber())
+                .andDeliverStatusEqualTo(OrderDeliveryStatus.UN_SHIPPED.getNumber());
+
+        List<Order> orders = orderMapper.selectByExample(orderExample);
+
+        if (orders.size() != ids.size()) {
+            // 选择要反确认的订单中有非确认状态或已发货的，本次审核操作不处理
+            logger.error("只有已确认状态且未发货的订单可反确认，本次操作失败，请检查选中订单的状态ids:{}", ids);
+            throw new BusinessLogicRunTimeException("只有已确认状态且未发货的订单可反确认，本次操作失败，请检查选中订单的状态");
+        }
+
+        Order order = new Order();
+
+        for (Long id : ids) {
+            order.setId(id);
+            // 确认后订单状态到已确认
+            order.setOrderStatus(OrderStatus.CONFIRMED.getNumber());
+            orderMapper.updateByPrimaryKeySelective(order);
+        }
+
+        return true;
+    }
+
+    /**
+     * create deliver order from order
+     *
+     * @param deliverOrder order which deal to create deliver order
+     * @return a temp deliver order info which is not save in database yet
+     */
+    @Override
+    public Map<String, Object> deliver(Map<String, Object> deliverOrder) {
+        return null;
     }
 }

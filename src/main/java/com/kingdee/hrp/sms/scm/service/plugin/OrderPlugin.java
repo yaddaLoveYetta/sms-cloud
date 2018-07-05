@@ -1,4 +1,4 @@
-package com.kingdee.hrp.sms.common.service.plugin.impl;
+package com.kingdee.hrp.sms.scm.service.plugin;
 
 import com.kingdee.hrp.sms.common.enums.UserRoleType;
 import com.kingdee.hrp.sms.common.pojo.Condition;
@@ -8,6 +8,8 @@ import org.springframework.beans.factory.InitializingBean;
 import java.util.*;
 
 /**
+ * 订单插件
+ *
  * @author yadda
  */
 public class OrderPlugin extends AbstractPlugInAdapter implements InitializingBean {
@@ -79,7 +81,7 @@ public class OrderPlugin extends AbstractPlugInAdapter implements InitializingBe
     @Override
     public List<Condition> getConditions(int classId, Map<String, Object> formTemplate, List<Condition> conditions) {
 
-        List<Condition> ret = new ArrayList<Condition>();
+        List<Condition> ret = new ArrayList<>();
 
         UserRoleType userRoleType = getUserRoleType();
         Long linkOrg = getUserLinkOrg();

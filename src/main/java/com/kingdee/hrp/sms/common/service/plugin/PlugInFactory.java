@@ -77,7 +77,8 @@ public class PlugInFactory implements PlugIn, InitializingBean, ApplicationConte
             }
 
             // 插件执行顺序排序
-            plugIns.sort((p1, p2) -> p1.index().compareTo(p2.index()));
+            //plugIns.sort((p1, p2) -> p1.index().compareTo(p2.index()));
+            plugIns.sort(Comparator.comparing(PlugIn::index));
 
             logger.info(String.format("init %s plugin total", plugIns.size()));
 
@@ -189,9 +190,10 @@ public class PlugInFactory implements PlugIn, InitializingBean, ApplicationConte
      * 基础资料修改前操作
      *
      * @param classId      业务类型
-     * @param id
-     * @param formTemplate
-     * @param data         业务数据  @return
+     * @param id           主键
+     * @param formTemplate 模板数据
+     * @param data         业务数据
+     * @return PlugInRet
      */
     @Override
     public PlugInRet beforeModify(int classId, Long id, Map<String, Object> formTemplate, JsonNode data) {
@@ -225,7 +227,7 @@ public class PlugInFactory implements PlugIn, InitializingBean, ApplicationConte
      */
     @Override
     public PlugInRet beforeEntryModify(int classId, String primaryId, String entryId, Map<String, Object> formTemplate,
-            JsonNode data) {
+                                       JsonNode data) {
 
         PlugInRet plugInRet = new PlugInRet();
 
@@ -308,7 +310,7 @@ public class PlugInFactory implements PlugIn, InitializingBean, ApplicationConte
      */
     @Override
     public PlugInRet beforeEntryDelete(int classId, String primaryId, String entryId,
-            Map<String, Object> formTemplate) {
+                                       Map<String, Object> formTemplate) {
 
         PlugInRet plugInRet = new PlugInRet();
 

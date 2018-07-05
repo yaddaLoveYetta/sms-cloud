@@ -1,4 +1,4 @@
-package com.kingdee.hrp.sms.scm.model;
+package com.kingdee.hrp.sms.scm.model.out;
 
 import com.kingdee.hrp.sms.common.model.Order;
 import com.kingdee.hrp.sms.common.model.OrderEntry;

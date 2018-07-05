@@ -1,12 +1,10 @@
 package com.kingdee.hrp.sms.scm.service;
 
-import com.kingdee.hrp.sms.common.model.Order;
 import com.kingdee.hrp.sms.common.pojo.Condition;
 import com.kingdee.hrp.sms.common.pojo.Sort;
-import com.kingdee.hrp.sms.scm.model.OrderModel;
+import com.kingdee.hrp.sms.scm.model.out.OrderModel;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Map;
 
@@ -46,54 +44,92 @@ public interface OrderService {
      * @return Map<String, Object>
      */
     Map<String, Object> getOrdersByTemplate(List<Condition> conditions, List<Sort> sorts, Integer pageSize,
-            Integer pageNo);
+                                            Integer pageNo);
 
     /**
-     * 新增订单
+     * add a new order
      *
-     * @param data 数据（严格按照单据模板匹配的数据）
-     * @return 新增订单的id
+     * @param data order data of json string type（严格按照单据模板匹配的数据）
+     * @return orderId of the new order
      * @throws IOException
      */
 
     Long add(String data) throws IOException;
 
     /**
-     * 修改订单数据
+     * modify order info
      *
-     * @param id   订单内码
-     * @param data 修改数据内容（严格按照单据模板匹配的数据）
-     * @return 是否成功
+     * @param id   one orderId
+     * @param data order data of json string type（严格按照单据模板匹配的数据）
+     * @return true if send success else false
      * @throws IOException
      */
 
     Boolean edit(Long id, String data) throws IOException;
 
     /**
-     * 删除订单
+     * delete order
+     * <p>
+     * remove the order from database
      *
-     * @param ids 删除的内码集合
-     * @return 是否成功
+     * @param ids list of orderId
+     * @return true if send success else false
      */
 
     Boolean delete(List<Long> ids);
 
     /**
-     * 审核订单
+     * check the order
+     * <p>
+     * change the order status to checked
      *
-     * @param ids 内码集合
-     * @return 是否成功
+     * @param ids list of orderId
+     * @return true if send success else false
      */
 
     Boolean check(List<Long> ids);
 
     /**
-     * 反审核订单
+     * uncheck the order
+     * <p>
+     * change the order status back to added
      *
-     * @param ids 内码集合
-     * @return 是否成功
+     * @param ids list of orderId
+     * @return true if send success else false
      */
 
     Boolean unCheck(List<Long> ids);
+
+    /**
+     * 发送订单给供应商
+     *
+     * @param ids list of orderId
+     * @return true if send success else false
+     */
+    Boolean sendToSupplier(List<Long> ids);
+
+    /**
+     * change the order status to confirmed
+     *
+     * @param ids list of orderId
+     * @return true if send success else false
+     */
+    Boolean confirm(List<Long> ids);
+
+    /**
+     * change the order status back to checked
+     *
+     * @param ids list of orderId
+     * @return true if send success else false
+     */
+    Boolean unConfirm(List<Long> ids);
+
+    /**
+     * create deliver order from order
+     *
+     * @param deliverOrder order which deal to create deliver order
+     * @return a temp deliver order info which is not save in database yet
+     */
+    Map<String, Object> deliver(Map<String, Object> deliverOrder);
 
 }

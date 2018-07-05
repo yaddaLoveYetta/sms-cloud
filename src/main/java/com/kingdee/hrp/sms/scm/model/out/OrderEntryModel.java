@@ -1,4 +1,4 @@
-package com.kingdee.hrp.sms.scm.model;
+package com.kingdee.hrp.sms.scm.model.out;
 
 import com.kingdee.hrp.sms.common.exception.BusinessLogicRunTimeException;
 import com.kingdee.hrp.sms.common.model.OrderEntry;

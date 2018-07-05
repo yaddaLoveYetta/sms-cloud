@@ -1,4 +1,4 @@
-package com.kingdee.hrp.sms.scm.model;
+package com.kingdee.hrp.sms.scm.model.out;
 
 import lombok.Getter;
 import lombok.Setter;
