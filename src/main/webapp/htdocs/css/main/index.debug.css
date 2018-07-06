@@ -790,7 +790,6 @@ body {
     margin-left: 200px;
 }
 
-
 .hbox {
     display: table;
     width: 100%;
@@ -5773,6 +5772,10 @@ a.text-#000000:hover {
     100% {
         background-color: #675e55;
     }
+}
+
+.navbar-fixed-bottom {
+    z-index: 1 !important;
 }
 
 
