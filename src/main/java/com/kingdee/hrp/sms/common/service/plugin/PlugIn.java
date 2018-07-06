@@ -3,7 +3,6 @@ package com.kingdee.hrp.sms.common.service.plugin;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.kingdee.hrp.sms.common.pojo.Condition;
 import com.kingdee.hrp.sms.common.enums.UserRoleType;
-import com.kingdee.hrp.sms.common.pojo.Conditions;
 import com.kingdee.hrp.sms.util.SessionUtil;
 
 import java.util.List;
@@ -148,10 +147,10 @@ public interface PlugIn {
      *
      * @param classId      业务类别
      * @param formTemplate 单据模板
-     * @param conditions   原始过滤条件
+     * @param conditons    原始过滤条件
      * @return
      */
-    public PlugInRet beforeQuery(int classId, Map<String, Object> formTemplate, Conditions conditions);
+    public PlugInRet beforeQuery(int classId, Map<String, Object> formTemplate, List<Condition> conditons);
 
     /**
      * 基础资料查询后操作
@@ -170,7 +169,7 @@ public interface PlugIn {
      * @param conditions   原始过滤条件
      * @return 插件过滤条件
      */
-    public List<Condition> getConditions(int classId, Map<String, Object> formTemplate, Conditions conditions);
+    public List<Condition> getConditions(int classId, Map<String, Object> formTemplate, List<Condition> conditions);
 
     /**
      * 禁用/反禁用前置事件（基础资料用）

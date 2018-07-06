@@ -1,13 +1,14 @@
 package com.kingdee.hrp.sms.common.service.plugin;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.kingdee.hrp.sms.common.controller.SystemSettingController;
 import com.kingdee.hrp.sms.common.pojo.Condition;
-import com.kingdee.hrp.sms.common.pojo.Conditions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * 插件适配器
@@ -141,11 +142,11 @@ public abstract class AbstractPlugInAdapter implements PlugIn {
      *
      * @param classId      业务类别
      * @param formTemplate 单据模板
-     * @param conditions    原始过滤条件
+     * @param conditons    原始过滤条件
      * @return
      */
     @Override
-    public PlugInRet beforeQuery(int classId, Map<String, Object> formTemplate, Conditions conditions) {
+    public PlugInRet beforeQuery(int classId, Map<String, Object> formTemplate, List<Condition> conditons) {
         return result;
     }
 
@@ -170,7 +171,7 @@ public abstract class AbstractPlugInAdapter implements PlugIn {
      * @return 插件过滤条件
      */
     @Override
-    public List<Condition> getConditions(int classId, Map<String, Object> formTemplate, Conditions conditions) {
+    public List<Condition> getConditions(int classId, Map<String, Object> formTemplate, List<Condition> conditions) {
         return null;
     }
 

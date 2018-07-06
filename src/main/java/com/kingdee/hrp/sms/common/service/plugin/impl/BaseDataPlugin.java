@@ -1,11 +1,10 @@
 package com.kingdee.hrp.sms.common.service.plugin.impl;
 
 import com.kingdee.hrp.sms.common.dao.generate.UserMapper;
-import com.kingdee.hrp.sms.common.enums.UserRoleType;
 import com.kingdee.hrp.sms.common.model.User;
 import com.kingdee.hrp.sms.common.model.UserExample;
 import com.kingdee.hrp.sms.common.pojo.Condition;
-import com.kingdee.hrp.sms.common.pojo.Conditions;
+import com.kingdee.hrp.sms.common.enums.UserRoleType;
 import com.kingdee.hrp.sms.common.service.plugin.AbstractPlugInAdapter;
 import com.kingdee.hrp.sms.common.service.plugin.PlugInRet;
 import com.kingdee.hrp.sms.util.Environ;
@@ -150,7 +149,7 @@ public class BaseDataPlugin extends AbstractPlugInAdapter implements Initializin
      * @return 插件过滤条件
      */
     @Override
-    public List<Condition> getConditions(int classId, Map<String, Object> formTemplate, Conditions conditions) {
+    public List<Condition> getConditions(int classId, Map<String, Object> formTemplate, List<Condition> conditions) {
 
         List<Condition> ret = new ArrayList<Condition>();
 

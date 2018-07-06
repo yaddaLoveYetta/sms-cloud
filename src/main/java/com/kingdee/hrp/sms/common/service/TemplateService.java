@@ -1,9 +1,7 @@
 package com.kingdee.hrp.sms.common.service;
 
 import com.kingdee.hrp.sms.common.pojo.Condition;
-import com.kingdee.hrp.sms.common.pojo.Conditions;
 import com.kingdee.hrp.sms.common.pojo.Sort;
-import com.kingdee.hrp.sms.common.pojo.Sorts;
 
 import java.io.IOException;
 import java.util.List;
@@ -40,7 +38,7 @@ public interface TemplateService {
      * @param pageNo     当前页码
      */
 
-    Map<String, Object> getItems(Integer classId, Conditions conditions, Sorts sorts, Integer pageSize, Integer pageNo);
+    Map<String, Object> getItems(Integer classId, List<Condition> conditions, List<Sort> sorts, Integer pageSize, Integer pageNo);
 
     /**
      * 通过内码获取单个业务类型数据
@@ -50,7 +48,7 @@ public interface TemplateService {
      * @param sorts   排序结构 查询单据时，单据分录可能需要排序
      * @return 一个单据数据
      */
-    Map<String, Object> getItemById(Integer classId, Long id, Sorts sorts);
+    Map<String, Object> getItemById(Integer classId, Long id, List<Sort> sorts);
 
     /**
      * 通过内码集合获取多个业务类型数据
@@ -61,8 +59,7 @@ public interface TemplateService {
      * @param sorts      排序结构
      * @return 单据集合
      */
-    List<Map<String, Object>> getItemByIds(Integer classId, List<Long> ids, Conditions conditions,
-            Sorts sorts);
+    List<Map<String, Object>> getItemByIds(Integer classId, List<Long> ids, List<Condition> conditions, List<Sort> sorts);
 
     /**
      * 新增数据

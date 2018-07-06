@@ -25,9 +25,7 @@
     var classId = Number(MiniQuery.Url.getQueryString(window.location.href, 'classId'));
 
     // 界面设置的过滤条件
-    var conditions = {
-        conditionList: []
-    };
+    var conditions = [];
 
     //检查登录
     if (!SMS.Login.check(true)) {
@@ -55,7 +53,7 @@
 
         if (data.conditions) {
             // dialog调用时候传递的查询条件
-            $.Object.extend(conditions.conditionList, data.conditions);
+            $.Object.extend(conditions, data.conditions);
         }
 
         dialog.on({

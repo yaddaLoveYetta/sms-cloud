@@ -20,9 +20,7 @@ define("Search", function (require, module, exports) {
     // 事件绑定标识
     var hasBind = false;
     // 过来条件
-    var conditions = {
-        conditionList: []
-    };
+    var conditions = [];
     // F7选择控件集合
     var selectors = {};
     // 日期控件集合
@@ -357,7 +355,7 @@ define("Search", function (require, module, exports) {
         // 搜索按钮
         $('#search').on('click', function (e) {
             //清空过滤条件
-            var searchConditions = [];
+            conditions = [];
             $('.search-line').each(function (index, item) {
                 //条件链接符号
                 var linkType = $(item).find("select[name='linkType']").val() || 'and';
@@ -424,7 +422,7 @@ define("Search", function (require, module, exports) {
                 }
 
                 // 查询条件
-                searchConditions.push({
+                conditions.push({
                     'linkType': linkType,
                     'leftParenTheses': '(',
                     'fieldKey': fieldKey,
@@ -435,9 +433,6 @@ define("Search", function (require, module, exports) {
                 });
 
             });
-
-            conditions.conditionList = searchConditions;
-
             emitter.fire('doSearch', [conditions]);
         });
 

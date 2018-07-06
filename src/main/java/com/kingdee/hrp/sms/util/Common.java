@@ -156,11 +156,11 @@ public class Common {
      * 将String转成List
      *
      * @param str 待转化字符串，必须符合list格式
-     * @param clazz   List泛型类型
+     * @param t   List泛型类型
      * @param <T> List<T>
      * @return List<T>
      */
-    public static <T> List<T> stringToList(String str, Class<T> clazz) {
+    public static <T> List<T> stringToList(String str, Class<T> t) {
 
         List<T> target = new ArrayList<T>();
 
@@ -170,7 +170,7 @@ public class Common {
 
         try {
             ObjectMapper objectMapper = new ObjectMapper();
-            JavaType javaType = objectMapper.getTypeFactory().constructParametricType(List.class, clazz);
+            JavaType javaType = objectMapper.getTypeFactory().constructParametricType(List.class, t);
             target = objectMapper.readValue(str, javaType);
         } catch (IOException e) {
             throw new BusinessLogicRunTimeException(e.getMessage(), e);
