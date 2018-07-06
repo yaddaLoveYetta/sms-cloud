@@ -25,6 +25,7 @@ import com.kingdee.hrp.sms.util.SessionUtil;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.io.IOException;
@@ -248,7 +249,7 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
      */
     @Override
     @SuppressWarnings("unchecked")
-    public Map<String, Object> getItems(Integer classId, List<Condition> conditions, List<Sort> sorts, Integer pageSize,
+    public Map<String, Object> getItems(Integer classId, Conditions conditions, Sorts sorts, Integer pageSize,
             Integer pageNo) {
 
         // 返回结构
@@ -273,7 +274,7 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
         // 插件事件 begin-------
         List<Condition> pluginConditions = plugInFactory.getConditions(classId, template, conditions);
         if (pluginConditions != null && pluginConditions.size() > 0) {
-            conditions.addAll(pluginConditions);
+            conditions.getConditionList().addAll(pluginConditions);
         }
         PlugInRet plugInRet = plugInFactory.beforeQuery(classId, template, conditions);
         if (plugInRet.getCode() != StatusCode.SUCCESS) {
@@ -318,12 +319,12 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
         Map<String, Object> statement = getStatement(classId);
 
         // 获取客户端传入的查询条件
-        if (conditions != null && !conditions.isEmpty()) {
+        if (conditions != null && !CollectionUtils.isEmpty(conditions.getConditionList())) {
             whereMap = getWhere(classId, -1, conditions);
         }
 
         // 获取客户端传入了排序规则
-        if (sorts != null && !sorts.isEmpty()) {
+        if (sorts != null && !CollectionUtils.isEmpty(sorts.getSortList())) {
             sort = getSort(classId, sorts);
         }
 
@@ -409,7 +410,7 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
      * @param sorts   排序结构 查询单据时，单据分录需要排序
      */
     @Override
-    public Map<String, Object> getItemById(Integer classId, Long id, List<Sort> sorts) {
+    public Map<String, Object> getItemById(Integer classId, Long id, Sorts sorts) {
 
         List<Long> ids = new ArrayList<Long>();
         ids.add(id);
@@ -423,8 +424,8 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
 
     @Override
     @SuppressWarnings("unchecked")
-    public List<Map<String, Object>> getItemByIds(Integer classId, List<Long> idList, List<Condition> conditions,
-            List<Sort> sorts) {
+    public List<Map<String, Object>> getItemByIds(Integer classId, List<Long> idList, Conditions conditions,
+            Sorts sorts) {
 
         if (idList == null || idList.size() == 0) {
             throw new BusinessLogicRunTimeException("请提交单据内码");
@@ -518,7 +519,7 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
             // 清空原过滤条件
             where = " WHERE 1=1 ";
             // 获取客户端传入的查询条件
-            if (conditions != null && !conditions.isEmpty()) {
+            if (conditions != null && !CollectionUtils.isEmpty(conditions.getConditionList())) {
                 whereMap = getWhere(classId, 1, conditions);
             }
             if (!whereMap.isEmpty()) {
@@ -1455,7 +1456,7 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
      * @return 查询条件
      */
     @SuppressWarnings("unchecked")
-    private Map<String, Object> getWhere(Integer classId, Integer pageIndex, List<Condition> conditions) {
+    private Map<String, Object> getWhere(Integer classId, Integer pageIndex, Conditions conditions) {
 
         Map<String, Object> ret = new HashMap<String, Object>(8);
 
@@ -1510,9 +1511,9 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
         // 将所有用户条件包含在AND()中，即所有过滤条件的结果是 WHERE 1=1 AND (用户过滤条件)
         String whereStructure = "WHERE 1=1 AND (%s)";
 
-        for (int i = 0; i < conditions.size(); i++) {
+        for (int i = 0; i < conditions.getConditionList().size(); i++) {
 
-            Condition condition = conditions.get(i);
+            Condition condition = conditions.getConditionList().get(i);
 
             // 处理脚本参数格式化时参数值不符合TSQL规则BUG
             String preValue = "";
@@ -1813,7 +1814,7 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
     }
 
     @SuppressWarnings("unchecked")
-    private String getSort(Integer classId, List<Sort> sorts) {
+    private String getSort(Integer classId, Sorts sorts) {
 
         StringBuilder sbOrderBy = new StringBuilder();
         String separator = System.getProperty("line.separator");
@@ -1841,7 +1842,7 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
 
         sbOrderBy.append("ORDER BY");
 
-        for (Sort sort : sorts) {
+        for (Sort sort : sorts.getSortList()) {
 
             String fieldKey = sort.getFieldKey();
 

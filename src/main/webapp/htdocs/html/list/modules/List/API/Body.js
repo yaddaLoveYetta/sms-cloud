@@ -34,7 +34,7 @@ define('List/API/Body', function (require, module, exports) {
             'classId': config.classId,
             'pageNo': pageNo,
             'pageSize': config.pageSize,
-            'condition': config.conditions.length > 0 ? config.conditions : '',
+            'condition': config.conditions.conditionList.length > 0 ? config.conditions : '',
             'sort': config.sort || ''
         };
 

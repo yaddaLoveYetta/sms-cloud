@@ -1,7 +1,9 @@
 package com.kingdee.hrp.sms.scm.service;
 
 import com.kingdee.hrp.sms.common.pojo.Condition;
+import com.kingdee.hrp.sms.common.pojo.Conditions;
 import com.kingdee.hrp.sms.common.pojo.Sort;
+import com.kingdee.hrp.sms.common.pojo.Sorts;
 import com.kingdee.hrp.sms.scm.model.out.OrderModel;
 
 import java.io.IOException;
@@ -43,8 +45,8 @@ public interface OrderService {
      * @param pageNo     当前页码
      * @return Map<String, Object>
      */
-    Map<String, Object> getOrdersByTemplate(List<Condition> conditions, List<Sort> sorts, Integer pageSize,
-                                            Integer pageNo);
+    Map<String, Object> getOrdersByTemplate(Conditions conditions, Sorts sorts, Integer pageSize,
+            Integer pageNo);
 
     /**
      * add a new order

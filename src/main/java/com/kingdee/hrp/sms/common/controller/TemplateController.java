@@ -2,7 +2,9 @@ package com.kingdee.hrp.sms.common.controller;
 
 import com.kingdee.hrp.sms.common.exception.BusinessLogicRunTimeException;
 import com.kingdee.hrp.sms.common.pojo.Condition;
+import com.kingdee.hrp.sms.common.pojo.Conditions;
 import com.kingdee.hrp.sms.common.pojo.Sort;
+import com.kingdee.hrp.sms.common.pojo.Sorts;
 import com.kingdee.hrp.sms.common.service.TemplateService;
 import com.kingdee.hrp.sms.util.Common;
 import org.apache.commons.lang.StringUtils;
@@ -16,7 +18,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
 
 /**
  * 单据模板操作
@@ -74,14 +75,16 @@ public class TemplateController {
      */
     @RequestMapping(value = "getItems")
     @ResponseBody
-    public Map<String, Object> getItems(@RequestParam(defaultValue = "0") Integer classId, String condition, String sort, @RequestParam(defaultValue = "10") Integer pageSize, @RequestParam(defaultValue = "1") Integer pageNo) throws IOException {
-
+    public Map<String, Object> getItems(@RequestParam(defaultValue = "0") Integer classId,
+            @RequestParam(value = "condition[]") List<Condition> condition,
+            @RequestParam(value = "sort[]") List<Sort> sort, @RequestParam(defaultValue = "10") Integer pageSize,
+            @RequestParam(defaultValue = "1") Integer pageNo) throws IOException {
 
         if (classId < 0) {
             throw new BusinessLogicRunTimeException("参数错误：必须提交classId");
         }
 
-        List<Condition> conditions = new ArrayList<Condition>();
+/*        List<Condition> conditions = new ArrayList<Condition>();
         List<Sort> sorts = new ArrayList<Sort>();
 
         // 包装查询条件-方便操作
@@ -91,9 +94,10 @@ public class TemplateController {
         // 包装查询结果排序-方便操作
         if (StringUtils.isNotBlank(sort)) {
             sorts = Common.stringToList(sort, Sort.class);
-        }
+        }*/
 
-        return templateService.getItems(classId, conditions, sorts, pageSize, pageNo);
+        //return templateService.getItems(classId, condition, sort, pageSize, pageNo);
+        return null;
 
     }
 
@@ -106,20 +110,13 @@ public class TemplateController {
      */
     @ResponseBody
     @RequestMapping(value = "getItemById")
-    public Map<String, Object> getItemById(Integer classId, Long id, String sort) throws IOException {
+    public Map<String, Object> getItemById(Integer classId, Long id, Sorts sort) throws IOException {
 
         if (classId < 0) {
             throw new BusinessLogicRunTimeException("参数错误：必须提交classId");
         }
 
-        List<Sort> sorts = new ArrayList<Sort>();
-
-        // 包装查询结果排序-方便操作
-        if (StringUtils.isNotBlank(sort)) {
-            sorts = Common.stringToList(sort, Sort.class);
-        }
-
-        return templateService.getItemById(classId, id, sorts);
+        return templateService.getItemById(classId, id, sort);
 
     }
 
@@ -145,7 +142,6 @@ public class TemplateController {
         return templateService.addItem(classId, data);
 
     }
-
 
     /**
      * 修改业务数据
@@ -198,7 +194,6 @@ public class TemplateController {
 
         return templateService.delItem(classId, ids);
     }
-
 
     @ResponseBody
     @RequestMapping(value = "forbid")

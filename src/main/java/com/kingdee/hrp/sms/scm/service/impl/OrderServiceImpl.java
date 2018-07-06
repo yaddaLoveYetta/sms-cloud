@@ -8,7 +8,9 @@ import com.kingdee.hrp.sms.common.model.OrderEntry;
 import com.kingdee.hrp.sms.common.model.OrderEntryExample;
 import com.kingdee.hrp.sms.common.model.OrderExample;
 import com.kingdee.hrp.sms.common.pojo.Condition;
+import com.kingdee.hrp.sms.common.pojo.Conditions;
 import com.kingdee.hrp.sms.common.pojo.Sort;
+import com.kingdee.hrp.sms.common.pojo.Sorts;
 import com.kingdee.hrp.sms.common.service.TemplateService;
 import com.kingdee.hrp.sms.common.service.plugin.PlugIn;
 import com.kingdee.hrp.sms.scm.enums.OrderDeliveryStatus;
@@ -188,8 +190,8 @@ public class OrderServiceImpl extends AbstractOrderService implements OrderServi
      * @param pageNo     当前页码
      */
     @Override
-    public Map<String, Object> getOrdersByTemplate(List<Condition> conditions, List<Sort> sorts, Integer pageSize,
-                                                   Integer pageNo) {
+    public Map<String, Object> getOrdersByTemplate(Conditions conditions, Sorts sorts, Integer pageSize,
+            Integer pageNo) {
 
         return templateService.getItems(CLASS_ID, conditions, sorts, pageSize, pageNo);
     }
@@ -288,7 +290,6 @@ public class OrderServiceImpl extends AbstractOrderService implements OrderServi
             logger.error("只有新增状态的订单可审核，本次操作失败，请检查选中订单的状态ids:{}", ids);
             throw new BusinessLogicRunTimeException("只有新增状态的订单可审核，本次操作失败，请检查选中订单的状态");
         }
-
 
         Order order = new Order();
 

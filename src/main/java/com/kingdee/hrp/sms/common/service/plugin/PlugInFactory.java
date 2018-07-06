@@ -2,6 +2,7 @@ package com.kingdee.hrp.sms.common.service.plugin;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.kingdee.hrp.sms.common.pojo.Condition;
+import com.kingdee.hrp.sms.common.pojo.Conditions;
 import com.kingdee.hrp.sms.common.pojo.StatusCode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -227,7 +228,7 @@ public class PlugInFactory implements PlugIn, InitializingBean, ApplicationConte
      */
     @Override
     public PlugInRet beforeEntryModify(int classId, String primaryId, String entryId, Map<String, Object> formTemplate,
-                                       JsonNode data) {
+            JsonNode data) {
 
         PlugInRet plugInRet = new PlugInRet();
 
@@ -310,7 +311,7 @@ public class PlugInFactory implements PlugIn, InitializingBean, ApplicationConte
      */
     @Override
     public PlugInRet beforeEntryDelete(int classId, String primaryId, String entryId,
-                                       Map<String, Object> formTemplate) {
+            Map<String, Object> formTemplate) {
 
         PlugInRet plugInRet = new PlugInRet();
 
@@ -358,17 +359,17 @@ public class PlugInFactory implements PlugIn, InitializingBean, ApplicationConte
      *
      * @param classId      业务类别
      * @param formTemplate 单据模板
-     * @param conditons    原始过滤条件
+     * @param conditions   原始过滤条件
      * @return
      */
     @Override
-    public PlugInRet beforeQuery(int classId, Map<String, Object> formTemplate, List<Condition> conditons) {
+    public PlugInRet beforeQuery(int classId, Map<String, Object> formTemplate, Conditions conditions) {
 
         PlugInRet plugInRet = new PlugInRet();
 
         for (PlugIn plugIn : plugIns) {
             if (plugIn.getClassIdSet() != null && plugIn.getClassIdSet().contains(classId)) {
-                plugInRet = plugIn.beforeQuery(classId, formTemplate, conditons);
+                plugInRet = plugIn.beforeQuery(classId, formTemplate, conditions);
                 if (plugInRet.getCode() != StatusCode.SUCCESS) {
                     // 插件返回了阻止继续运行的情况--返回不继续执行后续插件
                     return plugInRet;
@@ -413,7 +414,7 @@ public class PlugInFactory implements PlugIn, InitializingBean, ApplicationConte
      * @return 插件过滤条件
      */
     @Override
-    public List<Condition> getConditions(int classId, Map<String, Object> formTemplate, List<Condition> conditions) {
+    public List<Condition> getConditions(int classId, Map<String, Object> formTemplate, Conditions conditions) {
 
         List<Condition> pluginConditions = new ArrayList<Condition>();
 
