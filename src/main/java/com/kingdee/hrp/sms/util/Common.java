@@ -155,12 +155,12 @@ public class Common {
     /**
      * 将String转成List
      *
-     * @param str 待转化字符串，必须符合list格式
-     * @param t   List泛型类型
+     * @param str 待转化字符串，必须符合list格式的json字符串，如：[{a:1,b:'w'},{a:2,b:"ddd"}]
+     * @param clazz   List泛型类型
      * @param <T> List<T>
      * @return List<T>
      */
-    public static <T> List<T> stringToList(String str, Class<T> t) {
+    public static <T> List<T> stringToList(String str, Class<T> clazz) {
 
         List<T> target = new ArrayList<T>();
 
@@ -170,7 +170,7 @@ public class Common {
 
         try {
             ObjectMapper objectMapper = new ObjectMapper();
-            JavaType javaType = objectMapper.getTypeFactory().constructParametricType(List.class, t);
+            JavaType javaType = objectMapper.getTypeFactory().constructParametricType(List.class, clazz);
             target = objectMapper.readValue(str, javaType);
         } catch (IOException e) {
             throw new BusinessLogicRunTimeException(e.getMessage(), e);
