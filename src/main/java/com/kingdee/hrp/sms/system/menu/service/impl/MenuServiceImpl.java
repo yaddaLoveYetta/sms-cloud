@@ -104,6 +104,14 @@ public class MenuServiceImpl extends BaseService implements MenuService {
             }
         }
 
+        // for test----begin----
+        if (userRoleType == UserRoleType.SYSTEM) {
+            ret.clear();
+            ret.addAll(menus);
+        }
+
+        // for test----end-----
+
         // 二次过滤，将没有二级菜单的一级菜单过滤掉
         Iterator<Menu> iterator = ret.iterator();
 

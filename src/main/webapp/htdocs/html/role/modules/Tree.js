@@ -84,7 +84,7 @@
                                     twoCheck = true;
                                 }
                                 var accData = {
-                                    id: acc.accessMask,
+                                    //id: acc.accessMask,
                                     pId: twoId,
                                     name: acc.accessName,
                                     accessMask: acc.accessMask,
@@ -137,7 +137,7 @@
         var type = user.type;
         var nodes = zTree.getCheckedNodes(true);
         var topNodes = $.Array.grep(nodes, function (item, index) {
-
+            //从顶级节点遍历
             return item.level == 0;
         });
         var permitData = [];
