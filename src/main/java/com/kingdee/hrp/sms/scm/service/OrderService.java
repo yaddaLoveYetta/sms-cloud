@@ -1,7 +1,10 @@
 package com.kingdee.hrp.sms.scm.service;
 
+import com.kingdee.hrp.sms.common.model.Order;
+import com.kingdee.hrp.sms.common.model.OrderEntry;
 import com.kingdee.hrp.sms.common.pojo.Condition;
 import com.kingdee.hrp.sms.common.pojo.Sort;
+import com.kingdee.hrp.sms.scm.model.in.DeliverModel;
 import com.kingdee.hrp.sms.scm.model.out.OrderModel;
 
 import java.io.IOException;
@@ -19,12 +22,73 @@ public interface OrderService {
     /**
      * 获取一张订单信息
      * <p>
+     * 不存在返回null
+     * <p>
      * 只查询order与orderEntry表数据，不获取引用类型字段的关联信息
      *
      * @param orderId 订单id
      * @return OrderModel
      */
-    OrderModel getOrder(Long orderId);
+    OrderModel getOrderModel(Long orderId);
+
+    /**
+     * 获取一张订单信息
+     * <p>
+     * 可指定获取的分录
+     *
+     * @param orderId  订单id
+     * @param detailId 订单分录id，可多个
+     * @return OrderModel
+     */
+    OrderModel getOrderModel(Long orderId, Long... detailId);
+
+    /**
+     * 获取一张订单信息
+     * <p>
+     * 可指定获取的分录
+     *
+     * @param orderId   订单id
+     * @param detailIds 订单分录id，可多个
+     * @return OrderModel
+     */
+    OrderModel getOrderModel(Long orderId, List<Long> detailIds);
+
+    /**
+     * 订单表头信息
+     * 不存在返回null
+     *
+     * @param orderId 订单id
+     * @return Order
+     */
+    Order getOrderHeader(Long orderId);
+
+    /**
+     * 订单表体信息
+     * 不存在返回null
+     *
+     * @param orderId 订单id
+     * @return List<OrderEntry>
+     */
+    List<OrderEntry> getOrderEntries(Long orderId);
+
+    /**
+     * 一条订单分录信息
+     * 不存在返回null
+     *
+     * @param orderId  订单id
+     * @param detailId 订单分录id
+     * @return OrderEntry
+     */
+    OrderEntry getOrderEntry(Long orderId, Long detailId);
+
+    /**
+     * 一条订单分录信息
+     * 不存在返回null
+     *
+     * @param detailId 订单分录id
+     * @return OrderEntry
+     */
+    OrderEntry getOrderEntry(Long detailId);
 
     /**
      * 通过模板查询一张订单信息
@@ -44,7 +108,7 @@ public interface OrderService {
      * @return Map<String, Object>
      */
     Map<String, Object> getOrdersByTemplate(List<Condition> conditions, List<Sort> sorts, Integer pageSize,
-                                            Integer pageNo);
+            Integer pageNo);
 
     /**
      * add a new order
@@ -127,9 +191,9 @@ public interface OrderService {
     /**
      * create deliver order from order
      *
-     * @param deliverOrder order which deal to create deliver order
+     * @param deliverModel order which deal to create deliver order
      * @return a temp deliver order info which is not save in database yet
      */
-    Map<String, Object> deliver(Map<String, Object> deliverOrder);
+    Map<String, Object> deliver(DeliverModel deliverModel);
 
 }

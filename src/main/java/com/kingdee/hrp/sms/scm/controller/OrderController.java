@@ -41,7 +41,7 @@ public class OrderController {
 /*        if (orderId == null || orderId <= 0) {
             throw new BusinessLogicRunTimeException("请提交正确的订单id");
         }
-        return orderService.getOrder(orderId);*/
+        return orderService.getOrderModel(orderId);*/
 
         return null;
 

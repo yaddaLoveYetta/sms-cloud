@@ -58,9 +58,9 @@ public abstract class AbstractOrderService extends BaseService {
         OrderExample orderExample = new OrderExample();
         OrderExample.Criteria criteria = orderExample.createCriteria();
 
-        if (SessionUtil.getUserRoleType()== UserRoleType.HOSPITAL) {
+        if (SessionUtil.getUserRoleType() == UserRoleType.HOSPITAL) {
             criteria.andHospitalEqualTo(SessionUtil.getUserLinkOrg());
-        }else if (SessionUtil.getUserRoleType()==UserRoleType.SUPPLIER){
+        } else if (SessionUtil.getUserRoleType() == UserRoleType.SUPPLIER) {
             criteria.andSupplierEqualTo(SessionUtil.getUserLinkOrg());
         }
 
@@ -86,7 +86,9 @@ public abstract class AbstractOrderService extends BaseService {
      * @return result String number
      */
     protected String getRandomStr(Integer length) {
-        String result = "";
+
+        StringBuilder sb = new StringBuilder();
+
         Random rand = new Random();
 
         length = (length == null || length <= 0) ? 5 : length;
@@ -94,10 +96,10 @@ public abstract class AbstractOrderService extends BaseService {
         int randInt = 0;
         for (int i = 0; i < length; i++) {
             randInt = rand.nextInt(10);
-            result += randInt;
+            sb.append(randInt);
         }
 
-        return result;
+        return sb.toString();
     }
 
     public static void main(String[] args) {

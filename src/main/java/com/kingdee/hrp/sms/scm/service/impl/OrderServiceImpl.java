@@ -13,6 +13,8 @@ import com.kingdee.hrp.sms.common.service.TemplateService;
 import com.kingdee.hrp.sms.common.service.plugin.PlugIn;
 import com.kingdee.hrp.sms.scm.enums.OrderDeliveryStatus;
 import com.kingdee.hrp.sms.scm.enums.OrderStatus;
+import com.kingdee.hrp.sms.scm.model.in.DeliverEntryModel;
+import com.kingdee.hrp.sms.scm.model.in.DeliverModel;
 import com.kingdee.hrp.sms.scm.model.out.OrderEntryModel;
 import com.kingdee.hrp.sms.scm.model.out.OrderHeaderModel;
 import com.kingdee.hrp.sms.scm.model.out.OrderModel;
@@ -28,6 +30,7 @@ import javax.annotation.Resource;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -75,7 +78,7 @@ public class OrderServiceImpl extends AbstractOrderService implements OrderServi
      * @return Order
      */
     @Override
-    public OrderModel getOrder(Long orderId) {
+    public OrderModel getOrderModel(Long orderId) {
 
         OrderModel orderModel = new OrderModel();
 
@@ -104,6 +107,145 @@ public class OrderServiceImpl extends AbstractOrderService implements OrderServi
         orderModel.setHeader(order).setEntries(entries);
 
         return orderModel;
+    }
+
+    /**
+     * 获取一张订单信息
+     * <p>
+     * 可指定获取的分录
+     *
+     * @param orderId  订单id
+     * @param detailId 订单分录id，可多个
+     * @return OrderModel
+     */
+    @Override
+    public OrderModel getOrderModel(Long orderId, Long... detailId) {
+
+        return getOrderModel(orderId, Arrays.asList(detailId));
+    }
+
+    /**
+     * 获取一张订单信息
+     * <p>
+     * 可指定获取的分录
+     *
+     * @param orderId   订单id
+     * @param detailIds 订单分录id，可多个
+     * @return OrderModel
+     */
+    @Override
+    public OrderModel getOrderModel(Long orderId, List<Long> detailIds) {
+
+        OrderModel orderModel = new OrderModel();
+
+        OrderMapper orderMapper = sqlSession.getMapper(OrderMapper.class);
+
+        OrderExample.Criteria criteria = getOrderExample();
+        criteria.andIdEqualTo(orderId);
+
+        List<Order> orders = orderMapper.selectByExample(criteria.example());
+
+        if (CollectionUtils.isEmpty(orders)) {
+            logger.error("不存在id为{}的订单");
+            throw new BusinessLogicRunTimeException(String.format("不存在id为%s的订单!", detailIds));
+        }
+        // 只可能有一单
+        Order order = orders.get(0);
+
+        OrderEntryMapper orderEntryMapper = sqlSession.getMapper(OrderEntryMapper.class);
+        OrderEntryExample orderEntryExample = new OrderEntryExample();
+        orderEntryExample.createCriteria().andParentEqualTo(orderId).andIdIn(detailIds);
+        // 按照行号排序
+        orderEntryExample.setOrderByClause(OrderEntry.Column.sequence.asc());
+
+        List<OrderEntry> entries = orderEntryMapper.selectByExample(orderEntryExample);
+
+        orderModel.setHeader(order).setEntries(entries);
+
+        return orderModel;
+    }
+
+    /**
+     * 订单表头信息
+     * 不存在返回null
+     *
+     * @param orderId 订单id
+     * @return Order
+     */
+    @Override
+    public Order getOrderHeader(Long orderId) {
+
+        OrderMapper orderMapper = sqlSession.getMapper(OrderMapper.class);
+        return orderMapper.selectByPrimaryKey(orderId);
+
+    }
+
+    /**
+     * 订单表体信息
+     * 不存在返回null
+     *
+     * @param orderId 订单id
+     * @return List<OrderEntry>
+     */
+    @Override
+    public List<OrderEntry> getOrderEntries(Long orderId) {
+
+        OrderEntryMapper orderEntryMapper = sqlSession.getMapper(OrderEntryMapper.class);
+
+        OrderEntryExample orderEntryExample = new OrderEntryExample();
+
+        orderEntryExample.createCriteria().andParentEqualTo(orderId);
+
+        List<OrderEntry> orderEntries = orderEntryMapper.selectByExample(orderEntryExample);
+
+        if (CollectionUtils.isEmpty(orderEntries)) {
+            return null;
+        }
+
+        return orderEntries;
+    }
+
+    /**
+     * 一条订单分录信息
+     * 不存在返回null
+     *
+     * @param orderId  订单id
+     * @param detailId 订单分录id
+     * @return OrderEntry
+     */
+    @Override
+    public OrderEntry getOrderEntry(Long orderId, Long detailId) {
+
+        OrderEntryMapper orderEntryMapper = sqlSession.getMapper(OrderEntryMapper.class);
+
+        OrderEntryExample orderEntryExample = new OrderEntryExample();
+
+        orderEntryExample.createCriteria().andParentEqualTo(orderId).andIdEqualTo(detailId);
+
+        List<OrderEntry> orderEntries = orderEntryMapper.selectByExample(orderEntryExample);
+
+        if (!CollectionUtils.isEmpty(orderEntries)) {
+            return orderEntries.get(0);
+        }
+
+        return null;
+
+    }
+
+    /**
+     * 一条订单分录信息
+     * 不存在返回null
+     *
+     * @param detailId 订单分录id
+     * @return OrderEntry
+     */
+    @Override
+    public OrderEntry getOrderEntry(Long detailId) {
+
+        OrderEntryMapper orderEntryMapper = sqlSession.getMapper(OrderEntryMapper.class);
+
+        return orderEntryMapper.selectByPrimaryKey(detailId);
+
     }
 
     /**
@@ -189,7 +331,7 @@ public class OrderServiceImpl extends AbstractOrderService implements OrderServi
      */
     @Override
     public Map<String, Object> getOrdersByTemplate(List<Condition> conditions, List<Sort> sorts, Integer pageSize,
-                                                   Integer pageNo) {
+            Integer pageNo) {
 
         return templateService.getItems(CLASS_ID, conditions, sorts, pageSize, pageNo);
     }
@@ -288,7 +430,6 @@ public class OrderServiceImpl extends AbstractOrderService implements OrderServi
             logger.error("只有新增状态的订单可审核，本次操作失败，请检查选中订单的状态ids:{}", ids);
             throw new BusinessLogicRunTimeException("只有新增状态的订单可审核，本次操作失败，请检查选中订单的状态");
         }
-
 
         Order order = new Order();
 
@@ -452,11 +593,35 @@ public class OrderServiceImpl extends AbstractOrderService implements OrderServi
     /**
      * create deliver order from order
      *
-     * @param deliverOrder order which deal to create deliver order
+     * @param deliverModel order which deal to create deliver order
      * @return a temp deliver order info which is not save in database yet
      */
     @Override
-    public Map<String, Object> deliver(Map<String, Object> deliverOrder) {
+    public Map<String, Object> deliver(DeliverModel deliverModel) {
+
+        // 需要发货的订单详细信息
+        List<OrderModel> toBeDeliverOrders = new ArrayList<>();
+
+        // 查询出待发货的订单信息
+        for (DeliverEntryModel deliverEntryModel : deliverModel.getOrders()) {
+            //deliverEntryModel 是一张待发货的订单信息
+
+            Long orderId = deliverEntryModel.getId();
+            List<Long> childIds = deliverEntryModel.getChildId();
+
+            OrderModel orderModel = getOrderModel(orderId, childIds);
+
+            toBeDeliverOrders.add(orderModel);
+        }
+
+        if (CollectionUtils.isEmpty(toBeDeliverOrders)) {
+            throw new BusinessLogicRunTimeException("没有待发货的订单");
+        }
+
+        // 一条订单分录生成一条发货单分录--不支持相同物料合并逻辑(复杂度高 TODO)
+        for (OrderModel toBeDeliverOrder : toBeDeliverOrders) {
+
+        }
         return null;
     }
 }
