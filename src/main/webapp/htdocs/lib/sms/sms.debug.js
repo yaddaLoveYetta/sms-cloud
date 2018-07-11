@@ -6871,12 +6871,10 @@
                     col: null
                 },
                 'oldData': null,
-
                 'initGrid': initGrid,
                 'saveGrid': saveGrid,
                 'getGridData': getGridData,
                 'snapShot': snapShot,
-
                 'getNeedSaveKeys': getNeedSaveKeys,
                 'getMustInputFields': getMustInputFields,
                 'getPrimaryKey': getPrimaryKey,
@@ -6908,6 +6906,7 @@
                     id: 'num_1'
                 });
             } else {
+                // 新增一条记录时候的id
                 newId = data.length + 1;
             }
 
@@ -6915,7 +6914,7 @@
                 caption: config.caption,
                 data: data,
                 datatype: 'clientSide', // 'local',
-                styleUI: 'Bootstrap',//设置jqgrid的全局样式为bootstrap样式
+                styleUI: 'Bootstrap',// 设置jqgrid的全局样式为bootstrap样式
                 colNames: config.colNames,
                 colModel: config.colModel,
                 width: config.width,
@@ -6924,7 +6923,7 @@
                 cmTemplate: {
                     sortable: false
                 },
-                rownumbers: true,
+                rownumbers: true,  // 显示行号
                 cellEdit: true,
                 // altRows: true,
                 shrinkToFit: false,
@@ -6951,18 +6950,23 @@
 
                 loadComplete: function (data) {
                     config.fnLoadComplete && config.fnLoadComplete(data);
+                    emitter.fire('loadComplete', [config.classId, data]);
                 }
             });
 
             // 添加行
             bdGrid.on('click', '.ui-icon-plus', function (e) {
+
                 saveGrid(bdGrid, cfg.curCell);
 
                 var rowId = $(this).parent().data('id');
+
                 var datarow = {
                     id: 'num_' + newId
                 };
+
                 var su = bdGrid.jqGrid('addRowData', 'num_' + newId, datarow, 'after', rowId);
+
                 if (su) {
                     $(this).parents('td').removeAttr('class');
                     $(this).parents('tr').removeClass('selected-row ui-state-hover');
@@ -6970,8 +6974,8 @@
                     newId++;
                 }
             });
+
             // 删除行
-            // $('.grid-wrap').on('click', '.ui-icon-trash', function (e) {
             bdGrid.on('click', '.ui-icon-trash', function (e) {
 
                 saveGrid(bdGrid, cfg.curCell);
@@ -6982,7 +6986,6 @@
                     if (row[primaryKey]) {
                         deleteRows.push(row);
                     }
-                    ;
 
                     bdGrid.jqGrid("clearGridData");
                     bdGrid.jqGrid('addRowData', 'num_1', {
@@ -6990,11 +6993,13 @@
                     });
                     return false;
                 }
+
                 var rowId = $(this).parent().data('id');
                 var row = bdGrid.jqGrid('getRowData', rowId);
                 var su = bdGrid.jqGrid('delRowData', rowId);
 
                 if (su && row[primaryKey]) {
+                    // 编辑单据时记录删除的记录id
                     deleteRows.push(row);
                 }
 
@@ -7007,8 +7012,7 @@
                 }
             });
 
-            // F7 按钮-选择资料 ui-icon-ellipsis
-            // $('.grid-wrap').on('click', '.ui-icon-ellipsis', function (e) {
+            // F7 按钮图标-选择资料 ui-icon-ellipsis
             bdGrid.on('click', '.ui-icon-ellipsis', function (e) {
 
                 var meta = mapper.get(this);
@@ -7030,17 +7034,19 @@
                     container: $_comboAuto,
                     rowNumb: rowNumb,
                     colNumb: colNumb,
-                    colModels: colModels,
+                    colModels: colModels
                 });
 
             });
 
+             // F7快捷键
             bdGrid.on('keyup', '.f7-icon-ellipsis', function (e) {
                 if (e.keyCode === 118) {
                     // F7
                     $(bdGrid).parent().find('.ui-icon-ellipsis').trigger("click");
                 }
             });
+            // F7快捷键
             bdGrid.on('dblclick', '.f7-icon-ellipsis', function (e) {
                 //F7 双击
                 $(bdGrid).parent().find('.ui-icon-ellipsis').trigger("click");
@@ -7169,6 +7175,13 @@
             return data;
         }
 
+        /**
+         * 模板中配置的数据库需要保存的字段key
+         *
+         * @param metaData  单据模板
+         * @param entryIndex page(0:主表1:第一个子表2:第二个子表...)
+         * @returns {Array} 模板配置的需要保存的字段key
+         */
         function getNeedSaveKeys(metaData, entryIndex) {
             var keys = [];
 
@@ -7183,6 +7196,13 @@
             return keys;
         }
 
+        /**
+         * 模板中配置的数据库必录字段key(按照tab顺序排序)
+         *
+         * @param metaData  单据模板
+         * @param entryIndex page(0:主表1:第一个子表2:第二个子表...)
+         * @returns {Array} 模板配置的必录字段key
+         */
         function getMustInputFields(metaData, entryIndex) {
             var keys = [];
 
@@ -7197,28 +7217,42 @@
             keys = sortFields(keys);
 
             return keys;
-        }
 
-        function sortFields(fields) {
-            for (var i = 0; i < fields.length; i++) {
-                for (var j = i + 1; j < fields.length; j++) {
-                    if (fields[i].tabIndex > fields[j].tabIndex) {
-                        var tmp = fields[i];
-                        fields[i] = fields[j];
-                        fields[j] = tmp;
+            function sortFields(fields) {
+                for (var i = 0; i < fields.length; i++) {
+                    for (var j = i + 1; j < fields.length; j++) {
+                        if (fields[i].tabIndex > fields[j].tabIndex) {
+                            var tmp = fields[i];
+                            fields[i] = fields[j];
+                            fields[j] = tmp;
+                        }
                     }
                 }
+                return fields;
             }
-
-            return fields;
         }
 
+        /**
+         * 模板配置的单据主键key
+         * @param metaData 单据模板
+         * @param entryIndex  page(0:主表1:第一个子表2:第二个子表...)
+         * @returns 主键key
+         */
         function getPrimaryKey(metaData, entryIndex) {
             var entry = metaData['formClassEntry'][entryIndex];
             return entry['primaryKey'];
         }
 
+        /**
+         * 获取表格数据
+         * @param bdGrid
+         * @param metaData  单据模板
+         * @param needSaveKeys 需要保存的key
+         * @param mustInputFields 必录项key
+         * @returns {Array} 单据数据
+         */
         function getGridData(bdGrid, metaData, needSaveKeys, mustInputFields) {
+
             var gridData = [];
             var ids = bdGrid.jqGrid('getDataIDs');
 
@@ -7230,7 +7264,9 @@
                 var valid = true;
                 var mustInputCaptions = [];
 
+                // 必录项校验
                 for (var validIndex in mustInputFields) {
+
                     if (row[mustInputFields[validIndex].key] == '') {
                         var caption = mustInputFields[validIndex].name;
                         mustInputCaptions.push(caption);
@@ -7242,30 +7278,34 @@
 
                 // 该行记录有值时，需要提示必录项
                 var hasValue = false;
+                // 打包表格行数据(只需要打包needSave=true的字段)
                 for (var key in needSaveKeys) {
 
                     if (row[key] !== '') {
                         itemData[key] = row[key];
                         hasValue = true;
                     } else {
-                        itemData[key] = needSaveKeys[key].defaultValue;
+                        // 模板配置的默认值处理
+                        itemData[key] = needSaveKeys[key].defaultValue || '';
                     }
                 }
 
                 // 当为空行时，跳过无效分录
-                if (!valid && !hasValue) {
+                if (!hasValue) {
                     continue;
                 }
 
-                // 有必录项未录，同时有值时
+                // 有效行但有必录项未录
                 if (!valid && hasValue) {
                     itemData.bos_mustInput = 'true';
                     itemData.bos_mustInputCaptions = mustInputCaptions;
                 }
 
+                // 修改标记
                 itemData.bos_modify = row.bos_modify;
 
-                gridData.push(itemData); // 修改需要全部数据，不只是要主键
+                // 修改需要全部数据，不只是要主键
+                gridData.push(itemData);
                 // gridData.push(row);
             }
 
@@ -7287,9 +7327,11 @@
              * cellname, value, iRow, iCol)
              */
             render: function (config, entryData, metaData, entryIndex) {
+
                 var meta = mapper.get(this);
 
                 if (!entryIndex) {
+                    // 默认第一个子表
                     entryIndex = 1;
                 }
 
@@ -7298,26 +7340,29 @@
                 meta.primaryKey = meta.getPrimaryKey(meta.metaData, entryIndex);
 
                 if (meta.inited) {
+                    // grid已经渲染，此处重新加载数据
                     meta.grid.jqGrid('setGridParam', {
                         data: entryData[entryIndex]
                     }).trigger('reloadGrid', [{
                         page: 1
                     }]);
+                    // 保存一份原始数据
                     meta.oldData = meta.snapShot(meta.grid);
                     return;
                 }
 
-                var entryCount;
                 if (entryData) {
                     meta.initGrid(meta, entryData[entryIndex]);
                 }
 
-                if (!entryData || entryCount == 0) {
+                if (!entryData) {
                     meta.initGrid(meta);
                 }
                 meta.inited = true;
+                // 保存一份原始数据
                 meta.oldData = meta.snapShot(meta.grid);
             },
+
             setData: function (data, page) {
                 var meta = mapper.get(this);
                 var bdGrid = meta.grid;
