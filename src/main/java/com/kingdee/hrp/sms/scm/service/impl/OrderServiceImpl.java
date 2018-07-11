@@ -2,6 +2,7 @@ package com.kingdee.hrp.sms.scm.service.impl;
 
 import com.kingdee.hrp.sms.common.dao.generate.OrderEntryMapper;
 import com.kingdee.hrp.sms.common.dao.generate.OrderMapper;
+import com.kingdee.hrp.sms.common.enums.UserRoleType;
 import com.kingdee.hrp.sms.common.exception.BusinessLogicRunTimeException;
 import com.kingdee.hrp.sms.common.model.Order;
 import com.kingdee.hrp.sms.common.model.OrderEntry;
@@ -493,8 +494,15 @@ public class OrderServiceImpl extends AbstractOrderService implements OrderServi
 
         // 校验订单状态是否是已审核，只有已审核的订单可以发送给供应商
         OrderExample orderExample = new OrderExample();
-        // 只有新增状态的订单可删除
-        orderExample.createCriteria().andIdIn(ids).andOrderStatusEqualTo(OrderStatus.CHECKED.getNumber());
+
+        OrderExample.Criteria criteria = orderExample.createCriteria();
+
+        if (getUserRoleType() != UserRoleType.SYSTEM && debug) {
+            criteria.andHospitalEqualTo(getUserLinkOrg());
+        }
+
+        // 只有新增状态的订单可发送给供应商
+        criteria.andIdIn(ids).andOrderStatusEqualTo(OrderStatus.CHECKED.getNumber());
 
         List<Order> orders = orderMapper.selectByExample(orderExample);
 
@@ -530,8 +538,15 @@ public class OrderServiceImpl extends AbstractOrderService implements OrderServi
 
         // 校验订单状态是否是待确认，只有待确认的订单可以确认
         OrderExample orderExample = new OrderExample();
+
+        OrderExample.Criteria criteria = orderExample.createCriteria();
+
+        if (getUserRoleType() != UserRoleType.SYSTEM && debug) {
+            criteria.andHospitalEqualTo(getUserLinkOrg());
+        }
+
         // 只有待确认状态的订单可确认
-        orderExample.createCriteria().andIdIn(ids).andOrderStatusEqualTo(OrderStatus.TO_BE_CONFIRMED.getNumber());
+        criteria.andIdIn(ids).andOrderStatusEqualTo(OrderStatus.TO_BE_CONFIRMED.getNumber());
 
         List<Order> orders = orderMapper.selectByExample(orderExample);
 
@@ -566,8 +581,15 @@ public class OrderServiceImpl extends AbstractOrderService implements OrderServi
 
         // 校验订单状态是否是已确认且未发货，只有已确认且未发货的订单可以反确认
         OrderExample orderExample = new OrderExample();
+
+        OrderExample.Criteria criteria = orderExample.createCriteria();
+
+        if (getUserRoleType() != UserRoleType.SYSTEM && debug) {
+            criteria.andHospitalEqualTo(getUserLinkOrg());
+        }
+
         // 只有已确认且未发货状态的订单可反确认
-        orderExample.createCriteria().andIdIn(ids).andOrderStatusEqualTo(OrderStatus.CONFIRMED.getNumber())
+        criteria.andIdIn(ids).andOrderStatusEqualTo(OrderStatus.CONFIRMED.getNumber())
                 .andDeliverStatusEqualTo(OrderDeliveryStatus.UN_SHIPPED.getNumber());
 
         List<Order> orders = orderMapper.selectByExample(orderExample);
