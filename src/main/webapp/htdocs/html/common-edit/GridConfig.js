@@ -107,7 +107,7 @@ define('GridConfig', function (require, module, exports) {
                 custom_element: element,
                 custom_value: value,
                 handle: handle,
-                trigger: triggerClass,
+                trigger: triggerClass
             };
 
             model.formatter = function (val, opt, row) {
@@ -124,17 +124,12 @@ define('GridConfig', function (require, module, exports) {
         // 日期
         if (field.ctrlType === 12) {
 
-            /*            model.edittype = 'date';
-                        model.formatter = "date";
-                        model.formatoptions = {
-                            srcformat: 'Y-m-d H:i:s',
-                            newformat: 'Y-m-d H:i:s'
-                        }*/
             model.edittype = 'text';
             model.editrules = {required: false};
             //model.editable = false;
             model.editoptions = {
-                size: 10, maxlengh: 10,
+                size: 10,
+                maxlengh: 10,
                 dataInit: function (element) {
 
                     SMS.use('DateTimePicker', function (DateTimePicker) {
@@ -145,7 +140,7 @@ define('GridConfig', function (require, module, exports) {
                             todayHighlight: true,
                             timepicker: false,
                             startView: 'month',
-                            minView: 2,
+                            minView: 2
                         });
                     });
                 }
@@ -155,7 +150,8 @@ define('GridConfig', function (require, module, exports) {
         if (field.ctrlType === 1) {
 
             //model.edittype = 'text';
-            model.align = 'right'; // 数字靠右显示
+            // 数字靠右显示
+            model.align = 'right';
             model.editrules = {
                 required: false,
                 number: true
@@ -169,7 +165,8 @@ define('GridConfig', function (require, module, exports) {
         // 数字-两位小数
         if (field.ctrlType === 2) {
 
-            model.align = 'right'; // 数字靠右显示
+            // 数字靠右显示
+            model.align = 'right';
             model.editrules = {
                 required: false,
                 number: true

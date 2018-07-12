@@ -6961,11 +6961,11 @@
 
                 var rowId = $(this).parent().data('id');
 
-                var datarow = {
+                var dataRow = {
                     id: 'num_' + newId
                 };
 
-                var su = bdGrid.jqGrid('addRowData', 'num_' + newId, datarow, 'after', rowId);
+                var su = bdGrid.jqGrid('addRowData', 'num_' + newId, dataRow, 'after', rowId);
 
                 if (su) {
                     $(this).parents('td').removeAttr('class');
@@ -6981,16 +6981,21 @@
                 saveGrid(bdGrid, cfg.curCell);
 
                 if (bdGrid.children('tbody').children('tr').length === 2) {
+                    // grid 标题行占一行，如果只有两行，删除一条分录后即没有分录了 ，此时新增一条空分录
+
                     var rowId = $(this).parent().data('id');
                     var row = bdGrid.jqGrid('getRowData', rowId);
+
                     if (row[primaryKey]) {
                         deleteRows.push(row);
                     }
 
                     bdGrid.jqGrid("clearGridData");
+                    //新增一条空分录
                     bdGrid.jqGrid('addRowData', 'num_1', {
                         id: 'num_1'
                     });
+
                     return false;
                 }
 
@@ -7039,7 +7044,7 @@
 
             });
 
-             // F7快捷键
+            // F7快捷键
             bdGrid.on('keyup', '.f7-icon-ellipsis', function (e) {
                 if (e.keyCode === 118) {
                     // F7
@@ -7052,12 +7057,6 @@
                 $(bdGrid).parent().find('.ui-icon-ellipsis').trigger("click");
             });
 
-            bdGrid.on('click', '.ui-icon-triangle-1-s', function (e) {
-                var $_comboAuto = $(this).prev();
-                setTimeout(function () {
-                    $_comboAuto.trigger('click');
-                }, 10);
-            });
         }
 
         function showF7(field, cfg, container, rowNumb, colNumb, colModels) {
