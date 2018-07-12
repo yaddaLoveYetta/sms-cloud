@@ -7399,6 +7399,7 @@
                 meta.deleteRows.splice(0, meta.deleteRows.length);
             },
             getGridDatas: function (entryIndex) {
+                // 获取grid数据
                 var meta = mapper.get(this);
 
                 meta.saveGrid(meta.grid, meta.curCell);
@@ -7446,20 +7447,7 @@
                     if (!!row[primaryKey] && parseInt(row[primaryKey]) > 0) {
                         updateDatas.push(row);
                     }
-                    // var addData = $.Object.grep(row, function(key, value) {
-                    // if( key == 'FEntryID' && value){
-                    // return row;
-                    // }
-                    // });
-                    // addDatas.push(addData);
-                    //
-                    // var updateData = $.Object.grep(row, function(key, value)
-                    // {
-                    // if(key == 'FEntryID' && (!!value)){
-                    // return row;
-                    // }
-                    // });
-                    // updateDatas.push(updateData);
+
                 }
 
                 return {
