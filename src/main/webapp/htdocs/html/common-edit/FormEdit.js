@@ -537,9 +537,9 @@ define('FormEdit', function (require, module, exports) {
                     'defaults': {
                         caption: formClassEntryItem.name,
                         gridName: formClassEntryItem.foreignKey,
-                        width: 'auto',// $(window).width()-30,
+                        width: $(window).width()-10,
                         height: 'auto',
-                        classId: formClassId,
+                        classId: formClassId
                     },
                     'showType': operate // 新增时有添加删除按钮，编辑时有删除按钮,查看时无按钮
                 });
