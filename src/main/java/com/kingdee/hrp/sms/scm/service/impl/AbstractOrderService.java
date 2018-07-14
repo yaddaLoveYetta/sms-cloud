@@ -73,7 +73,7 @@ public abstract class AbstractOrderService extends BaseService {
      *
      * @return 订单编号
      */
-    protected String createOrderNumber() {
+    public String createOrderNumber() {
         return "PO-" + sdf.format(new Date()) + "-" + getRandomStr(5);
     }
 

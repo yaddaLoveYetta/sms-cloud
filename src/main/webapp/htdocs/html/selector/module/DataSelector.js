@@ -37,7 +37,7 @@
             hasBreadcrumbs: config.hasBreadcrumbs, // 导航显示
             targetType: config.targetType, // 列表页面类别
             title: config.title,            // dialog表体
-            conditions: config.conditions || {}, // 发送到页面的条件
+            conditions: config.conditions || [], // 发送到页面的条件
             classID: config.classID || '', // targetType连接附加classId条件
             destClassId: config.destClassId || '', // 目标单据classId
             checkbox: config.checkbox,
@@ -77,7 +77,16 @@
 
                     var conditionData = meta.conditionF7Names[i];
 
-                    var type = conditionData.type || "";  // 目标字段类别
+                    /**
+                     * 过滤方式,支持以下几类
+                     *
+                     * selector：由页面中的另一个F7类型字段（target）值作为当前控件（filterKey）的过滤条件值,依赖（target，filterKey，可选 valueRule）
+                     *
+                     * fixedValue：固定值条件，即设置一个固定的值作为当前控件的过滤条件值，依赖（filterKey，filterValue，可选target，valueRule）
+                     *
+                     */
+
+                    var type = conditionData.type || "";
 
                     var target; // 目标元素
                     var filterKey; //  目标数据过滤字段key
@@ -104,40 +113,38 @@
                         }
 
                         if (value === '') {
-                            delete meta.conditions[target];//清除没必要的或者已经清空的查询条件
-                            continue;
                             //不是必须关联的 如果所关联的为空则跳过该查询条件
+                            continue;
                         }
 
-                        meta.conditions[conditionData.target] = {
-                            'andOr': 'and',
+                        meta.conditions.push({
+                            'linkType': 'and',
                             'leftParenTheses': '(',
                             'fieldKey': filterKey,
-                            'logicOperator': '=',
+                            'logicOperator': 'ET',
                             'value': value,
                             'rightParenTheses': ')',
                             needConvert: false
-                        };
+                        });
                     } else if (type == "fixedValue" && $.trim(filterKey) !== "") {
                         // 固定值条件
 
                         value = filterValue || $(target).val();
 
                         if (value === '') {
-                            delete meta.conditions[target];//清除没必要的或者已经清空的查询条件
-                            continue;
                             //不是必须关联的 如果所关联的为空则跳过该查询条件
+                            continue;
                         }
 
-                        meta.conditions[conditionData.target] = {
-                            'andOr': 'and',
+                        meta.conditions.push({
+                            'linkType': 'and',
                             'leftParenTheses': '(',
                             'fieldKey': filterKey,
-                            'logicOperator': '=',
+                            'logicOperator': 'ET',
                             'value': value,
                             'rightParenTheses': ')',
                             needConvert: false
-                        };
+                        });
 
                     }
                 }

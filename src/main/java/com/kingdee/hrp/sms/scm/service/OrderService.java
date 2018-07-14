@@ -111,7 +111,7 @@ public interface OrderService {
      * @return Map<String, Object>
      */
     Map<String, Object> getOrdersByTemplate(List<Condition> conditions, List<Sort> sorts, Integer pageSize,
-            Integer pageNo);
+                                            Integer pageNo);
 
     /**
      * add a new order
@@ -198,6 +198,13 @@ public interface OrderService {
      * @return a temp deliver order info which is not save in database yet
      */
     Map<String, Object> deliver(DeliverModel deliverModel);
+
+    /**
+     * 创建订单编号
+     *
+     * @return 订单编号
+     */
+    String createOrderNumber();
 
     @Value(("#{propertiesConfig[server.debug]}"))
     Boolean debug = false;

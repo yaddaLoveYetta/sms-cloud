@@ -26,6 +26,8 @@
 
     // 界面设置的过滤条件
     var conditions = [];
+    // 被其他页面调用时传递的过滤条件，此过滤条件必须一致有效
+    var dialogConditions = [];
 
     //检查登录
     if (!SMS.Login.check(true)) {
@@ -53,7 +55,7 @@
 
         if (data.conditions) {
             // dialog调用时候传递的查询条件
-            $.Object.extend(conditions, data.conditions);
+            dialogConditions = data.conditions || [];
         }
 
         dialog.on({
@@ -622,7 +624,7 @@
             classId: classId,
             pageNo: 1,
             pageSize: defaults.pageSize,
-            conditions: conditions,
+            conditions: conditions.concat(dialogConditions),
             multiSelect: defaults.multiSelect
         }, function (total, pageSize) {
             // 渲染过滤条件控件
@@ -639,7 +641,7 @@
                         classId: classId,
                         pageNo: no,
                         pageSize: defaults.pageSize,
-                        conditions: conditions,
+                        conditions: conditions.concat(dialogConditions),
                         multiSelect: defaults.multiSelect
                     });
                 }

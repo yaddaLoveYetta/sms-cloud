@@ -537,7 +537,7 @@ define('FormEdit', function (require, module, exports) {
                     'defaults': {
                         caption: formClassEntryItem.name,
                         gridName: formClassEntryItem.foreignKey,
-                        width: $(window).width()-10,
+                        width: $(window).width() - 10,
                         height: 'auto',
                         classId: formClassId
                     },
@@ -612,7 +612,7 @@ define('FormEdit', function (require, module, exports) {
                 };
 
                 // 个性化配置
-                var pConfig = emitter.fire('initSelector', [field.lookUpClassId, field.key, metaData]);
+                var pConfig = emitter.fire('initSelector', [field.classId, field.lookUpClassId, field.key, metaData]);
 
                 pConfig = pConfig && pConfig[pConfig.length - 1];
 
@@ -923,6 +923,16 @@ define('FormEdit', function (require, module, exports) {
         //initController();
 
         //fixIE();
+
+        if (operate === 1) {
+            // 新增状态-抛出单据渲染完成事件，如订单新增可以在此事件中获取规则的订单编号
+            emitter.fire('afterBillShow', [metaData]);
+        }
+
+        if (operate === 2) {
+            // 编辑状态-抛出单据加载完毕事件
+            emitter.fire('afterBillLoaded', [metaData]);
+        }
 
 
     }
@@ -1888,6 +1898,27 @@ define('FormEdit', function (require, module, exports) {
 
     }
 
+    /**
+     * 单据头设置值
+     * @param key 模板key
+     * @param value 值
+     */
+    function setValue(key, value) {
+        // 简单处理，值针对input
+        var element = getValueElement(key);
+        element.value = value || '';
+    }
+
+    /**
+     * 单据分录设置字段值
+     * @param seq 行号或者分录id
+     * @param key 模板key
+     * @param value 值
+     */
+    function setEntryValue(seq, key, value) {
+
+    }
+
     return {
         render: render,
         save: save,
@@ -1902,6 +1933,8 @@ define('FormEdit', function (require, module, exports) {
         },
         searchItems: searchItems,
         initController: initController,
+        setValue: setValue,
+        setEntryValue: setEntryValue,
         on: emitter.on.bind(emitter)
     };
 });

@@ -7076,7 +7076,8 @@
             var formClassID = field.lookUpClassId;
             var url = $.Url.setQueryString('./html/list/index.html', 'classId', formClassID);
 
-            var condition = cfg.config.getConditions && cfg.config.getConditions(rowNumb, colNumb, colModels) || {};
+            //var condition = cfg.config.getConditions && cfg.config.getConditions(rowNumb, colNumb, colModels) || {};
+            var condition = cfg.config.getConditions && cfg.config.getConditions(field.classId, field.lookUpClassId, field.key) || [];
 
             var title = field.name || '';
 

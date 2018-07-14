@@ -1,6 +1,5 @@
 package com.kingdee.hrp.sms.scm.controller;
 
-import com.kingdee.hrp.sms.common.exception.BusinessLogicRunTimeException;
 import com.kingdee.hrp.sms.common.model.Order;
 import com.kingdee.hrp.sms.scm.service.OrderService;
 import org.slf4j.Logger;
@@ -45,5 +44,16 @@ public class OrderController {
 
         return null;
 
+    }
+
+    /**
+     * 订单新增时获取订单编号
+     *
+     * @return 订单编号
+     */
+    @RequestMapping(value = "createOrderNumber")
+    @ResponseBody
+    public String createOrderNumber() {
+        return orderService.createOrderNumber();
     }
 }

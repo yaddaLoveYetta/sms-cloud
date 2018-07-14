@@ -13,6 +13,7 @@
     var MessageBox = SMS.require('MessageBox');
     var FormAction = require('FormAction');
     var FormEdit = require('FormEdit');
+    var API = SMS.require('API');
 
     var BL = SMS.require('ButtonList');
 
@@ -110,7 +111,7 @@
                             name: user.org.name || ''
                         }];
                         org.setData(selectorData);
-                        break
+                        break;
                     case 3:
                         // 供应商角色
                         org = FormEdit.getSelectors('org_supplier');
@@ -177,11 +178,45 @@
             }
 
         },
-        'initSelector': function (lookUpClassId, key, metaData) {
+        'initSelector': function (classId, lookUpClassId, key, metaData) {
 
-            if (classId === 1008) {
-
+            if (classId === 2001 && lookUpClassId === 1080) {
+                // 订单分录销售模式
+                return {
+                    conditionF7Names: [{
+                        type: "fixedValue",
+                        filterValue: 60,
+                        filterKey: "type"
+                    }]
+                };
             }
+        },
+        'afterBillShow': function (meteData) {
+            // 新增时，页面渲染完成后事件
+            if (classId === 2001) {
+                // 订单新增，通过后台获取单据编号
+                var api = new API('order/createOrderNumber');
+
+                api.get();
+
+                api.on({
+                    'success': function (data, json) {
+                        // 设置单据编号
+                        FormEdit.setValue('number', data.value);
+                    },
+
+                    'fail': function (code, msg, json) {
+                        SMS.Tips.error(msg);
+                    },
+
+                    'error': function () {
+                        SMS.Tips.error('网络错误，请稍候再试');
+                    }
+                });
+            }
+        },
+        'afterBillLoaded': function (meteData) {
+            // 编辑时，单据数据加载后事件
         }
     });
 

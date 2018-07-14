@@ -324,6 +324,46 @@ define('GridConfig', function (require, module, exports) {
         config.fnAfterSaveCell = function (rowid, cellname, val, iRow, iCol) {
         };
 
+        config.getConditions = function (classId, LookUpClassId, key) {
+            if (classId === 2001 && LookUpClassId === 1080) {
+
+                if (key === 'detail_deliver_status') {
+                    return [{
+                        'linkType': 'and',
+                        'leftParenTheses': '(',
+                        'fieldKey': 'type',
+                        'logicOperator': 'ET',
+                        'value': 45,
+                        'rightParenTheses': ')',
+                        needConvert: false
+                    }]
+                } else if (key === 'detail_receive_status') {
+                    return [{
+                        'linkType': 'and',
+                        'leftParenTheses': '(',
+                        'fieldKey': 'type',
+                        'logicOperator': 'ET',
+                        'value': 46,
+                        'rightParenTheses': ')',
+                        needConvert: false
+                    }]
+
+                } else if (key === 'detail_return_status') {
+                    return [{
+                        'linkType': 'and',
+                        'leftParenTheses': '(',
+                        'fieldKey': 'type',
+                        'logicOperator': 'ET',
+                        'value': 47,
+                        'rightParenTheses': ')',
+                        needConvert: false
+                    }]
+
+                }
+
+            }
+        };
+
 
         return config;
     }
@@ -470,7 +510,7 @@ define('GridConfig', function (require, module, exports) {
     }
 
     return {
-        getConfig: getConfig,
+        getConfig: getConfig
     };
 
 });
