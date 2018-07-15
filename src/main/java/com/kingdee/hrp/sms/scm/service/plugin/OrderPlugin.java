@@ -1,9 +1,15 @@
 package com.kingdee.hrp.sms.scm.service.plugin;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.kingdee.hrp.sms.common.enums.UserRoleType;
+import com.kingdee.hrp.sms.common.exception.BusinessLogicRunTimeException;
 import com.kingdee.hrp.sms.common.pojo.Condition;
 import com.kingdee.hrp.sms.common.service.plugin.AbstractPlugInAdapter;
+import com.kingdee.hrp.sms.common.service.plugin.PlugInRet;
+import com.kingdee.hrp.sms.util.SessionUtil;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.stereotype.Component;
 
 import java.util.*;
 
@@ -12,6 +18,7 @@ import java.util.*;
  *
  * @author yadda
  */
+@Component
 public class OrderPlugin extends AbstractPlugInAdapter implements InitializingBean {
 
     /**
@@ -68,6 +75,42 @@ public class OrderPlugin extends AbstractPlugInAdapter implements InitializingBe
         // 订单
         classIdSet.add(2001);
 
+    }
+
+    /**
+     * 基础资料新增前操作
+     *
+     * @param classId      业务类型
+     * @param formTemplate 单据模板
+     * @param data         业务数据
+     * @return PlugInRet
+     */
+    @Override
+    public PlugInRet beforeSave(int classId, Map<String, Object> formTemplate, JsonNode data) {
+
+        if (classId != 2001) {
+            return super.beforeSave(classId, formTemplate, data);
+        }
+
+        if (SessionUtil.getUserRoleType() != UserRoleType.HOSPITAL) {
+            throw new BusinessLogicRunTimeException("非医院用户不能新增订单");
+        }
+
+        // 订单新增时设置订单所属医院
+        ((ObjectNode) data).put("hospital", SessionUtil.getUserLinkHospital());
+
+        // 分录数据
+        JsonNode entryData = data.path("entry").path("1");
+
+        // 订单新增时设置行号
+        for (int i = 0; i < entryData.size(); i++) {
+            // 一条待操作分录数据
+            JsonNode entry = entryData.path(i).path("data");
+            // 设置自然顺序行号
+            ((ObjectNode) entry).put("sequence", i + 1);
+        }
+
+        return super.beforeSave(classId, formTemplate, data);
     }
 
     /**

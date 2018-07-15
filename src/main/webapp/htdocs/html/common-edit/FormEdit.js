@@ -539,7 +539,13 @@ define('FormEdit', function (require, module, exports) {
                         gridName: formClassEntryItem.foreignKey,
                         width: $(window).width() - 10,
                         height: 'auto',
-                        classId: formClassId
+                        classId: formClassId,
+                        // 当前单据操作类别 0：查看 1：新增 2：修改
+                        showType: operate,
+                        // 用户角色类别 1：系统用户角色 2：医院 3:供应商
+                        userRoleType: user.roles && user.roles[0] && user.roles[0]['type'] || -1,
+                        // 采购订单不显示grid自身行号
+                        showRowNumber: formClassId !== 2001
                     },
                     'showType': operate // 新增时有添加删除按钮，编辑时有删除按钮,查看时无按钮
                 });

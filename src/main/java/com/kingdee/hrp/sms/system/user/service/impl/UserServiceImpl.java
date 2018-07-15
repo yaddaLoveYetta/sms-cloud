@@ -12,6 +12,7 @@ import com.kingdee.hrp.sms.common.exception.BusinessLogicRunTimeException;
 import com.kingdee.hrp.sms.common.filter.SmsPropertyPlaceholderConfigurer;
 import com.kingdee.hrp.sms.common.model.*;
 import com.kingdee.hrp.sms.common.pojo.RegisterModel;
+import com.kingdee.hrp.sms.common.pojo.StatusCode;
 import com.kingdee.hrp.sms.common.service.BaseService;
 import com.kingdee.hrp.sms.system.user.service.UserService;
 import com.kingdee.hrp.sms.util.Common;
@@ -102,7 +103,7 @@ public class UserServiceImpl extends BaseService implements UserService {
 
         if (CollectionUtils.isEmpty(list)) {
             logger.error("用户名或密码错误!");
-            throw new BusinessLogicRunTimeException("用户名或密码错误!");
+            throw new BusinessLogicRunTimeException(StatusCode.USERNAME_PWD_ERROR, "用户名或密码错误!");
         }
 
         if (list.size() > 1) {

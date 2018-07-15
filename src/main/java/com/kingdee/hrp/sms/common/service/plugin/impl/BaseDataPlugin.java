@@ -1,13 +1,17 @@
 package com.kingdee.hrp.sms.common.service.plugin.impl;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.kingdee.hrp.sms.common.dao.generate.UserMapper;
+import com.kingdee.hrp.sms.common.enums.UserRoleType;
+import com.kingdee.hrp.sms.common.exception.BusinessLogicRunTimeException;
 import com.kingdee.hrp.sms.common.model.User;
 import com.kingdee.hrp.sms.common.model.UserExample;
 import com.kingdee.hrp.sms.common.pojo.Condition;
-import com.kingdee.hrp.sms.common.enums.UserRoleType;
 import com.kingdee.hrp.sms.common.service.plugin.AbstractPlugInAdapter;
 import com.kingdee.hrp.sms.common.service.plugin.PlugInRet;
 import com.kingdee.hrp.sms.util.Environ;
+import com.kingdee.hrp.sms.util.SessionUtil;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Service;
@@ -84,6 +88,10 @@ public class BaseDataPlugin extends AbstractPlugInAdapter implements Initializin
         classIdSet.add(1005);
         // 医院物料
         classIdSet.add(1006);
+        // 单位
+        classIdSet.add(1010);
+        // 职员
+        classIdSet.add(1011);
     }
 
     /**
@@ -141,11 +149,33 @@ public class BaseDataPlugin extends AbstractPlugInAdapter implements Initializin
     }
 
     /**
+     * 基础资料新增前操作
+     *
+     * @param classId      业务类型
+     * @param formTemplate 单据模板
+     * @param data         业务数据
+     * @return PlugInRet
+     */
+    @Override
+    public PlugInRet beforeSave(int classId, Map<String, Object> formTemplate, JsonNode data) {
+
+        if (classId == 1011 || classId == 1010) {
+
+            if (SessionUtil.getUserLinkHospital() == -1) {
+                throw new BusinessLogicRunTimeException("当前登录用户非医院用户，不能进行此操作!");
+            }
+            // 单位，职员新增时，设置归属医院
+            ((ObjectNode) data).put("org", SessionUtil.getUserLinkHospital());
+        }
+        return super.beforeSave(classId, formTemplate, data);
+    }
+
+    /**
      * 查询前插件查询条件
      *
      * @param classId      业务类别
      * @param formTemplate 单据模板
-     * @param conditions    原始过滤条件
+     * @param conditions   原始过滤条件
      * @return 插件过滤条件
      */
     @Override

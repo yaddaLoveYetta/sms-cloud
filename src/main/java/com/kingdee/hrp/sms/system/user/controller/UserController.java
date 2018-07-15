@@ -6,6 +6,7 @@ import com.kingdee.hrp.sms.common.model.Role;
 import com.kingdee.hrp.sms.common.model.User;
 import com.kingdee.hrp.sms.common.pojo.RegisterModel;
 import com.kingdee.hrp.sms.common.enums.UserRoleType;
+import com.kingdee.hrp.sms.common.pojo.StatusCode;
 import com.kingdee.hrp.sms.system.user.service.UserService;
 import com.kingdee.hrp.sms.util.Common;
 import com.kingdee.hrp.sms.util.SessionUtil;
@@ -92,7 +93,7 @@ public class UserController {
 
         if (StringUtils.isBlank(code) || !checkVerificationCode(code, request.getSession(true))) {
             logger.error("验证码错误!");
-            throw new BusinessLogicRunTimeException("验证码错误!");
+            throw new BusinessLogicRunTimeException(StatusCode.VERIFICATION_CODE_ERROR, "验证码错误!");
         }
 
         User user = userService.login(userName, password);
@@ -219,7 +220,7 @@ public class UserController {
     @RequestMapping(value = "getMessage")
     @ResponseBody
     public Map<String, Object> getMessage(Integer type, @RequestParam(defaultValue = "10") Integer pageSize,
-            @RequestParam(defaultValue = "1") Integer pageNo) {
+                                          @RequestParam(defaultValue = "1") Integer pageNo) {
 
         type = type == null ? -1 : type;
 

@@ -4428,8 +4428,15 @@
                     }, function (code, msg, json) {
                         span.html(msg).show();
                         btn.html(html).attr('disabled', false);
-                        txtPassword.value = '';
-                        txtPassword.focus();
+                        if (code === 40004) {
+                            // 验证码错误
+                            txtCode.value = '';
+                            txtCode.focus();
+                        }
+                        if (code === 40003) {
+                            txtPassword.value = '';
+                            txtPassword.focus();
+                        }
 
                     }, function () {
                         span.html('网络繁忙，登录失败，请稍候再试!').show();
@@ -4568,7 +4575,7 @@
 
             api.on({
                 'fail': fnFail,
-                'error': fnError,
+                'error': fnError
             });
 
         }
@@ -6878,6 +6885,7 @@
                 'getNeedSaveKeys': getNeedSaveKeys,
                 'getMustInputFields': getMustInputFields,
                 'getPrimaryKey': getPrimaryKey,
+                'getShowKeys': getShowKeys,
                 'emitter': emitter
             };
 
@@ -6923,7 +6931,7 @@
                 cmTemplate: {
                     sortable: false
                 },
-                rownumbers: true,  // 显示行号
+                rownumbers: config.showRowNumber && true,  // 是否显示grid行号
                 cellEdit: true,
                 // altRows: true,
                 shrinkToFit: false,
@@ -7243,15 +7251,92 @@
             return entry['primaryKey'];
         }
 
+        function getShowKeys(config, metaData, entryIndex) {
+
+            var fields = metaData['formFields'][entryIndex];
+
+            var displayKeys = [];
+            var display = 0;
+
+            // 当前单据操作类别 0：查看 1：新增 2：修改
+            var showType = config.showType || -1;
+            // 用户角色类别
+            var userRoleType = config.userRoleType || -1;
+
+            /*        1	查看时对于平台用户显示
+                    2	新增时对于平台用户显示
+                    4	编辑时对于平台用户显示
+                    8	查看时对于供应商用户显示
+                    16	新增时对于供应商用户显示
+                    32	编辑时对于供应商用户显示
+                    64	查看时对于医院用户显示
+                    128	新增时对于医院用户显示
+                    256	编辑时对于医院用户显示
+                    512	是否在列表中显示(子表模板独有,子表数据显示在表头列表中)*/
+
+            if (showType === 0) {
+                // 查看
+                if (userRoleType === 1) {
+                    // 平台用户
+                    display = 1;
+                } else if (userRoleType === 2) {
+                    //医院用户
+                    display = 64;
+                } else if (userRoleType === 3) {
+                    //供应商用户
+                    display = 8;
+                }
+            } else if (showType === 1) {
+                // 新增
+
+                if (userRoleType === 1) {
+                    // 平台用户
+                    display = 2;
+                } else if (userRoleType === 2) {
+                    //医院用户
+                    display = 128;
+                } else if (userRoleType === 3) {
+                    //供应商用户
+                    display = 16;
+                }
+            } else if (showType === 2) {
+                // 编辑
+                if (userRoleType === 1) {
+                    // 平台用户
+                    display = 4;
+                } else if (userRoleType === 2) {
+                    //医院用户
+                    display = 256;
+                } else if (userRoleType === 3) {
+                    //供应商用户
+                    display = 32;
+                }
+            }
+
+            for (var key in fields) {
+
+                var field = fields[key];
+
+                if (!!(field.display & display)) {
+                    // 字段需要显示在页面
+                    displayKeys.push(key);
+                }
+            }
+
+            return displayKeys;
+        }
+
         /**
          * 获取表格数据
          * @param bdGrid
          * @param metaData  单据模板
          * @param needSaveKeys 需要保存的key
          * @param mustInputFields 必录项key
+         * @param showKeys 界面需要显示的key
+         * @param showType 当前的单据模式 0:1:2-查看/新增/编辑
          * @returns {Array} 单据数据
          */
-        function getGridData(bdGrid, metaData, needSaveKeys, mustInputFields) {
+        function getGridData(bdGrid, metaData, needSaveKeys, mustInputFields, showKeys, showType) {
 
             var gridData = [];
             var ids = bdGrid.jqGrid('getDataIDs');
@@ -7281,12 +7366,27 @@
                 // 打包表格行数据(只需要打包needSave=true的字段)
                 for (var key in needSaveKeys) {
 
+                    var field = needSaveKeys[key];
+
                     if (row[key] !== '') {
                         itemData[key] = row[key];
                         hasValue = true;
                     } else {
                         // 模板配置的默认值处理
-                        itemData[key] = needSaveKeys[key].defaultValue || '';
+                        var dValue = needSaveKeys[key].defaultValue || '';
+
+
+                        if (dValue === '') {
+
+                            if (!$.Array.contains(showKeys, field.key) && showType === 1) {
+                                // 新增时界面不需要显示的key-通常不需要提交，由后台设置，
+                                // 如日期时间，状态等字段不是在新增时设置的
+                                continue;
+                            }
+
+                        }
+
+                        itemData[key] = dValue;
                     }
                 }
 
@@ -7404,12 +7504,15 @@
                 var meta = mapper.get(this);
 
                 meta.saveGrid(meta.grid, meta.curCell);
-
+                // 需要保存到数据库的字段
                 var needSaveKeys = meta.getNeedSaveKeys(meta.metaData, entryIndex);
+                // 必录项字段
                 var mustInputFields = meta.getMustInputFields(meta.metaData, entryIndex);
+                // 界面需要展示的字段
+                var showKeys = meta.getShowKeys(meta.config, meta.metaData, entryIndex);
                 var primaryKey = meta.primaryKey;
 
-                var gridData = meta.getGridData(meta.grid, meta.metaData, needSaveKeys, mustInputFields);
+                var gridData = meta.getGridData(meta.grid, meta.metaData, needSaveKeys, mustInputFields, showKeys, meta.config.showType);
                 var deletedData = meta.deleteRows;
 
                 var addDatas = [];

@@ -59,6 +59,17 @@ define('Login', function (require, module, exports) {
 
         }, function (code, msg, json) { //失败
             reset();
+
+            if (code === 40004) {
+                // 验证码错误
+                txtCode.value = '';
+                txtCode.focus();
+            }
+            if (code === 40003) {
+                txtPassword.value = '';
+                txtPassword.focus();
+            }
+
             WarnTip.show(msg);
 
         }, function () { //错误

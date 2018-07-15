@@ -1,14 +1,12 @@
 package com.kingdee.hrp.sms.common.service.plugin;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.kingdee.hrp.sms.common.controller.SystemSettingController;
 import com.kingdee.hrp.sms.common.pojo.Condition;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * 插件适配器
@@ -76,7 +74,7 @@ public abstract class AbstractPlugInAdapter implements PlugIn {
      */
     @Override
     public PlugInRet beforeEntryModify(int classId, String primaryId, String entryId, Map<String, Object> formTemplate,
-            JsonNode data) {
+                                       JsonNode data) {
         return result;
     }
 
@@ -120,7 +118,7 @@ public abstract class AbstractPlugInAdapter implements PlugIn {
      */
     @Override
     public PlugInRet beforeEntryDelete(int classId, String primaryId, String entryId,
-            Map<String, Object> formTemplate) {
+                                       Map<String, Object> formTemplate) {
         return result;
     }
 

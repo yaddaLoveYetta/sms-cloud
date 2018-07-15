@@ -74,7 +74,7 @@
             dialog.setData([{
                 'ID': item[primaryKey],
                 'name': item.name,
-                'number': item.number,
+                'number': item.number || '',
                 'all': item // 保留一份完整数据
             }]);
         }
@@ -589,6 +589,18 @@
 
     List.on({
         'row.dblclick': function (data, event) {
+
+            if (dialog) {
+                // 双击选择资料返回
+
+                // 设置选中该记录
+                List.setItemSelected(data.tr, true);
+                // 触发返回填充
+                dialog.isSubmit = true;
+                dialog.close().remove();
+                return;
+            }
+
             // 双击查看详情
             if (dialog) {
                 // 选择界面不触发

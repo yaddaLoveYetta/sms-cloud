@@ -621,7 +621,7 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
         // 生成主表主键值
         Long id = getId();
 
-        // 准备保存模板
+        // 准备单据头保存模板
         Map<String, Object> statement = prepareAddMap(jsonNode, formFields, formClass.getTableName(),
                 formClass.getPrimaryKey(), id);
 

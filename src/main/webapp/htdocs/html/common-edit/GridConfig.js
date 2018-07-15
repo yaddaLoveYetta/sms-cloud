@@ -192,7 +192,7 @@ define('GridConfig', function (require, module, exports) {
             model.formatoptions = {
                 decimalSeparator: ".",
                 thousandsSeparator: " ",
-                prefix: "",
+                prefix: "¥",
                 suffix: "",
                 decimalPlaces: 2,
                 defaulValue: 0
@@ -363,7 +363,6 @@ define('GridConfig', function (require, module, exports) {
 
             }
         };
-
 
         return config;
     }

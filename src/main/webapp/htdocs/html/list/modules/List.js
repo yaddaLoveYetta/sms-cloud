@@ -43,7 +43,7 @@ define("List", function (require, module, exports) {
             pageSize: config.pageSize,
             conditions: config.conditions
         }, function (data) {
-            SMS.Tips.success("数据加载成功", 1000);
+            SMS.Tips.success("数据加载成功", 500);
             var total = data.body.total;
             fn && fn(data, total);
         });
@@ -419,6 +419,7 @@ define("List", function (require, module, exports) {
             // 行号
             var bodyItems = list.body.items;
             var args = [{
+                tr: this,
                 row: no,
                 body: bodyItems[no]
             }, event];
@@ -487,6 +488,7 @@ define("List", function (require, module, exports) {
         render: render,
         on: emitter.on.bind(emitter),
         getSelectedItems: getSelectedItems,
+        setItemSelected: check,
         getPrimaryKey: getPrimaryKey,
         del: del,
         getFilterItems: getFilterItems,

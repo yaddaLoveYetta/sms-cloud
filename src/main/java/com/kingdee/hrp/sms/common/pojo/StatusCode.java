@@ -29,7 +29,7 @@ public class StatusCode {
 	/**
 	 * 参数错误
 	 */
-	public static final int PARAMETER_ERROR = 501;
+	public static final int BUSINESS_LOGIC_ERROR = 501;
 	/**
 	 * 参数不存在
 	 */
@@ -37,7 +37,7 @@ public class StatusCode {
 	/**
 	 * 业务逻辑导致逻辑不能继续
 	 */
-	public static final int BUSINESS_LOGIC_ERROR = 503;
+	public static final int PARAMETER_ERROR = 503;
 
 	/**
 	 * 用户名已经存在
@@ -60,11 +60,11 @@ public class StatusCode {
 	/**
 	 * 用户名或密码错误
 	 */
-	public static final int MOBILE_OR_PWAD_ERROR = 40003;
+	public static final int USERNAME_PWD_ERROR = 40003;
 	/**
-	 * 手机验证码不正确
+	 * 验证码不正确
 	 */
-	public static final int MOBILE_CODE_ERROR = 40004;
+	public static final int VERIFICATION_CODE_ERROR = 40004;
 	/**
 	 * 手机验证码已过期
 	 */
