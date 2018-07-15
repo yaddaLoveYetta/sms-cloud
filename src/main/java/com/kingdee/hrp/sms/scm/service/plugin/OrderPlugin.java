@@ -114,6 +114,40 @@ public class OrderPlugin extends AbstractPlugInAdapter implements InitializingBe
     }
 
     /**
+     * 基础资料修改前操作
+     *
+     * @param classId      业务类型
+     * @param id           单据内码
+     * @param formTemplate 模板
+     * @param data         业务数据
+     * @return PlugInRet
+     */
+    @Override
+    public PlugInRet beforeModify(int classId, Long id, Map<String, Object> formTemplate, JsonNode data) {
+
+        if (classId != 2001) {
+            return super.beforeSave(classId, formTemplate, data);
+        }
+        if (SessionUtil.getUserRoleType() != UserRoleType.HOSPITAL) {
+            throw new BusinessLogicRunTimeException("非医院用户不能新增订单");
+        }
+
+        // 分录数据
+        JsonNode entryData = data.path("entry").path("1");
+
+        // 修改订单时新增或删除了分录需要重新设置行号(行号重排，保持自然有序)，单据关联用id，行号可以重排(原设计单据关联用行号，必须保证行号不改变)
+        for (int i = 0; i < entryData.size(); i++) {
+            // 一条待操作分录数据
+            JsonNode entry = entryData.path(i).path("data");
+            // 设置自然顺序行号
+            ((ObjectNode) entry).put("sequence", i + 1);
+        }
+
+
+        return super.beforeModify(classId, id, formTemplate, data);
+    }
+
+    /**
      * 查询前插件查询条件
      *
      * @param classId      业务类别
