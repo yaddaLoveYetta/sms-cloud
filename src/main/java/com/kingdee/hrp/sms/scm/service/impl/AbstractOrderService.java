@@ -73,7 +73,7 @@ public abstract class AbstractOrderService extends BaseService {
      *
      * @return 订单编号
      */
-    public String createOrderNumber() {
+    public String createPurchaseOrderNumber() {
         return "PO-" + sdf.format(new Date()) + "-" + getRandomStr(5);
     }
 
@@ -103,9 +103,9 @@ public abstract class AbstractOrderService extends BaseService {
     }
 
     public static void main(String[] args) {
-        AbstractOrderService abstractOrderService = new OrderServiceImpl();
+        AbstractOrderService abstractOrderService = new PurchaseOrderServiceImpl();
         for (int i = 0; i < 100; i++) {
-            System.out.println(abstractOrderService.createOrderNumber());
+            System.out.println(abstractOrderService.createPurchaseOrderNumber());
         }
 
     }

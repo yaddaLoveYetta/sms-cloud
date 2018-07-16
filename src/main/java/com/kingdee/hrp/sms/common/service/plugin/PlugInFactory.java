@@ -417,7 +417,7 @@ public class PlugInFactory implements PlugIn, InitializingBean, ApplicationConte
 
         List<Condition> pluginConditions = new ArrayList<Condition>();
 
-        for (PlugIn plugIn : plugIns) {
+            for (PlugIn plugIn : plugIns) {
             if (plugIn.getClassIdSet() != null && plugIn.getClassIdSet().contains(classId)) {
 
                 List<Condition> c = plugIn.getConditions(classId, formTemplate, conditions);

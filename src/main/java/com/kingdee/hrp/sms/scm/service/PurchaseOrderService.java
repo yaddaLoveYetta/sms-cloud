@@ -20,7 +20,7 @@ import java.util.Map;
  * @author yadda(silenceisok@163.com)
  * @date 2018/6/27 23:41
  */
-public interface OrderService {
+public interface PurchaseOrderService {
 
     /**
      * 获取一张订单信息
@@ -204,7 +204,7 @@ public interface OrderService {
      *
      * @return 订单编号
      */
-    String createOrderNumber();
+    String createBillNumber();
 
     @Value(("#{propertiesConfig[server.debug]}"))
     Boolean debug = false;

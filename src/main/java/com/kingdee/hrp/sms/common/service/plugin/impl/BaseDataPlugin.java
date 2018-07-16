@@ -7,6 +7,7 @@ import com.kingdee.hrp.sms.common.enums.UserRoleType;
 import com.kingdee.hrp.sms.common.exception.BusinessLogicRunTimeException;
 import com.kingdee.hrp.sms.common.model.User;
 import com.kingdee.hrp.sms.common.model.UserExample;
+import com.kingdee.hrp.sms.common.pojo.ClassType;
 import com.kingdee.hrp.sms.common.pojo.Condition;
 import com.kingdee.hrp.sms.common.service.plugin.AbstractPlugInAdapter;
 import com.kingdee.hrp.sms.common.service.plugin.PlugInRet;
@@ -79,19 +80,19 @@ public class BaseDataPlugin extends AbstractPlugInAdapter implements Initializin
 
         classIdSet = new HashSet<>();
         // 用户
-        classIdSet.add(1001);
+        classIdSet.add(ClassType.USER.classId());
         // 角色
-        classIdSet.add(1002);
+        classIdSet.add(ClassType.ROLE.classId());
         // 供应商类别
-        classIdSet.add(1004);
+        classIdSet.add(ClassType.SUPPLIER_TYPE.classId());
         //医院供应商
-        classIdSet.add(1005);
+        classIdSet.add(ClassType.HOSPITAL_SUPPLIER.classId());
         // 医院物料
-        classIdSet.add(1006);
+        classIdSet.add(ClassType.ITEM.classId());
         // 单位
-        classIdSet.add(1010);
+        classIdSet.add(ClassType.UNIT.classId());
         // 职员
-        classIdSet.add(1011);
+        classIdSet.add(ClassType.EMP.classId());
     }
 
     /**

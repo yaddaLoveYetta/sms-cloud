@@ -1,7 +1,7 @@
 package com.kingdee.hrp.sms.scm.controller;
 
 import com.kingdee.hrp.sms.common.model.Order;
-import com.kingdee.hrp.sms.scm.service.OrderService;
+import com.kingdee.hrp.sms.scm.service.PurchaseOrderService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,12 +18,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
  */
 @Controller
 @RequestMapping(value = "/order/")
-public class OrderController {
+public class PurchaseOrderController {
 
-    private static Logger logger = LoggerFactory.getLogger(OrderController.class);
+    private static Logger logger = LoggerFactory.getLogger(PurchaseOrderController.class);
 
     @Autowired
-    private OrderService orderService;
+    private PurchaseOrderService orderService;
 
     /**
      * 获取一张订单信息
@@ -54,6 +54,6 @@ public class OrderController {
     @RequestMapping(value = "createOrderNumber")
     @ResponseBody
     public String createOrderNumber() {
-        return orderService.createOrderNumber();
+        return orderService.createBillNumber();
     }
 }

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.kingdee.hrp.sms.common.enums.UserRoleType;
 import com.kingdee.hrp.sms.common.exception.BusinessLogicRunTimeException;
+import com.kingdee.hrp.sms.common.pojo.ClassType;
 import com.kingdee.hrp.sms.common.pojo.Condition;
 import com.kingdee.hrp.sms.common.service.plugin.AbstractPlugInAdapter;
 import com.kingdee.hrp.sms.common.service.plugin.PlugInRet;
@@ -14,12 +15,12 @@ import org.springframework.stereotype.Component;
 import java.util.*;
 
 /**
- * 订单插件
+ * 采购订单插件
  *
  * @author yadda
  */
 @Component
-public class OrderPlugin extends AbstractPlugInAdapter implements InitializingBean {
+public class PurchaseOrderPlugin extends AbstractPlugInAdapter implements InitializingBean {
 
     /**
      * 插件支持的业务类别id集合，推荐的做法是一个插件只支持一个业务类别
@@ -73,7 +74,7 @@ public class OrderPlugin extends AbstractPlugInAdapter implements InitializingBe
 
         classIdSet = new HashSet<>();
         // 订单
-        classIdSet.add(2001);
+        classIdSet.add(ClassType.PURCHASE_ORDER.classId());
 
     }
 
@@ -142,7 +143,6 @@ public class OrderPlugin extends AbstractPlugInAdapter implements InitializingBe
             // 设置自然顺序行号
             ((ObjectNode) entry).put("sequence", i + 1);
         }
-
 
         return super.beforeModify(classId, id, formTemplate, data);
     }

@@ -20,7 +20,7 @@ import com.kingdee.hrp.sms.scm.model.out.OrderEntryModel;
 import com.kingdee.hrp.sms.scm.model.out.OrderHeaderModel;
 import com.kingdee.hrp.sms.scm.model.out.OrderModel;
 import com.kingdee.hrp.sms.scm.model.out.OrderOutModel;
-import com.kingdee.hrp.sms.scm.service.OrderService;
+import com.kingdee.hrp.sms.scm.service.PurchaseOrderService;
 import org.apache.commons.lang.reflect.FieldUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,9 +40,9 @@ import java.util.Map;
  * @date 2018/6/27 23:44
  */
 @Service
-public class OrderServiceImpl extends AbstractOrderService implements OrderService {
+public class PurchaseOrderServiceImpl extends AbstractOrderService implements PurchaseOrderService {
 
-    private static Logger logger = LoggerFactory.getLogger(OrderServiceImpl.class);
+    private static Logger logger = LoggerFactory.getLogger(PurchaseOrderServiceImpl.class);
     /**
      * 订单业务模板id
      */
@@ -645,5 +645,15 @@ public class OrderServiceImpl extends AbstractOrderService implements OrderServi
 
         }
         return null;
+    }
+
+    /**
+     * 创建订单编号
+     *
+     * @return 订单编号
+     */
+    @Override
+    public String createBillNumber() {
+        return createPurchaseOrderNumber();
     }
 }
