@@ -158,7 +158,10 @@ public class BaseDataPlugin extends AbstractPlugInAdapter implements Initializin
      * @return PlugInRet
      */
     @Override
+    @SuppressWarnings("unchecked")
     public PlugInRet beforeSave(int classId, Map<String, Object> formTemplate, JsonNode data) {
+
+        UserRoleType userRoleType = SessionUtil.getUserRoleType();
 
         if (classId == ClassType.EMP.classId() || classId == ClassType.UNIT.classId()) {
             // 单位，职员新增时，设置归属医院
@@ -169,11 +172,33 @@ public class BaseDataPlugin extends AbstractPlugInAdapter implements Initializin
             ((ObjectNode) data).put("org", SessionUtil.getUserLinkHospital());
         }
 
+
+        if (userRoleType != UserRoleType.SYSTEM && classId == ClassType.ROLE.classId()) {
+            // 非系统管理员操作角色新增功能时，
+            // 新增的角色类别与当前登录用户类别相同(即医院只能新增医院角色，供应商只能新增供应商角色)
+            ((ObjectNode) data).put("type", SessionUtil.getUserRoleTypeNumber());
+        }
+
+
         // 必录性校验
         Map<String, Object> checkResult = mustInputCheck(formTemplate, data);
 
         if (!checkResult.isEmpty()) {
             // 没有通过必录性校验
+
+            List<String> headCheckError = (List<String>) checkResult.get("headCheckError");
+            List<String> bodyCheckError = (List<String>) checkResult.get("bodyCheckError");
+
+            if (!headCheckError.isEmpty()) {
+                // 单据头必录校验有错误
+                throw new BusinessLogicRunTimeException(headCheckError.toString());
+            }
+
+            if (!bodyCheckError.isEmpty()) {
+                // 单据头必录校验有错误
+                throw new BusinessLogicRunTimeException(bodyCheckError.toString());
+            }
+
         }
 
         return super.beforeSave(classId, formTemplate, data);

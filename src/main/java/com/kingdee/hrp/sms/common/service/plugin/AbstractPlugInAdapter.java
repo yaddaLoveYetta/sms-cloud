@@ -7,11 +7,13 @@ import com.kingdee.hrp.sms.common.model.FormFields;
 import com.kingdee.hrp.sms.common.pojo.Condition;
 import com.kingdee.hrp.sms.util.Common;
 import com.kingdee.hrp.sms.util.SessionUtil;
-import org.apache.commons.io.filefilter.FalseFileFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 插件适配器
@@ -79,7 +81,7 @@ public abstract class AbstractPlugInAdapter implements PlugIn {
      */
     @Override
     public PlugInRet beforeEntryModify(int classId, String primaryId, String entryId, Map<String, Object> formTemplate,
-            JsonNode data) {
+                                       JsonNode data) {
         return result;
     }
 
@@ -123,7 +125,7 @@ public abstract class AbstractPlugInAdapter implements PlugIn {
      */
     @Override
     public PlugInRet beforeEntryDelete(int classId, String primaryId, String entryId,
-            Map<String, Object> formTemplate) {
+                                       Map<String, Object> formTemplate) {
         return result;
     }
 
@@ -236,9 +238,9 @@ public abstract class AbstractPlugInAdapter implements PlugIn {
         Map<String, Object> ret = new HashMap<>(4);
 
         // 单据头校验结果
-        List<String> headCheckResult = new ArrayList<>();
+        List<String> headCheckError = new ArrayList<>();
         // 单据体校验结果
-        List<String> bodyCheckResult = new ArrayList<>();
+        List<String> bodyCheckError = new ArrayList<>();
 
         // 按模板校验前端数据
         // 主表资料描述信息
@@ -266,7 +268,7 @@ public abstract class AbstractPlugInAdapter implements PlugIn {
             if (isMustInputNoValue(formField, mustInputRoleMask, data)) {
                 // 必录字段没提交值
                 errMsg = String.format("[%s]不能为空", formField.getName());
-                headCheckResult.add(errMsg);
+                headCheckError.add(errMsg);
             }
         }
 
@@ -290,15 +292,15 @@ public abstract class AbstractPlugInAdapter implements PlugIn {
                     if (isMustInputNoValue(formField, mustInputRoleMask, lineData)) {
                         // 必录字段没提交值
                         errMsg = String.format("第[%s]行:[%s]不能为空", i + 1, formField.getName());
-                        bodyCheckResult.add(errMsg);
+                        bodyCheckError.add(errMsg);
                     }
                 }
             }
 
         }
 
-        ret.put("headCheckResult", headCheckResult);
-        ret.put("bodyCheckResult", bodyCheckResult);
+        ret.put("headCheckError", headCheckError);
+        ret.put("bodyCheckError", bodyCheckError);
 
         return ret;
     }
@@ -318,7 +320,7 @@ public abstract class AbstractPlugInAdapter implements PlugIn {
 
         if (formField.getNeedSave() && (mustInputMask & mustInputRoleMask) == mustInputRoleMask) {
             // 当前用户类别新增单据时需保存的必录字段
-            return data.path(fieldKey).isNull() || "".equals(data.path(fieldKey).asText());
+            return data.path(fieldKey).isMissingNode() || data.findValue(fieldKey) == null || "".equals(data.path(fieldKey).asText());
         }
 
         return false;
