@@ -263,8 +263,6 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
         // 主表字段模板
         Map<String, Object> formFields0 = (Map<String, Object>) ((Map<String, Object>) template.get("formFields"))
                 .get("0");
-        // 第一个子表字段模板(如果有)
-        Map<String, Object> formFields1 = new HashMap<String, Object>();
 
         if (null == formClass || formFields0.isEmpty()) {
             throw new BusinessLogicRunTimeException("资料模板不存在");
@@ -294,7 +292,6 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
         if (!formEntries.isEmpty()) {
             // 存在关联字表-只关联第一个子表查询
             isChildTableExist = true;
-            formFields1 = (Map<String, Object>) ((Map<String, Object>) template.get("formFields")).get("1");
         }
 
         // 动态构建select语句

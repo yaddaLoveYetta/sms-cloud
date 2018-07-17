@@ -160,14 +160,22 @@ public class BaseDataPlugin extends AbstractPlugInAdapter implements Initializin
     @Override
     public PlugInRet beforeSave(int classId, Map<String, Object> formTemplate, JsonNode data) {
 
-        if (classId == 1011 || classId == 1010) {
-
+        if (classId == ClassType.EMP.classId() || classId == ClassType.UNIT.classId()) {
+            // 单位，职员新增时，设置归属医院
             if (SessionUtil.getUserLinkHospital() == -1) {
                 throw new BusinessLogicRunTimeException("当前登录用户非医院用户，不能进行此操作!");
             }
-            // 单位，职员新增时，设置归属医院
+
             ((ObjectNode) data).put("org", SessionUtil.getUserLinkHospital());
         }
+
+        // 必录性校验
+        Map<String, Object> checkResult = mustInputCheck(formTemplate, data);
+
+        if (!checkResult.isEmpty()) {
+            // 没有通过必录性校验
+        }
+
         return super.beforeSave(classId, formTemplate, data);
     }
 
@@ -195,7 +203,7 @@ public class BaseDataPlugin extends AbstractPlugInAdapter implements Initializin
         if (userRoleType == UserRoleType.HOSPITAL) {
             // 当前是医院角色的用户在操作
 
-            if (classId == 1001 || classId == 1002) {
+            if (classId == ClassType.USER.classId() || classId == ClassType.ROLE.classId()) {
                 // 用户、角色
                 Condition condition = new Condition();
                 condition.setLinkType(Condition.LinkType.AND);
@@ -206,7 +214,8 @@ public class BaseDataPlugin extends AbstractPlugInAdapter implements Initializin
                 ret.add(condition);
             }
 
-            if (classId == 1004 || classId == 1005 || classId == 1006) {
+            if (classId == ClassType.SUPPLIER_TYPE.classId() || classId == ClassType.HOSPITAL_SUPPLIER.classId() ||
+                    classId == ClassType.ITEM.classId()) {
                 // 供应商类别、医院供应商
                 Condition condition = new Condition();
                 condition.setLinkType(Condition.LinkType.AND);
@@ -222,7 +231,7 @@ public class BaseDataPlugin extends AbstractPlugInAdapter implements Initializin
         if (userRoleType == UserRoleType.SUPPLIER) {
             // 当前是供应商角色的用户在操作
 
-            if (classId == 1001 || classId == 1002) {
+            if (classId == ClassType.USER.classId() || classId == ClassType.ROLE.classId()) {
                 // 用户、角色
                 Condition condition = new Condition();
                 condition.setLinkType(Condition.LinkType.AND);
