@@ -89,7 +89,7 @@ public class PurchaseOrderPlugin extends AbstractPlugInAdapter implements Initia
     @Override
     public PlugInRet beforeSave(int classId, Map<String, Object> formTemplate, JsonNode data) {
 
-        if (classId != 2001) {
+        if (classId != ClassType.PURCHASE_ORDER.classId()) {
             return super.beforeSave(classId, formTemplate, data);
         }
 
@@ -126,7 +126,7 @@ public class PurchaseOrderPlugin extends AbstractPlugInAdapter implements Initia
     @Override
     public PlugInRet beforeModify(int classId, Long id, Map<String, Object> formTemplate, JsonNode data) {
 
-        if (classId != 2001) {
+        if (classId != ClassType.PURCHASE_ORDER.classId()) {
             return super.beforeSave(classId, formTemplate, data);
         }
         if (SessionUtil.getUserRoleType() != UserRoleType.HOSPITAL) {
