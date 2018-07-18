@@ -5,6 +5,7 @@ import com.kingdee.hrp.sms.common.pojo.Condition;
 import com.kingdee.hrp.sms.common.pojo.Sort;
 import com.kingdee.hrp.sms.common.service.TemplateService;
 import com.kingdee.hrp.sms.util.Common;
+import com.kingdee.hrp.sms.util.JsonUtil;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -73,7 +74,9 @@ public class TemplateController {
      */
     @RequestMapping(value = "getItems")
     @ResponseBody
-    public Map<String, Object> getItems(@RequestParam(defaultValue = "0") Integer classId, String condition, String sort, @RequestParam(defaultValue = "10") Integer pageSize, @RequestParam(defaultValue = "1") Integer pageNo) throws IOException {
+    public Map<String, Object> getItems(@RequestParam(defaultValue = "0") Integer classId, String condition,
+            String sort, @RequestParam(defaultValue = "10") Integer pageSize,
+            @RequestParam(defaultValue = "1") Integer pageNo) throws IOException {
 
         if (classId <= 0) {
             throw new BusinessLogicRunTimeException("参数错误：必须提交classId");
@@ -84,7 +87,8 @@ public class TemplateController {
 
         // 包装查询条件-方便操作
         if (StringUtils.isNotBlank(condition)) {
-            conditions = Common.stringToList(condition, Condition.class);
+            //conditions = Common.stringToList(condition, Condition.class);
+            conditions = JsonUtil.json2Bean(condition, List.class);
         }
         // 包装查询结果排序-方便操作
         if (StringUtils.isNotBlank(sort)) {

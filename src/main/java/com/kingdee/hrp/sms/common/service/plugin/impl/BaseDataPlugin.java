@@ -118,7 +118,7 @@ public class BaseDataPlugin extends AbstractPlugInAdapter implements Initializin
     @Transactional(rollbackFor = Exception.class)
     public PlugInRet afterForbid(Integer classId, Map<String, Object> template, List<Long> ids, Integer operateType) {
 
-        if (classId == 1001 && operateType == 1) {
+        if (classId == ClassType.USER.classId() && operateType == 1) {
             // 禁用用户时，如果该用户是医院/供应商的管理员,则将归属该医院、供应商的所有用户一并禁用
             SqlSession sqlSession = Environ.getBean(SqlSession.class);
             UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
@@ -151,6 +151,8 @@ public class BaseDataPlugin extends AbstractPlugInAdapter implements Initializin
 
     /**
      * 基础资料新增前操作
+     * <p>
+     * 主要是补充一些不需要前端传输但又必须有的信息，如资料归属，类别，分录行号等字段
      *
      * @param classId      业务类型
      * @param formTemplate 单据模板
@@ -172,15 +174,13 @@ public class BaseDataPlugin extends AbstractPlugInAdapter implements Initializin
             ((ObjectNode) data).put("org", SessionUtil.getUserLinkHospital());
         }
 
-
         if (userRoleType != UserRoleType.SYSTEM && classId == ClassType.ROLE.classId()) {
             // 非系统管理员操作角色新增功能时，
             // 新增的角色类别与当前登录用户类别相同(即医院只能新增医院角色，供应商只能新增供应商角色)
             ((ObjectNode) data).put("type", SessionUtil.getUserRoleTypeNumber());
         }
 
-
-        // 必录性校验
+        // 通用必录性校验(按模板校验)
         Map<String, Object> checkResult = mustInputCheck(formTemplate, data);
 
         if (!checkResult.isEmpty()) {

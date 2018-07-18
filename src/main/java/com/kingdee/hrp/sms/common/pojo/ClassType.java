@@ -16,7 +16,7 @@ public enum ClassType {
     /**
      * 业务类别id
      */
-    private Integer classId;
+    private int classId;
     /**
      * 业务类别名称
      */
@@ -27,14 +27,14 @@ public enum ClassType {
         this.className = className;
     }
 
-    public Integer classId() {
+    public int classId() {
         return classId;
     }
 
-    private static ClassType getClassType(Integer classId) {
+    private static ClassType getClassType(int classId) {
 
         for (ClassType classType : ClassType.values()) {
-            if (classType.classId.equals(classId)) {
+            if (classType.classId == classId) {
                 return classType;
             }
         }

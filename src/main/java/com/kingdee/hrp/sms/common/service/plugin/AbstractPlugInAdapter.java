@@ -4,7 +4,9 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.kingdee.hrp.sms.common.enums.UserRoleType;
 import com.kingdee.hrp.sms.common.model.FormClass;
 import com.kingdee.hrp.sms.common.model.FormFields;
+import com.kingdee.hrp.sms.common.pojo.BillOperateType;
 import com.kingdee.hrp.sms.common.pojo.Condition;
+import com.kingdee.hrp.sms.common.service.BaseService;
 import com.kingdee.hrp.sms.util.Common;
 import com.kingdee.hrp.sms.util.SessionUtil;
 import org.slf4j.Logger;
@@ -21,7 +23,7 @@ import java.util.Map;
  * @author yadda
  * @date 2018-02-27 17:32:12 星期四
  */
-public abstract class AbstractPlugInAdapter implements PlugIn {
+public abstract class AbstractPlugInAdapter extends BaseService implements PlugIn {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -81,7 +83,7 @@ public abstract class AbstractPlugInAdapter implements PlugIn {
      */
     @Override
     public PlugInRet beforeEntryModify(int classId, String primaryId, String entryId, Map<String, Object> formTemplate,
-                                       JsonNode data) {
+            JsonNode data) {
         return result;
     }
 
@@ -125,7 +127,7 @@ public abstract class AbstractPlugInAdapter implements PlugIn {
      */
     @Override
     public PlugInRet beforeEntryDelete(int classId, String primaryId, String entryId,
-                                       Map<String, Object> formTemplate) {
+            Map<String, Object> formTemplate) {
         return result;
     }
 
@@ -251,12 +253,8 @@ public abstract class AbstractPlugInAdapter implements PlugIn {
         Map<String, Object> formFields0 = (Map<String, Object>) ((Map<String, Object>) template.get("formFields"))
                 .get("0");
 
-        UserRoleType userRoleType = SessionUtil.getUserRoleType();
-
         // 新增时笔录性校验掩码
-        int mustInputRoleMask = userRoleType == UserRoleType.SYSTEM ?
-                1 :
-                userRoleType == UserRoleType.HOSPITAL ? 16 : userRoleType == UserRoleType.SUPPLIER ? 4 : 0;
+        int mustInputRoleMask = getCurrentMustInputMask(BillOperateType.ADD);
 
         String errMsg;
 
@@ -320,7 +318,8 @@ public abstract class AbstractPlugInAdapter implements PlugIn {
 
         if (formField.getNeedSave() && (mustInputMask & mustInputRoleMask) == mustInputRoleMask) {
             // 当前用户类别新增单据时需保存的必录字段
-            return data.path(fieldKey).isMissingNode() || data.findValue(fieldKey) == null || "".equals(data.path(fieldKey).asText());
+            return data.path(fieldKey).isMissingNode() || data.findValue(fieldKey) == null ||
+                    "".equals(data.path(fieldKey).asText());
         }
 
         return false;

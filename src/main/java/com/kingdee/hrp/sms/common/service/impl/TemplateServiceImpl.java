@@ -76,6 +76,9 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
         fieldsCriteria.andDisplayEqualTo(getCurrentDisplayMask(null));
         fieldsCriteria.andPageEqualTo(0);
 
+        // 当前用户显示的模板
+        //fieldsCriteria.andDisplayEqualTo(getCurrentDisplayMask(null));
+
         if (type == 1) {
             // 后端构建查询脚本时调用
             fieldsExample.orderBy(FormFields.Column.ctrlIndex.asc());
@@ -416,6 +419,7 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
         if (list != null && list.size() > 0) {
             return list.get(0);
         }
+
         throw new BusinessLogicRunTimeException(String.format("找不到id为%s的单据", id));
     }
 
@@ -432,7 +436,6 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
 
         // 基础资料模板
         Map<String, Object> template = getFormTemplate(classId, 1);
-
         // 主表字段模板
         Map<String, Object> formFields0 = (Map<String, Object>) ((Map<String, Object>) template.get("formFields"))
                 .get("0");
