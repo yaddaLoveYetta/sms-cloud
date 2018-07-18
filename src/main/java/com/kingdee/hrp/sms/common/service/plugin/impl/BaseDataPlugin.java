@@ -178,6 +178,7 @@ public class BaseDataPlugin extends AbstractPlugInAdapter implements Initializin
             // 非系统管理员操作角色新增功能时，
             // 新增的角色类别与当前登录用户类别相同(即医院只能新增医院角色，供应商只能新增供应商角色)
             ((ObjectNode) data).put("type", SessionUtil.getUserRoleTypeNumber());
+            ((ObjectNode) data).put("org_hospital", SessionUtil.getUserLinkHospital());
         }
 
         // 通用必录性校验(按模板校验)
