@@ -1,14 +1,11 @@
 package com.kingdee.hrp.sms.common.service.plugin;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.kingdee.hrp.sms.common.enums.UserRoleType;
 import com.kingdee.hrp.sms.common.model.FormClass;
 import com.kingdee.hrp.sms.common.model.FormFields;
 import com.kingdee.hrp.sms.common.pojo.BillOperateType;
 import com.kingdee.hrp.sms.common.pojo.Condition;
 import com.kingdee.hrp.sms.common.service.BaseService;
-import com.kingdee.hrp.sms.util.Common;
-import com.kingdee.hrp.sms.util.SessionUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -83,7 +80,7 @@ public abstract class AbstractPlugInAdapter extends BaseService implements PlugI
      */
     @Override
     public PlugInRet beforeEntryModify(int classId, String primaryId, String entryId, Map<String, Object> formTemplate,
-            JsonNode data) {
+                                       JsonNode data) {
         return result;
     }
 
@@ -127,7 +124,7 @@ public abstract class AbstractPlugInAdapter extends BaseService implements PlugI
      */
     @Override
     public PlugInRet beforeEntryDelete(int classId, String primaryId, String entryId,
-            Map<String, Object> formTemplate) {
+                                       Map<String, Object> formTemplate) {
         return result;
     }
 
@@ -276,8 +273,7 @@ public abstract class AbstractPlugInAdapter extends BaseService implements PlugI
             Map<String, Object> formFields1 = (Map<String, Object>) ((Map<String, Object>) template.get("formFields"))
                     .get("1");
 
-            List<Object> entryData = Common.stringToList(data.path("entry").path("1").asText(), Object.class);
-
+            // List<Object> entryData = JsonUtil.jsonToCollection(data.path("entry").path("1").asText(), List.class, Object.class);
             // 第一个子表的数据
             List<JsonNode> elements = data.path("entry").findValues("1");
 

@@ -1,15 +1,9 @@
 package com.kingdee.hrp.sms.util;
 
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.kingdee.hrp.sms.common.exception.BusinessLogicRunTimeException;
-import org.apache.commons.lang.StringUtils;
-
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -17,9 +11,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -150,33 +142,6 @@ public class Common {
         Pattern pattern = Pattern.compile(format);
         Matcher matcher = pattern.matcher(timeStr);
         return matcher.matches();
-    }
-
-    /**
-     * 将String转成List
-     *
-     * @param str 待转化字符串，必须符合list格式的json字符串，如：[{a:1,b:'w'},{a:2,b:"ddd"}]
-     * @param clazz   List泛型类型
-     * @param <T> List<T>
-     * @return List<T>
-     */
-    public static <T> List<T> stringToList(String str, Class<T> clazz) {
-
-        List<T> target = new ArrayList<T>();
-
-        if (!StringUtils.isNotBlank(str)) {
-            return new ArrayList<T>();
-        }
-
-        try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            JavaType javaType = objectMapper.getTypeFactory().constructParametricType(List.class, clazz);
-            target = objectMapper.readValue(str, javaType);
-        } catch (IOException e) {
-            throw new BusinessLogicRunTimeException(e.getMessage(), e);
-        }
-
-        return target;
     }
 
     /**

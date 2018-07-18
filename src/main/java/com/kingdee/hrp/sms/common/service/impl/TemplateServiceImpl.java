@@ -73,7 +73,6 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
         FormFieldsExample.Criteria fieldsCriteria = fieldsExample.createCriteria();
 
         fieldsCriteria.andClassIdEqualTo(classId);
-        fieldsCriteria.andDisplayEqualTo(getCurrentDisplayMask(null));
         fieldsCriteria.andPageEqualTo(0);
 
         // 当前用户显示的模板

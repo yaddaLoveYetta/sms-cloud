@@ -2,11 +2,11 @@ package com.kingdee.hrp.sms.util;
 
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kingdee.hrp.sms.common.exception.BusinessLogicRunTimeException;
+import com.kingdee.hrp.sms.common.pojo.Condition;
 import org.apache.commons.lang.StringUtils;
 
 import java.io.IOException;
@@ -62,20 +62,21 @@ public class JsonUtil {
     }
 
     /**
-     * son字符串转bean
+     * json转换成集合类型
      *
-     * @param str
-     * @param clazz
-     * @param <T>
-     * @return
+     * @param jsonStr         json字符串
+     * @param collectionClass 目标集合类型 eg: List.class
+     * @param elementClasses  目标集合类型子项类型 eg:String.class   List<String></>
+     * @param <T>             eg:List<String>
+     * @return 转换后集合类型
      */
-    public static <T extends Collection> T stringToList(String str, Class<T> collectionClass,
-            Class<?>... elementClasses) {
+    public static <T extends Collection> T jsonToCollection(String jsonStr, Class<? extends Collection> collectionClass,
+                                                            Class<?>... elementClasses) {
 
         T target;
 
-        if (!StringUtils.isNotBlank(str)) {
-            //return new ArrayList<T>();
+        if (StringUtils.isBlank(jsonStr)) {
+            throw new BusinessLogicRunTimeException("待转换json字符串不能为空");
         }
 
         try {
@@ -83,12 +84,37 @@ public class JsonUtil {
 
             JavaType javaType = mapper.getTypeFactory().constructParametricType(collectionClass, elementClasses);
 
-            //JavaType javaType = objectMapper.getTypeFactory().constructParametricType(List.class, clazz);
-            target = objectMapper.readValue(str, javaType);
+            target = objectMapper.readValue(jsonStr, javaType);
+
         } catch (IOException e) {
             throw new BusinessLogicRunTimeException(e.getMessage(), e);
         }
 
         return target;
+    }
+
+    public static void main(String[] args) throws JsonProcessingException {
+
+        Condition condition = new Condition();
+        condition.setFieldKey("number").setValue("122").setNeedConvert(false).setLeftParenTheses("(").setLinkType(Condition.LinkType.AND).setLogicOperator(Condition.LogicOperator.EQUAL).setRightParenTheses(")");
+
+        Condition condition2 = new Condition();
+        condition2.setFieldKey("number").setValue("122").setNeedConvert(false).setLeftParenTheses("(").setLinkType(Condition.LinkType.AND).setLogicOperator(Condition.LogicOperator.EQUAL).setRightParenTheses(")");
+
+
+        List<Condition> conditionList = new ArrayList<>();
+        conditionList.add(condition);
+        conditionList.add(condition2);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        String s = objectMapper.writeValueAsString(conditionList);
+
+        System.out.println(s);
+
+        List<Condition> conditions = jsonToCollection(s, List.class, Condition.class);
+
+        System.out.println(conditions);
+
     }
 }

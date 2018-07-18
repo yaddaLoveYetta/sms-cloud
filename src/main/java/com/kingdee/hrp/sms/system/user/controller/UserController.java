@@ -9,6 +9,7 @@ import com.kingdee.hrp.sms.common.enums.UserRoleType;
 import com.kingdee.hrp.sms.common.pojo.StatusCode;
 import com.kingdee.hrp.sms.system.user.service.UserService;
 import com.kingdee.hrp.sms.util.Common;
+import com.kingdee.hrp.sms.util.JsonUtil;
 import com.kingdee.hrp.sms.util.SessionUtil;
 import com.kingdee.hrp.sms.util.ValidateCode;
 import org.apache.commons.lang.StringUtils;
@@ -206,8 +207,10 @@ public class UserController {
     @ResponseBody
     public Boolean saveRolePerMissions(Long roleId, String perMissions) {
 
-        List<AccessControl> accessControlList = Common.stringToList(perMissions, AccessControl.class);
+        List<AccessControl> accessControlList = JsonUtil.jsonToCollection(perMissions, List.class, AccessControl.class);
+
         userService.saveRolePermissions(roleId, accessControlList);
+
         return true;
     }
 
