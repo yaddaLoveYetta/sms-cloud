@@ -7378,8 +7378,8 @@
 
                         if (dValue === '') {
 
-                            if (!$.Array.contains(showKeys, field.key) && showType === 1) {
-                                // 新增时界面不需要显示的key-通常不需要提交，由后台设置，
+                            if (!$.Array.contains(showKeys, field.key) && (showType === 1 || showType === 2)) {
+                                // 新增、编辑时界面不需要显示的key-通常不需要提交，由后台设置，
                                 // 如日期时间，状态等字段不是在新增时设置的
                                 continue;
                             }

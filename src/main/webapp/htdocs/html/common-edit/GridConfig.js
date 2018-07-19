@@ -147,17 +147,20 @@ define('GridConfig', function (require, module, exports) {
             }
         }
         // 数字-无小数
-        if (field.ctrlType === 1) {
+        if (isShow && field.ctrlType === 1) {
 
-            //model.edittype = 'text';
+            // 后端模板ctrlType==1的基本上是主键或引用的他表主键，且字段一般无需显示，
+            // 后端主键用long型，js number存不下，改用text,此处控制要显示的数值格式(不够优雅)
+
             // 数字靠右显示
             model.align = 'right';
             model.editrules = {
                 required: false,
                 number: true
             };
-            model.formatter = 'integer';
+            model.formatter = 'number';
             model.formatoptions = {
+                decimalPlaces: 0,
                 thousandsSeparator: '',
                 defaulValue: 0
             };
