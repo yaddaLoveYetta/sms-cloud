@@ -207,7 +207,7 @@ public class UserController {
     @ResponseBody
     public Boolean saveRolePerMissions(Long roleId, String perMissions) {
 
-        List<AccessControl> accessControlList = JsonUtil.jsonToCollection(perMissions, List.class, AccessControl.class);
+        List<AccessControl> accessControlList = JsonUtil.json2Collection(perMissions, List.class, AccessControl.class);
 
         userService.saveRolePermissions(roleId, accessControlList);
 

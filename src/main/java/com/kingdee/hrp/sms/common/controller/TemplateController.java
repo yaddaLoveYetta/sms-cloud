@@ -86,11 +86,11 @@ public class TemplateController {
 
         // 包装查询条件-方便操作
         if (StringUtils.isNotBlank(condition)) {
-            conditions = JsonUtil.jsonToCollection(condition, List.class, Condition.class);
+            conditions = JsonUtil.json2Collection(condition, List.class, Condition.class);
         }
         // 包装查询结果排序-方便操作
         if (StringUtils.isNotBlank(sort)) {
-            sorts = JsonUtil.jsonToCollection(condition, List.class, Sort.class);
+            sorts = JsonUtil.json2Collection(condition, List.class, Sort.class);
         }
 
         return templateService.getItems(classId, conditions, sorts, pageSize, pageNo);
@@ -115,7 +115,7 @@ public class TemplateController {
         List<Sort> sorts = new ArrayList<Sort>();
         // 包装查询结果排序-方便操作
         if (StringUtils.isNotBlank(sort)) {
-            sorts = JsonUtil.jsonToCollection(sort, List.class, Sort.class);
+            sorts = JsonUtil.json2Collection(sort, List.class, Sort.class);
         }
 
         return templateService.getItemById(classId, id, sorts);
@@ -192,7 +192,7 @@ public class TemplateController {
             throw new BusinessLogicRunTimeException("参数错误：必须指定删除的项!");
         }
 
-        List<Long> ids = JsonUtil.jsonToCollection(items, List.class, Long.class);
+        List<Long> ids = JsonUtil.json2Collection(items, List.class, Long.class);
 
         return templateService.delItem(classId, ids);
     }
@@ -209,7 +209,7 @@ public class TemplateController {
             throw new BusinessLogicRunTimeException("参数错误：必须指定操作的项!");
         }
 
-        List<Long> ids = JsonUtil.jsonToCollection(items, List.class, Long.class);
+        List<Long> ids = JsonUtil.json2Collection(items, List.class, Long.class);
 
         return templateService.forbid(classId, ids, operateType);
 

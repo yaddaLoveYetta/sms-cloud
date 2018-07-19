@@ -273,7 +273,7 @@ public abstract class AbstractPlugInAdapter extends BaseService implements PlugI
             Map<String, Object> formFields1 = (Map<String, Object>) ((Map<String, Object>) template.get("formFields"))
                     .get("1");
 
-            // List<Object> entryData = JsonUtil.jsonToCollection(data.path("entry").path("1").asText(), List.class, Object.class);
+            // List<Object> entryData = JsonUtil.json2Collection(data.path("entry").path("1").asText(), List.class, Object.class);
             // 第一个子表的数据
             List<JsonNode> elements = data.path("entry").findValues("1");
 

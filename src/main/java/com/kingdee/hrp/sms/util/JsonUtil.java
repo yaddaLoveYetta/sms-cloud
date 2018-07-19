@@ -11,9 +11,7 @@ import org.apache.commons.lang.StringUtils;
 
 import java.io.IOException;
 import java.io.StringWriter;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 /**
  * JSON--Object转换工具类
@@ -63,6 +61,8 @@ public class JsonUtil {
 
     /**
      * json转换成集合类型
+     * <p>
+     * eg:  List<Condition> conditions = JsonUtil.json2Collection(condition, List.class, Condition.class);
      *
      * @param jsonStr         json字符串
      * @param collectionClass 目标集合类型 eg: List.class
@@ -70,8 +70,8 @@ public class JsonUtil {
      * @param <T>             eg:List<String>
      * @return 转换后集合类型
      */
-    public static <T extends Collection> T jsonToCollection(String jsonStr, Class<? extends Collection> collectionClass,
-                                                            Class<?>... elementClasses) {
+    public static <T extends Collection> T json2Collection(String jsonStr, Class<? extends Collection> collectionClass,
+            Class<?>... elementClasses) {
 
         T target;
 
@@ -80,11 +80,10 @@ public class JsonUtil {
         }
 
         try {
-            ObjectMapper objectMapper = new ObjectMapper();
 
             JavaType javaType = mapper.getTypeFactory().constructParametricType(collectionClass, elementClasses);
 
-            target = objectMapper.readValue(jsonStr, javaType);
+            target = mapper.readValue(jsonStr, javaType);
 
         } catch (IOException e) {
             throw new BusinessLogicRunTimeException(e.getMessage(), e);
@@ -93,28 +92,69 @@ public class JsonUtil {
         return target;
     }
 
+    /**
+     * json转Map
+     * <p>
+     * eg: Map<String, Condition> map = json2Map(s2, Map.class, String.class, Condition.class);
+     *
+     * @param jsonStr    json字符串
+     * @param mapClass   Map或其子类
+     * @param keyClass   Map key类型
+     * @param valueClass Map value类型
+     * @param <T>        Map 类型
+     * @return Map
+     */
+    public static <T extends Map> T json2Map(String jsonStr, Class<T> mapClass, Class<?> keyClass,
+            Class<?> valueClass) {
+
+        try {
+
+            JavaType javaType = mapper.getTypeFactory().constructParametricType(mapClass, keyClass, valueClass);
+
+            return mapper.readValue(jsonStr, javaType);
+
+        } catch (IOException e) {
+            throw new BusinessLogicRunTimeException(e.getMessage(), e);
+        }
+
+    }
+
     public static void main(String[] args) throws JsonProcessingException {
 
         Condition condition = new Condition();
-        condition.setFieldKey("number").setValue("122").setNeedConvert(false).setLeftParenTheses("(").setLinkType(Condition.LinkType.AND).setLogicOperator(Condition.LogicOperator.EQUAL).setRightParenTheses(")");
+        condition.setFieldKey("number").setValue("122").setNeedConvert(false).setLeftParenTheses("(")
+                .setLinkType(Condition.LinkType.AND).setLogicOperator(Condition.LogicOperator.EQUAL)
+                .setRightParenTheses(")");
 
         Condition condition2 = new Condition();
-        condition2.setFieldKey("number").setValue("122").setNeedConvert(false).setLeftParenTheses("(").setLinkType(Condition.LinkType.AND).setLogicOperator(Condition.LogicOperator.EQUAL).setRightParenTheses(")");
-
+        condition2.setFieldKey("number").setValue("222").setNeedConvert(true).setLeftParenTheses("(")
+                .setLinkType(Condition.LinkType.OR).setLogicOperator(Condition.LogicOperator.NOT_EQUAL)
+                .setRightParenTheses(")");
 
         List<Condition> conditionList = new ArrayList<>();
         conditionList.add(condition);
         conditionList.add(condition2);
 
+        Map<String, Condition> conditionMap = new HashMap<>();
+
+        conditionMap.put("c1", condition);
+        conditionMap.put("c2", condition2);
+
         ObjectMapper objectMapper = new ObjectMapper();
 
         String s = objectMapper.writeValueAsString(conditionList);
+        String s2 = objectMapper.writeValueAsString(conditionMap);
 
         System.out.println(s);
+        System.out.println(s2);
 
-        List<Condition> conditions = jsonToCollection(s, List.class, Condition.class);
+        List<Condition> conditions = json2Collection(s, List.class, Condition.class);
+
+        Map<String, Condition> map = json2Map(s2, Map.class, String.class, Condition.class);
 
         System.out.println(conditions);
+        System.out.println(map);
+        System.out.println(map.getClass().getName());
 
     }
 }
