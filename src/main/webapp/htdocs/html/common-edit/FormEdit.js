@@ -461,6 +461,7 @@ define('FormEdit', function (require, module, exports) {
                         14	密码控件
                         15	是：否
                         16	单价/金额(两位小数)
+                        17  长整数(如后台的表主键id,此类前端number存不下，需转换text处理)
                      */
                     switch (ctrlType) {
                         case 1:
@@ -469,6 +470,7 @@ define('FormEdit', function (require, module, exports) {
                         case 9:
                         case 10:
                         case 16:
+                        case 17:
                             sample = samples["text"];
                             break;
                         case 3: // checkbox
@@ -502,7 +504,7 @@ define('FormEdit', function (require, module, exports) {
                     return $.String.format(sample, {
                         mustInput: field.mustInput ? $.String.format(samples["mustInput"], {}) : "",
                         name: field.name,
-                        key: field.key,
+                        key: field.key
                     });
 
                 }).join("")
@@ -1511,7 +1513,7 @@ define('FormEdit', function (require, module, exports) {
             var value = data[keyName] || '';
 
             if (!element) {
-                // TODO: 按key未找到控件，跳过此字段赋值
+                // 按key未找到控件，跳过此字段赋值
                 continue;
             }
 
@@ -1531,6 +1533,7 @@ define('FormEdit', function (require, module, exports) {
                         14	密码控件
                         15	是：否
                         16	单价/金额(两位小数)
+                        17  长整数(如后台的表主键id,此类前端number存不下，需转换text处理)
                      */
 
             var ctrlType = field.ctrlType;
@@ -1553,6 +1556,7 @@ define('FormEdit', function (require, module, exports) {
                 case 10:
                 case 11:
                 case 12:
+                case 17:
                     // 类文本类型
                     element.value = value || '';
                     break;

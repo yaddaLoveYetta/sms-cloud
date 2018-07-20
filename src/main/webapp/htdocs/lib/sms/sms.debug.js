@@ -6942,6 +6942,7 @@
                 triggerAdd: false,
 
                 afterEditCell: function (rowid, cellname, value, iRow, iCol) {
+                    //在单元格对应的输入控件加入DOM中触发事件
                     cfg.curCell.row = iRow;
                     cfg.curCell.col = iCol;
                     console.log("afterEditCell");
@@ -6950,10 +6951,14 @@
                 },
 
                 afterSaveCell: function (rowid, cellname, value, iRow, iCol) {
-
+                    //单元格成功保存后触发
                     console.log("afterSaveCell");
                     config.fnAfterSaveCell && config.fnAfterSaveCell(rowid, cellname, value, iRow, iCol);
                     emitter.fire('afterSaveCell', [config.classId, rowid, cellname, value, iRow, iCol]);
+                },
+                beforeEditCell: function (rowid, cellname, value, iRow, iCol) {
+                    //在单元格切换到编辑模式前触发事件
+                    emitter.fire('beforeEditCell', [config.classId, rowid, cellname, value, iRow, iCol, config.colModel[cellname]]);
                 },
 
                 loadComplete: function (data) {
@@ -7064,6 +7069,12 @@
                 //F7 双击
                 $(bdGrid).parent().find('.ui-icon-ellipsis').trigger("click");
             });
+            //默认的单元格点击行为
+            bdGrid.on('click', '.txt_context', function (e) {
+                // 选中内容
+                this.onfocus();
+                this.select();
+            })
 
         }
 
@@ -7351,6 +7362,20 @@
 
                 // 必录项校验
                 for (var validIndex in mustInputFields) {
+
+
+                    if (mustInputFields[validIndex].ctrlType === 6) {
+
+                        if (row[mustInputFields[validIndex].key] === '') {
+                            // 查找类型，如果删除了界面显示的值，认为是没有值
+                            var caption = mustInputFields[validIndex].name;
+                            mustInputCaptions.push(caption);
+                            valid = false;
+                            continue;
+                        }
+
+
+                    }
 
                     if (row[mustInputFields[validIndex].key] == '') {
                         var caption = mustInputFields[validIndex].name;

@@ -38,6 +38,8 @@ define('GridConfig', function (require, module, exports) {
         model.align = 'center';
         model.sortable = false;
 
+        // 默认的formatter-点击选中
+
         // F7选择对话框
         if (field.ctrlType === 6) {
             /**
@@ -51,8 +53,6 @@ define('GridConfig', function (require, module, exports) {
             model.edittype = 'custom';
 
             function element(value, options) {
-                /* var el = $('.' + field.key + 'Auto')[0];
-                 return el;*/
 
                 var $div = $('<div></div>');
 
@@ -60,21 +60,27 @@ define('GridConfig', function (require, module, exports) {
 
                 $span.addClass('iconfont icon-icon-bars form-control-feedback ui-icon-ellipsis');
 
-                $span.appendTo($div);        //将子div添加到父div中
+                //将子div添加到父div中
+                $span.appendTo($div);
 
                 var el = $("<input>", {
                     type: 'text',
                     class: 'form-control f7-icon-ellipsis',
                     val: value,
-                    onclick: function () {
+                    /*onclick: function () {
                         this.focus();
                         this.select();
-                    }
+                    }*/
                 });
 
-                el.appendTo($div);        //将子div添加到父div中
+                $(el).on("click", function () {
+                    this.focus();
+                    this.select();
+                });
 
-                //return el;
+                //将子div添加到父div中
+                el.appendTo($div);
+
                 return $div;
 
                 /*                var el = document.createElement("input");
@@ -89,9 +95,7 @@ define('GridConfig', function (require, module, exports) {
 
             function value(elem, operation, value) {
                 if (operation === 'get') {
-                    //return $(elem).val();
                     return $(elem).children('input').val();
-                    //return "";
                 } else if (operation === 'set') {
                     $('input', elem).val(value);
                 }
@@ -147,7 +151,7 @@ define('GridConfig', function (require, module, exports) {
             }
         }
         // 数字-无小数
-        if (isShow && field.ctrlType === 1) {
+        if (field.ctrlType === 1) {
 
             // 后端模板ctrlType==1的基本上是主键或引用的他表主键，且字段一般无需显示，
             // 后端主键用long型，js number存不下，改用text,此处控制要显示的数值格式(不够优雅)
@@ -209,8 +213,8 @@ define('GridConfig', function (require, module, exports) {
      * 构造grid初始化参数
      * @param fields  单据模板
      * @param config 默认配置
-     * @param showKeys 需要展现的字段-null将按照单据模板确定
-     * @param editKeys 可以编辑的字段-null将不可编辑
+     * @param showKeys 需要展现的字段-未指定将按照单据模板确定
+     * @param editKeys 可以编辑的字段-未指定将不可编辑
 
      * @param type 0:1:2-查看/新增/编辑
      * @returns {*}
@@ -284,7 +288,7 @@ define('GridConfig', function (require, module, exports) {
                 continue;
             }
 
-            if (field.ctrlType === 6 && field.lookUpType === 1) {
+            if (field.ctrlType === 6) {
                 // 引用类型增加保存列-不显示-用作表格保存时取数
                 var keyModel = {
                     name: field.key,
@@ -295,16 +299,6 @@ define('GridConfig', function (require, module, exports) {
 
                 cModel.push(keyModel);
 
-                /*                if (field.ctrlType == 6 && field.disPlayNum) {
-                                    // 有配置显示代码时增加代码显示
-                                    var keyNmbModel = {
-                                        name: field.name + '_NmbName',
-                                        label: field.name+'代码',
-                                        tabIndex: field.index +1,
-                                        hidden: false
-                                    };
-                                    cModel.push(keyNmbModel);
-                                }*/
             }
 
             model = getColModel(field, $.Array.contains(showKeys, field.key), $.Array.contains(editKeys, field.key));
