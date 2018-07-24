@@ -15,7 +15,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 插件适配器
+ * 插件适配器,不做业务处理
+ * 具体业务插件只需继承此适配器覆盖感兴趣的方法即可
  *
  * @author yadda
  * @date 2018-02-27 17:32:12 星期四
@@ -24,7 +25,10 @@ public abstract class AbstractPlugInAdapter extends BaseService implements PlugI
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    PlugInRet result = new PlugInRet();
+    /**
+     * 默认返回对象
+     */
+    private PlugInRet result = new PlugInRet();
 
     /**
      * 基础资料新增前操作
@@ -45,7 +49,7 @@ public abstract class AbstractPlugInAdapter extends BaseService implements PlugI
      * @param classId 业务类型
      * @param id      新增的资料内码
      * @param data    业务数据
-     * @return
+     * @return PlugInRet
      */
     @Override
     public PlugInRet afterSave(int classId, Long id, JsonNode data) {
@@ -75,12 +79,11 @@ public abstract class AbstractPlugInAdapter extends BaseService implements PlugI
      * @param formTemplate 模板数据
      * @param data         修改数据内容
      * @return PlugInRet
-     * @Title beforeEntryModify
      * @date 2017-07-12 09:05:42 星期三
      */
     @Override
     public PlugInRet beforeEntryModify(int classId, String primaryId, String entryId, Map<String, Object> formTemplate,
-                                       JsonNode data) {
+            JsonNode data) {
         return result;
     }
 
@@ -119,12 +122,11 @@ public abstract class AbstractPlugInAdapter extends BaseService implements PlugI
      * @param entryId      子表内码
      * @param formTemplate 模板数据
      * @return PlugInRet
-     * @Title beforeentryDelete
      * @date 2017-07-12 09:10:46 星期三
      */
     @Override
     public PlugInRet beforeEntryDelete(int classId, String primaryId, String entryId,
-                                       Map<String, Object> formTemplate) {
+            Map<String, Object> formTemplate) {
         return result;
     }
 
@@ -147,7 +149,7 @@ public abstract class AbstractPlugInAdapter extends BaseService implements PlugI
      * @param classId      业务类别
      * @param formTemplate 单据模板
      * @param conditons    原始过滤条件
-     * @return
+     * @return PlugInRet
      */
     @Override
     public PlugInRet beforeQuery(int classId, Map<String, Object> formTemplate, List<Condition> conditons) {
@@ -159,7 +161,7 @@ public abstract class AbstractPlugInAdapter extends BaseService implements PlugI
      *
      * @param classId 业务类型
      * @param list    查询结果集
-     * @return
+     * @return PlugInRet
      */
     @Override
     public PlugInRet afterQuery(int classId, List<Map<String, Object>> list) {
@@ -268,12 +270,11 @@ public abstract class AbstractPlugInAdapter extends BaseService implements PlugI
         }
 
         //单据体校验
-        if (!formEntries.isEmpty() && formEntries.size() > 0) {
+        if (!formEntries.isEmpty()) {
             // 只校验第一个子表（还没有存在一个以上子表的业务）
             Map<String, Object> formFields1 = (Map<String, Object>) ((Map<String, Object>) template.get("formFields"))
                     .get("1");
 
-            // List<Object> entryData = JsonUtil.json2Collection(data.path("entry").path("1").asText(), List.class, Object.class);
             // 第一个子表的数据
             List<JsonNode> elements = data.path("entry").findValues("1");
 
@@ -295,6 +296,8 @@ public abstract class AbstractPlugInAdapter extends BaseService implements PlugI
 
         ret.put("headCheckError", headCheckError);
         ret.put("bodyCheckError", bodyCheckError);
+
+        logger.info("mustInputCheck result:{}", ret);
 
         return ret;
     }

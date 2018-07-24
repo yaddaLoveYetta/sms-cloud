@@ -31,12 +31,14 @@ public class CustomerObjectMapper extends ObjectMapper {
         // null返回空字符串
         this.getSerializerProvider().setNullValueSerializer(new JsonSerializer<Object>() {
             @Override
-            public void serialize(Object value, JsonGenerator generator, SerializerProvider serializers) throws IOException, JsonProcessingException {
+            public void serialize(Object value, JsonGenerator generator, SerializerProvider serializers)
+                    throws IOException, JsonProcessingException {
                 generator.writeString("");
             }
         });
 
         SimpleModule simpleModule = new SimpleModule();
+        // Long类型转String输出(前端number存不下Long类型数字,如后台表id)
         simpleModule.addSerializer(Long.class, ToStringSerializer.instance);
         simpleModule.addSerializer(Long.TYPE, ToStringSerializer.instance);
         registerModule(simpleModule);
