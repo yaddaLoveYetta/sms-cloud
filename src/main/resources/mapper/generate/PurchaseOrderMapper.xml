@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.kingdee.hrp.sms.common.dao.generate.OrderMapper">
-  <resultMap id="BaseResultMap" type="com.kingdee.hrp.sms.common.model.Order">
+<mapper namespace="com.kingdee.hrp.sms.common.dao.generate.PurchaseOrderMapper">
+  <resultMap id="BaseResultMap" type="com.kingdee.hrp.sms.common.model.PurchaseOrder">
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="hospital" jdbcType="BIGINT" property="hospital" />
     <result column="number" jdbcType="VARCHAR" property="number" />
@@ -82,13 +82,13 @@
     order_status, deliver_status, receive_status, return_status, amount, purchase_type, 
     purchaser
   </sql>
-  <select id="selectByExample" parameterType="com.kingdee.hrp.sms.common.model.OrderExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="com.kingdee.hrp.sms.common.model.PurchaseOrderExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from t_order
+    from t_purchase_order
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -99,21 +99,21 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from t_order
+    from t_purchase_order
     where id = #{id,jdbcType=BIGINT}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    delete from t_order
+    delete from t_purchase_order
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <delete id="deleteByExample" parameterType="com.kingdee.hrp.sms.common.model.OrderExample">
-    delete from t_order
+  <delete id="deleteByExample" parameterType="com.kingdee.hrp.sms.common.model.PurchaseOrderExample">
+    delete from t_purchase_order
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.kingdee.hrp.sms.common.model.Order">
-    insert into t_order (id, hospital, `number`, 
+  <insert id="insert" parameterType="com.kingdee.hrp.sms.common.model.PurchaseOrder">
+    insert into t_purchase_order (id, hospital, `number`, 
       origin_number, supplier, creater, 
       create_date, checker, check_date, 
       order_status, deliver_status, receive_status, 
@@ -126,8 +126,8 @@
       #{returnStatus,jdbcType=INTEGER}, #{amount,jdbcType=DECIMAL}, #{purchaseType,jdbcType=INTEGER}, 
       #{purchaser,jdbcType=BIGINT})
   </insert>
-  <insert id="insertSelective" parameterType="com.kingdee.hrp.sms.common.model.Order">
-    insert into t_order
+  <insert id="insertSelective" parameterType="com.kingdee.hrp.sms.common.model.PurchaseOrder">
+    insert into t_purchase_order
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         id,
@@ -229,14 +229,14 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.kingdee.hrp.sms.common.model.OrderExample" resultType="java.lang.Long">
-    select count(*) from t_order
+  <select id="countByExample" parameterType="com.kingdee.hrp.sms.common.model.PurchaseOrderExample" resultType="java.lang.Long">
+    select count(*) from t_purchase_order
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
-    update t_order
+    update t_purchase_order
     <set>
       <if test="record.id != null">
         id = #{record.id,jdbcType=BIGINT},
@@ -292,7 +292,7 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map">
-    update t_order
+    update t_purchase_order
     set id = #{record.id,jdbcType=BIGINT},
       hospital = #{record.hospital,jdbcType=BIGINT},
       `number` = #{record.number,jdbcType=VARCHAR},
@@ -313,8 +313,8 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.kingdee.hrp.sms.common.model.Order">
-    update t_order
+  <update id="updateByPrimaryKeySelective" parameterType="com.kingdee.hrp.sms.common.model.PurchaseOrder">
+    update t_purchase_order
     <set>
       <if test="hospital != null">
         hospital = #{hospital,jdbcType=BIGINT},
@@ -364,8 +364,8 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.kingdee.hrp.sms.common.model.Order">
-    update t_order
+  <update id="updateByPrimaryKey" parameterType="com.kingdee.hrp.sms.common.model.PurchaseOrder">
+    update t_purchase_order
     set hospital = #{hospital,jdbcType=BIGINT},
       `number` = #{number,jdbcType=VARCHAR},
       origin_number = #{originNumber,jdbcType=VARCHAR},
@@ -389,7 +389,7 @@
       This element is automatically generated by MyBatis Generator, do not modify.
       @project https://github.com/itfsw/mybatis-generator-plugin
     -->
-    insert into t_order
+    insert into t_purchase_order
     (id, hospital, `number`, origin_number, supplier, creater, create_date, checker, 
       check_date, order_status, deliver_status, receive_status, return_status, amount, 
       purchase_type, purchaser)
@@ -409,7 +409,7 @@
       This element is automatically generated by MyBatis Generator, do not modify.
       @project https://github.com/itfsw/mybatis-generator-plugin
     -->
-    insert into t_order (
+    insert into t_purchase_order (
     <foreach collection="selective" item="column" separator=",">
       ${column.escapedColumnName}
     </foreach>

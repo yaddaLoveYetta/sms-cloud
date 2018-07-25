@@ -1,7 +1,5 @@
 package com.kingdee.hrp.sms.common.dao.generate;
 
-import com.kingdee.hrp.sms.common.model.Order;
-import com.kingdee.hrp.sms.common.model.OrderExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 

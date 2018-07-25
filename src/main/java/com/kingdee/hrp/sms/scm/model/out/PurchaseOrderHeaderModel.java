@@ -1,7 +1,7 @@
 package com.kingdee.hrp.sms.scm.model.out;
 
 import com.kingdee.hrp.sms.common.exception.BusinessLogicRunTimeException;
-import com.kingdee.hrp.sms.common.model.Order;
+import com.kingdee.hrp.sms.common.model.PurchaseOrder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -18,7 +18,7 @@ import lombok.experimental.Accessors;
 @Setter
 @ToString
 @Accessors(chain = true)
-public class OrderHeaderModel extends Order {
+public class PurchaseOrderHeaderModel extends PurchaseOrder {
 
     /**
      * 医院名称

@@ -1,13 +1,13 @@
 package com.kingdee.hrp.sms.scm.service.impl;
 
-import com.kingdee.hrp.sms.common.dao.generate.OrderEntryMapper;
-import com.kingdee.hrp.sms.common.dao.generate.OrderMapper;
+import com.kingdee.hrp.sms.common.dao.generate.PurchaseOrderEntryMapper;
+import com.kingdee.hrp.sms.common.dao.generate.PurchaseOrderMapper;
 import com.kingdee.hrp.sms.common.enums.UserRoleType;
 import com.kingdee.hrp.sms.common.exception.BusinessLogicRunTimeException;
-import com.kingdee.hrp.sms.common.model.Order;
-import com.kingdee.hrp.sms.common.model.OrderEntry;
-import com.kingdee.hrp.sms.common.model.OrderEntryExample;
-import com.kingdee.hrp.sms.common.model.OrderExample;
+import com.kingdee.hrp.sms.common.model.PurchaseOrder;
+import com.kingdee.hrp.sms.common.model.PurchaseOrderEntry;
+import com.kingdee.hrp.sms.common.model.PurchaseOrderEntryExample;
+import com.kingdee.hrp.sms.common.model.PurchaseOrderExample;
 import com.kingdee.hrp.sms.common.pojo.Condition;
 import com.kingdee.hrp.sms.common.pojo.Sort;
 import com.kingdee.hrp.sms.common.service.TemplateService;
@@ -16,10 +16,10 @@ import com.kingdee.hrp.sms.scm.enums.OrderDeliveryStatus;
 import com.kingdee.hrp.sms.scm.enums.OrderStatus;
 import com.kingdee.hrp.sms.scm.model.in.DeliverEntryModel;
 import com.kingdee.hrp.sms.scm.model.in.DeliverModel;
-import com.kingdee.hrp.sms.scm.model.out.OrderEntryModel;
-import com.kingdee.hrp.sms.scm.model.out.OrderHeaderModel;
-import com.kingdee.hrp.sms.scm.model.out.OrderModel;
-import com.kingdee.hrp.sms.scm.model.out.OrderOutModel;
+import com.kingdee.hrp.sms.scm.model.out.PurchaseOrderEntryModel;
+import com.kingdee.hrp.sms.scm.model.out.PurchaseOrderHeaderModel;
+import com.kingdee.hrp.sms.scm.model.out.PurchaseOrderModel;
+import com.kingdee.hrp.sms.scm.model.out.PurchaseOrderOutModel;
 import com.kingdee.hrp.sms.scm.service.PurchaseOrderService;
 import org.apache.commons.lang.reflect.FieldUtils;
 import org.slf4j.Logger;
@@ -61,12 +61,12 @@ public class PurchaseOrderServiceImpl extends AbstractOrderService implements Pu
      * @return Order
      */
     @Override
-    public Map<String, Object> getOrderByTemplate(Long orderId) {
+    public Map<String, Object> getPurchaseOrderByTemplate(Long orderId) {
 
         Map<String, Object> item = templateService.getItemById(2001, orderId, null);
 
         // item转成order返回模型
-        //OrderOutModel order = convert(item);
+        //PurchaseOrderOutModel order = convert(item);
 
         return item;
     }
@@ -79,35 +79,35 @@ public class PurchaseOrderServiceImpl extends AbstractOrderService implements Pu
      * @return Order
      */
     @Override
-    public OrderModel getOrderModel(Long orderId) {
+    public PurchaseOrderModel getPurchaseOrderModel(Long orderId) {
 
-        OrderModel orderModel = new OrderModel();
+        PurchaseOrderModel purchaseOrderModel = new PurchaseOrderModel();
 
-        OrderMapper orderMapper = sqlSession.getMapper(OrderMapper.class);
+        PurchaseOrderMapper purchaseOrderMapper = sqlSession.getMapper(PurchaseOrderMapper.class);
 
-        OrderExample.Criteria criteria = getOrderExample();
+        PurchaseOrderExample.Criteria criteria = getPurchaseOrderExample();
         criteria.andIdEqualTo(orderId);
 
-        List<Order> orders = orderMapper.selectByExample(criteria.example());
+        List<PurchaseOrder> purchaseOrders = purchaseOrderMapper.selectByExample(criteria.example());
 
-        if (CollectionUtils.isEmpty(orders)) {
+        if (CollectionUtils.isEmpty(purchaseOrders)) {
             logger.error("不存在id为{}的订单");
             throw new BusinessLogicRunTimeException(String.format("不存在id为%s的订单!", orderId));
         }
         // 只可能有一单
-        Order order = orders.get(0);
+        PurchaseOrder purchaseOrder = purchaseOrders.get(0);
 
-        OrderEntryMapper orderEntryMapper = sqlSession.getMapper(OrderEntryMapper.class);
-        OrderEntryExample orderEntryExample = new OrderEntryExample();
-        orderEntryExample.createCriteria().andParentEqualTo(orderId);
+        PurchaseOrderEntryMapper purchaseOrderEntryMapper = sqlSession.getMapper(PurchaseOrderEntryMapper.class);
+        PurchaseOrderEntryExample purchaseOrderEntryExample = new PurchaseOrderEntryExample();
+        purchaseOrderEntryExample.createCriteria().andParentEqualTo(orderId);
         // 按照行号排序
-        orderEntryExample.setOrderByClause(OrderEntry.Column.sequence.asc());
+        purchaseOrderEntryExample.setOrderByClause(PurchaseOrderEntry.Column.sequence.asc());
 
-        List<OrderEntry> entries = orderEntryMapper.selectByExample(orderEntryExample);
+        List<PurchaseOrderEntry> entries = purchaseOrderEntryMapper.selectByExample(purchaseOrderEntryExample);
 
-        orderModel.setHeader(order).setEntries(entries);
+        purchaseOrderModel.setHeader(purchaseOrder).setEntries(entries);
 
-        return orderModel;
+        return purchaseOrderModel;
     }
 
     /**
@@ -117,12 +117,12 @@ public class PurchaseOrderServiceImpl extends AbstractOrderService implements Pu
      *
      * @param orderId  订单id
      * @param detailId 订单分录id，可多个
-     * @return OrderModel
+     * @return PurchaseOrderModel
      */
     @Override
-    public OrderModel getOrderModel(Long orderId, Long... detailId) {
+    public PurchaseOrderModel getPurchaseOrderModel(Long orderId, Long... detailId) {
 
-        return getOrderModel(orderId, Arrays.asList(detailId));
+        return getPurchaseOrderModel(orderId, Arrays.asList(detailId));
     }
 
     /**
@@ -132,38 +132,38 @@ public class PurchaseOrderServiceImpl extends AbstractOrderService implements Pu
      *
      * @param orderId   订单id
      * @param detailIds 订单分录id，可多个
-     * @return OrderModel
+     * @return PurchaseOrderModel
      */
     @Override
-    public OrderModel getOrderModel(Long orderId, List<Long> detailIds) {
+    public PurchaseOrderModel getPurchaseOrderModel(Long orderId, List<Long> detailIds) {
 
-        OrderModel orderModel = new OrderModel();
+        PurchaseOrderModel purchaseOrderModel = new PurchaseOrderModel();
 
-        OrderMapper orderMapper = sqlSession.getMapper(OrderMapper.class);
+        PurchaseOrderMapper purchaseOrderMapper = sqlSession.getMapper(PurchaseOrderMapper.class);
 
-        OrderExample.Criteria criteria = getOrderExample();
+        PurchaseOrderExample.Criteria criteria = getPurchaseOrderExample();
         criteria.andIdEqualTo(orderId);
 
-        List<Order> orders = orderMapper.selectByExample(criteria.example());
+        List<PurchaseOrder> purchaseOrders = purchaseOrderMapper.selectByExample(criteria.example());
 
-        if (CollectionUtils.isEmpty(orders)) {
+        if (CollectionUtils.isEmpty(purchaseOrders)) {
             logger.error("不存在id为{}的订单");
             throw new BusinessLogicRunTimeException(String.format("不存在id为%s的订单!", detailIds));
         }
         // 只可能有一单
-        Order order = orders.get(0);
+        PurchaseOrder purchaseOrder = purchaseOrders.get(0);
 
-        OrderEntryMapper orderEntryMapper = sqlSession.getMapper(OrderEntryMapper.class);
-        OrderEntryExample orderEntryExample = new OrderEntryExample();
-        orderEntryExample.createCriteria().andParentEqualTo(orderId).andIdIn(detailIds);
+        PurchaseOrderEntryMapper purchaseOrderEntryMapper = sqlSession.getMapper(PurchaseOrderEntryMapper.class);
+        PurchaseOrderEntryExample purchaseOrderEntryExample = new PurchaseOrderEntryExample();
+        purchaseOrderEntryExample.createCriteria().andParentEqualTo(orderId).andIdIn(detailIds);
         // 按照行号排序
-        orderEntryExample.setOrderByClause(OrderEntry.Column.sequence.asc());
+        purchaseOrderEntryExample.setOrderByClause(PurchaseOrderEntry.Column.sequence.asc());
 
-        List<OrderEntry> entries = orderEntryMapper.selectByExample(orderEntryExample);
+        List<PurchaseOrderEntry> entries = purchaseOrderEntryMapper.selectByExample(purchaseOrderEntryExample);
 
-        orderModel.setHeader(order).setEntries(entries);
+        purchaseOrderModel.setHeader(purchaseOrder).setEntries(entries);
 
-        return orderModel;
+        return purchaseOrderModel;
     }
 
     /**
@@ -174,10 +174,10 @@ public class PurchaseOrderServiceImpl extends AbstractOrderService implements Pu
      * @return Order
      */
     @Override
-    public Order getOrderHeader(Long orderId) {
+    public PurchaseOrder getPurchaseOrderHeader(Long orderId) {
 
-        OrderMapper orderMapper = sqlSession.getMapper(OrderMapper.class);
-        return orderMapper.selectByPrimaryKey(orderId);
+        PurchaseOrderMapper purchaseOrderMapper = sqlSession.getMapper(PurchaseOrderMapper.class);
+        return purchaseOrderMapper.selectByPrimaryKey(orderId);
 
     }
 
@@ -189,21 +189,21 @@ public class PurchaseOrderServiceImpl extends AbstractOrderService implements Pu
      * @return List<OrderEntry>
      */
     @Override
-    public List<OrderEntry> getOrderEntries(Long orderId) {
+    public List<PurchaseOrderEntry> getPurchaseOrderEntries(Long orderId) {
 
-        OrderEntryMapper orderEntryMapper = sqlSession.getMapper(OrderEntryMapper.class);
+        PurchaseOrderEntryMapper purchaseOrderEntryMapper = sqlSession.getMapper(PurchaseOrderEntryMapper.class);
 
-        OrderEntryExample orderEntryExample = new OrderEntryExample();
+        PurchaseOrderEntryExample purchaseOrderEntryExample = new PurchaseOrderEntryExample();
 
-        orderEntryExample.createCriteria().andParentEqualTo(orderId);
+        purchaseOrderEntryExample.createCriteria().andParentEqualTo(orderId);
 
-        List<OrderEntry> orderEntries = orderEntryMapper.selectByExample(orderEntryExample);
+        List<PurchaseOrderEntry> purchaseOrderEntries = purchaseOrderEntryMapper.selectByExample(purchaseOrderEntryExample);
 
-        if (CollectionUtils.isEmpty(orderEntries)) {
+        if (CollectionUtils.isEmpty(purchaseOrderEntries)) {
             return null;
         }
 
-        return orderEntries;
+        return purchaseOrderEntries;
     }
 
     /**
@@ -215,18 +215,18 @@ public class PurchaseOrderServiceImpl extends AbstractOrderService implements Pu
      * @return OrderEntry
      */
     @Override
-    public OrderEntry getOrderEntry(Long orderId, Long detailId) {
+    public PurchaseOrderEntry getPurchaseOrderEntry(Long orderId, Long detailId) {
 
-        OrderEntryMapper orderEntryMapper = sqlSession.getMapper(OrderEntryMapper.class);
+        PurchaseOrderEntryMapper purchaseOrderEntryMapper = sqlSession.getMapper(PurchaseOrderEntryMapper.class);
 
-        OrderEntryExample orderEntryExample = new OrderEntryExample();
+        PurchaseOrderEntryExample purchaseOrderEntryExample = new PurchaseOrderEntryExample();
 
-        orderEntryExample.createCriteria().andParentEqualTo(orderId).andIdEqualTo(detailId);
+        purchaseOrderEntryExample.createCriteria().andParentEqualTo(orderId).andIdEqualTo(detailId);
 
-        List<OrderEntry> orderEntries = orderEntryMapper.selectByExample(orderEntryExample);
+        List<PurchaseOrderEntry> purchaseOrderEntries = purchaseOrderEntryMapper.selectByExample(purchaseOrderEntryExample);
 
-        if (!CollectionUtils.isEmpty(orderEntries)) {
-            return orderEntries.get(0);
+        if (!CollectionUtils.isEmpty(purchaseOrderEntries)) {
+            return purchaseOrderEntries.get(0);
         }
 
         return null;
@@ -241,11 +241,11 @@ public class PurchaseOrderServiceImpl extends AbstractOrderService implements Pu
      * @return OrderEntry
      */
     @Override
-    public OrderEntry getOrderEntry(Long detailId) {
+    public PurchaseOrderEntry getPurchaseOrderEntry(Long detailId) {
 
-        OrderEntryMapper orderEntryMapper = sqlSession.getMapper(OrderEntryMapper.class);
+        PurchaseOrderEntryMapper purchaseOrderEntryMapper = sqlSession.getMapper(PurchaseOrderEntryMapper.class);
 
-        return orderEntryMapper.selectByPrimaryKey(detailId);
+        return purchaseOrderEntryMapper.selectByPrimaryKey(detailId);
 
     }
 
@@ -253,24 +253,24 @@ public class PurchaseOrderServiceImpl extends AbstractOrderService implements Pu
      * 通用查询订单转成OrderOutModel对象
      *
      * @param item Map<String, Object>
-     * @return OrderOutModel
+     * @return PurchaseOrderOutModel
      */
     @SuppressWarnings("unchecked")
-    private OrderOutModel convert(Map<String, Object> item) {
+    private PurchaseOrderOutModel convert(Map<String, Object> item) {
 
-        OrderOutModel orderOutModel = new OrderOutModel();
+        PurchaseOrderOutModel purchaseOrderOutModel = new PurchaseOrderOutModel();
 
-        OrderHeaderModel header = new OrderHeaderModel();
-        List<OrderEntryModel> entries = new ArrayList<>();
+        PurchaseOrderHeaderModel header = new PurchaseOrderHeaderModel();
+        List<PurchaseOrderEntryModel> entries = new ArrayList<>();
 
-        for (OrderHeaderModel.FieldKeyLinkedColumn column : OrderHeaderModel.FieldKeyLinkedColumn.values()) {
+        for (PurchaseOrderHeaderModel.FieldKeyLinkedColumn column : PurchaseOrderHeaderModel.FieldKeyLinkedColumn.values()) {
             String fieldName = column.getJavaProperty();
             String fieldKey = column.getFieldKey();
 
             // 数据库值
             Object value = item.get(fieldKey);
 
-            Field field = FieldUtils.getField(Order.class, fieldName, true);
+            Field field = FieldUtils.getField(PurchaseOrder.class, fieldName, true);
 
             try {
                 FieldUtils.writeField(field, header, value, true);
@@ -287,7 +287,7 @@ public class PurchaseOrderServiceImpl extends AbstractOrderService implements Pu
         for (Map<String, Object> entry : entryList) {
             // entry是一条订单分录数据
 
-            OrderEntryModel orderEntryModel = new OrderEntryModel();
+            PurchaseOrderEntryModel orderEntryModel = new PurchaseOrderEntryModel();
 
             for (Map.Entry<String, Object> entryItem : entry.entrySet()) {
                 // entryItem是一个字段信息
@@ -298,13 +298,13 @@ public class PurchaseOrderServiceImpl extends AbstractOrderService implements Pu
                 Object value = entryItem.getValue();
 
                 // 模板fieldKey转换成OrderEntryModel属性信息
-                OrderEntryModel.FieldKeyLinkedColumn column = OrderEntryModel.FieldKeyLinkedColumn
+                PurchaseOrderEntryModel.FieldKeyLinkedColumn column = PurchaseOrderEntryModel.FieldKeyLinkedColumn
                         .getFieldKeyLinkedColumn(fieldKey);
 
                 // OrderEntryModel属性名
                 String fieldName = column.getJavaProperty();
 
-                Field field = FieldUtils.getField(Order.class, fieldName, true);
+                Field field = FieldUtils.getField(PurchaseOrder.class, fieldName, true);
 
                 try {
                     FieldUtils.writeField(field, orderEntryModel, value, true);
@@ -317,9 +317,9 @@ public class PurchaseOrderServiceImpl extends AbstractOrderService implements Pu
             entries.add(orderEntryModel);
         }
 
-        orderOutModel.setHeader(header).setEntries(entries);
+        purchaseOrderOutModel.setHeader(header).setEntries(entries);
 
-        return orderOutModel;
+        return purchaseOrderOutModel;
     }
 
     /**
@@ -331,7 +331,7 @@ public class PurchaseOrderServiceImpl extends AbstractOrderService implements Pu
      * @param pageNo     当前页码
      */
     @Override
-    public Map<String, Object> getOrdersByTemplate(List<Condition> conditions, List<Sort> sorts, Integer pageSize,
+    public Map<String, Object> getPurchaseOrdersByTemplate(List<Condition> conditions, List<Sort> sorts, Integer pageSize,
             Integer pageNo) {
 
         return templateService.getItems(CLASS_ID, conditions, sorts, pageSize, pageNo);
@@ -364,16 +364,16 @@ public class PurchaseOrderServiceImpl extends AbstractOrderService implements Pu
 
         // 校验订单状态是否是新增状态，只有新增的订单可以修改 TODO
 
-        OrderMapper orderMapper = sqlSession.getMapper(OrderMapper.class);
+        PurchaseOrderMapper purchaseOrderMapper = sqlSession.getMapper(PurchaseOrderMapper.class);
 
-        Order order = orderMapper.selectByPrimaryKey(id);
+        PurchaseOrder purchaseOrder = purchaseOrderMapper.selectByPrimaryKey(id);
 
-        if (null == order) {
+        if (null == purchaseOrder) {
             logger.error("id：{}订单不存在", id);
             throw new BusinessLogicRunTimeException("订单不存在" + id);
         }
 
-        if (OrderStatus.getOrderStatus(order.getOrderStatus()) != OrderStatus.ADDED) {
+        if (OrderStatus.getOrderStatus(purchaseOrder.getOrderStatus()) != OrderStatus.ADDED) {
             logger.error("订单{}非新增状态，不可编辑", id);
             throw new BusinessLogicRunTimeException("只可编辑新增状态的新单");
         }
@@ -391,15 +391,15 @@ public class PurchaseOrderServiceImpl extends AbstractOrderService implements Pu
     public Boolean delete(List<Long> ids) {
 
         // 校验订单状态是否是新增状态，只有新增的订单可以删除
-        OrderMapper orderMapper = sqlSession.getMapper(OrderMapper.class);
+        PurchaseOrderMapper purchaseOrderMapper = sqlSession.getMapper(PurchaseOrderMapper.class);
 
-        OrderExample orderExample = new OrderExample();
+        PurchaseOrderExample purchaseOrderExample = new PurchaseOrderExample();
         // 只有新增状态的订单可删除
-        orderExample.createCriteria().andIdIn(ids).andOrderStatusEqualTo(OrderStatus.ADDED.getNumber());
+        purchaseOrderExample.createCriteria().andIdIn(ids).andOrderStatusEqualTo(OrderStatus.ADDED.getNumber());
 
-        List<Order> orders = orderMapper.selectByExample(orderExample);
+        List<PurchaseOrder> purchaseOrders = purchaseOrderMapper.selectByExample(purchaseOrderExample);
 
-        if (orders.size() != ids.size()) {
+        if (purchaseOrders.size() != ids.size()) {
             // 选择要删除的订单中有非新增状态的，本次删除操作不处理
             logger.error("只有新增状态的订单可删除，本次操作失败，请检查选中订单的状态ids:{}", ids);
             throw new BusinessLogicRunTimeException("只有新增状态的订单可删除，本次操作失败，请检查选中订单的状态");
@@ -417,27 +417,27 @@ public class PurchaseOrderServiceImpl extends AbstractOrderService implements Pu
     @Override
     public Boolean check(List<Long> ids) {
 
-        OrderMapper orderMapper = sqlSession.getMapper(OrderMapper.class);
+        PurchaseOrderMapper purchaseOrderMapper = sqlSession.getMapper(PurchaseOrderMapper.class);
 
         // 校验订单状态是否是新增状态，只有新增的订单可以审核
-        OrderExample orderExample = new OrderExample();
+        PurchaseOrderExample purchaseOrderExample = new PurchaseOrderExample();
         // 只有新增状态的订单可删除
-        orderExample.createCriteria().andIdIn(ids).andOrderStatusEqualTo(OrderStatus.ADDED.getNumber());
+        purchaseOrderExample.createCriteria().andIdIn(ids).andOrderStatusEqualTo(OrderStatus.ADDED.getNumber());
 
-        List<Order> orders = orderMapper.selectByExample(orderExample);
+        List<PurchaseOrder> purchaseOrders = purchaseOrderMapper.selectByExample(purchaseOrderExample);
 
-        if (orders.size() != ids.size()) {
+        if (purchaseOrders.size() != ids.size()) {
             // 选择要审核的订单中有非新增状态的，本次审核操作不处理
             logger.error("只有新增状态的订单可审核，本次操作失败，请检查选中订单的状态ids:{}", ids);
             throw new BusinessLogicRunTimeException("只有新增状态的订单可审核，本次操作失败，请检查选中订单的状态");
         }
 
-        Order order = new Order();
+        PurchaseOrder purchaseOrder = new PurchaseOrder();
 
         for (Long id : ids) {
-            order.setId(id);
-            order.setOrderStatus(OrderStatus.CHECKED.getNumber());
-            orderMapper.updateByPrimaryKeySelective(order);
+            purchaseOrder.setId(id);
+            purchaseOrder.setOrderStatus(OrderStatus.CHECKED.getNumber());
+            purchaseOrderMapper.updateByPrimaryKeySelective(purchaseOrder);
         }
 
         return true;
@@ -452,28 +452,28 @@ public class PurchaseOrderServiceImpl extends AbstractOrderService implements Pu
     @Override
     public Boolean unCheck(List<Long> ids) {
 
-        OrderMapper orderMapper = sqlSession.getMapper(OrderMapper.class);
+        PurchaseOrderMapper purchaseOrderMapper = sqlSession.getMapper(PurchaseOrderMapper.class);
 
         // 校验订单状态是否是已审核，只有已审核的订单可以反审核
-        OrderExample orderExample = new OrderExample();
+        PurchaseOrderExample purchaseOrderExample = new PurchaseOrderExample();
         // 只有新增状态的订单可删除
-        orderExample.createCriteria().andIdIn(ids).andOrderStatusEqualTo(OrderStatus.CHECKED.getNumber());
+        purchaseOrderExample.createCriteria().andIdIn(ids).andOrderStatusEqualTo(OrderStatus.CHECKED.getNumber());
 
-        List<Order> orders = orderMapper.selectByExample(orderExample);
+        List<PurchaseOrder> purchaseOrders = purchaseOrderMapper.selectByExample(purchaseOrderExample);
 
-        if (orders.size() != ids.size()) {
+        if (purchaseOrders.size() != ids.size()) {
             // 选择要审核的订单中有非新增状态的，本次审核操作不处理
             logger.error("只有已审核状态的订单可反审核，本次操作失败，请检查选中订单的状态ids:{}", ids);
             throw new BusinessLogicRunTimeException("只有已审核状态的订单可审核，本次操作失败，请检查选中订单的状态");
         }
 
-        Order order = new Order();
+        PurchaseOrder purchaseOrder = new PurchaseOrder();
 
         for (Long id : ids) {
-            order.setId(id);
+            purchaseOrder.setId(id);
             // 反审核后订单回到新增状态
-            order.setOrderStatus(OrderStatus.ADDED.getNumber());
-            orderMapper.updateByPrimaryKeySelective(order);
+            purchaseOrder.setOrderStatus(OrderStatus.ADDED.getNumber());
+            purchaseOrderMapper.updateByPrimaryKeySelective(purchaseOrder);
         }
 
         return true;
@@ -490,12 +490,12 @@ public class PurchaseOrderServiceImpl extends AbstractOrderService implements Pu
     @Override
     public Boolean sendToSupplier(List<Long> ids) {
 
-        OrderMapper orderMapper = sqlSession.getMapper(OrderMapper.class);
+        PurchaseOrderMapper purchaseOrderMapper = sqlSession.getMapper(PurchaseOrderMapper.class);
 
         // 校验订单状态是否是已审核，只有已审核的订单可以发送给供应商
-        OrderExample orderExample = new OrderExample();
+        PurchaseOrderExample purchaseOrderExample = new PurchaseOrderExample();
 
-        OrderExample.Criteria criteria = orderExample.createCriteria();
+        PurchaseOrderExample.Criteria criteria = purchaseOrderExample.createCriteria();
 
         if (getUserRoleType() != UserRoleType.SYSTEM && debug) {
             criteria.andHospitalEqualTo(getUserLinkOrg());
@@ -504,21 +504,21 @@ public class PurchaseOrderServiceImpl extends AbstractOrderService implements Pu
         // 只有新增状态的订单可发送给供应商
         criteria.andIdIn(ids).andOrderStatusEqualTo(OrderStatus.CHECKED.getNumber());
 
-        List<Order> orders = orderMapper.selectByExample(orderExample);
+        List<PurchaseOrder> purchaseOrders = purchaseOrderMapper.selectByExample(purchaseOrderExample);
 
-        if (orders.size() != ids.size()) {
+        if (purchaseOrders.size() != ids.size()) {
             // 选择要审核的订单中有非新增状态的，本次审核操作不处理
             logger.error("只有已审核状态的订单可发送给供应商，本次操作失败，请检查选中订单的状态ids:{}", ids);
             throw new BusinessLogicRunTimeException("只有已审核状态的订单可发送给供应商，本次操作失败，请检查选中订单的状态");
         }
 
-        Order order = new Order();
+        PurchaseOrder purchaseOrder = new PurchaseOrder();
 
         for (Long id : ids) {
-            order.setId(id);
+            purchaseOrder.setId(id);
             // 反审核后订单回到新增状态
-            order.setOrderStatus(OrderStatus.TO_BE_CONFIRMED.getNumber());
-            orderMapper.updateByPrimaryKeySelective(order);
+            purchaseOrder.setOrderStatus(OrderStatus.TO_BE_CONFIRMED.getNumber());
+            purchaseOrderMapper.updateByPrimaryKeySelective(purchaseOrder);
         }
 
         return true;
@@ -534,12 +534,12 @@ public class PurchaseOrderServiceImpl extends AbstractOrderService implements Pu
     @Override
     public Boolean confirm(List<Long> ids) {
 
-        OrderMapper orderMapper = sqlSession.getMapper(OrderMapper.class);
+        PurchaseOrderMapper purchaseOrderMapper = sqlSession.getMapper(PurchaseOrderMapper.class);
 
         // 校验订单状态是否是待确认，只有待确认的订单可以确认
-        OrderExample orderExample = new OrderExample();
+        PurchaseOrderExample purchaseOrderExample = new PurchaseOrderExample();
 
-        OrderExample.Criteria criteria = orderExample.createCriteria();
+        PurchaseOrderExample.Criteria criteria = purchaseOrderExample.createCriteria();
 
         if (getUserRoleType() != UserRoleType.SYSTEM && debug) {
             criteria.andHospitalEqualTo(getUserLinkOrg());
@@ -548,21 +548,21 @@ public class PurchaseOrderServiceImpl extends AbstractOrderService implements Pu
         // 只有待确认状态的订单可确认
         criteria.andIdIn(ids).andOrderStatusEqualTo(OrderStatus.TO_BE_CONFIRMED.getNumber());
 
-        List<Order> orders = orderMapper.selectByExample(orderExample);
+        List<PurchaseOrder> purchaseOrders = purchaseOrderMapper.selectByExample(purchaseOrderExample);
 
-        if (orders.size() != ids.size()) {
+        if (purchaseOrders.size() != ids.size()) {
             // 选择要审核的订单中有非新增状态的，本次审核操作不处理
             logger.error("只有待确认状态的订单可确认，本次操作失败，请检查选中订单的状态ids:{}", ids);
             throw new BusinessLogicRunTimeException("只有待确认状态的订单可确认，本次操作失败，请检查选中订单的状态");
         }
 
-        Order order = new Order();
+        PurchaseOrder purchaseOrder = new PurchaseOrder();
 
         for (Long id : ids) {
-            order.setId(id);
+            purchaseOrder.setId(id);
             // 确认后订单状态到已确认
-            order.setOrderStatus(OrderStatus.CONFIRMED.getNumber());
-            orderMapper.updateByPrimaryKeySelective(order);
+            purchaseOrder.setOrderStatus(OrderStatus.CONFIRMED.getNumber());
+            purchaseOrderMapper.updateByPrimaryKeySelective(purchaseOrder);
         }
 
         return true;
@@ -577,12 +577,12 @@ public class PurchaseOrderServiceImpl extends AbstractOrderService implements Pu
     @Override
     public Boolean unConfirm(List<Long> ids) {
 
-        OrderMapper orderMapper = sqlSession.getMapper(OrderMapper.class);
+        PurchaseOrderMapper purchaseOrderMapper = sqlSession.getMapper(PurchaseOrderMapper.class);
 
         // 校验订单状态是否是已确认且未发货，只有已确认且未发货的订单可以反确认
-        OrderExample orderExample = new OrderExample();
+        PurchaseOrderExample purchaseOrderExample = new PurchaseOrderExample();
 
-        OrderExample.Criteria criteria = orderExample.createCriteria();
+        PurchaseOrderExample.Criteria criteria = purchaseOrderExample.createCriteria();
 
         if (getUserRoleType() != UserRoleType.SYSTEM && debug) {
             criteria.andHospitalEqualTo(getUserLinkOrg());
@@ -592,21 +592,21 @@ public class PurchaseOrderServiceImpl extends AbstractOrderService implements Pu
         criteria.andIdIn(ids).andOrderStatusEqualTo(OrderStatus.CONFIRMED.getNumber())
                 .andDeliverStatusEqualTo(OrderDeliveryStatus.UN_SHIPPED.getNumber());
 
-        List<Order> orders = orderMapper.selectByExample(orderExample);
+        List<PurchaseOrder> purchaseOrders = purchaseOrderMapper.selectByExample(purchaseOrderExample);
 
-        if (orders.size() != ids.size()) {
+        if (purchaseOrders.size() != ids.size()) {
             // 选择要反确认的订单中有非确认状态或已发货的，本次审核操作不处理
             logger.error("只有已确认状态且未发货的订单可反确认，本次操作失败，请检查选中订单的状态ids:{}", ids);
             throw new BusinessLogicRunTimeException("只有已确认状态且未发货的订单可反确认，本次操作失败，请检查选中订单的状态");
         }
 
-        Order order = new Order();
+        PurchaseOrder purchaseOrder = new PurchaseOrder();
 
         for (Long id : ids) {
-            order.setId(id);
+            purchaseOrder.setId(id);
             // 确认后订单状态到已确认
-            order.setOrderStatus(OrderStatus.CONFIRMED.getNumber());
-            orderMapper.updateByPrimaryKeySelective(order);
+            purchaseOrder.setOrderStatus(OrderStatus.CONFIRMED.getNumber());
+            purchaseOrderMapper.updateByPrimaryKeySelective(purchaseOrder);
         }
 
         return true;
@@ -622,7 +622,7 @@ public class PurchaseOrderServiceImpl extends AbstractOrderService implements Pu
     public Map<String, Object> deliver(DeliverModel deliverModel) {
 
         // 需要发货的订单详细信息
-        List<OrderModel> toBeDeliverOrders = new ArrayList<>();
+        List<PurchaseOrderModel> toBeDeliverOrders = new ArrayList<>();
 
         // 查询出待发货的订单信息
         for (DeliverEntryModel deliverEntryModel : deliverModel.getOrders()) {
@@ -631,9 +631,9 @@ public class PurchaseOrderServiceImpl extends AbstractOrderService implements Pu
             Long orderId = deliverEntryModel.getId();
             List<Long> childIds = deliverEntryModel.getChildId();
 
-            OrderModel orderModel = getOrderModel(orderId, childIds);
+            PurchaseOrderModel purchaseOrderModel = getPurchaseOrderModel(orderId, childIds);
 
-            toBeDeliverOrders.add(orderModel);
+            toBeDeliverOrders.add(purchaseOrderModel);
         }
 
         if (CollectionUtils.isEmpty(toBeDeliverOrders)) {
@@ -641,7 +641,7 @@ public class PurchaseOrderServiceImpl extends AbstractOrderService implements Pu
         }
 
         // 一条订单分录生成一条发货单分录--不支持相同物料合并逻辑(复杂度高 TODO)
-        for (OrderModel toBeDeliverOrder : toBeDeliverOrders) {
+        for (PurchaseOrderModel toBeDeliverOrder : toBeDeliverOrders) {
 
         }
         return null;

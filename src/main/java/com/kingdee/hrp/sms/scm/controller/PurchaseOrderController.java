@@ -1,6 +1,5 @@
 package com.kingdee.hrp.sms.scm.controller;
 
-import com.kingdee.hrp.sms.common.model.Order;
 import com.kingdee.hrp.sms.scm.service.PurchaseOrderService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,7 +39,7 @@ public class PurchaseOrderController {
 /*        if (orderId == null || orderId <= 0) {
             throw new BusinessLogicRunTimeException("请提交正确的订单id");
         }
-        return orderService.getOrderModel(orderId);*/
+        return orderService.getPurchaseOrderModel(orderId);*/
 
         return null;
 

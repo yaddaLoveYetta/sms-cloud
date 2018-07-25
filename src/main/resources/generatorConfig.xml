@@ -192,11 +192,11 @@
              
         </table>
 
-        <table tableName="t_order" domainObjectName="Order">
+        <table tableName="t_purchase_order" domainObjectName="PurchaseOrder">
             <property name="useActualColumnNames" value="false"/>
 
         </table>
-        <table tableName="t_order_entry" domainObjectName="OrderEntry">
+        <table tableName="t_purchase_order_entry" domainObjectName="PurchaseOrderEntry">
             <property name="useActualColumnNames" value="false"/>
 
         </table>

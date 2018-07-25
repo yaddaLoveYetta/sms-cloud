@@ -1,7 +1,7 @@
 package com.kingdee.hrp.sms.scm.service.impl;
 
 import com.kingdee.hrp.sms.common.enums.UserRoleType;
-import com.kingdee.hrp.sms.common.model.OrderExample;
+import com.kingdee.hrp.sms.common.model.PurchaseOrderExample;
 import com.kingdee.hrp.sms.common.service.BaseService;
 import com.kingdee.hrp.sms.util.SessionUtil;
 import org.slf4j.Logger;
@@ -29,7 +29,7 @@ public abstract class AbstractOrderService extends BaseService {
      * @param orderExample OrderExample
      * @return OrderExample
      */
-    protected OrderExample getOrderExample(OrderExample orderExample) {
+    protected PurchaseOrderExample getPurchaseOrderExample(PurchaseOrderExample orderExample) {
 
         if (SessionUtil.getUserRoleType() != UserRoleType.SYSTEM) {
             // 供应商或医院时加org条件
@@ -53,10 +53,10 @@ public abstract class AbstractOrderService extends BaseService {
      *
      * @return OrderExample
      */
-    protected OrderExample.Criteria getOrderExample() {
+    protected PurchaseOrderExample.Criteria getPurchaseOrderExample() {
 
-        OrderExample orderExample = new OrderExample();
-        OrderExample.Criteria criteria = orderExample.createCriteria();
+        PurchaseOrderExample orderExample = new PurchaseOrderExample();
+        PurchaseOrderExample.Criteria criteria = orderExample.createCriteria();
 
         if (SessionUtil.getUserRoleType() == UserRoleType.HOSPITAL) {
             criteria.andHospitalEqualTo(SessionUtil.getUserLinkOrg());

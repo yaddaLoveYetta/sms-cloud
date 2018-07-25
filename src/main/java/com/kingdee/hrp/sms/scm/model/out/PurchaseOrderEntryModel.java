@@ -1,7 +1,7 @@
 package com.kingdee.hrp.sms.scm.model.out;
 
 import com.kingdee.hrp.sms.common.exception.BusinessLogicRunTimeException;
-import com.kingdee.hrp.sms.common.model.OrderEntry;
+import com.kingdee.hrp.sms.common.model.PurchaseOrderEntry;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -18,7 +18,7 @@ import lombok.experimental.Accessors;
 @Setter
 @ToString
 @Accessors(chain = true)
-public class OrderEntryModel extends OrderEntry {
+public class PurchaseOrderEntryModel extends PurchaseOrderEntry {
 
     /**
      * 物料名稱
@@ -85,9 +85,9 @@ public class OrderEntryModel extends OrderEntry {
             this.javaProperty = javaProperty;
         }
 
-        public static OrderEntryModel.FieldKeyLinkedColumn getFieldKeyLinkedColumn(String fieldKey) {
+        public static PurchaseOrderEntryModel.FieldKeyLinkedColumn getFieldKeyLinkedColumn(String fieldKey) {
 
-            for (OrderEntryModel.FieldKeyLinkedColumn column : OrderEntryModel.FieldKeyLinkedColumn.values()) {
+            for (PurchaseOrderEntryModel.FieldKeyLinkedColumn column : PurchaseOrderEntryModel.FieldKeyLinkedColumn.values()) {
                 if (column.getFieldKey().equals(fieldKey)) {
                     return column;
                 }

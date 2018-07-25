@@ -1,7 +1,8 @@
 package com.kingdee.hrp.sms.scm.model.out;
 
-import com.kingdee.hrp.sms.common.model.Order;
-import com.kingdee.hrp.sms.common.model.OrderEntry;
+import com.kingdee.hrp.sms.common.dao.generate.PurchaseOrderEntryMapper;
+import com.kingdee.hrp.sms.common.model.PurchaseOrder;
+import com.kingdee.hrp.sms.common.model.PurchaseOrderEntry;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -17,13 +18,13 @@ import java.util.List;
 @Getter
 @ToString
 @Accessors(chain = true)
-public class OrderModel implements Serializable {
+public class PurchaseOrderModel implements Serializable {
     /**
      * 单据头
      */
-    private Order header;
+    private PurchaseOrder header;
     /**
      * 单据体
      */
-    private List<OrderEntry> entries;
+    private List<PurchaseOrderEntry> entries;
 }

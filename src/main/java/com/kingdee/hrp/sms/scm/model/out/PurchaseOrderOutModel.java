@@ -17,14 +17,14 @@ import java.util.List;
 @Getter
 @ToString
 @Accessors(chain = true)
-public class OrderOutModel implements Serializable {
+public class PurchaseOrderOutModel implements Serializable {
 
     /**
      * 单据头数据
      */
-    OrderHeaderModel header;
+    PurchaseOrderHeaderModel header;
     /**
      * 分录数据
      */
-    List<OrderEntryModel> entries;
+    List<PurchaseOrderEntryModel> entries;
 }

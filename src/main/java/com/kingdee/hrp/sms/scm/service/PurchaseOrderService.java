@@ -1,12 +1,12 @@
 package com.kingdee.hrp.sms.scm.service;
 
 import com.kingdee.hrp.sms.common.enums.UserRoleType;
-import com.kingdee.hrp.sms.common.model.Order;
-import com.kingdee.hrp.sms.common.model.OrderEntry;
+import com.kingdee.hrp.sms.common.model.PurchaseOrder;
+import com.kingdee.hrp.sms.common.model.PurchaseOrderEntry;
 import com.kingdee.hrp.sms.common.pojo.Condition;
 import com.kingdee.hrp.sms.common.pojo.Sort;
 import com.kingdee.hrp.sms.scm.model.in.DeliverModel;
-import com.kingdee.hrp.sms.scm.model.out.OrderModel;
+import com.kingdee.hrp.sms.scm.model.out.PurchaseOrderModel;
 import com.kingdee.hrp.sms.util.SessionUtil;
 import org.springframework.beans.factory.annotation.Value;
 
@@ -30,9 +30,9 @@ public interface PurchaseOrderService {
      * 只查询order与orderEntry表数据，不获取引用类型字段的关联信息
      *
      * @param orderId 订单id
-     * @return OrderModel
+     * @return PurchaseOrderModel
      */
-    OrderModel getOrderModel(Long orderId);
+    PurchaseOrderModel getPurchaseOrderModel(Long orderId);
 
     /**
      * 获取一张订单信息
@@ -41,9 +41,9 @@ public interface PurchaseOrderService {
      *
      * @param orderId  订单id
      * @param detailId 订单分录id，可多个
-     * @return OrderModel
+     * @return PurchaseOrderModel
      */
-    OrderModel getOrderModel(Long orderId, Long... detailId);
+    PurchaseOrderModel getPurchaseOrderModel(Long orderId, Long... detailId);
 
     /**
      * 获取一张订单信息
@@ -52,9 +52,9 @@ public interface PurchaseOrderService {
      *
      * @param orderId   订单id
      * @param detailIds 订单分录id，可多个
-     * @return OrderModel
+     * @return PurchaseOrderModel
      */
-    OrderModel getOrderModel(Long orderId, List<Long> detailIds);
+    PurchaseOrderModel getPurchaseOrderModel(Long orderId, List<Long> detailIds);
 
     /**
      * 订单表头信息
@@ -63,7 +63,7 @@ public interface PurchaseOrderService {
      * @param orderId 订单id
      * @return Order
      */
-    Order getOrderHeader(Long orderId);
+    PurchaseOrder getPurchaseOrderHeader(Long orderId);
 
     /**
      * 订单表体信息
@@ -72,7 +72,7 @@ public interface PurchaseOrderService {
      * @param orderId 订单id
      * @return List<OrderEntry>
      */
-    List<OrderEntry> getOrderEntries(Long orderId);
+    List<PurchaseOrderEntry> getPurchaseOrderEntries(Long orderId);
 
     /**
      * 一条订单分录信息
@@ -82,7 +82,7 @@ public interface PurchaseOrderService {
      * @param detailId 订单分录id
      * @return OrderEntry
      */
-    OrderEntry getOrderEntry(Long orderId, Long detailId);
+    PurchaseOrderEntry getPurchaseOrderEntry(Long orderId, Long detailId);
 
     /**
      * 一条订单分录信息
@@ -91,7 +91,7 @@ public interface PurchaseOrderService {
      * @param detailId 订单分录id
      * @return OrderEntry
      */
-    OrderEntry getOrderEntry(Long detailId);
+    PurchaseOrderEntry getPurchaseOrderEntry(Long detailId);
 
     /**
      * 通过模板查询一张订单信息
@@ -99,7 +99,7 @@ public interface PurchaseOrderService {
      * @param orderId 订单id
      * @return 根据模板构建的返回结构
      */
-    Map<String, Object> getOrderByTemplate(Long orderId);
+    Map<String, Object> getPurchaseOrderByTemplate(Long orderId);
 
     /**
      * 通过模板获取订单列表
@@ -110,7 +110,7 @@ public interface PurchaseOrderService {
      * @param pageNo     当前页码
      * @return Map<String, Object>
      */
-    Map<String, Object> getOrdersByTemplate(List<Condition> conditions, List<Sort> sorts, Integer pageSize,
+    Map<String, Object> getPurchaseOrdersByTemplate(List<Condition> conditions, List<Sort> sorts, Integer pageSize,
                                             Integer pageNo);
 
     /**
