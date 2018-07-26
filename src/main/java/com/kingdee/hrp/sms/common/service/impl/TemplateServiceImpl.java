@@ -8,13 +8,16 @@ import com.kingdee.hrp.sms.common.dao.customize.TemplateDaoMapper;
 import com.kingdee.hrp.sms.common.dao.generate.FormActionMapper;
 import com.kingdee.hrp.sms.common.dao.generate.FormClassEntryMapper;
 import com.kingdee.hrp.sms.common.dao.generate.FormClassMapper;
-import com.kingdee.hrp.sms.common.dao.generate.FormFieldsMapper;
+import com.kingdee.hrp.sms.common.dao.generate.FormFieldMapper;
 import com.kingdee.hrp.sms.common.enums.CtrlType;
 import com.kingdee.hrp.sms.common.enums.UserRoleType;
 import com.kingdee.hrp.sms.common.exception.BusinessLogicRunTimeException;
 import com.kingdee.hrp.sms.common.exception.PlugInRuntimeException;
 import com.kingdee.hrp.sms.common.model.*;
-import com.kingdee.hrp.sms.common.pojo.*;
+import com.kingdee.hrp.sms.common.pojo.Condition;
+import com.kingdee.hrp.sms.common.pojo.FormTemplate;
+import com.kingdee.hrp.sms.common.pojo.Sort;
+import com.kingdee.hrp.sms.common.pojo.StatusCode;
 import com.kingdee.hrp.sms.common.service.BaseService;
 import com.kingdee.hrp.sms.common.service.TemplateService;
 import com.kingdee.hrp.sms.common.service.plugin.PlugIn;
@@ -49,12 +52,14 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
     @Override
     public Map<String, Object> getFormTemplate(Integer classId, Integer type) {
 
-        Map<String, Object> retMap = new LinkedHashMap<String, Object>();
+        Map<String, Object> retMap = new LinkedHashMap<>();
+
+        FormTemplate formTemplate = new FormTemplate();
 
         // 主表模板
-        Map<String, Object> formFields = new LinkedHashMap<String, Object>();
+        Map<String, Object> formFields = new LinkedHashMap<>();
         // 子表模板
-        Map<String, Object> formEntry = new LinkedHashMap<String, Object>();
+        Map<String, Object> formEntry = new LinkedHashMap<>();
 
         // 获取单据类别描述信息
         FormClassMapper classMapper = sqlSession.getMapper(FormClassMapper.class);
@@ -67,10 +72,10 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
         }
 
         // 获取单据模板page=0表头
-        FormFieldsMapper formFieldsMapper = sqlSession.getMapper(FormFieldsMapper.class);
+        FormFieldMapper formFieldsMapper = sqlSession.getMapper(FormFieldMapper.class);
 
-        FormFieldsExample fieldsExample = new FormFieldsExample();
-        FormFieldsExample.Criteria fieldsCriteria = fieldsExample.createCriteria();
+        FormFieldExample fieldsExample = new FormFieldExample();
+        FormFieldExample.Criteria fieldsCriteria = fieldsExample.createCriteria();
 
         fieldsCriteria.andClassIdEqualTo(classId);
         fieldsCriteria.andPageEqualTo(0);
@@ -80,13 +85,13 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
 
         if (type == 1) {
             // 后端构建查询脚本时调用
-            fieldsExample.orderBy(FormFields.Column.ctrlIndex.asc());
+            fieldsExample.orderBy(FormField.Column.ctrlIndex.asc());
         } else {
             // 前端处理显示顺序时调用
-            fieldsExample.orderBy(FormFields.Column.index.asc());
+            fieldsExample.orderBy(FormField.Column.index.asc());
         }
 
-        List<FormFields> headFields = formFieldsMapper.selectByExample(fieldsExample);
+        List<FormField> headFields = formFieldsMapper.selectByExample(fieldsExample);
 
         // 子表单据类别描述
         FormClassEntryMapper classEntryMapper = sqlSession.getMapper(FormClassEntryMapper.class);
@@ -97,8 +102,8 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
         List<FormClassEntry> formClassEntries = classEntryMapper.selectByExample(classEntryExample);
 
         // 打包表头字段模板
-        Map<String, FormFields> formFields0 = new LinkedHashMap<String, FormFields>();
-        for (FormFields item : headFields) {
+        Map<String, FormField> formFields0 = new LinkedHashMap<>();
+        for (FormField item : headFields) {
             formFields0.put(item.getKey(), item);
         }
         // 表头模板
@@ -112,18 +117,18 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
             formEntry.put(entryIndex, entry);
 
             // 查询子表字段模板(按子表page)
-            FormFieldsExample formFieldsExample = new FormFieldsExample();
-            FormFieldsExample.Criteria formFieldsExampleCriteria = formFieldsExample.createCriteria();
+            FormFieldExample formFieldExample = new FormFieldExample();
+            FormFieldExample.Criteria formFieldsExampleCriteria = formFieldExample.createCriteria();
 
             formFieldsExampleCriteria.andClassIdEqualTo(classId).andPageEqualTo(entry.getEntryIndex());
 
-            formFieldsExample.orderBy(FormFields.Column.index.asc());
+            formFieldExample.orderBy(FormField.Column.index.asc());
 
-            List<FormFields> entryIndexFieldsByExample = formFieldsMapper.selectByExample(formFieldsExample);
+            List<FormField> entryIndexFieldsByExample = formFieldsMapper.selectByExample(formFieldExample);
 
-            Map<String, FormFields> formFieldsEntryIndex = new LinkedHashMap<String, FormFields>();
+            Map<String, FormField> formFieldsEntryIndex = new LinkedHashMap<String, FormField>();
             // 打包子表字段模板
-            for (FormFields fields : entryIndexFieldsByExample) {
+            for (FormField fields : entryIndexFieldsByExample) {
                 formFieldsEntryIndex.put(fields.getKey(), fields);
             }
 
@@ -159,56 +164,56 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
         if (type == 0) {
             // 查看
             switch (userRoleType) {
-                case SYSTEM:
-                    //系统管理员
-                    display = 1;
-                    break;
-                case HOSPITAL:
-                    //医院
-                    display = 64;
-                    break;
-                case SUPPLIER:
-                    //供应商
-                    display = 8;
-                    break;
-                default:
-                    break;
+            case SYSTEM:
+                //系统管理员
+                display = 1;
+                break;
+            case HOSPITAL:
+                //医院
+                display = 64;
+                break;
+            case SUPPLIER:
+                //供应商
+                display = 8;
+                break;
+            default:
+                break;
             }
         } else if (type == 1) {
             // 新增
             switch (userRoleType) {
-                case SYSTEM:
-                    //系统管理员
-                    display = 2;
-                    break;
-                case HOSPITAL:
-                    //医院
-                    display = 128;
-                    break;
-                case SUPPLIER:
-                    //供应商
-                    display = 16;
-                    break;
-                default:
-                    break;
+            case SYSTEM:
+                //系统管理员
+                display = 2;
+                break;
+            case HOSPITAL:
+                //医院
+                display = 128;
+                break;
+            case SUPPLIER:
+                //供应商
+                display = 16;
+                break;
+            default:
+                break;
             }
         } else if (type == 2) {
             // 编辑
             switch (userRoleType) {
-                case SYSTEM:
-                    //系统管理员
-                    display = 4;
-                    break;
-                case HOSPITAL:
-                    //医院
-                    display = 256;
-                    break;
-                case SUPPLIER:
-                    //供应商
-                    display = 32;
-                    break;
-                default:
-                    break;
+            case SYSTEM:
+                //系统管理员
+                display = 4;
+                break;
+            case HOSPITAL:
+                //医院
+                display = 256;
+                break;
+            case SUPPLIER:
+                //供应商
+                display = 32;
+                break;
+            default:
+                break;
             }
         }
 
@@ -252,7 +257,7 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
     @Override
     @SuppressWarnings("unchecked")
     public Map<String, Object> getItems(Integer classId, List<Condition> conditions, List<Sort> sorts, Integer pageSize,
-                                        Integer pageNo) {
+            Integer pageNo) {
 
         // 返回结构
         Map<String, Object> ret = new HashMap<String, Object>(16);
@@ -288,7 +293,7 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
         // 主表主键key
         String primaryKey = formClass.getPrimaryKey();
         // 主表主键数据库字段名
-        String primaryColumnName = ((FormFields) formFields0.get(primaryKey)).getSqlColumnName();
+        String primaryColumnName = ((FormField) formFields0.get(primaryKey)).getSqlColumnName();
         // 指示是否存在子表，存在时主表需要关联第一个子表查询
         boolean isChildTableExist = false;
 
@@ -425,7 +430,7 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
     @Override
     @SuppressWarnings("unchecked")
     public List<Map<String, Object>> getItemByIds(Integer classId, List<Long> idList, List<Condition> conditions,
-                                                  List<Sort> sorts) {
+            List<Sort> sorts) {
 
         if (idList == null || idList.size() == 0) {
             throw new BusinessLogicRunTimeException("请提交单据内码");
@@ -599,7 +604,7 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
         // 基础资料模板
         Map<String, Object> template = getFormTemplate(classId, 1);
         // 主表字段模板
-        Map<String, FormFields> formFields = (Map<String, FormFields>) ((Map<String, Object>) template
+        Map<String, FormField> formFields = (Map<String, FormField>) ((Map<String, Object>) template
                 .get("formFields")).get("0");
         // 主表资料描述信息
         FormClass formClass = (FormClass) template.get("formClass");
@@ -672,7 +677,7 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
         Map<String, Object> template = getFormTemplate(classId, 1);
 
         // 主表的字段模板
-        Map<String, FormFields> formFields = (Map<String, FormFields>) ((Map<String, Object>) template
+        Map<String, FormField> formFields = (Map<String, FormField>) ((Map<String, Object>) template
                 .get("formFields")).get("0");
 
         // 主表资料描述信息
@@ -749,12 +754,12 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
         // 主表资料描述信息
         FormClass formClass = (FormClass) template.get("formClass");
         // 主表字段模板
-        Map<String, FormFields> formFields = (Map<String, FormFields>) ((Map<String, Object>) template
+        Map<String, FormField> formFields = (Map<String, FormField>) ((Map<String, Object>) template
                 .get("formFields")).get("0");
 
         String primaryTableName = formClass.getTableName();
         String primaryKey = formClass.getPrimaryKey();
-        FormFields ff = formFields.get(primaryKey);
+        FormField ff = formFields.get(primaryKey);
 
         // 删除前插件事件
         PlugInRet plugInRet = plugInFactory.beforeDelete(classId, template, ids);
@@ -806,7 +811,7 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
         // 主表资料描述信息
         FormClass formClass = (FormClass) template.get("formClass");
         // 主表字段模板
-        Map<String, FormFields> formFields = (Map<String, FormFields>) ((Map<String, Object>) template
+        Map<String, FormField> formFields = (Map<String, FormField>) ((Map<String, Object>) template
                 .get("formFields")).get("0");
 
         String primaryTableName = formClass.getTableName();
@@ -1008,7 +1013,7 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
 
             for (String fieldKey : formFields.keySet()) {
 
-                FormFields formField = (FormFields) formFields.get(fieldKey);
+                FormField formField = (FormField) formFields.get(fieldKey);
 
                 String joinType = formField.getJoinType();
 
@@ -1100,7 +1105,7 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
                     // srcField应该配置为"车辆类别"表与辅助资料的关联字段(即车辆类别表t_CarType与辅助资料车辆付费类型的关联字段payType),
                     // srcTableAlisAs必须配置，可随意，但需保证在车辆信息模板中不重复。
 
-                    FormFields lookUpTypeFormField = getFormField(lookUpClassId, disPlayField);
+                    FormField lookUpTypeFormField = getFormField(lookUpClassId, disPlayField);
 
                     if (lookUpTypeFormField == null) {
                         throw new BusinessLogicRunTimeException(
@@ -1239,7 +1244,7 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
         // 查询的目标表
         String selTable = "";
         // 查询目标模板
-        Map<String, FormFields> selFormFields = (Map<String, FormFields>) formFieldsAll.get(String.valueOf(page));
+        Map<String, FormField> selFormFields = (Map<String, FormField>) formFieldsAll.get(String.valueOf(page));
 
         if (selFormFields.isEmpty()) {
             throw new BusinessLogicRunTimeException(String.format("classId=%s page=%s 没有模板数据,请联系管理员！", classId, page));
@@ -1262,7 +1267,7 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
 
         for (String fieldKey : selFormFields.keySet()) {
 
-            FormFields formField = selFormFields.get(fieldKey);
+            FormField formField = selFormFields.get(fieldKey);
 
             String joinType = formField.getJoinType();
 
@@ -1353,7 +1358,7 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
                 // srcField应该配置为"车辆类别"表与辅助资料的关联字段(即车辆类别表t_CarType与辅助资料车辆付费类型的关联字段payType),
                 // srcTableAlisAs必须配置，可随意，但需保证在车辆信息模板中不重复。
 
-                FormFields lookUpTypeFormField = getFormField(lookUpClassId, disPlayField);
+                FormField lookUpTypeFormField = getFormField(lookUpClassId, disPlayField);
 
                 if (lookUpTypeFormField == null) {
                     throw new BusinessLogicRunTimeException(
@@ -1470,7 +1475,7 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
         // 基础资料模板
         Map<String, Object> templateMap = getFormTemplate(classId, 1);
         // 所有字段模板
-        Map<String, FormFields> formFieldsAll = getFormFields(classId, -1);
+        Map<String, FormField> formFieldsAll = getFormFields(classId, -1);
         // 主表资料描述信息
         FormClass formClass = (FormClass) templateMap.get("formClass");
         // 子表资料描述信息
@@ -1569,7 +1574,7 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
                 continue;
             }
 
-            FormFields formField = formFieldsAll.get(fieldKey);
+            FormField formField = formFieldsAll.get(fieldKey);
 
             Integer page = formField.getPage();
             String sqlColumnName = formField.getSqlColumnName();
@@ -1608,59 +1613,59 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
 
             switch (ctrlTypeEnum) {
 
-                case INTEGER:
-                    break;
-                case DECIMAL:
-                    break;
-                case CHECKBOX:
-                    break;
-                case SELECT:
-                    break;
-                case F7:
-                    break;
-                case CASCADE:
-                    break;
-                case MOBILE:
-                    break;
-                case PHONE:
-                    break;
-                case TEXT:
-                case TEXTAREA:
-                    if (logicOperator == Condition.LogicOperator.LIKE) {
-                        // 不处理，调用者控制左匹配%xxx或右匹配xxx%或全匹配%xxx%
-                        //value = "%" + value + "%";
-                    } else if (logicOperator == Condition.LogicOperator.IN) {
-                        // 不适用此系统动态查询方式，对于IN，手工拼接脚本
-                        preValue = "(";
-                        sufValue = ")";
-                        skip = true;
+            case INTEGER:
+                break;
+            case DECIMAL:
+                break;
+            case CHECKBOX:
+                break;
+            case SELECT:
+                break;
+            case F7:
+                break;
+            case CASCADE:
+                break;
+            case MOBILE:
+                break;
+            case PHONE:
+                break;
+            case TEXT:
+            case TEXTAREA:
+                if (logicOperator == Condition.LogicOperator.LIKE) {
+                    // 不处理，调用者控制左匹配%xxx或右匹配xxx%或全匹配%xxx%
+                    //value = "%" + value + "%";
+                } else if (logicOperator == Condition.LogicOperator.IN) {
+                    // 不适用此系统动态查询方式，对于IN，手工拼接脚本
+                    preValue = "(";
+                    sufValue = ")";
+                    skip = true;
+                }
+                break;
+            case DATETIME:
+                if (logicOperator == Condition.LogicOperator.LESS_OR_EQUAL) {
+                    if (!Common.isLongDate(String.valueOf(value))) {
+                        // 由于数据库中日期可能存储有时分秒，过滤天时过滤到当前23:59:59
+                        value = value + " 23:59:59";
                     }
-                    break;
-                case DATETIME:
-                    if (logicOperator == Condition.LogicOperator.LESS_OR_EQUAL) {
-                        if (!Common.isLongDate(String.valueOf(value))) {
-                            // 由于数据库中日期可能存储有时分秒，过滤天时过滤到当前23:59:59
-                            value = value + " 23:59:59";
-                        }
-                    } else if (logicOperator == Condition.LogicOperator.GREATER_OR_EQUAL) {
-                        if (!Common.isLongDate(String.valueOf(value))) {
-                            value = value + " 00:00:00";
-                        }
+                } else if (logicOperator == Condition.LogicOperator.GREATER_OR_EQUAL) {
+                    if (!Common.isLongDate(String.valueOf(value))) {
+                        value = value + " 00:00:00";
                     }
-                    break;
-                case SEX:
-                    break;
-                case PASSWORD:
-                    break;
-                case WHETHER:
-                    // boolean b = value.equals("是") ? true : false;
-                    // 此类字段数据库中一般要求用bit类型,即非0即1
-                    value = "是".equals(value) ? "1" : "否".equals(value) ? "0" : "2";
-                    break;
-                case MONEY:
-                    break;
-                default:
-                    break;
+                }
+                break;
+            case SEX:
+                break;
+            case PASSWORD:
+                break;
+            case WHETHER:
+                // boolean b = value.equals("是") ? true : false;
+                // 此类字段数据库中一般要求用bit类型,即非0即1
+                value = "是".equals(value) ? "1" : "否".equals(value) ? "0" : "2";
+                break;
+            case MONEY:
+                break;
+            default:
+                break;
             }
             /*
             switch (ctrlTypeEnum) {
@@ -1722,7 +1727,7 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
                 // 携带基础资料属性的字段过滤
                 // 即引用基础资料属性的模板中，disPlayField的配置统一认为是引用基础资料模板中的key，需要二次验证引用资料模板确认查询字段
 
-                FormFields lookUpFormField = getFormField(lookUpClassId, disPlayField);
+                FormField lookUpFormField = getFormField(lookUpClassId, disPlayField);
 
                 String name = lookUpFormField.getName();
                 Integer lookUpTypeEx = lookUpFormField.getLookUpType();
@@ -1821,7 +1826,7 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
         // 基础资料模板
         Map<String, Object> template = getFormTemplate(classId, 1);
         // 所有字段模板
-        Map<String, FormFields> formFieldsAll = getFormFields(classId, -1);
+        Map<String, FormField> formFieldsAll = getFormFields(classId, -1);
         // 主表资料描述信息
         FormClass itemClass = (FormClass) template.get("formClass");
         // 子表资料描述信息
@@ -1857,14 +1862,14 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
                 continue;
             }
 
-            FormFields formFields = formFieldsAll.get(fieldKey);
+            FormField formField = formFieldsAll.get(fieldKey);
 
-            Integer page = formFields.getPage();
-            String sqlColumnName = formFields.getSqlColumnName();
-            Integer lookUpType = formFields.getLookUpType();
-            String srcTable = formFields.getSrcTable();
-            String srcTableAlisAs = formFields.getSrcTableAlis();
-            String disPlayField = formFields.getDisplayField();
+            Integer page = formField.getPage();
+            String sqlColumnName = formField.getSqlColumnName();
+            Integer lookUpType = formField.getLookUpType();
+            String srcTable = formField.getSrcTable();
+            String srcTableAlisAs = formField.getSrcTableAlis();
+            String disPlayField = formField.getDisplayField();
 
             String tableName = primaryTableName;
 
@@ -1947,18 +1952,18 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
     /**
      * 根据classId,key查找特定单据指定模板信息
      */
-    private FormFields getFormField(int classId, String key) {
+    private FormField getFormField(int classId, String key) {
 
-        FormFieldsMapper fieldsMapper = sqlSession.getMapper(FormFieldsMapper.class);
+        FormFieldMapper fieldsMapper = sqlSession.getMapper(FormFieldMapper.class);
 
-        FormFieldsExample example = new FormFieldsExample();
+        FormFieldExample example = new FormFieldExample();
 
-        FormFieldsExample.Criteria criteria = example.createCriteria();
+        FormFieldExample.Criteria criteria = example.createCriteria();
 
         criteria.andClassIdEqualTo(classId);
         criteria.andKeyEqualTo(key);
 
-        List<FormFields> formFields = fieldsMapper.selectByExample(example);
+        List<FormField> formFields = fieldsMapper.selectByExample(example);
 
         if (!formFields.isEmpty()) {
             return formFields.get(0);
@@ -1975,9 +1980,9 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
      * @param page    page
      * @return 指定page的字段模板
      */
-    private Map<String, FormFields> getFormFields(int classId, int page) {
+    private Map<String, FormField> getFormFields(int classId, int page) {
 
-        Map<String, FormFields> retMap = new LinkedHashMap<String, FormFields>();
+        Map<String, FormField> retMap = new LinkedHashMap<String, FormField>();
 
         // 数据库字段-关键字处理
         Map<String, String> dbDelimiter = getDBDelimiter();
@@ -1986,10 +1991,10 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
 
         // 获取单据模板
         // page=0表头
-        FormFieldsMapper fieldsMapper = sqlSession.getMapper(FormFieldsMapper.class);
+        FormFieldMapper fieldsMapper = sqlSession.getMapper(FormFieldMapper.class);
 
-        FormFieldsExample fieldsExample = new FormFieldsExample();
-        FormFieldsExample.Criteria fieldsCriteria = fieldsExample.createCriteria();
+        FormFieldExample fieldsExample = new FormFieldExample();
+        FormFieldExample.Criteria fieldsCriteria = fieldsExample.createCriteria();
 
         fieldsCriteria.andClassIdEqualTo(classId);
 
@@ -1999,12 +2004,12 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
         //fieldsCriteria.andClassIdEqualTo(classId).andIf(page != -1, criteria -> criteria.andPageEqualTo(page));
 
         // 查询结果按照page index排序
-        fieldsExample.orderBy(FormFields.Column.page.asc(), FormFields.Column.index.asc());
+        fieldsExample.orderBy(FormField.Column.page.asc(), FormField.Column.index.asc());
 
-        List<FormFields> fieldsByExample = fieldsMapper.selectByExample(fieldsExample);
+        List<FormField> fieldsByExample = fieldsMapper.selectByExample(fieldsExample);
 
         // 打包字段模板-打包成Map好操作
-        for (FormFields item : fieldsByExample) {
+        for (FormField item : fieldsByExample) {
             retMap.put(item.getKey(), item);
         }
 
@@ -2022,8 +2027,8 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
      * @param primaryValue 主键值
      * @return Map<String, Object>
      */
-    private Map<String, Object> prepareAddMap(JsonNode data, Map<String, FormFields> formFields, String tableName,
-                                              String primaryKey, Long primaryValue) {
+    private Map<String, Object> prepareAddMap(JsonNode data, Map<String, FormField> formFields, String tableName,
+            String primaryKey, Long primaryValue) {
 
         return prepareAddMap(data, formFields, tableName, primaryKey, primaryValue, null, null);
 
@@ -2041,8 +2046,8 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
      * @param foreignValue 子表外键value(主表主键值)
      * @return Map<String, Object>
      */
-    private Map<String, Object> prepareAddMap(JsonNode data, Map<String, FormFields> formFields, String tableName,
-                                              String primaryKey, Long primaryValue, String foreignKey, Long foreignValue) {
+    private Map<String, Object> prepareAddMap(JsonNode data, Map<String, FormField> formFields, String tableName,
+            String primaryKey, Long primaryValue, String foreignKey, Long foreignValue) {
 
         Map<String, Object> ret = new HashMap<String, Object>(8);
         Map<String, Object> fieldValuesParams = new HashMap<String, Object>(16);
@@ -2069,7 +2074,7 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
                 continue;
             }
 
-            FormFields formField = formFields.get(key);
+            FormField formField = formFields.get(key);
 
             if (formField == null) {
                 // 不存在的字段-忽略
@@ -2146,7 +2151,7 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
         for (String key : formEntries.keySet()) {
 
             // key 等于1或2或3...
-            Map<String, FormFields> formFields = (Map<String, FormFields>) ((Map<String, Object>) template
+            Map<String, FormField> formFields = (Map<String, FormField>) ((Map<String, Object>) template
                     .get("formFields")).get(key);
 
             JsonNode entryData = jsonEntry.path(key);
@@ -2171,7 +2176,7 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
      * @param id         分录表外键值，关联主表的主键
      */
     @SuppressWarnings("unchecked")
-    private void saveEntry(JsonNode entryData, FormClassEntry formEntry, Map<String, FormFields> formFields, Long id) {
+    private void saveEntry(JsonNode entryData, FormClassEntry formEntry, Map<String, FormField> formFields, Long id) {
 
         String entryTableName = formEntry.getTableName();
         String primaryKey = formEntry.getPrimaryKey();
@@ -2296,8 +2301,8 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
      * @param id               主键值
      * @return Map<String, Object>
      */
-    private Map<String, Object> prepareEditMap(JsonNode data, Map<String, FormFields> formFields,
-                                               String primaryTableName, String primaryKey, Long id) {
+    private Map<String, Object> prepareEditMap(JsonNode data, Map<String, FormField> formFields,
+            String primaryTableName, String primaryKey, Long id) {
 
         Map<String, Object> sqlParams = new HashMap<String, Object>();
 
@@ -2310,7 +2315,7 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
                 continue;
             }
 
-            FormFields formField = formFields.get(key);
+            FormField formField = formFields.get(key);
             if (formField == null) {
                 continue;
             }
@@ -2370,55 +2375,55 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
 
         switch (ctrlType) {
 
-            case INTEGER:
-                value = dataNode.asLong();
-                break;
-            case DECIMAL:
-                value = dataNode.asDouble(0.00D);
-                break;
-            case CHECKBOX:
-                value = dataNode.asInt(0);
-                break;
-            case SELECT:
-                value = dataNode.asInt(0);
-                break;
-            case F7:
-                value = dataNode.asLong();
-                break;
-            case CASCADE:
-                value = dataNode.asLong();
-                break;
-            case MOBILE:
-                value = dataNode.asText("");
-                break;
-            case PHONE:
-                value = dataNode.asText("");
-                break;
-            case TEXT:
-                value = dataNode.asText("");
-                break;
-            case TEXTAREA:
-                value = dataNode.asText("");
-                break;
-            case DATETIME:
-                value = dataNode.asText("");
-                break;
-            case SEX:
-                value = dataNode.asInt(0);
-                break;
-            case PASSWORD:
-                value = dataNode.asText("");
-                break;
-            case WHETHER:
-                value = dataNode.asInt(0);
-                break;
-            case MONEY:
-                value = dataNode.asDouble(0.00D);
-                break;
-            default:
-                // 默认文本
-                value = dataNode.asText("");
-                break;
+        case INTEGER:
+            value = dataNode.asLong();
+            break;
+        case DECIMAL:
+            value = dataNode.asDouble(0.00D);
+            break;
+        case CHECKBOX:
+            value = dataNode.asInt(0);
+            break;
+        case SELECT:
+            value = dataNode.asInt(0);
+            break;
+        case F7:
+            value = dataNode.asLong();
+            break;
+        case CASCADE:
+            value = dataNode.asLong();
+            break;
+        case MOBILE:
+            value = dataNode.asText("");
+            break;
+        case PHONE:
+            value = dataNode.asText("");
+            break;
+        case TEXT:
+            value = dataNode.asText("");
+            break;
+        case TEXTAREA:
+            value = dataNode.asText("");
+            break;
+        case DATETIME:
+            value = dataNode.asText("");
+            break;
+        case SEX:
+            value = dataNode.asInt(0);
+            break;
+        case PASSWORD:
+            value = dataNode.asText("");
+            break;
+        case WHETHER:
+            value = dataNode.asInt(0);
+            break;
+        case MONEY:
+            value = dataNode.asDouble(0.00D);
+            break;
+        default:
+            // 默认文本
+            value = dataNode.asText("");
+            break;
         }
 
         return value;

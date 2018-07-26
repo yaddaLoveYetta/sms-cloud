@@ -77,7 +77,7 @@
         <mapper resource="mapper/generate/FormClassMapper.xml"/>
         <mapper resource="mapper/generate/FormClassEntryMapper.xml"/>
         <mapper resource="mapper/generate/FormActionMapper.xml"/>
-        <mapper resource="mapper/generate/FormFieldsMapper.xml"/>
+        <mapper resource="mapper/generate/FormFieldMapper.xml"/>
         <mapper resource="mapper/generate/AssistanceMapper.xml"/>
         <mapper resource="mapper/generate/AssistanceTypeMapper.xml"/>
         <mapper resource="mapper/generate/HospitalMapper.xml"/>

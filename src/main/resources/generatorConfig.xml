@@ -91,7 +91,7 @@
             <property name="useActualColumnNames" value="false"/>
         </table>
 
-        <table tableName="t_form_fields" domainObjectName="FormFields">
+        <table tableName="t_form_field" domainObjectName="FormField">
             <property name="useActualColumnNames" value="false"/>
              
         </table>

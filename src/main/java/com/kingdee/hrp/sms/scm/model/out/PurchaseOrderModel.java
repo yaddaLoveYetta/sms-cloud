@@ -1,6 +1,5 @@
 package com.kingdee.hrp.sms.scm.model.out;
 
-import com.kingdee.hrp.sms.common.dao.generate.PurchaseOrderEntryMapper;
 import com.kingdee.hrp.sms.common.model.PurchaseOrder;
 import com.kingdee.hrp.sms.common.model.PurchaseOrderEntry;
 import lombok.Getter;

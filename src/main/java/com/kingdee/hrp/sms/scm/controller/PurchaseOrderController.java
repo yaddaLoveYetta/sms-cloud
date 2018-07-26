@@ -1,5 +1,6 @@
 package com.kingdee.hrp.sms.scm.controller;
 
+import com.kingdee.hrp.sms.common.model.PurchaseOrder;
 import com.kingdee.hrp.sms.scm.service.PurchaseOrderService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,7 +33,7 @@ public class PurchaseOrderController {
      */
     @RequestMapping(value = "getOrder")
     @ResponseBody
-    public Order getOrder(Long orderId) {
+    public PurchaseOrder getOrder(Long orderId) {
 
         Assert.notNull(orderId, "请提交正确的订单id");
 

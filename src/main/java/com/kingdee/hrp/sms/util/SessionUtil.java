@@ -1,9 +1,9 @@
 package com.kingdee.hrp.sms.util;
 
+import com.kingdee.hrp.sms.common.enums.UserRoleType;
 import com.kingdee.hrp.sms.common.exception.SessionLostRuntimeException;
 import com.kingdee.hrp.sms.common.model.Role;
 import com.kingdee.hrp.sms.common.model.User;
-import com.kingdee.hrp.sms.common.enums.UserRoleType;
 
 import java.util.HashMap;
 import java.util.List;

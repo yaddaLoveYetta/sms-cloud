@@ -2,12 +2,12 @@ package com.kingdee.hrp.sms.system.menu.service.impl;
 
 import com.kingdee.hrp.sms.common.dao.generate.FormActionMapper;
 import com.kingdee.hrp.sms.common.dao.generate.MenuMapper;
+import com.kingdee.hrp.sms.common.enums.AccessMask;
+import com.kingdee.hrp.sms.common.enums.UserRoleType;
 import com.kingdee.hrp.sms.common.model.FormAction;
 import com.kingdee.hrp.sms.common.model.FormActionExample;
 import com.kingdee.hrp.sms.common.model.Menu;
 import com.kingdee.hrp.sms.common.model.MenuExample;
-import com.kingdee.hrp.sms.common.enums.AccessMask;
-import com.kingdee.hrp.sms.common.enums.UserRoleType;
 import com.kingdee.hrp.sms.common.service.BaseService;
 import com.kingdee.hrp.sms.system.menu.service.MenuService;
 import com.kingdee.hrp.sms.system.user.service.UserService;

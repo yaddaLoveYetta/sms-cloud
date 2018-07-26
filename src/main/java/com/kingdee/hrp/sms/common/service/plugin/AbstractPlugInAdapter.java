@@ -2,7 +2,7 @@ package com.kingdee.hrp.sms.common.service.plugin;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.kingdee.hrp.sms.common.model.FormClass;
-import com.kingdee.hrp.sms.common.model.FormFields;
+import com.kingdee.hrp.sms.common.model.FormField;
 import com.kingdee.hrp.sms.common.pojo.BillOperateType;
 import com.kingdee.hrp.sms.common.pojo.Condition;
 import com.kingdee.hrp.sms.common.service.BaseService;
@@ -260,7 +260,7 @@ public abstract class AbstractPlugInAdapter extends BaseService implements PlugI
         // 单据头校验
         for (Map.Entry<String, Object> entry : formFields0.entrySet()) {
 
-            FormFields formField = (FormFields) entry.getValue();
+            FormField formField = (FormField) entry.getValue();
 
             if (isMustInputNoValue(formField, mustInputRoleMask, data)) {
                 // 必录字段没提交值
@@ -283,7 +283,7 @@ public abstract class AbstractPlugInAdapter extends BaseService implements PlugI
                 JsonNode lineData = elements.get(i);
 
                 for (Map.Entry<String, Object> entry : formFields1.entrySet()) {
-                    FormFields formField = (FormFields) entry.getValue();
+                    FormField formField = (FormField) entry.getValue();
                     if (isMustInputNoValue(formField, mustInputRoleMask, lineData)) {
                         // 必录字段没提交值
                         errMsg = String.format("第[%s]行:[%s]不能为空", i + 1, formField.getName());
@@ -310,7 +310,7 @@ public abstract class AbstractPlugInAdapter extends BaseService implements PlugI
      * @param data              前端提交的数据结构
      * @return true:必录字段没提交值，false:其他(非需保存或必录的字段，必录字段有值)
      */
-    private Boolean isMustInputNoValue(FormFields formField, int mustInputRoleMask, JsonNode data) {
+    private Boolean isMustInputNoValue(FormField formField, int mustInputRoleMask, JsonNode data) {
 
         String fieldKey = formField.getKey();
         Integer mustInputMask = formField.getMustInput();
