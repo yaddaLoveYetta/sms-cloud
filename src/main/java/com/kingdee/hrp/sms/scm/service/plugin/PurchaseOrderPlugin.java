@@ -6,6 +6,7 @@ import com.kingdee.hrp.sms.common.enums.UserRoleType;
 import com.kingdee.hrp.sms.common.exception.BusinessLogicRunTimeException;
 import com.kingdee.hrp.sms.common.pojo.ClassType;
 import com.kingdee.hrp.sms.common.pojo.Condition;
+import com.kingdee.hrp.sms.common.pojo.FormTemplate;
 import com.kingdee.hrp.sms.common.service.plugin.AbstractPlugInAdapter;
 import com.kingdee.hrp.sms.common.service.plugin.PlugInRet;
 import com.kingdee.hrp.sms.util.SessionUtil;
@@ -87,7 +88,7 @@ public class PurchaseOrderPlugin extends AbstractPlugInAdapter implements Initia
      * @return PlugInRet
      */
     @Override
-    public PlugInRet beforeSave(int classId, Map<String, Object> formTemplate, JsonNode data) {
+    public PlugInRet beforeSave(int classId, FormTemplate formTemplate, JsonNode data) {
 
         if (classId != ClassType.PURCHASE_ORDER.classId()) {
             return super.beforeSave(classId, formTemplate, data);
@@ -124,7 +125,7 @@ public class PurchaseOrderPlugin extends AbstractPlugInAdapter implements Initia
      * @return PlugInRet
      */
     @Override
-    public PlugInRet beforeModify(int classId, Long id, Map<String, Object> formTemplate, JsonNode data) {
+    public PlugInRet beforeModify(int classId, Long id, FormTemplate formTemplate, JsonNode data) {
 
         if (classId != ClassType.PURCHASE_ORDER.classId()) {
             return super.beforeSave(classId, formTemplate, data);
@@ -156,7 +157,7 @@ public class PurchaseOrderPlugin extends AbstractPlugInAdapter implements Initia
      * @return 插件过滤条件
      */
     @Override
-    public List<Condition> getConditions(int classId, Map<String, Object> formTemplate, List<Condition> conditions) {
+    public List<Condition> getConditions(int classId, FormTemplate formTemplate, List<Condition> conditions) {
 
         List<Condition> ret = new ArrayList<>();
 

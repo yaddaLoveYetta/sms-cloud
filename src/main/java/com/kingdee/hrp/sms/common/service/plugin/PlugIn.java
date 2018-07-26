@@ -3,6 +3,7 @@ package com.kingdee.hrp.sms.common.service.plugin;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.kingdee.hrp.sms.common.pojo.Condition;
 import com.kingdee.hrp.sms.common.enums.UserRoleType;
+import com.kingdee.hrp.sms.common.pojo.FormTemplate;
 import com.kingdee.hrp.sms.util.SessionUtil;
 
 import java.util.List;
@@ -60,7 +61,7 @@ public interface PlugIn {
      * @param data         业务数据
      * @return PlugInRet
      */
-    public PlugInRet beforeSave(int classId, Map<String, Object> formTemplate, JsonNode data);
+    public PlugInRet beforeSave(int classId, FormTemplate formTemplate, JsonNode data);
 
     /**
      * 基础资料新增后操作
@@ -81,7 +82,7 @@ public interface PlugIn {
      * @param data         业务数据
      * @return PlugInRet
      */
-    public PlugInRet beforeModify(int classId, Long id, Map<String, Object> formTemplate, JsonNode data);
+    public PlugInRet beforeModify(int classId, Long id, FormTemplate formTemplate, JsonNode data);
 
     /**
      * 单据/基础资料修改分录数据前事件
@@ -95,7 +96,7 @@ public interface PlugIn {
      * @Title beforeEntryModify
      * @date 2017-07-12 09:05:42 星期三
      */
-    public PlugInRet beforeEntryModify(int classId, String primaryId, String entryId, Map<String, Object> formTemplate,
+    public PlugInRet beforeEntryModify(int classId, String primaryId, String entryId, FormTemplate formTemplate,
             JsonNode data);
 
     /**
@@ -107,7 +108,7 @@ public interface PlugIn {
      * @param data         业务数据
      * @return PlugInRet
      */
-    public PlugInRet afterModify(int classId, Long id, Map<String, Object> formTemplate, JsonNode data);
+    public PlugInRet afterModify(int classId, Long id, FormTemplate formTemplate, JsonNode data);
 
     /**
      * 删除前操作
@@ -117,7 +118,7 @@ public interface PlugIn {
      * @param ids          删除的内码集合
      * @return PlugInRet
      */
-    public PlugInRet beforeDelete(int classId, Map<String, Object> formTemplate, List<Long> ids);
+    public PlugInRet beforeDelete(int classId, FormTemplate formTemplate, List<Long> ids);
 
     /**
      * 单据/基础资料分录删除前事件
@@ -130,7 +131,7 @@ public interface PlugIn {
      * @Title beforeentryDelete
      * @date 2017-07-12 09:10:46 星期三
      */
-    public PlugInRet beforeEntryDelete(int classId, String primaryId, String entryId, Map<String, Object> formTemplate);
+    public PlugInRet beforeEntryDelete(int classId, String primaryId, String entryId, FormTemplate formTemplate);
 
     /**
      * 删除后操作
@@ -140,7 +141,7 @@ public interface PlugIn {
      * @param ids          删除的内码集合
      * @return PlugInRet
      */
-    public PlugInRet afterDelete(int classId, Map<String, Object> formTemplate, List<Long> ids);
+    public PlugInRet afterDelete(int classId, FormTemplate formTemplate, List<Long> ids);
 
     /**
      * 基础资料查询前操作
@@ -150,7 +151,7 @@ public interface PlugIn {
      * @param conditons    原始过滤条件
      * @return
      */
-    public PlugInRet beforeQuery(int classId, Map<String, Object> formTemplate, List<Condition> conditons);
+    public PlugInRet beforeQuery(int classId, FormTemplate formTemplate, List<Condition> conditons);
 
     /**
      * 基础资料查询后操作
@@ -169,7 +170,7 @@ public interface PlugIn {
      * @param conditions   原始过滤条件
      * @return 插件过滤条件
      */
-    public List<Condition> getConditions(int classId, Map<String, Object> formTemplate, List<Condition> conditions);
+    public List<Condition> getConditions(int classId, FormTemplate formTemplate, List<Condition> conditions);
 
     /**
      * 禁用/反禁用前置事件（基础资料用）
@@ -180,7 +181,7 @@ public interface PlugIn {
      * @param operateType 1：禁用 2：反禁用
      * @return PlugInRet
      */
-    PlugInRet beforeForbid(Integer classId, Map<String, Object> template, List<Long> ids, Integer operateType);
+    PlugInRet beforeForbid(Integer classId, FormTemplate template, List<Long> ids, Integer operateType);
 
     /**
      * 禁用/反禁用后置事件（基础资料用）
@@ -191,7 +192,7 @@ public interface PlugIn {
      * @param operateType 1：禁用 2：反禁用
      * @return PlugInRet
      */
-    PlugInRet afterForbid(Integer classId, Map<String, Object> template, List<Long> ids, Integer operateType);
+    PlugInRet afterForbid(Integer classId, FormTemplate template, List<Long> ids, Integer operateType);
 
     /**
      * 审核/反审核时获取审核状态的字段模板key

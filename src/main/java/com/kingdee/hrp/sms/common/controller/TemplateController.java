@@ -1,7 +1,9 @@
 package com.kingdee.hrp.sms.common.controller;
 
 import com.kingdee.hrp.sms.common.exception.BusinessLogicRunTimeException;
+import com.kingdee.hrp.sms.common.model.FormAction;
 import com.kingdee.hrp.sms.common.pojo.Condition;
+import com.kingdee.hrp.sms.common.pojo.FormTemplate;
 import com.kingdee.hrp.sms.common.pojo.Sort;
 import com.kingdee.hrp.sms.common.service.TemplateService;
 import com.kingdee.hrp.sms.util.JsonUtil;
@@ -34,7 +36,7 @@ public class TemplateController {
      */
     @RequestMapping(value = "getFormTemplate")
     @ResponseBody
-    public Map<String, Object> getFormTemplate(Integer classId) {
+    public FormTemplate getFormTemplate(Integer classId) {
 
         if (classId < 0) {
             throw new BusinessLogicRunTimeException("参数错误：必须提交classId");
@@ -53,7 +55,7 @@ public class TemplateController {
 
     @RequestMapping(value = "getFormAction")
     @ResponseBody
-    public List getFormAction(Integer classId, @RequestParam(defaultValue = "0") Integer type) {
+    public List<FormAction> getFormAction(Integer classId, @RequestParam(defaultValue = "0") Integer type) {
 
         //0:查看(列表)1:(新增)2:(编辑)
         if (type < 0 || type > 2) {
@@ -74,8 +76,8 @@ public class TemplateController {
     @RequestMapping(value = "getItems")
     @ResponseBody
     public Map<String, Object> getItems(@RequestParam(defaultValue = "0") Integer classId, String condition,
-                                        String sort, @RequestParam(defaultValue = "10") Integer pageSize,
-                                        @RequestParam(defaultValue = "1") Integer pageNo) throws IOException {
+            String sort, @RequestParam(defaultValue = "10") Integer pageSize,
+            @RequestParam(defaultValue = "1") Integer pageNo) throws IOException {
 
         if (classId <= 0) {
             throw new BusinessLogicRunTimeException("参数错误：必须提交classId");

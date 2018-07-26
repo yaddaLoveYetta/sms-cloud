@@ -2,9 +2,11 @@ package com.kingdee.hrp.sms.common.service.plugin;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.kingdee.hrp.sms.common.model.FormClass;
+import com.kingdee.hrp.sms.common.model.FormClassEntry;
 import com.kingdee.hrp.sms.common.model.FormField;
 import com.kingdee.hrp.sms.common.pojo.BillOperateType;
 import com.kingdee.hrp.sms.common.pojo.Condition;
+import com.kingdee.hrp.sms.common.pojo.FormTemplate;
 import com.kingdee.hrp.sms.common.service.BaseService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,7 +41,7 @@ public abstract class AbstractPlugInAdapter extends BaseService implements PlugI
      * @return PlugInRet
      */
     @Override
-    public PlugInRet beforeSave(int classId, Map<String, Object> formTemplate, JsonNode data) {
+    public PlugInRet beforeSave(int classId, FormTemplate formTemplate, JsonNode data) {
         return result;
     }
 
@@ -66,7 +68,7 @@ public abstract class AbstractPlugInAdapter extends BaseService implements PlugI
      * @return PlugInRet
      */
     @Override
-    public PlugInRet beforeModify(int classId, Long id, Map<String, Object> formTemplate, JsonNode data) {
+    public PlugInRet beforeModify(int classId, Long id, FormTemplate formTemplate, JsonNode data) {
         return result;
     }
 
@@ -82,7 +84,7 @@ public abstract class AbstractPlugInAdapter extends BaseService implements PlugI
      * @date 2017-07-12 09:05:42 星期三
      */
     @Override
-    public PlugInRet beforeEntryModify(int classId, String primaryId, String entryId, Map<String, Object> formTemplate,
+    public PlugInRet beforeEntryModify(int classId, String primaryId, String entryId, FormTemplate formTemplate,
             JsonNode data) {
         return result;
     }
@@ -97,7 +99,7 @@ public abstract class AbstractPlugInAdapter extends BaseService implements PlugI
      * @return PlugInRet
      */
     @Override
-    public PlugInRet afterModify(int classId, Long id, Map<String, Object> formTemplate, JsonNode data) {
+    public PlugInRet afterModify(int classId, Long id, FormTemplate formTemplate, JsonNode data) {
         return result;
     }
 
@@ -110,7 +112,7 @@ public abstract class AbstractPlugInAdapter extends BaseService implements PlugI
      * @return PlugInRet
      */
     @Override
-    public PlugInRet beforeDelete(int classId, Map<String, Object> formTemplate, List<Long> ids) {
+    public PlugInRet beforeDelete(int classId, FormTemplate formTemplate, List<Long> ids) {
         return result;
     }
 
@@ -126,7 +128,7 @@ public abstract class AbstractPlugInAdapter extends BaseService implements PlugI
      */
     @Override
     public PlugInRet beforeEntryDelete(int classId, String primaryId, String entryId,
-            Map<String, Object> formTemplate) {
+            FormTemplate formTemplate) {
         return result;
     }
 
@@ -139,7 +141,7 @@ public abstract class AbstractPlugInAdapter extends BaseService implements PlugI
      * @return PlugInRet
      */
     @Override
-    public PlugInRet afterDelete(int classId, Map<String, Object> formTemplate, List<Long> ids) {
+    public PlugInRet afterDelete(int classId, FormTemplate formTemplate, List<Long> ids) {
         return result;
     }
 
@@ -152,7 +154,7 @@ public abstract class AbstractPlugInAdapter extends BaseService implements PlugI
      * @return PlugInRet
      */
     @Override
-    public PlugInRet beforeQuery(int classId, Map<String, Object> formTemplate, List<Condition> conditons) {
+    public PlugInRet beforeQuery(int classId, FormTemplate formTemplate, List<Condition> conditons) {
         return result;
     }
 
@@ -177,7 +179,7 @@ public abstract class AbstractPlugInAdapter extends BaseService implements PlugI
      * @return 插件过滤条件
      */
     @Override
-    public List<Condition> getConditions(int classId, Map<String, Object> formTemplate, List<Condition> conditions) {
+    public List<Condition> getConditions(int classId, FormTemplate formTemplate, List<Condition> conditions) {
         return null;
     }
 
@@ -191,7 +193,7 @@ public abstract class AbstractPlugInAdapter extends BaseService implements PlugI
      * @return PlugInRet
      */
     @Override
-    public PlugInRet beforeForbid(Integer classId, Map<String, Object> template, List<Long> ids, Integer operateType) {
+    public PlugInRet beforeForbid(Integer classId, FormTemplate template, List<Long> ids, Integer operateType) {
         return result;
     }
 
@@ -205,7 +207,7 @@ public abstract class AbstractPlugInAdapter extends BaseService implements PlugI
      * @return PlugInRet
      */
     @Override
-    public PlugInRet afterForbid(Integer classId, Map<String, Object> template, List<Long> ids, Integer operateType) {
+    public PlugInRet afterForbid(Integer classId, FormTemplate template, List<Long> ids, Integer operateType) {
         return result;
     }
 
@@ -234,7 +236,7 @@ public abstract class AbstractPlugInAdapter extends BaseService implements PlugI
      * @return 校验结果
      */
     @SuppressWarnings("unchecked")
-    protected Map<String, Object> mustInputCheck(Map<String, Object> template, JsonNode data) {
+    protected Map<String, Object> mustInputCheck(FormTemplate template, JsonNode data) {
 
         Map<String, Object> ret = new HashMap<>(4);
 
@@ -245,12 +247,11 @@ public abstract class AbstractPlugInAdapter extends BaseService implements PlugI
 
         // 按模板校验前端数据
         // 主表资料描述信息
-        FormClass formClass = (FormClass) template.get("formClass");
+        FormClass formClass = template.getFormClass();
         // 子表资料描述信息
-        Map<String, Object> formEntries = (Map<String, Object>) template.get("formClassEntry");
+        Map<Integer, FormClassEntry> formEntries = template.getFormClassEntry();
         // 主表字段模板
-        Map<String, Object> formFields0 = (Map<String, Object>) ((Map<String, Object>) template.get("formFields"))
-                .get("0");
+        Map<String, FormField> formFields0 = template.getFormFields().get(0);
 
         // 新增时笔录性校验掩码
         int mustInputRoleMask = getCurrentMustInputMask(BillOperateType.ADD);
@@ -258,9 +259,9 @@ public abstract class AbstractPlugInAdapter extends BaseService implements PlugI
         String errMsg;
 
         // 单据头校验
-        for (Map.Entry<String, Object> entry : formFields0.entrySet()) {
+        for (Map.Entry<String, FormField> entry : formFields0.entrySet()) {
 
-            FormField formField = (FormField) entry.getValue();
+            FormField formField = entry.getValue();
 
             if (isMustInputNoValue(formField, mustInputRoleMask, data)) {
                 // 必录字段没提交值
@@ -272,8 +273,7 @@ public abstract class AbstractPlugInAdapter extends BaseService implements PlugI
         //单据体校验
         if (!formEntries.isEmpty()) {
             // 只校验第一个子表（还没有存在一个以上子表的业务）
-            Map<String, Object> formFields1 = (Map<String, Object>) ((Map<String, Object>) template.get("formFields"))
-                    .get("1");
+            Map<String, FormField> formFields1 = template.getFormFields().get(1);
 
             // 第一个子表的数据
             List<JsonNode> elements = data.path("entry").findValues("1");
@@ -282,8 +282,8 @@ public abstract class AbstractPlugInAdapter extends BaseService implements PlugI
                 // 迭代每一行数据
                 JsonNode lineData = elements.get(i);
 
-                for (Map.Entry<String, Object> entry : formFields1.entrySet()) {
-                    FormField formField = (FormField) entry.getValue();
+                for (Map.Entry<String, FormField> entry : formFields1.entrySet()) {
+                    FormField formField = entry.getValue();
                     if (isMustInputNoValue(formField, mustInputRoleMask, lineData)) {
                         // 必录字段没提交值
                         errMsg = String.format("第[%s]行:[%s]不能为空", i + 1, formField.getName());

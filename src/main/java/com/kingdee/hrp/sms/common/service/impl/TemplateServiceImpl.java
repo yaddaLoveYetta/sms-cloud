@@ -50,16 +50,10 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
      * @return Map<String, Object>
      */
     @Override
-    public Map<String, Object> getFormTemplate(Integer classId, Integer type) {
+    public FormTemplate getFormTemplate(Integer classId, Integer type) {
 
-        Map<String, Object> retMap = new LinkedHashMap<>();
-
+        //  单据模板信息
         FormTemplate formTemplate = new FormTemplate();
-
-        // 主表模板
-        Map<String, Object> formFields = new LinkedHashMap<>();
-        // 子表模板
-        Map<String, Object> formEntry = new LinkedHashMap<>();
 
         // 获取单据类别描述信息
         FormClassMapper classMapper = sqlSession.getMapper(FormClassMapper.class);
@@ -70,6 +64,8 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
         if (null == formClass) {
             throw new BusinessLogicRunTimeException("模板不存在或不唯一,请联系管理员!");
         }
+
+        formTemplate.setFormClass(formClass);
 
         // 获取单据模板page=0表头
         FormFieldMapper formFieldsMapper = sqlSession.getMapper(FormFieldMapper.class);
@@ -107,14 +103,14 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
             formFields0.put(item.getKey(), item);
         }
         // 表头模板
-        formFields.put("0", formFields0);
+        formTemplate.getFormFields().put(0, formFields0);
 
         // 循环打包子表字段模板
         for (FormClassEntry entry : formClassEntries) {
 
-            String entryIndex = entry.getEntryIndex().toString();
+            Integer entryIndex = entry.getEntryIndex();
 
-            formEntry.put(entryIndex, entry);
+            formTemplate.getFormClassEntry().put(entry.getEntryIndex(), entry);
 
             // 查询子表字段模板(按子表page)
             FormFieldExample formFieldExample = new FormFieldExample();
@@ -133,14 +129,10 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
             }
 
             // 第entryIndex个子表模板
-            formFields.put(entryIndex, formFieldsEntryIndex);
+            formTemplate.getFormFields().put(entry.getEntryIndex(), formFieldsEntryIndex);
         }
 
-        retMap.put("formClass", formClass);
-        retMap.put("formClassEntry", formEntry);
-        retMap.put("formFields", formFields);
-
-        return retMap;
+        return formTemplate;
 
     }
 
@@ -152,7 +144,7 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
      * @return 功能操作列表
      */
     @Override
-    public List getFormAction(Integer classId, Integer type) {
+    public List<FormAction> getFormAction(Integer classId, Integer type) {
 
         UserRoleType userRoleType = SessionUtil.getUserRoleType();
 
@@ -263,14 +255,13 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
         Map<String, Object> ret = new HashMap<String, Object>(16);
 
         // 基础资料模板
-        Map<String, Object> template = this.getFormTemplate(classId, 1);
+        FormTemplate template = this.getFormTemplate(classId, 1);
         // 主表资料描述信息
-        FormClass formClass = (FormClass) template.get("formClass");
+        FormClass formClass = template.getFormClass();
         // 子表资料描述信息
-        Map<String, Object> formEntries = (Map<String, Object>) template.get("formClassEntry");
+        Map<Integer, FormClassEntry> formEntries = template.getFormClassEntry();
         // 主表字段模板
-        Map<String, Object> formFields0 = (Map<String, Object>) ((Map<String, Object>) template.get("formFields"))
-                .get("0");
+        Map<String, FormField> formFields0 = template.getFormFields().get(0);
 
         if (null == formClass || formFields0.isEmpty()) {
             throw new BusinessLogicRunTimeException("资料模板不存在");
@@ -439,16 +430,15 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
         String ids = StringUtils.join(idList.toArray(), ",");
 
         // 基础资料模板
-        Map<String, Object> template = getFormTemplate(classId, 1);
+        FormTemplate template = getFormTemplate(classId, 1);
         // 主表字段模板
-        Map<String, Object> formFields0 = (Map<String, Object>) ((Map<String, Object>) template.get("formFields"))
-                .get("0");
+        Map<String, FormField> formFields0 = template.getFormFields().get(0);
         // 第一个子表字段模板(如果有)
-        Map<String, Object> formFields1 = new HashMap<String, Object>();
+        Map<String, FormField> formFields1 = new HashMap<>(32);
         // 主表资料描述信息
-        FormClass formClass = (FormClass) template.get("formClass");
+        FormClass formClass = template.getFormClass();
         // 子表资料描述信息
-        Map<String, Object> formEntries = (Map<String, Object>) template.get("formClassEntry");
+        Map<Integer, FormClassEntry> formEntries = template.getFormClassEntry();
 
         // 查询条件
         Map<String, Object> whereMap = new HashMap<String, Object>();
@@ -469,7 +459,7 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
         if (!formEntries.isEmpty()) {
             // 存在关联字表-只关联第一个子表查询
             isChildTableExist = true;
-            formFields1 = (Map<String, Object>) ((Map<String, Object>) template.get("formFields")).get("1");
+            formFields1 = template.getFormFields().get(1);
         }
 
         // 数据库字段-关键字处理
@@ -515,7 +505,7 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
         if (!formEntries.isEmpty()) {
             // 存在关联字表-只关联第一个子表查询
 
-            FormClassEntry entry = (FormClassEntry) formEntries.get("1");
+            FormClassEntry entry = formEntries.get(1);
             String entryTableName = entry.getTableName();
             String foreignKey = entry.getForeignKey();
 
@@ -602,14 +592,13 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
     public Long addItem(Integer classId, String data) throws IOException {
 
         // 基础资料模板
-        Map<String, Object> template = getFormTemplate(classId, 1);
+        FormTemplate template = getFormTemplate(classId, 1);
         // 主表字段模板
-        Map<String, FormField> formFields = (Map<String, FormField>) ((Map<String, Object>) template
-                .get("formFields")).get("0");
+        Map<String, FormField> formFields = template.getFormFields().get(0);
         // 主表资料描述信息
-        FormClass formClass = (FormClass) template.get("formClass");
+        FormClass formClass = template.getFormClass();
         // 子表资料描述信息
-        Map<String, Object> formEntries = (Map<String, Object>) template.get("formClassEntry");
+        Map<Integer, FormClassEntry> formEntries = template.getFormClassEntry();
 
         // 转成json便于操作
         ObjectMapper mapper = Environ.getBean(ObjectMapper.class);
@@ -674,14 +663,13 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
     public Boolean editItem(Integer classId, Long id, String data) throws IOException {
 
         // 基础资料模板
-        Map<String, Object> template = getFormTemplate(classId, 1);
+        FormTemplate template = getFormTemplate(classId, 1);
 
         // 主表的字段模板
-        Map<String, FormField> formFields = (Map<String, FormField>) ((Map<String, Object>) template
-                .get("formFields")).get("0");
+        Map<String, FormField> formFields = template.getFormFields().get(0);
 
         // 主表资料描述信息
-        FormClass formClass = (FormClass) template.get("formClass");
+        FormClass formClass = template.getFormClass();
 
         // 转成json便于操作
         ObjectMapper mapper = Environ.getBean(ObjectMapper.class);
@@ -750,12 +738,11 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
         }
 
         // 基础资料模板
-        Map<String, Object> template = getFormTemplate(classId, 1);
+        FormTemplate template = getFormTemplate(classId, 1);
         // 主表资料描述信息
-        FormClass formClass = (FormClass) template.get("formClass");
+        FormClass formClass = template.getFormClass();
         // 主表字段模板
-        Map<String, FormField> formFields = (Map<String, FormField>) ((Map<String, Object>) template
-                .get("formFields")).get("0");
+        Map<String, FormField> formFields = template.getFormFields().get(0);
 
         String primaryTableName = formClass.getTableName();
         String primaryKey = formClass.getPrimaryKey();
@@ -767,7 +754,7 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
             throw new PlugInRuntimeException(plugInRet.getMsg());
         }
         // 子表资料描述信息
-        Map<String, Object> formEntries = (Map<String, Object>) template.get("formClassEntry");
+        Map<Integer, FormClassEntry> formEntries = template.getFormClassEntry();
 
         // 先删除分录数据（子表）
         delEntryData(formEntries, ids);
@@ -807,12 +794,11 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
         }
 
         // 基础资料模板
-        Map<String, Object> template = getFormTemplate(classId, 1);
+        FormTemplate template = getFormTemplate(classId, 1);
         // 主表资料描述信息
-        FormClass formClass = (FormClass) template.get("formClass");
+        FormClass formClass = template.getFormClass();
         // 主表字段模板
-        Map<String, FormField> formFields = (Map<String, FormField>) ((Map<String, Object>) template
-                .get("formFields")).get("0");
+        Map<String, FormField> formFields = template.getFormFields().get(0);
 
         String primaryTableName = formClass.getTableName();
         String primaryKey = formClass.getPrimaryKey();
@@ -848,13 +834,13 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
      * @param formEntries Entry集合
      * @param items       主表id值
      */
-    private void delEntryData(Map<String, Object> formEntries, List<Long> items) {
+    private void delEntryData(Map<Integer, FormClassEntry> formEntries, List<Long> items) {
 
         TemplateDaoMapper templateDaoMapper = sqlSession.getMapper(TemplateDaoMapper.class);
 
-        for (String key : formEntries.keySet()) {
+        for (Map.Entry<Integer, FormClassEntry> formClassEntryEntry : formEntries.entrySet()) {
 
-            FormClassEntry formEntry = (FormClassEntry) formEntries.get(key);
+            FormClassEntry formEntry = formClassEntryEntry.getValue();
 
             String tableName = formEntry.getTableName();
             String foreignKey = formEntry.getForeignKey();
@@ -926,13 +912,13 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
         boolean isChildTableExist = false;
 
         // 基础资料模板
-        Map<String, Object> template = getFormTemplate(classId, 1);
+        FormTemplate template = getFormTemplate(classId, 1);
         // 所有字段模板
-        Map<String, Object> formFieldsAll = (Map<String, Object>) template.get("formFields");
+        Map<Integer, Map<String, FormField>> formFieldsAll = template.getFormFields();
         // 主表资料描述信息
-        FormClass formClass = (FormClass) template.get("formClass");
+        FormClass formClass = template.getFormClass();
         // 子表资料描述信息
-        Map<String, Object> formEntries = (Map<String, Object>) template.get("formClassEntry");
+        Map<Integer, FormClassEntry> formEntries = template.getFormClassEntry();
 
         // 数据库字段-关键字处理
         Map<String, String> dbDelimiter = getDBDelimiter();
@@ -953,7 +939,7 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
         if (!formEntries.isEmpty()) {
 
             // 存在关联字表-只关联第一个子表查询
-            FormClassEntry formEntry = (FormClassEntry) formEntries.get("1");
+            FormClassEntry formEntry = (FormClassEntry) formEntries.get(1);
             // 子表物理表名
             childTableName = formEntry.getTableName();
             // 子表与主表关联key
@@ -993,18 +979,18 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
                             eDelimiter)).append(separator);
         }
 
-        for (String pageIndex : formFieldsAll.keySet()) {
+        for (Integer pageIndex : formFieldsAll.keySet()) {
 
             // page=0/page=1的字段模板
-            Map<String, Object> formFields = (Map<String, Object>) formFieldsAll.get(pageIndex);
+            Map<String, FormField> formFields = formFieldsAll.get(pageIndex);
 
             // 当前模板关联的物理表
             String formFieldLinkedTable = "";
 
-            if ("0".equals(pageIndex)) {
+            if (0 == pageIndex) {
                 // 主表
                 formFieldLinkedTable = primaryTableName;
-            } else if ("1".equals(pageIndex)) {
+            } else if (1 == pageIndex) {
                 formFieldLinkedTable = childTableName;
             } else {
                 // 主表不支持关联多个子表查询
@@ -1013,7 +999,7 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
 
             for (String fieldKey : formFields.keySet()) {
 
-                FormField formField = (FormField) formFields.get(fieldKey);
+                FormField formField = formFields.get(fieldKey);
 
                 String joinType = formField.getJoinType();
 
@@ -1219,13 +1205,13 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
         }
 
         // 基础资料模板
-        Map<String, Object> template = getFormTemplate(classId, 1);
+        FormTemplate template = getFormTemplate(classId, 1);
         // 所有字段模板
-        Map<String, Object> formFieldsAll = (Map<String, Object>) template.get("formFields");
+        Map<Integer, Map<String, FormField>> formFieldsAll = template.getFormFields();
         // 主表资料描述信息
-        FormClass formClass = (FormClass) template.get("formClass");
+        FormClass formClass = template.getFormClass();
         // 子表资料描述信息
-        Map<String, Object> formEntries = (Map<String, Object>) template.get("formClassEntry");
+        Map<Integer, FormClassEntry> formEntries = template.getFormClassEntry();
 
         // 数据库字段-关键字处理
         Map<String, String> dbDelimiter = getDBDelimiter();
@@ -1244,7 +1230,7 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
         // 查询的目标表
         String selTable = "";
         // 查询目标模板
-        Map<String, FormField> selFormFields = (Map<String, FormField>) formFieldsAll.get(String.valueOf(page));
+        Map<String, FormField> selFormFields = formFieldsAll.get(page);
 
         if (selFormFields.isEmpty()) {
             throw new BusinessLogicRunTimeException(String.format("classId=%s page=%s 没有模板数据,请联系管理员！", classId, page));
@@ -1255,7 +1241,7 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
             selTable = formClass.getTableName();
         } else {
             // 子表
-            selTable = ((FormClassEntry) formEntries.get(String.valueOf(page))).getTableName();
+            selTable = formEntries.get(page).getTableName();
         }
 
         StringBuilder sbSelect = new StringBuilder();
@@ -1473,13 +1459,13 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
         String separator = System.getProperty("line.separator");
 
         // 基础资料模板
-        Map<String, Object> templateMap = getFormTemplate(classId, 1);
+        FormTemplate template = getFormTemplate(classId, 1);
         // 所有字段模板
         Map<String, FormField> formFieldsAll = getFormFields(classId, -1);
         // 主表资料描述信息
-        FormClass formClass = (FormClass) templateMap.get("formClass");
+        FormClass formClass = template.getFormClass();
         // 子表资料描述信息
-        Map<String, Object> formEntries = (Map<String, Object>) templateMap.get("formClassEntry");
+        Map<Integer, FormClassEntry> formEntries = template.getFormClassEntry();
 
         if (null == formClass) {
             throw new BusinessLogicRunTimeException("没有模板数据");
@@ -1502,7 +1488,7 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
         if (!formEntries.isEmpty()) {
 
             // 存在关联字表-只关联第一个子表查询
-            FormClassEntry formEntry = (FormClassEntry) formEntries.get("1");
+            FormClassEntry formEntry = formEntries.get(1);
             childTableName = formEntry.getTableName();
             foreignKey = formEntry.getForeignKey();
 
@@ -1824,13 +1810,13 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
         String separator = System.getProperty("line.separator");
 
         // 基础资料模板
-        Map<String, Object> template = getFormTemplate(classId, 1);
+        FormTemplate template = getFormTemplate(classId, 1);
         // 所有字段模板
         Map<String, FormField> formFieldsAll = getFormFields(classId, -1);
         // 主表资料描述信息
-        FormClass itemClass = (FormClass) template.get("formClass");
+        FormClass itemClass = template.getFormClass();
         // 子表资料描述信息
-        Map<String, Object> formEntries = (Map<String, Object>) template.get("formEntries");
+        Map<Integer, FormClassEntry> formEntries = template.getFormClassEntry();
 
         if (null == itemClass) {
             throw new BusinessLogicRunTimeException("没有模板数据");
@@ -1874,7 +1860,7 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
             String tableName = primaryTableName;
 
             if (page > 0) {
-                FormClassEntry entry = (FormClassEntry) formEntries.get(String.valueOf(page));
+                FormClassEntry entry = formEntries.get(page);
                 tableName = entry.getTableName();
             }
 
@@ -2142,21 +2128,22 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
         }
 
         // 基础资料模板
-        Map<String, Object> template = getFormTemplate(classId, 1);
+        FormTemplate template = getFormTemplate(classId, 1);
 
         JsonNode jsonEntry = data.path("entry");
 
-        Map<String, Object> formEntries = (Map<String, Object>) template.get("formClassEntry");
+        Map<Integer, FormClassEntry> formEntries = template.getFormClassEntry();
 
-        for (String key : formEntries.keySet()) {
+        for (Map.Entry<Integer, FormClassEntry> formClassEntryEntry : formEntries.entrySet()) {
+
+            Integer key = formClassEntryEntry.getKey();
+
+            FormClassEntry formEntry = formClassEntryEntry.getValue();
 
             // key 等于1或2或3...
-            Map<String, FormField> formFields = (Map<String, FormField>) ((Map<String, Object>) template
-                    .get("formFields")).get(key);
+            Map<String, FormField> formFields = template.getFormFields().get(key);
 
-            JsonNode entryData = jsonEntry.path(key);
-
-            FormClassEntry formEntry = (FormClassEntry) formEntries.get(key);
+            JsonNode entryData = jsonEntry.path(key.toString());
 
             // 保存或删除分录数据
             saveEntry(entryData, formEntry, formFields, id);

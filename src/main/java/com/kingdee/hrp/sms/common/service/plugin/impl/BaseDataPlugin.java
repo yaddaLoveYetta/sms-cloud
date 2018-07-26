@@ -9,6 +9,7 @@ import com.kingdee.hrp.sms.common.model.User;
 import com.kingdee.hrp.sms.common.model.UserExample;
 import com.kingdee.hrp.sms.common.pojo.ClassType;
 import com.kingdee.hrp.sms.common.pojo.Condition;
+import com.kingdee.hrp.sms.common.pojo.FormTemplate;
 import com.kingdee.hrp.sms.common.service.plugin.AbstractPlugInAdapter;
 import com.kingdee.hrp.sms.common.service.plugin.PlugInRet;
 import com.kingdee.hrp.sms.util.Environ;
@@ -116,7 +117,7 @@ public class BaseDataPlugin extends AbstractPlugInAdapter implements Initializin
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public PlugInRet afterForbid(Integer classId, Map<String, Object> template, List<Long> ids, Integer operateType) {
+    public PlugInRet afterForbid(Integer classId, FormTemplate template, List<Long> ids, Integer operateType) {
 
         if (classId == ClassType.USER.classId() && operateType == 1) {
             // 禁用用户时，如果该用户是医院/供应商的管理员,则将归属该医院、供应商的所有用户一并禁用
@@ -162,7 +163,7 @@ public class BaseDataPlugin extends AbstractPlugInAdapter implements Initializin
      */
     @Override
     @SuppressWarnings("unchecked")
-    public PlugInRet beforeSave(int classId, Map<String, Object> formTemplate, JsonNode data) {
+    public PlugInRet beforeSave(int classId, FormTemplate formTemplate, JsonNode data) {
 
         // 数据处理，如补充一些不需要前端传输但又必须有的信息
         dataProcess(classId, formTemplate, data);
@@ -200,7 +201,7 @@ public class BaseDataPlugin extends AbstractPlugInAdapter implements Initializin
      * @return 插件过滤条件
      */
     @Override
-    public List<Condition> getConditions(int classId, Map<String, Object> formTemplate, List<Condition> conditions) {
+    public List<Condition> getConditions(int classId, FormTemplate formTemplate, List<Condition> conditions) {
 
         List<Condition> ret = new ArrayList<Condition>();
 
@@ -267,7 +268,7 @@ public class BaseDataPlugin extends AbstractPlugInAdapter implements Initializin
      * @param formTemplate 单据模板
      * @param data         前端提交的单据数据
      */
-    private void dataProcess(int classId, Map<String, Object> formTemplate, JsonNode data) {
+    private void dataProcess(int classId, FormTemplate formTemplate, JsonNode data) {
 
         UserRoleType userRoleType = SessionUtil.getUserRoleType();
 

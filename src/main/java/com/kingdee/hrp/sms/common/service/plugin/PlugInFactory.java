@@ -2,6 +2,7 @@ package com.kingdee.hrp.sms.common.service.plugin;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.kingdee.hrp.sms.common.pojo.Condition;
+import com.kingdee.hrp.sms.common.pojo.FormTemplate;
 import com.kingdee.hrp.sms.common.pojo.StatusCode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -143,7 +144,7 @@ public class PlugInFactory implements PlugIn, InitializingBean, ApplicationConte
      * @return PlugInRet
      */
     @Override
-    public PlugInRet beforeSave(int classId, Map<String, Object> formTemplate, JsonNode data) {
+    public PlugInRet beforeSave(int classId, FormTemplate formTemplate, JsonNode data) {
 
         PlugInRet plugInRet = new PlugInRet();
 
@@ -196,7 +197,7 @@ public class PlugInFactory implements PlugIn, InitializingBean, ApplicationConte
      * @return PlugInRet
      */
     @Override
-    public PlugInRet beforeModify(int classId, Long id, Map<String, Object> formTemplate, JsonNode data) {
+    public PlugInRet beforeModify(int classId, Long id, FormTemplate formTemplate, JsonNode data) {
 
         PlugInRet plugInRet = new PlugInRet();
 
@@ -226,7 +227,7 @@ public class PlugInFactory implements PlugIn, InitializingBean, ApplicationConte
      * @date 2017-07-12 09:05:42 星期三
      */
     @Override
-    public PlugInRet beforeEntryModify(int classId, String primaryId, String entryId, Map<String, Object> formTemplate,
+    public PlugInRet beforeEntryModify(int classId, String primaryId, String entryId, FormTemplate formTemplate,
                                        JsonNode data) {
 
         PlugInRet plugInRet = new PlugInRet();
@@ -254,7 +255,7 @@ public class PlugInFactory implements PlugIn, InitializingBean, ApplicationConte
      * @return PlugInRet
      */
     @Override
-    public PlugInRet afterModify(int classId, Long id, Map<String, Object> formTemplate, JsonNode data) {
+    public PlugInRet afterModify(int classId, Long id, FormTemplate formTemplate, JsonNode data) {
 
         PlugInRet plugInRet = new PlugInRet();
 
@@ -280,7 +281,7 @@ public class PlugInFactory implements PlugIn, InitializingBean, ApplicationConte
      * @return PlugInRet
      */
     @Override
-    public PlugInRet beforeDelete(int classId, Map<String, Object> formTemplate, List<Long> ids) {
+    public PlugInRet beforeDelete(int classId, FormTemplate formTemplate, List<Long> ids) {
 
         PlugInRet plugInRet = new PlugInRet();
 
@@ -310,7 +311,7 @@ public class PlugInFactory implements PlugIn, InitializingBean, ApplicationConte
      */
     @Override
     public PlugInRet beforeEntryDelete(int classId, String primaryId, String entryId,
-                                       Map<String, Object> formTemplate) {
+                                       FormTemplate formTemplate) {
 
         PlugInRet plugInRet = new PlugInRet();
 
@@ -336,7 +337,7 @@ public class PlugInFactory implements PlugIn, InitializingBean, ApplicationConte
      * @return PlugInRet
      */
     @Override
-    public PlugInRet afterDelete(int classId, Map<String, Object> formTemplate, List<Long> ids) {
+    public PlugInRet afterDelete(int classId, FormTemplate formTemplate, List<Long> ids) {
 
         PlugInRet plugInRet = new PlugInRet();
 
@@ -362,7 +363,7 @@ public class PlugInFactory implements PlugIn, InitializingBean, ApplicationConte
      * @return
      */
     @Override
-    public PlugInRet beforeQuery(int classId, Map<String, Object> formTemplate, List<Condition> conditons) {
+    public PlugInRet beforeQuery(int classId, FormTemplate formTemplate, List<Condition> conditons) {
 
         PlugInRet plugInRet = new PlugInRet();
 
@@ -413,7 +414,7 @@ public class PlugInFactory implements PlugIn, InitializingBean, ApplicationConte
      * @return 插件过滤条件
      */
     @Override
-    public List<Condition> getConditions(int classId, Map<String, Object> formTemplate, List<Condition> conditions) {
+    public List<Condition> getConditions(int classId, FormTemplate formTemplate, List<Condition> conditions) {
 
         List<Condition> pluginConditions = new ArrayList<Condition>();
 
@@ -440,7 +441,7 @@ public class PlugInFactory implements PlugIn, InitializingBean, ApplicationConte
      * @return PlugInRet
      */
     @Override
-    public PlugInRet beforeForbid(Integer classId, Map<String, Object> template, List<Long> ids, Integer operateType) {
+    public PlugInRet beforeForbid(Integer classId, FormTemplate template, List<Long> ids, Integer operateType) {
 
         PlugInRet plugInRet = new PlugInRet();
 
@@ -468,7 +469,7 @@ public class PlugInFactory implements PlugIn, InitializingBean, ApplicationConte
      * @return PlugInRet
      */
     @Override
-    public PlugInRet afterForbid(Integer classId, Map<String, Object> template, List<Long> ids, Integer operateType) {
+    public PlugInRet afterForbid(Integer classId, FormTemplate template, List<Long> ids, Integer operateType) {
         PlugInRet plugInRet = new PlugInRet();
 
         for (PlugIn plugIn : plugIns) {

@@ -1,12 +1,17 @@
 package com.kingdee.hrp.sms.common.service;
 
+import com.kingdee.hrp.sms.common.model.FormAction;
 import com.kingdee.hrp.sms.common.pojo.Condition;
+import com.kingdee.hrp.sms.common.pojo.FormTemplate;
 import com.kingdee.hrp.sms.common.pojo.Sort;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @author le.xiao
+ */
 public interface TemplateService {
 
     /**
@@ -16,7 +21,7 @@ public interface TemplateService {
      * @param type    查询方式（0:后端查询 1:前端获取）
      * @return
      */
-    Map<String, Object> getFormTemplate(Integer classId, Integer type);
+    FormTemplate getFormTemplate(Integer classId, Integer type);
 
     /**
      * 获取基础资料/单据定义的功能操作列表
@@ -26,7 +31,7 @@ public interface TemplateService {
      * @return 功能操作列表
      */
 
-    List getFormAction(Integer classId, Integer type);
+    List<FormAction> getFormAction(Integer classId, Integer type);
 
     /**
      * 通过模板获取业务数据
@@ -38,7 +43,8 @@ public interface TemplateService {
      * @param pageNo     当前页码
      */
 
-    Map<String, Object> getItems(Integer classId, List<Condition> conditions, List<Sort> sorts, Integer pageSize, Integer pageNo);
+    Map<String, Object> getItems(Integer classId, List<Condition> conditions, List<Sort> sorts, Integer pageSize,
+            Integer pageNo);
 
     /**
      * 通过内码获取单个业务类型数据
@@ -59,7 +65,8 @@ public interface TemplateService {
      * @param sorts      排序结构
      * @return 单据集合
      */
-    List<Map<String, Object>> getItemByIds(Integer classId, List<Long> ids, List<Condition> conditions, List<Sort> sorts);
+    List<Map<String, Object>> getItemByIds(Integer classId, List<Long> ids, List<Condition> conditions,
+            List<Sort> sorts);
 
     /**
      * 新增数据

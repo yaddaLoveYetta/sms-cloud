@@ -8,6 +8,8 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -27,39 +29,16 @@ public class FormTemplate {
     private FormClass formClass;
     /**
      * 子表描述
+     * <p>
+     * key子表序号 1:第一个子表 2:第二个子表 n:第n个子表
      */
-    private FormClassEntry formClassEntry;
+    private Map<Integer, FormClassEntry> formClassEntry = new HashMap<>();
 
     /**
      * 字段模板对象
      * <p>
      * key模板序号 0:主表 1:第一个子表 2:第二个子表 n:第n个子表
      */
-    private FormFields formFields;
+    private Map<Integer, Map<String, FormField>> formFields = new HashMap<>();
 
-    @Setter
-    @Getter
-    @ToString
-    @Accessors(chain = true)
-    private class FormFields {
-
-        private Integer page;
-
-        private FormFieldWarp formFieldWarp;
-    }
-
-    @Setter
-    @Getter
-    @ToString
-    @Accessors(chain = true)
-    private class FormFieldWarp {
-        /**
-         * 字段模板key-把key抽出来方便操作
-         */
-        private String key;
-        /**
-         * 模板字段
-         */
-        private FormField formField;
-    }
 }
