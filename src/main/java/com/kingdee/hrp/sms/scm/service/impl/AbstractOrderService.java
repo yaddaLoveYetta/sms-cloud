@@ -12,6 +12,8 @@ import java.util.Date;
 import java.util.Random;
 
 /**
+ * 业务单据基础服务，可在此类做一些通用性业务，如按模板的数据校验
+ *
  * @author le.xiao
  */
 public abstract class AbstractOrderService extends BaseService {

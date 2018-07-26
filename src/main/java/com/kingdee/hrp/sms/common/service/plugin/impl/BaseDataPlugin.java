@@ -152,34 +152,20 @@ public class BaseDataPlugin extends AbstractPlugInAdapter implements Initializin
     /**
      * 基础资料新增前操作
      * <p>
-     * 主要是补充一些不需要前端传输但又必须有的信息，如资料归属，类别，分录行号等字段
+     * 主要是补充一些不需要前端传输但又必须有的信息，如资料归属，类别，分录行号等字段。
+     * 进行单据数据必录性，合法性校验等
      *
      * @param classId      业务类型
      * @param formTemplate 单据模板
-     * @param data         业务数据
+     * @param data         前端提交的单据数据
      * @return PlugInRet
      */
     @Override
     @SuppressWarnings("unchecked")
     public PlugInRet beforeSave(int classId, Map<String, Object> formTemplate, JsonNode data) {
 
-        UserRoleType userRoleType = SessionUtil.getUserRoleType();
-
-        if (classId == ClassType.EMP.classId() || classId == ClassType.UNIT.classId()) {
-            // 单位，职员新增时，设置归属医院
-            if (SessionUtil.getUserLinkHospital() == -1) {
-                throw new BusinessLogicRunTimeException("当前登录用户非医院用户，不能进行此操作!");
-            }
-
-            ((ObjectNode) data).put("org", SessionUtil.getUserLinkHospital());
-        }
-
-        if (userRoleType != UserRoleType.SYSTEM && classId == ClassType.ROLE.classId()) {
-            // 非系统管理员操作角色新增功能时，
-            // 新增的角色类别与当前登录用户类别相同(即医院只能新增医院角色，供应商只能新增供应商角色)
-            ((ObjectNode) data).put("type", SessionUtil.getUserRoleTypeNumber());
-            ((ObjectNode) data).put("org_hospital", SessionUtil.getUserLinkHospital());
-        }
+        // 数据处理，如补充一些不需要前端传输但又必须有的信息
+        dataProcess(classId, formTemplate, data);
 
         // 通用必录性校验(按模板校验)
         Map<String, Object> checkResult = mustInputCheck(formTemplate, data);
@@ -196,7 +182,7 @@ public class BaseDataPlugin extends AbstractPlugInAdapter implements Initializin
             }
 
             if (!bodyCheckError.isEmpty()) {
-                // 单据头必录校验有错误
+                // 单据体必录校验有错误
                 throw new BusinessLogicRunTimeException(bodyCheckError.toString());
             }
 
@@ -272,6 +258,44 @@ public class BaseDataPlugin extends AbstractPlugInAdapter implements Initializin
 
         return ret;
 
+    }
+
+    /**
+     * 单据新增保存前数据处理
+     *
+     * @param classId      业务类型
+     * @param formTemplate 单据模板
+     * @param data         前端提交的单据数据
+     */
+    private void dataProcess(int classId, Map<String, Object> formTemplate, JsonNode data) {
+
+        UserRoleType userRoleType = SessionUtil.getUserRoleType();
+
+        if (classId == ClassType.EMP.classId() || classId == ClassType.UNIT.classId()) {
+            // 单位，职员新增时，设置归属医院
+            if (SessionUtil.getUserLinkHospital() == -1) {
+                throw new BusinessLogicRunTimeException("当前登录用户非医院用户，不能进行此操作!");
+            }
+
+            ((ObjectNode) data).put("org", SessionUtil.getUserLinkHospital());
+        }
+
+        if (userRoleType != UserRoleType.SYSTEM && classId == ClassType.ROLE.classId()) {
+            // 非系统管理员操作角色新增功能时，
+            // 新增的角色类别与当前登录用户类别相同(即医院只能新增医院角色，供应商只能新增供应商角色)
+            ((ObjectNode) data).put("type", SessionUtil.getUserRoleTypeNumber());
+
+            if (userRoleType == UserRoleType.HOSPITAL) {
+                // 医院新增角色--绑定新增的角色所属医院
+                ((ObjectNode) data).put("org_hospital", SessionUtil.getUserLinkHospital());
+            }
+
+            if (userRoleType == UserRoleType.SUPPLIER) {
+                // 供应商新增角色--绑定新增的角色所属供应商
+                ((ObjectNode) data).put("org_supplier", SessionUtil.getUserLinkSupplier());
+            }
+
+        }
     }
 
 }
