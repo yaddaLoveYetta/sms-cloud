@@ -41,11 +41,11 @@ SMS.Proxy.response(function (data, config) {
             icon: 'icon_res_normal.png',
             //hidden: true,
             items: [
-                { name: '仓库', url: 'html/warehouse/index.html?classID=10107' },
-                { name: '部门', url: 'html/warehouse/index.html?classID=10103' },
-                { name: '基础资料类别', url: 'html/warehouse/index.html?classID=10110' },
-                { name: '岗位', url: 'html/warehouse/index.html?classID=10106' },
-                {name: '职员', url: 'html/warehouse/index.html?classID=10105'}
+                { name: '仓库', url: 'html/warehouse/index.html?classId=10107' },
+                { name: '部门', url: 'html/warehouse/index.html?classId=10103' },
+                { name: '基础资料类别', url: 'html/warehouse/index.html?classId=10110' },
+                { name: '岗位', url: 'html/warehouse/index.html?classId=10106' },
+                {name: '职员', url: 'html/warehouse/index.html?classId=10105'}
             ]
         },
         {
@@ -69,7 +69,7 @@ SMS.Proxy.response(function (data, config) {
             icon: 'icon_stock_normal.png',
             //hidden: true,
             items: [
-                { name: '基础资料-仓库', url: 'html/warehouse/index.html?classID=10107' },
+                { name: '基础资料-仓库', url: 'html/warehouse/index.html?classId=10107' },
                 { name: '列表调试', url:'html/warehouse-ding/index.html'}
                 //{ name: '采购订单跟踪表' },
                 //{ name: '采购明细表' },

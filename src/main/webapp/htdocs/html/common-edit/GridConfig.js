@@ -37,6 +37,8 @@ define('GridConfig', function (require, module, exports) {
         model.tabIndex = field.index;
         model.align = 'center';
         model.sortable = false;
+        // 保存一份完整字段模板信息
+        model.fieldInfo = field;
 
         // 默认的formatter-点击选中
 
@@ -122,8 +124,6 @@ define('GridConfig', function (require, module, exports) {
                     return '';
                 }
             };
-
-            model.data = field;
         }
         // 日期
         if (field.ctrlType === 12) {

@@ -608,12 +608,18 @@ define('FormEdit', function (require, module, exports) {
                 // 引用基础资料
                 var config = {
                     targetType: 1, //跳转方案
-                    classID: field.lookUpClassId,
+                    classId: field.lookUpClassId,
                     destClassId: field.classId,
                     hasBreadcrumbs: true,
                     fieldKey: field.key,
                     container: document.getElementById(field.key),
                     title: field.name,
+                    dataFieldKey: { // 控件label有焦点时显示代码，无焦点时显示名称效果
+                        'id': field.srcField,    // F7控件关联资料的id key
+                        'name': field.displayField, // F7控件无焦点时显示的字段key
+                        'number': field.displayExt // F7有焦点时显示的字段key
+                    },
+
                     defaults: {
                         pageSize: 10
                     }
@@ -1329,7 +1335,7 @@ define('FormEdit', function (require, module, exports) {
                 case 6:
                     //F7选择框
                     var selector = selectors[fieldKey];
-                    var selectorID = selector.getData()[0]['ID'];
+                    var selectorID = selector.getData()[0]['id'];
 
                     if (!selectorID) {
                         if (isMustFiled(fieldKey)) {
@@ -1567,7 +1573,7 @@ define('FormEdit', function (require, module, exports) {
                 case 6:
                     // F7选择框
                     var selectorData = [{
-                        ID: value,
+                        id: value,
                         number: data[keyName + '_NmbName'],
                         name: data[keyName + '_DspName']
                     }];
@@ -1647,7 +1653,7 @@ define('FormEdit', function (require, module, exports) {
             if (fields[keyName]['ctrlType'] == 6) { // F7选择框
 
                 var selectorData = [{
-                    ID: '',
+                    id: '',
                     number: '',
                     name: ''
                 }];

@@ -7047,7 +7047,7 @@
                 // rowNumb, colNumb, colModels);
 
                 showF7({
-                    field: colModels[colNumb].data,
+                    field: colModels[colNumb].fieldInfo,
                     cfg: cfg,
                     container: $_comboAuto,
                     rowNumb: rowNumb,
@@ -7074,8 +7074,7 @@
                 // 选中内容
                 this.onfocus();
                 this.select();
-            })
-
+            });
         }
 
         function showF7(field, cfg, container, rowNumb, colNumb, colModels) {
@@ -7095,7 +7094,6 @@
             var formClassID = field.lookUpClassId;
             var url = $.Url.setQueryString('./html/list/index.html', 'classId', formClassID);
 
-            //var condition = cfg.config.getConditions && cfg.config.getConditions(rowNumb, colNumb, colModels) || {};
             var condition = cfg.config.getConditions && cfg.config.getConditions(field.classId, field.lookUpClassId, field.key) || [];
 
             var title = field.name || '';
@@ -7132,32 +7130,44 @@
 
                 dialog.on({
                     remove: function () {
+
                         var data = dialog.getData();
-                        if (dialog.isSubmit && data[0].hasOwnProperty('ID')) {
-                            // data中增加当前编辑grid单元格的信息
-                            /*
-                             * data.field = field; data.container = container;
-                             * data.row = rowNumb; data.col = colNumb;
-                             * data.colModels = colModels;
-                             * emitter.fire('f7Selected', [data]);
-                             */
 
-
-                            // cfg.grid.setCell(data.row, data.col,
-                            // data[0].name);
-
+                        if (dialog.isSubmit && data[0].hasOwnProperty('id')) {
 
                             var gridRow = cfg.grid.jqGrid('getGridParam');
                             var row = gridRow.selrow;
                             var col = gridRow.iCol;
 
-                            var idModel = cfg.grid.getColProp(field.key)// 真实的key-保存的内码
+                            // 真实的key-保存的内码
+                            var idModel = cfg.grid.getColProp(field.key)
 
                             if (idModel) {
-                                cfg.grid.setCell(row, idModel.name, data[0].ID);
+                                //cfg.grid.setCell(row, idModel.name, data[0].id);
+                                cfg.grid.setCell(row, idModel.name, data[0].all[field.srcField]);
                             }
 
-                            $(container).val(data[0].name);
+                            // 显示字段
+                            $(container).val(data[0].all[field.displayField]);
+
+                            $(container).on('focus', function (e) {
+                                var self = this;
+                                if (data) {
+                                    if (data[0].all[field.displayExt]) {
+                                        self.value = data[0].all[field.displayExt];
+                                    }
+                                }
+                            });
+
+                            $(container).on('blur', function (e) {
+                                var self = this;
+                                if (data) {
+                                    if (data[0].all[field.displayField]) {
+                                        self.value = data[0].all[field.displayField];
+                                    }
+                                }
+                            });
+
                         }
                     }
                 });

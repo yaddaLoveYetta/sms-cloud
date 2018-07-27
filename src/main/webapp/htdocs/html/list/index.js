@@ -44,6 +44,7 @@
         multiSelect: true
     };
 
+    // 单据头主键key
     var primaryKey;
 
     var dialog = Iframe.getDialog();
@@ -72,9 +73,9 @@
 
         if (item) {
             dialog.setData([{
-                'ID': item[primaryKey],
-                'name': item.name,
-                'number': item.number || '',
+                'id': item[primaryKey],
+/*                'name': item.name,
+                'number': item.number || '',*/
                 'all': item // 保留一份完整数据
             }]);
         }

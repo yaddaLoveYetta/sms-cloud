@@ -15,7 +15,7 @@ define('SelectorList', function (require, module, exports) {
     var idTypeContainer = document.getElementById('idType');
     var config = {
         targetType: 1, //跳转方案
-        classID: 1023,
+        classId: 1023,
         hasBreadcrumbs: true,
         container: idTypeContainer,
         title: '证件类别',
@@ -29,7 +29,7 @@ define('SelectorList', function (require, module, exports) {
     var supplierContainer = document.getElementById('supplier');
      config = {
         targetType: 1, //跳转方案
-        classID: 1005,
+        classId: 1005,
         hasBreadcrumbs: true,
         container: supplierContainer,
         title: '供应商',
@@ -44,7 +44,7 @@ define('SelectorList', function (require, module, exports) {
     var manufacturerContainer = document.getElementById('manufacturer');
      config = {
         targetType: 1, //跳转方案
-        classID: 1020,
+        classId: 1020,
         hasBreadcrumbs: true,
         container: manufacturerContainer,
         title: '生产厂家',
@@ -63,7 +63,7 @@ define('SelectorList', function (require, module, exports) {
     var agentContainer = document.getElementById('agent');
      config = {
         targetType: 1, //跳转方案
-        classID: 1020,
+        classId: 1020,
         hasBreadcrumbs: true,
         container: agentContainer,
         title: '代理商',

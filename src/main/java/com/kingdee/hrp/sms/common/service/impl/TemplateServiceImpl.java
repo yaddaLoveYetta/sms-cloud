@@ -2157,7 +2157,7 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
      *
      * @param entryData  分录数据 如：[{ 'data':{parkID:3},'flag':'1'},{'data':{entryID:4,parkID:11} ,'flag':'2'},{'data':{entryID:3
      *                   , parkId : 1 } , ' flag ' : ' 0 ' } ]
-     * @param formEntry  分录表描述 { "entryIndex": 1, "primaryKey": "entryID", "foreignKey": "FID", "classID": 13001, "tableName":
+     * @param formEntry  分录表描述 { "entryIndex": 1, "primaryKey": "entryID", "foreignKey": "FID", "classId": 13001, "tableName":
      *                   "t_PropertyCompanyEntry" }
      * @param formFields 分录表配置的字段
      * @param id         分录表外键值，关联主表的主键

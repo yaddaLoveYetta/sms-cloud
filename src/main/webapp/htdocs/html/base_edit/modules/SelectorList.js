@@ -18,7 +18,7 @@ define('SelectorList', function (require, module, exports) {
 
     var config = {
         targetType: 1, //跳转方案
-        classID: 1002,
+        classId: 1002,
         destClassId: 1001,
         hasBreadcrumbs: true,
         container: container,
@@ -34,7 +34,7 @@ define('SelectorList', function (require, module, exports) {
     var roleContainer = document.getElementById('bd-role');
     var config = {
         targetType: 1, //跳转方案
-        classID: 1003,
+        classId: 1003,
         destClassId: 1001,
         hasBreadcrumbs: true,
         container: roleContainer,
@@ -51,7 +51,7 @@ define('SelectorList', function (require, module, exports) {
     var supplierContainer = document.getElementById('bd-supplier');
     var config = {
         targetType: 1, //跳转方案
-        classID: 1005,
+        classId: 1005,
         destClassId: 1001,
         hasBreadcrumbs: true,
         conditionF7Names: [{SelectorName: "type", FillterKey: "type"}, {

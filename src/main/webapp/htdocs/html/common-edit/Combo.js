@@ -69,7 +69,7 @@ define('Combo', function (require, module, exports) {
 //        api.get({
 //            action: 'itemSearch ',
 //            data: {
-//                classID: formClassID,
+//                classId: formClassID,
 //                fieldKey: keyName,
 //                keyValue: '',
 //                searhType: 0,
@@ -101,7 +101,7 @@ define('Combo', function (require, module, exports) {
     //    api.get({
     //        action: 'itemSearch ',
     //        data: {
-    //            classID: formClassID,
+    //            classId: formClassID,
     //            fieldKey: keyName,
     //            keyValue: '',
     //            searhType: 0,

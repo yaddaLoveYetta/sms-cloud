@@ -119,7 +119,7 @@ define('Edit', function (require, module, exports) {
                 return;
             }
             //    cleanGrid();
-            //FormEdit.render(classID, itemId, initGrid);
+            //FormEdit.render(classId, itemId, initGrid);
             FormEdit.render(classID, itemId, null);
         }
 

@@ -15,7 +15,7 @@
         pageSize: 10,
         targetList: {
             1: './html/list/index.html',
-            2: './html/support-data/index.html',
+            2: './html/support-data/index.html'
         }
     };
 
@@ -29,6 +29,7 @@
     function DataSelector(config) {
 
         this[guidKey] = 'DataSelector-' + $.String.random();
+
         var meta = {
             container: config.container, // 容器
             hasData: false, // 是否有数据
@@ -36,14 +37,15 @@
             typeId: config.typeId,
             hasBreadcrumbs: config.hasBreadcrumbs, // 导航显示
             targetType: config.targetType, // 列表页面类别
-            title: config.title,            // dialog表体
+            title: config.title,            // dialog标题
             conditions: config.conditions || [], // 发送到页面的条件
-            classID: config.classID || '', // targetType连接附加classId条件
+            classId: config.classId || '', // targetType连接附加classId条件
             destClassId: config.destClassId || '', // 目标单据classId
             checkbox: config.checkbox,
-            conditionF7Names: config.conditionF7Names || [], //新增查询条件集合 [{SelectorName:"FCompany",FillterKey: "FCompany", ValueRule: { 50801: 50701, 50802: 50702 } }]
+            conditionF7Names: config.conditionF7Names || [], //F7动态约束条件集合(解析规则)
+            dataFieldKey: config.dataFieldKey,
             data: [{
-                'ID': '',
+                'id': '',
                 'name': '',
                 'number': ''
             }],
@@ -56,7 +58,7 @@
                 } else {
                     return defaults;
                 }
-            })(),
+            })()
         };
 
         mapper.set(this, meta);
@@ -67,7 +69,7 @@
 
             $(meta.container).delegate('[data-role="btn"]', 'click', function (e) {
 
-                var url = $.Url.setQueryString(defaults.targetList[meta.targetType], 'classId', meta.classID);
+                var url = $.Url.setQueryString(defaults.targetList[meta.targetType], 'classId', meta.classId);
 
                 //新增关联查询条件逻辑 --------------begin--------------
                 var dataSelectors = DataSelector.DataSelectors;
@@ -168,16 +170,16 @@
                         button: [
                             {
                                 value: '取消',
-                                className: 'sms-cancel-btn',
+                                className: 'sms-cancel-btn'
                             },
                             {
                                 value: '确定',
                                 className: 'sms-submit-btn',
                                 callback: function () {
                                     this.isSubmit = true;
-                                },
+                                }
                             }
-                        ],
+                        ]
                         // ok : function() {
                         // this.isSubmit = true;
                         // },
@@ -196,10 +198,10 @@
 
                             var data = dialog.getData();
                             var label = $(meta.container).find('[data-role="label"]')[0];
-                            //console.log(data)
+                            console.log(data)
                             //if (dialog.isSubmit && data[0].hasOwnProperty("ID")) {
-                            if (dialog.isSubmit && data[0] && typeof data[0].ID != "undefined") {
-                                if (meta.data[0].ID != data[0].ID) {
+                            if (dialog.isSubmit && data[0] && typeof data[0].all[meta.dataFieldKey['id']] != "undefined") {
+                                if (meta.data[0].id != data[0].all[meta.dataFieldKey['id']]) {
                                     /**
                                      * 抛出个值改变事件
                                      *
@@ -210,7 +212,7 @@
                                     emitter.fire('change', [meta.destClassId, meta.fieldKey, data]);
                                 }
                                 meta.data = dialog.getData();
-                                label.title = label.value = meta.data[0].number;
+                                label.title = label.value = data[0].all[meta.dataFieldKey['number']] || data[0].all[meta.dataFieldKey['name']];
                                 //抛出个确认事件
                                 emitter.fire('done', [meta.destClassId + '-' + meta.container.getAttribute("id") + '.DialogOk', meta.data]);
                                 label.focus();
@@ -230,16 +232,16 @@
                 'focus': function () {
                     var self = this;
                     if (meta.hasData) {
-                        if (meta.data[0].number) {
-                            self.value = meta.data[0].number;
+                        if (meta.data[0].all[meta.dataFieldKey['number']]) {
+                            self.value = meta.data[0].all[meta.dataFieldKey['number']];
                         }
                     }
                 },
                 'blur': function () {
                     var self = this;
                     if (meta.hasData) {
-                        if (meta.data[0].name) {
-                            self.value = meta.data[0].name;
+                        if (meta.data[0].all[meta.dataFieldKey['name']]) {
+                            self.value = meta.data[0].all[meta.dataFieldKey['name']];
                         }
                     }
                 },
@@ -257,13 +259,13 @@
 
 
             var f7DefaultData = [{
-                ID: "",
+                id: "",
                 number: "",
                 name: ""
             }];
             //文本清空设置空数据
             $(meta.container).on('change input propertychange', function () {
-                if ($(this).find('input[data-role="label"]').val() == "") {
+                if ($(this).find('input[data-role="label"]').val() === '') {
                     meta.data = f7DefaultData;
                     emitter.fire(meta.container.getAttribute("id") + '.DialogEmpty', [f7DefaultData]);
                 }
@@ -306,7 +308,7 @@
             if (meta.container) {
                 var label = $(meta.container).find('[data-role="label"]')[0];
                 meta.data = data;
-                label.title = label.value = meta.data[0].name;
+                label.title = label.value = meta.data[0].all[meta.dataFieldKey['name']];
                 meta.hasData = true;
             }
 
@@ -348,7 +350,7 @@
         clearData: function () {
             //新增文本清空设置空数据
             var f7DefaultData = [{
-                ID: "",
+                id: "",
                 number: "",
                 name: ""
             }];
