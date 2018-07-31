@@ -4,6 +4,7 @@ import com.kingdee.hrp.sms.common.model.FormAction;
 import com.kingdee.hrp.sms.common.pojo.Condition;
 import com.kingdee.hrp.sms.common.pojo.FormTemplate;
 import com.kingdee.hrp.sms.common.pojo.Sort;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
 import java.io.IOException;
 import java.util.List;
@@ -128,4 +129,21 @@ public interface TemplateService {
      * @return 是否成功
      */
     Boolean forbid(Integer classId, List<Long> ids, Integer operateType);
+
+    /**
+     * 按条件导出列表
+     *
+     * @param classId    业务类型
+     * @param conditions 查询条件集合
+     * @param sorts      排序条件集合
+     */
+    HSSFWorkbook export(Integer classId, List<Condition> conditions, List<Sort> sorts);
+
+    /**
+     * 导出指定记录
+     *
+     * @param classId 业务类型
+     * @param ids     内码集合
+     */
+    HSSFWorkbook export(Integer classId, List<Long> ids);
 }

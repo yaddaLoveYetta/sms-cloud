@@ -1,8 +1,13 @@
 package com.kingdee.hrp.sms.common.service;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.kingdee.hrp.sms.common.enums.UserRoleType;
+import com.kingdee.hrp.sms.common.model.FormClassEntry;
+import com.kingdee.hrp.sms.common.model.FormField;
 import com.kingdee.hrp.sms.common.pojo.BillOperateType;
 import com.kingdee.hrp.sms.common.pojo.DisplayType;
+import com.kingdee.hrp.sms.common.pojo.FormTemplate;
 import com.kingdee.hrp.sms.common.pojo.MustInputType;
 import com.kingdee.hrp.sms.util.SessionUtil;
 import com.kingdee.hrp.sms.util.SnowFlake;
@@ -12,6 +17,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author yadda
@@ -89,6 +96,82 @@ public abstract class BaseService {
                 DisplayType.EDIT_SUPPLIER_SHOW.value();
         return maskAll;
 
+    }
+
+    /**
+     * 根据当前用户角色类别判断字段是否需要显示
+     *
+     * @param formField   字段模板
+     * @param operateType 操作类型 1：查看2：新增3：编辑 null：全部(查看|新增|编辑)
+     * @return 是否显示
+     */
+    protected Boolean isNeedDisplay(FormField formField, BillOperateType operateType) {
+
+        Integer display = formField.getDisplay();
+        Integer currentDisplayMask = getCurrentDisplayMask(operateType);
+
+        return (currentDisplayMask & display) == currentDisplayMask;
+
+    }
+
+    /**
+     * 根据当前用户角色类别，操作场景，获取可现实的字段模板，
+     *
+     * @param formTemplate 字段模板
+     * @param operateType  操作类型 1：查看2：新增3：编辑 null：全部(查看|新增|编辑)
+     * @return Map<String, FormField>
+     */
+    protected Map<String, FormField> getDisPlayField(FormTemplate formTemplate, BillOperateType operateType) {
+
+        Map<String, FormField> ret = Maps.newLinkedHashMap();
+
+        List<FormField> disPlayFieldList = getDisPlayFieldList(formTemplate, operateType);
+
+        disPlayFieldList.forEach(formField -> {
+            ret.put(formField.getKey(), formField);
+        });
+
+        return ret;
+    }
+
+    /**
+     * 根据当前用户角色类别，操作场景，获取可现实的字段模板，
+     *
+     * @param formTemplate 字段模板
+     * @param operateType  操作类型 1：查看2：新增3：编辑 null：全部(查看|新增|编辑)
+     * @return List<FormField>
+     */
+    protected List<FormField> getDisPlayFieldList(FormTemplate formTemplate, BillOperateType operateType) {
+
+        List<FormField> disPlayFieldList = Lists.newArrayList();
+
+        Map<Integer, Map<String, FormField>> formFields = formTemplate.getFormFields();
+
+        // 单据头字段先处理==========> 放前面
+        Map<String, FormField> formFieldHeader = formFields.get(0);
+
+        formFieldHeader.forEach((key, formField) -> {
+            // 只导出需要显示的字段 -所有操作场景(查看，新增，修改)
+            if (isNeedDisplay(formField, null)) {
+                disPlayFieldList.add(formField);
+            }
+        });
+
+        // 单据体字段================> 放后面
+        Map<Integer, FormClassEntry> formEntries = formTemplate.getFormClassEntry();
+
+        if (!formEntries.isEmpty()) {
+
+            Map<String, FormField> formFieldEntry = formFields.get(1);
+
+            formFieldEntry.forEach((key, formField) -> {
+                if (isNeedDisplay(formField, null)) {
+                    disPlayFieldList.add(formField);
+                }
+            });
+        }
+
+        return disPlayFieldList;
     }
 
     /**

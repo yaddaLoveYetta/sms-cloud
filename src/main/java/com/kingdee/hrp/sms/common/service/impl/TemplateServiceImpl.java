@@ -14,18 +14,17 @@ import com.kingdee.hrp.sms.common.enums.UserRoleType;
 import com.kingdee.hrp.sms.common.exception.BusinessLogicRunTimeException;
 import com.kingdee.hrp.sms.common.exception.PlugInRuntimeException;
 import com.kingdee.hrp.sms.common.model.*;
-import com.kingdee.hrp.sms.common.pojo.Condition;
-import com.kingdee.hrp.sms.common.pojo.FormTemplate;
-import com.kingdee.hrp.sms.common.pojo.Sort;
-import com.kingdee.hrp.sms.common.pojo.StatusCode;
+import com.kingdee.hrp.sms.common.pojo.*;
 import com.kingdee.hrp.sms.common.service.BaseService;
 import com.kingdee.hrp.sms.common.service.TemplateService;
 import com.kingdee.hrp.sms.common.service.plugin.PlugIn;
 import com.kingdee.hrp.sms.common.service.plugin.PlugInRet;
 import com.kingdee.hrp.sms.util.Common;
 import com.kingdee.hrp.sms.util.Environ;
+import com.kingdee.hrp.sms.util.ExcelUtil;
 import com.kingdee.hrp.sms.util.SessionUtil;
 import org.apache.commons.lang.StringUtils;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -826,6 +825,95 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
 
         return true;
 
+    }
+
+    /**
+     * 按条件导出列表
+     *
+     * @param classId    业务类型
+     * @param conditions 查询条件集合
+     * @param sorts      排序条件集合
+     */
+    @Override
+    public HSSFWorkbook export(Integer classId, List<Condition> conditions, List<Sort> sorts) {
+
+        FormTemplate formTemplate = getFormTemplate(classId, 1);
+
+        String[] title = getExportTitle(classId);
+        String[][] value = getExportValue(classId, conditions, sorts, title);
+
+        return ExcelUtil.getHSSFWorkbook(formTemplate.getFormClass().getName(), title, value, null);
+
+    }
+
+    /**
+     * 导出指定记录
+     *
+     * @param classId 业务类型
+     * @param ids     内码集合
+     */
+    @Override
+    public HSSFWorkbook export(Integer classId, List<Long> ids) {
+        return null;
+    }
+
+    /**
+     * 根据模板构建导出excel标题行
+     *
+     * @param classId 业务类型
+     * @return 标题行数组
+     */
+    private String[] getExportTitle(Integer classId) {
+
+        List<String> titles = new ArrayList<>(16);
+
+        FormTemplate formTemplate = getFormTemplate(classId, 1);
+        // 字段模板，按page归类
+        Map<Integer, Map<String, FormField>> formFields = formTemplate.getFormFields();
+        // 子表描述信息
+        Map<Integer, FormClassEntry> formEntries = formTemplate.getFormClassEntry();
+
+        // 单据头字段先处理==========> 放前面列
+        Map<String, FormField> formFieldHeader = formFields.get(0);
+
+        formFieldHeader.forEach((key, formField) -> {
+            // 只导出需要显示的字段 -所有操作场景(查看，新增，修改)
+            if (isNeedDisplay(formField, null)) {
+                titles.add(formField.getName());
+            }
+        });
+
+        // 单据体字段================> 放后面列
+
+        if (!formEntries.isEmpty()) {
+            // 存在子表，只导出第一个子表数据
+            Map<String, FormField> formFieldEntry = formFields.get(1);
+
+            formFieldEntry.forEach((key, formField) -> {
+                // 只导出需要显示的字段 -所有操作场景(查看，新增，修改)
+                if (isNeedDisplay(formField, null)) {
+                    titles.add(formField.getName());
+                }
+            });
+        }
+
+        String[] ret = new String[titles.size()];
+
+        return titles.toArray(ret);
+    }
+
+    /**
+     * 根据模板构建导出excel数据
+     *
+     * @param classId    业务类型
+     * @param conditions 查询条件集合
+     * @param sorts      排序条件集合
+     * @return 导出excel数据
+     */
+    private String[][] getExportValue(Integer classId, List<Condition> conditions, List<Sort> sorts, String[] titles) {
+
+        Map<String, Object> items = getItems(classId, conditions, sorts, Integer.MAX_VALUE, 1);
+        return null;
     }
 
     /**
@@ -1963,7 +2051,7 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
      * 如果page=-1则获取所有
      *
      * @param classId 业务类别
-     * @param page    page
+     * @param page    page -1获取所有字段模板
      * @return 指定page的字段模板
      */
     private Map<String, FormField> getFormFields(int classId, int page) {

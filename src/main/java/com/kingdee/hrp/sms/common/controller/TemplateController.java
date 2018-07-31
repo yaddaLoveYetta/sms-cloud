@@ -8,13 +8,19 @@ import com.kingdee.hrp.sms.common.pojo.Sort;
 import com.kingdee.hrp.sms.common.service.TemplateService;
 import com.kingdee.hrp.sms.util.JsonUtil;
 import org.apache.commons.lang.StringUtils;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -30,6 +36,8 @@ public class TemplateController {
 
     @Resource
     private TemplateService templateService;
+
+    private static Logger logger = LoggerFactory.getLogger(TemplateController.class);
 
     /**
      * 查询单据模板数据
@@ -242,6 +250,83 @@ public class TemplateController {
     @RequestMapping(value = "unCheck")
     public Boolean unCheck(Integer classId, List<Long> ids) {
         return null;
+    }
+
+    /**
+     * 按条件导出数据
+     *
+     * @param response  HttpServletResponse
+     * @param condition 查询条件
+     * @param sort      排序条件
+     */
+    @RequestMapping(value = "exportByCondition")
+    public void exportByCondition(HttpServletResponse response, Integer classId, String condition, String sort) {
+
+        if (classId <= 0) {
+            throw new BusinessLogicRunTimeException("参数错误：必须提交classId");
+        }
+
+        List<Condition> conditions = new ArrayList<>();
+        List<Sort> sorts = new ArrayList<>();
+
+        // 包装查询条件-方便操作
+        if (StringUtils.isNotBlank(condition)) {
+            conditions = JsonUtil.json2Collection(condition, List.class, Condition.class);
+        }
+        // 包装查询结果排序-方便操作
+        if (StringUtils.isNotBlank(sort)) {
+            sorts = JsonUtil.json2Collection(condition, List.class, Sort.class);
+        }
+
+        FormTemplate formTemplate = templateService.getFormTemplate(classId, 1);
+        // 导出的excel文件名
+        String fileName = formTemplate.getFormClass().getName();
+        //创建HSSFWorkbook
+        HSSFWorkbook wb = templateService.export(classId, conditions, sorts);
+
+        //响应到客户端
+        OutputStream os = null;
+        try {
+            this.setResponseHeader(response, fileName);
+            os = response.getOutputStream();
+            wb.write(os);
+
+        } catch (Exception e) {
+            logger.error("exportByCondition错误:{}", e.getMessage());
+        } finally {
+            if (os == null) {
+                try {
+                    os.flush();
+                    os.close();
+                } catch (Exception e) {
+                    logger.error("exportByCondition关闭流错误:{}", e.getMessage());
+                }
+
+            }
+        }
+
+    }
+
+    /**
+     * 发送响应流方法
+     *
+     * @param response HttpServletResponse
+     * @param fileName String
+     */
+    private void setResponseHeader(HttpServletResponse response, String fileName) {
+        try {
+            try {
+                fileName = new String(fileName.getBytes(), "utf-8");
+            } catch (UnsupportedEncodingException e) {
+                logger.error(e.getMessage(), e);
+            }
+            response.setContentType("application/octet-stream;charset=utf-8");
+            response.setHeader("Content-Disposition", "attachment;filename=" + fileName);
+            response.addHeader("Pargam", "no-cache");
+            response.addHeader("Cache-Control", "no-cache");
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+        }
     }
 
 }

@@ -7079,7 +7079,7 @@
 
         function showF7(field, cfg, container, rowNumb, colNumb, colModels) {
 
-            if (typeof field == 'object') {
+            if (typeof field === 'object') {
                 // 重载方法
                 var params = field;
                 field = params.field;
