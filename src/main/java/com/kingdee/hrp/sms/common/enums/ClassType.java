@@ -1,4 +1,4 @@
-package com.kingdee.hrp.sms.common.pojo;
+package com.kingdee.hrp.sms.common.enums;
 
 /**
  * 业务类型枚举

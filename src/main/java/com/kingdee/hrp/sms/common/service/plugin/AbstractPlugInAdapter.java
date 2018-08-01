@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.kingdee.hrp.sms.common.model.FormClass;
 import com.kingdee.hrp.sms.common.model.FormClassEntry;
 import com.kingdee.hrp.sms.common.model.FormField;
-import com.kingdee.hrp.sms.common.pojo.BillOperateType;
+import com.kingdee.hrp.sms.common.enums.BillOperateType;
 import com.kingdee.hrp.sms.common.pojo.Condition;
 import com.kingdee.hrp.sms.common.pojo.FormTemplate;
 import com.kingdee.hrp.sms.common.service.BaseService;

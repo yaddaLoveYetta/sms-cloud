@@ -905,17 +905,16 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
         Map<String, Object> items = getItems(classId, conditions, sorts, Integer.MAX_VALUE, 1);
 
         // 导出的单据数量
-        int count = (int) items.get("count");
+        int count = Integer.valueOf(items.get("count").toString());
         // 导出数据
         List<Map<String, Object>> list = (List<Map<String, Object>>) items.get("list");
         // 列数(导出的字段数量)
         int column = disPlayFieldList.size();
 
         // (ret中)已经打包好的数据行数
-        int dataIndex = 0;
+        int dataIndex = 1;
         for (int i = 0; i < list.size(); i++) {
 
-            dataIndex++;
             // excel一行数据
             Map<String, Object> lineData = Maps.newLinkedHashMap();
 
@@ -931,12 +930,15 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
                 }
             });
 
+            // 用于迭代分录
+            int k = 0;
+
             if (!formTemplate.getFormClassEntry().isEmpty()) {
                 // 存在子表，导出第一个子表数据
                 List<Map<String, Object>> entryItems = ((Map<String, ArrayList<Map<String, Object>>>) item.get("entry"))
                         .get("1");
 
-                for (int k = 0; k < entryItems.size(); k++) {
+                for (; k < entryItems.size(); k++) {
 
                     // 一条子表数据
                     Map<String, Object> entryItem = entryItems.get(k);
@@ -953,7 +955,7 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
                     } else {
 
                         // 第二行开始要新增一行，该行无表头值
-                        int newEntryLine = dataIndex++;
+                        int newEntryLine = dataIndex + k;
                         Map<String, Object> newExportLineData = new HashMap<>(8);
 
                         disPlayFieldList.forEach((FormField formField) -> {
@@ -962,7 +964,7 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
                                 newExportLineData.put(formField.getKey(), entryItem.get(formField.getKey()));
                             }
                         });
-
+                        // 不带主表信息的分录数据
                         values.put(newEntryLine, newExportLineData);
 
                     }
@@ -972,6 +974,10 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
 
             // 带主表信息的行数据
             values.put(dataIndex, lineData);
+
+            // 重新定位下一张单据数据导出时excel起始行
+            dataIndex += k;
+
         }
 
         return values;

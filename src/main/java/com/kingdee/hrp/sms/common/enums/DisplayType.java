@@ -1,4 +1,4 @@
-package com.kingdee.hrp.sms.common.pojo;
+package com.kingdee.hrp.sms.common.enums;
 
 /**
  * 显示性控制

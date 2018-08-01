@@ -47,6 +47,9 @@ public enum CtrlType {
         this.name = name;
     }
 
+    public int value() {
+        return this.number;
+    }
 
     private CtrlType(int number, String name) {
         this.number = number;

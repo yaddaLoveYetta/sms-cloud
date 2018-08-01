@@ -1,5 +1,6 @@
 package com.kingdee.hrp.sms.util;
 
+import com.kingdee.hrp.sms.common.enums.CtrlType;
 import com.kingdee.hrp.sms.common.model.FormField;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
@@ -101,16 +102,23 @@ public class ExcelUtil {
         }
 
         //创建内容
-        for (int i = 0; i < values.size(); i++) {
+        for (int i = 1; i <= values.size(); i++) {
 
-            row = sheet.createRow(i + 1);
+            // 数据行从1看是计数
+            row = sheet.createRow(i);
             Map<String, Object> lineData = values.get(i);
 
             for (int k = 0; k < title.size(); k++) {
 
                 FormField formField = title.get(k);
+                String key = formField.getKey();
 
-                Object data = lineData.get(formField.getKey());
+                if (formField.getCtrlType() == CtrlType.F7.value()) {
+                    // F7类型导出名称
+                    key = key + "_DspName";
+                }
+
+                Object data = lineData.get(key);
 
                 if (null == data) {
                     // 分录行数据第一行与表头共用，其他行不显示表头数据
