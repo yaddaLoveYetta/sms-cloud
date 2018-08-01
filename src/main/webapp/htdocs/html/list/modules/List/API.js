@@ -63,7 +63,7 @@ define('List/API', function (require, module, exports) {
                 body: {
                     'total': bodyData.count,
 
-                    'items': bodyData.total === 0 ? '' : $.Array.keep(bodyItems, function (row, no) { //行
+                    'items': bodyData.count === 0 ? '' : $.Array.keep(bodyItems, function (row, no) { //行
 
                         //过滤出 visible: true 的项
                         row.items = $.Array.grep(row.items, function (item, index) { //列
