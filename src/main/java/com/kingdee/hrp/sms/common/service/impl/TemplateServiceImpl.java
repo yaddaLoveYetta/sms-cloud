@@ -24,6 +24,7 @@ import com.kingdee.hrp.sms.util.Common;
 import com.kingdee.hrp.sms.util.Environ;
 import com.kingdee.hrp.sms.util.ExcelUtil;
 import com.kingdee.hrp.sms.util.SessionUtil;
+import com.sun.tools.corba.se.idl.StringGen;
 import org.apache.commons.lang.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.slf4j.Logger;
@@ -847,9 +848,11 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
         List<FormField> disPlayFieldList = getDisPlayFieldList(formTemplate, null);
 
         String[] title = getExportTitle(disPlayFieldList);
-        String[][] value = getExportValue(classId, conditions, sorts, disPlayFieldList);
 
-        return ExcelUtil.getHSSFWorkbook(formTemplate.getFormClass().getName(), title, value, null);
+        Map<Integer, Map<String, Object>> values = getExportValue(classId, conditions, sorts, disPlayFieldList,
+                formTemplate);
+
+        return ExcelUtil.getHSSFWorkbook(formTemplate.getFormClass().getName(), disPlayFieldList, values, null);
 
     }
 
@@ -893,11 +896,11 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
      * @return 导出excel数据
      */
     @SuppressWarnings("unchecked")
-    private String[][] getExportValue(Integer classId, List<Condition> conditions, List<Sort> sorts,
-            List<FormField> disPlayFieldList) {
+    private Map<Integer, Map<String, Object>> getExportValue(Integer classId, List<Condition> conditions,
+            List<Sort> sorts, List<FormField> disPlayFieldList, FormTemplate formTemplate) {
 
         // 导出数据，类似二维数组，第一维行，第二维列(行数不固定，数组结构不合适)
-        Map<Integer, Map<String, Object>> ret = Maps.newLinkedHashMap();
+        Map<Integer, Map<String, Object>> values = Maps.newLinkedHashMap();
 
         Map<String, Object> items = getItems(classId, conditions, sorts, Integer.MAX_VALUE, 1);
 
@@ -908,71 +911,70 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
         // 列数(导出的字段数量)
         int column = disPlayFieldList.size();
 
-        String[][] values = new String[count][];
-
         // (ret中)已经打包好的数据行数
         int dataIndex = 0;
         for (int i = 0; i < list.size(); i++) {
 
             dataIndex++;
             // excel一行数据
-            Map<String, Object> lineData = new HashMap<>(16);
+            Map<String, Object> lineData = Maps.newLinkedHashMap();
 
             // 迭代每一条单据数据
 
             Map<String, Object> item = list.get(i);
 
-            values[i] = new String[column];
+            disPlayFieldList.forEach(formField -> {
 
-            for (int j = 0; j < column; j++) {
-
-                // 迭代每行的每列数据,disPlayFieldList中保证了单据头(page=0)的字段在前面
-
-                FormField formField = disPlayFieldList.get(j);
-
-                Integer page = formField.getPage();
-
-                if (0 == page) {
-                    // 主表
-                    String value = item.get(formField.getKey()).toString();
-
-                    values[i][j] = value;
-
+                if (0 == formField.getPage()) {
+                    // 先把单据头字段打包成一行
                     lineData.put(formField.getKey(), item.get(formField.getKey()));
+                }
+            });
 
-                } else if (1 == page) {
-                    // 第一个子表
-                    List<Map<String, Object>> entryItems = ((Map<String, ArrayList<Map<String, Object>>>) item
-                            .get("entry")).get("1");
+            if (!formTemplate.getFormClassEntry().isEmpty()) {
+                // 存在子表，导出第一个子表数据
+                List<Map<String, Object>> entryItems = ((Map<String, ArrayList<Map<String, Object>>>) item.get("entry"))
+                        .get("1");
 
-                    for (int k = 0; k < entryItems.size(); k++) {
-                        // 一条子表数据
-                        Map<String, Object> entryItem = entryItems.get(k);
+                for (int k = 0; k < entryItems.size(); k++) {
 
-                        String value = entryItem.get(formField.getKey()).toString();
+                    // 一条子表数据
+                    Map<String, Object> entryItem = entryItems.get(k);
 
-                        // 子表数据占多行
-                        if (k == 0) {
-                            //子表记录第一行已表头共用
-                            values[i][j] = value;
-                        } else {
-                            // 第二行开始要新增一行，改行表头值""
-                            values[i + k] = new String[column];
-                            values[i + k][j] = value;
-                        }
+                    if (k == 0) {
+                        //子表记录第一行与表头共用
+                        disPlayFieldList.forEach((FormField formField) -> {
+
+                            if (1 == formField.getPage()) {
+                                lineData.put(formField.getKey(), entryItem.get(formField.getKey()));
+                            }
+                        });
+
+                    } else {
+
+                        // 第二行开始要新增一行，该行无表头值
+                        int newEntryLine = dataIndex++;
+                        Map<String, Object> newExportLineData = new HashMap<>(8);
+
+                        disPlayFieldList.forEach((FormField formField) -> {
+
+                            if (1 == formField.getPage()) {
+                                newExportLineData.put(formField.getKey(), entryItem.get(formField.getKey()));
+                            }
+                        });
+
+                        values.put(newEntryLine, newExportLineData);
+
                     }
-
-                } else {
-                    // 只支持主表与第一个子表数据导出，其他子表忽略
-                    logger.info("只支持主表与第一个子表数据导出，其他子表忽略");
-                    continue;
                 }
 
             }
 
+            // 带主表信息的行数据
+            values.put(dataIndex, lineData);
         }
 
-        return null;
+        return values;
     }
 
     /**
