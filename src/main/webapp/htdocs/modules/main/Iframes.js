@@ -74,7 +74,7 @@ define('Iframes', function (require, module, exports) {
 
         var clientHeight = document.documentElement.clientHeight; //浏览器窗口可视区域
         var iframeTop = $(div).offset().top;
-        var footerHeight = 10;
+        var footerHeight = 50;
 
         var minHeight = clientHeight - iframeTop - footerHeight;
 
@@ -96,7 +96,8 @@ define('Iframes', function (require, module, exports) {
             ht = ht + 20;
             ht = Math.max(minHeight, ht);
 
-            iframe.style.height = ht + 'px';
+            /*iframe.style.height = ht + 'px';*/
+            iframe.style.height = minHeight + 'px';
         }
 
         function start(iframe) {
