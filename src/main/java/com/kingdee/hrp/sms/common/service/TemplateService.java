@@ -1,5 +1,6 @@
 package com.kingdee.hrp.sms.common.service;
 
+import com.kingdee.hrp.sms.common.enums.BillOperateType;
 import com.kingdee.hrp.sms.common.model.FormAction;
 import com.kingdee.hrp.sms.common.pojo.Condition;
 import com.kingdee.hrp.sms.common.pojo.FormTemplate;
@@ -28,11 +29,11 @@ public interface TemplateService {
      * 获取基础资料/单据定义的功能操作列表
      *
      * @param classId 业务类型
-     * @param type    获取按钮的场景 ( 0:查看(列表)1:(新增)2:(编辑)默认0)
+     * @param operateType    获取按钮的场景 ( 0:查看(列表)1:(新增)2:(编辑)默认0)
      * @return 功能操作列表
      */
 
-    List<FormAction> getFormAction(Integer classId, Integer type);
+    List<FormAction> getFormAction(Integer classId, BillOperateType operateType);
 
     /**
      * 通过模板获取业务数据

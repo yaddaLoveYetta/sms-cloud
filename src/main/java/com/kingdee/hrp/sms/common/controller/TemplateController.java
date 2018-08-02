@@ -1,5 +1,6 @@
 package com.kingdee.hrp.sms.common.controller;
 
+import com.kingdee.hrp.sms.common.enums.BillOperateType;
 import com.kingdee.hrp.sms.common.exception.BusinessLogicRunTimeException;
 import com.kingdee.hrp.sms.common.model.FormAction;
 import com.kingdee.hrp.sms.common.pojo.Condition;
@@ -66,10 +67,12 @@ public class TemplateController {
     public List<FormAction> getFormAction(Integer classId, @RequestParam(defaultValue = "0") Integer type) {
 
         //0:查看(列表)1:(新增)2:(编辑)
-        if (type < 0 || type > 2) {
+        BillOperateType operateType = BillOperateType.getBillOperateType(type);
+
+        if (operateType == BillOperateType.NOT_SUPPORT) {
             throw new BusinessLogicRunTimeException("type类型错误!");
         }
-        return templateService.getFormAction(classId, type);
+        return templateService.getFormAction(classId, operateType);
     }
 
     /**
@@ -280,7 +283,7 @@ public class TemplateController {
 
         FormTemplate formTemplate = templateService.getFormTemplate(classId, 1);
         // 导出的excel文件名
-        String fileName = formTemplate.getFormClass().getName();
+        String fileName = formTemplate.getFormClass().getName() + ".xls";
         //创建HSSFWorkbook
         HSSFWorkbook wb = templateService.export(classId, conditions, sorts);
 
@@ -316,14 +319,20 @@ public class TemplateController {
     private void setResponseHeader(HttpServletResponse response, String fileName) {
         try {
             try {
-                fileName = new String(fileName.getBytes(), "utf-8");
+                //fileName = new String(fileName.getBytes(), "utf-8");
+                fileName = new String(fileName.getBytes("utf-8"), "ISO-8859-1");
             } catch (UnsupportedEncodingException e) {
                 logger.error(e.getMessage(), e);
             }
+            // 指定返回的是一个不能被客户端读取的流，必须被下载
             response.setContentType("application/octet-stream;charset=utf-8");
-            response.setHeader("Content-Disposition", "attachment;filename=" + fileName);
+            response.setHeader("Content-Disposition", "attachment;filename=\"" + fileName + "\"");
             response.addHeader("Pargam", "no-cache");
             response.addHeader("Cache-Control", "no-cache");
+
+            // 添加头信息，指定文件大小，让浏览器能够显示下载进度
+            //response.addHeader("Content-Length", file.Length.ToString());
+
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
         }

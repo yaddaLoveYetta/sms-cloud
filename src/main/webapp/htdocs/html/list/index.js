@@ -74,8 +74,8 @@
         if (item) {
             dialog.setData([{
                 'id': item[primaryKey],
-/*                'name': item.name,
-                'number': item.number || '',*/
+                /*                'name': item.name,
+                                'number': item.number || '',*/
                 'all': item // 保留一份完整数据
             }]);
         }
@@ -417,22 +417,13 @@
             // 导出 TODO
             'export': function (item, index) {
 
-                var conditions = getCondition();
-                var conditionArray = new Array();
-                for (var item in conditions) {
-                    if (conditions[item] === '') {
-                        continue;
-                    }
-                    conditionArray.push(conditions[item]);
-                }
-
-                var api = new API("file/export");
+                var api = new API("template/exportByCondition");
 
                 var url = api.getUrl();
                 url = $.Url.addQueryString(url, {
                     classId: classId,
-                    condition: $.Object.toJson(conditionArray),
-                })
+                    condition: conditions.concat(dialogConditions)
+                });
 
                 //定义一个form表单
                 var form = $("<form>");

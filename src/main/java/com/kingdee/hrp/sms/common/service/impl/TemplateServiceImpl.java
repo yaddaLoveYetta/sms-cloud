@@ -10,6 +10,7 @@ import com.kingdee.hrp.sms.common.dao.generate.FormActionMapper;
 import com.kingdee.hrp.sms.common.dao.generate.FormClassEntryMapper;
 import com.kingdee.hrp.sms.common.dao.generate.FormClassMapper;
 import com.kingdee.hrp.sms.common.dao.generate.FormFieldMapper;
+import com.kingdee.hrp.sms.common.enums.BillOperateType;
 import com.kingdee.hrp.sms.common.enums.CtrlType;
 import com.kingdee.hrp.sms.common.enums.UserRoleType;
 import com.kingdee.hrp.sms.common.exception.BusinessLogicRunTimeException;
@@ -24,7 +25,6 @@ import com.kingdee.hrp.sms.util.Common;
 import com.kingdee.hrp.sms.util.Environ;
 import com.kingdee.hrp.sms.util.ExcelUtil;
 import com.kingdee.hrp.sms.util.SessionUtil;
-import com.sun.tools.corba.se.idl.StringGen;
 import org.apache.commons.lang.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.slf4j.Logger;
@@ -144,75 +144,20 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
     /**
      * 获取基础资料/单据定义的功能操作列表
      *
-     * @param classId 业务类型
-     * @param type    获取按钮的场景 ( 0:查看(列表)1:(新增)2:(编辑)默认0)
+     * @param classId     业务类型
+     * @param operateType 获取按钮的场景 ( 0:查看(列表)1:(新增)2:(编辑)默认0)
      * @return 功能操作列表
      */
     @Override
-    public List<FormAction> getFormAction(Integer classId, Integer type) {
+    public List<FormAction> getFormAction(Integer classId, BillOperateType operateType) {
 
         UserRoleType userRoleType = SessionUtil.getUserRoleType();
 
         // 按钮可用性-跟FormFields 模板中display字段配置规则一致
         int ownerType = userRoleType == UserRoleType.SYSTEM ? 1 : userRoleType == UserRoleType.HOSPITAL ? 2 : 4;
-        // 按钮显示性
-        int display = 0;
 
-        if (type == 0) {
-            // 查看
-            switch (userRoleType) {
-            case SYSTEM:
-                //系统管理员
-                display = 1;
-                break;
-            case HOSPITAL:
-                //医院
-                display = 64;
-                break;
-            case SUPPLIER:
-                //供应商
-                display = 8;
-                break;
-            default:
-                break;
-            }
-        } else if (type == 1) {
-            // 新增
-            switch (userRoleType) {
-            case SYSTEM:
-                //系统管理员
-                display = 2;
-                break;
-            case HOSPITAL:
-                //医院
-                display = 128;
-                break;
-            case SUPPLIER:
-                //供应商
-                display = 16;
-                break;
-            default:
-                break;
-            }
-        } else if (type == 2) {
-            // 编辑
-            switch (userRoleType) {
-            case SYSTEM:
-                //系统管理员
-                display = 4;
-                break;
-            case HOSPITAL:
-                //医院
-                display = 256;
-                break;
-            case SUPPLIER:
-                //供应商
-                display = 32;
-                break;
-            default:
-                break;
-            }
-        }
+        // 按钮显示性(根据用户角色类别确定)
+        int display = getCurrentDisplayMask(operateType);
 
         FormActionMapper formActionMapper = sqlSession.getMapper(FormActionMapper.class);
 
@@ -926,7 +871,14 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
 
                 if (0 == formField.getPage()) {
                     // 先把单据头字段打包成一行
-                    lineData.put(formField.getKey(), item.get(formField.getKey()));
+                    String key = formField.getKey();
+                    if (formField.getCtrlType() == CtrlType.F7.value()) {
+                        // 引用类型导出名称
+                        key = key + "_DspName";
+                        lineData.put(formField.getKey(), item.get(formField.getKey()));
+                    }
+
+                    lineData.put(key, item.get(key));
                 }
             });
 
@@ -948,7 +900,14 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
                         disPlayFieldList.forEach((FormField formField) -> {
 
                             if (1 == formField.getPage()) {
-                                lineData.put(formField.getKey(), entryItem.get(formField.getKey()));
+
+                                String key = formField.getKey();
+                                if (formField.getCtrlType() == CtrlType.F7.value()) {
+                                    // 引用类型导出名称
+                                    key = key + "_DspName";
+                                    lineData.put(formField.getKey(), entryItem.get(formField.getKey()));
+                                }
+                                lineData.put(key, entryItem.get(key));
                             }
                         });
 
@@ -958,10 +917,20 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
                         int newEntryLine = dataIndex + k;
                         Map<String, Object> newExportLineData = new HashMap<>(8);
 
+                        // 增加一个标记值，标示改行是纯分录数据
+                        newExportLineData.put("$entryData", true);
+
                         disPlayFieldList.forEach((FormField formField) -> {
 
                             if (1 == formField.getPage()) {
-                                newExportLineData.put(formField.getKey(), entryItem.get(formField.getKey()));
+
+                                String key = formField.getKey();
+                                if (formField.getCtrlType() == CtrlType.F7.value()) {
+                                    // 引用类型导出名称
+                                    key = key + "_DspName";
+                                    newExportLineData.put(formField.getKey(), entryItem.get(formField.getKey()));
+                                }
+                                newExportLineData.put(key, entryItem.get(key));
                             }
                         });
                         // 不带主表信息的分录数据

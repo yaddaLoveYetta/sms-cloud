@@ -132,7 +132,7 @@ define('List/API/Head', function (require, module, exports) {
 
     }
 
-    function getformFildItems(formFields) {
+    function getFormFieldItems(formFields) {
 
 
         if (headItems.length > 0) {
@@ -192,7 +192,7 @@ define('List/API/Head', function (require, module, exports) {
     return {
         get: get,
         getItems: getItems,
-        getformFildItems: getformFildItems,
+        getFormFieldItems: getFormFieldItems,
         getFilterItem: getFilterItem
     };
 
