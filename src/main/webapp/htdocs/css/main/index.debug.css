@@ -715,7 +715,18 @@ body {
 
 .app-aside {
     float: left;
+    height: 100%;
+    /*overflow: hidden !important;*/
+    overflow-x: hidden;
+    overflow-y: auto;
 }
+
+/*.app-aside > .aside-wrap > .navi-wrap {
+    width: 220px;
+    overflow:scroll;
+    overflow-x: hidden !important;
+    overflow-y: scroll !important;
+}*/
 
 .app-aside:before {
     position: absolute;
