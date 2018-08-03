@@ -615,9 +615,9 @@ define('FormEdit', function (require, module, exports) {
                     container: document.getElementById(field.key),
                     title: field.name,
                     dataFieldKey: { // 控件label有焦点时显示代码，无焦点时显示名称效果
-                        'id': field.srcField,    // F7控件关联资料的id key
-                        'name': field.displayField, // F7控件无焦点时显示的字段key
-                        'number': field.displayExt // F7有焦点时显示的字段key
+                        'id': field.srcField,    // F7控件关联资料的id 值
+                        'name': field.key+'_DspName', // F7控件无焦点时显示的字段key
+                        'number':  field.key+'_NmbName' // F7有焦点时显示的字段key
                     },
 
                     defaults: {
@@ -1188,9 +1188,9 @@ define('FormEdit', function (require, module, exports) {
             }
             if (field['ctrlType'] == 6) { // F7选择框
                 var selector = selectors[keyName];
-                var selectorID = selector.getData()[0]['ID'];
+                var selectorId = selector.getData()[0]['id'];
 
-                if (!selectorID) {
+                if (!selectorId) {
                     if (isMustFiled(isUpdate, field)) {
                         var msg = field['name'] + '为必填项';
                         errorData[keyName] = msg;
@@ -1199,7 +1199,7 @@ define('FormEdit', function (require, module, exports) {
                         successData[keyName] = '';
                     }
                 } else {
-                    successData[keyName] = selectorID;
+                    successData[keyName] = selectorId;
                 }
                 continue;
             }
@@ -1575,7 +1575,8 @@ define('FormEdit', function (require, module, exports) {
                     var selectorData = [{
                         id: value,
                         number: data[keyName + '_NmbName'],
-                        name: data[keyName + '_DspName']
+                        name: data[keyName + '_DspName'],
+                        all: data
                     }];
                     selectors[keyName].setData(selectorData);
                     break;
@@ -1655,7 +1656,8 @@ define('FormEdit', function (require, module, exports) {
                 var selectorData = [{
                     id: '',
                     number: '',
-                    name: ''
+                    name: '',
+                    all:''
                 }];
 
                 selectors[keyName].setData(selectorData);

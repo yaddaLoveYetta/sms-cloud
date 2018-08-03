@@ -7036,20 +7036,20 @@
                 var meta = mapper.get(this);
 
                 console.log("ellipsis");
-                var $_comboAuto = $(this).next();
+                var $container = $(this).next();
                 var gridRow = bdGrid.jqGrid('getGridParam');
                 var rowNumb = gridRow.selrow;
                 var colModels = gridRow.colModel;
                 // var colNumb = cfg.curCell.col;
                 var colNumb = gridRow.iCol;
 
-                // showF7(colModels[colNumb].data, emitter, $_comboAuto,
+                // showF7(colModels[colNumb].data, emitter, $container,
                 // rowNumb, colNumb, colModels);
 
                 showF7({
                     field: colModels[colNumb].fieldInfo,
                     cfg: cfg,
-                    container: $_comboAuto,
+                    container: $container,
                     rowNumb: rowNumb,
                     colNumb: colNumb,
                     colModels: colModels
@@ -7071,9 +7071,23 @@
             });
             //默认的单元格点击行为
             bdGrid.on('click', '.txt_context', function (e) {
+
+                var rowId = $(this).parent().data('id');
+                var row = bdGrid.jqGrid('getRowData', rowId);
+
+                var gridRow = bdGrid.jqGrid('getGridParam');
+                var colModels = gridRow.colModel;
+                var colNumb = gridRow.iCol;
+
+                var field = colModels[colNumb].fieldInfo;
+
+                if (row[field.key + '_NmbName']) {
+                    $(this).val(row[field.key + '_NmbName']);
+                }
+
                 // 选中内容
-                this.onfocus();
-                this.select();
+                /*this.onfocus();
+                this.select();*/
             });
         }
 
@@ -7145,6 +7159,17 @@
                             if (idModel) {
                                 //cfg.grid.setCell(row, idModel.name, data[0].id);
                                 cfg.grid.setCell(row, idModel.name, data[0].all[field.srcField]);
+                            }
+
+                            // 显示的名称
+                            idModel = cfg.grid.getColProp(field.key + '_DspName');
+                            if (idModel) {
+                                cfg.grid.setCell(row, idModel.name, data[0].all[field.displayField]);
+                            }
+                            // 显示的扩展属性
+                            idModel = cfg.grid.getColProp(field.key + '_NmbName');
+                            if (idModel) {
+                                cfg.grid.setCell(row, idModel.name, data[0].all[field.displayExt]);
                             }
 
                             // 显示字段

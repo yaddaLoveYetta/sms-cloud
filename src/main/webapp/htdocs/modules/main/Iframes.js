@@ -81,22 +81,6 @@ define('Iframes', function (require, module, exports) {
         function setHeight(iframe) {
 
             current = iframe;
-
-            var body;
-            try {
-                body = iframe.contentDocument.body;
-            } catch (e) {
-
-            }
-            if (!body) { //IE 下未加载完的为 null
-                return;
-            }
-
-            var ht = body.offsetHeight;
-            ht = ht + 20;
-            ht = Math.max(minHeight, ht);
-
-            /*iframe.style.height = ht + 'px';*/
             iframe.style.height = minHeight + 'px';
         }
 
@@ -118,7 +102,8 @@ define('Iframes', function (require, module, exports) {
             clearTimeout(tid);
             setHeight(current);
 
-            tid = setTimeout(function () { //窗口大小变化停止一定时间后才重新启动定时器
+            tid = setTimeout(function () {
+                //窗口大小变化停止一定时间后才重新启动定时器
                 start(current);
             }, 500);
 
@@ -128,10 +113,10 @@ define('Iframes', function (require, module, exports) {
         // adaptHeight = 
         return function (iframe) {
 
-            if (typeof iframe == 'number') { //传进来的 iframe 是一个 index
+            if (typeof iframe == 'number') {
+                //传进来的 iframe 是一个 index
                 iframe = getIframe(iframe); 
             }
-
             start(iframe);
         };
 
@@ -164,9 +149,9 @@ define('Iframes', function (require, module, exports) {
         var url = MiniQuery.Url.randomQueryString(item.url);
         //填充
         var html = $.String.format(sample, {
-            'sn': item.id, //
+            'sn': item.id,
             'id': getIframeId(item),
-            'index': lastIndex(),
+            'index': lastIndex()
         });
 
         $(div).append(html); //创建 iframe 的 DOM 节点
