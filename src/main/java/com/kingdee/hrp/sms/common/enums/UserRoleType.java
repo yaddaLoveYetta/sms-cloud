@@ -43,6 +43,10 @@ public enum UserRoleType {
         this.name = name;
     }
 
+    public int value() {
+        return this.number;
+    }
+
     UserRoleType(int number, String name) {
         this.number = number;
         this.name = name;

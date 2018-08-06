@@ -54,7 +54,7 @@ public class UserServiceImpl extends BaseService implements UserService {
      * @param registerModel 用户注册信息
      */
     @Override
-    @Transactional(rollbackFor = {Exception.class})
+    @Transactional(rollbackFor = { Exception.class })
     public void register(RegisterModel registerModel) throws IOException {
 
         // 1:参数校验
@@ -177,7 +177,7 @@ public class UserServiceImpl extends BaseService implements UserService {
     }
 
     @Override
-    @Transactional(rollbackFor = {Exception.class})
+    @Transactional(rollbackFor = { Exception.class })
     public Boolean editPwd(Long userId, String oldPwd, String newPwd) {
 
         User user = null;
@@ -378,7 +378,7 @@ public class UserServiceImpl extends BaseService implements UserService {
      * @return list
      */
     private List<Map<String, Object>> toTree(List<Menu> menus, List<FormAction> formActions,
-                                             Map<Integer, AccessControl> accessControlsMap, int parentId, Role role) {
+            Map<Integer, AccessControl> accessControlsMap, int parentId, Role role) {
 
         List<Map<String, Object>> ret = new ArrayList<>();
 
@@ -481,7 +481,7 @@ public class UserServiceImpl extends BaseService implements UserService {
      */
     @Override
     public Map<String, Object> getMessage(Integer userRoleType, Long org, Integer type, Integer pageSize,
-                                          Integer pageNo) {
+            Integer pageNo) {
 
         Map<String, Object> ret = new HashMap<>(16);
 
@@ -661,13 +661,13 @@ public class UserServiceImpl extends BaseService implements UserService {
             throw new BusinessLogicRunTimeException("缺少手机号码");
         }
 
-        if (registerModel.getUserType() == UserRoleType.HOSPITAL.getNumber().intValue()
+        if (registerModel.getUserType() == UserRoleType.HOSPITAL.value()
                 && StringUtils.isBlank(registerModel.getRegistrationNo())) {
             logger.error("缺少医疗机构登记号");
             throw new BusinessLogicRunTimeException("缺少医疗机构登记号");
         }
 
-        if (registerModel.getUserType() == UserRoleType.SUPPLIER.getNumber().intValue()
+        if (registerModel.getUserType() == UserRoleType.SUPPLIER.value()
                 && StringUtils.isBlank(registerModel.getCreditCode())) {
             logger.error("缺少企业统一信用代码");
             throw new BusinessLogicRunTimeException("缺少企业统一信用代码");
