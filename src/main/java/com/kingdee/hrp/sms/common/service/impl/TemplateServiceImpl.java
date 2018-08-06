@@ -790,11 +790,13 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
 
         FormTemplate formTemplate = getFormTemplate(classId, 1);
 
+        Map<String, Object> exportData = getItems(classId, conditions, sorts, Integer.MAX_VALUE, 1);
+
         List<FormField> disPlayFieldList = getDisPlayFieldList(formTemplate, null);
 
         String[] title = getExportTitle(disPlayFieldList);
 
-        Map<Integer, Map<String, Object>> values = getExportValue(classId, conditions, sorts, disPlayFieldList,
+        Map<Integer, Map<String, Object>> values = getExportValue(classId, exportData, disPlayFieldList,
                 formTemplate);
 
         return ExcelUtil.getHSSFWorkbook(formTemplate.getFormClass().getName(), disPlayFieldList, values, null);
@@ -805,11 +807,27 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
      * 导出指定记录
      *
      * @param classId 业务类型
-     * @param ids     内码集合
+     * @param idList  内码集合
      */
     @Override
-    public HSSFWorkbook export(Integer classId, List<Long> ids) {
-        return null;
+    public HSSFWorkbook export(Integer classId, List<Long> idList) {
+
+        FormTemplate formTemplate = getFormTemplate(classId, 1);
+
+        List<FormField> disPlayFieldList = getDisPlayFieldList(formTemplate, null);
+
+        String[] title = getExportTitle(disPlayFieldList);
+
+        List<Map<String, Object>> itemByIds = getItemByIds(classId, idList, null, null);
+
+        Map<String, Object> exportData = new HashMap<>(4);
+        exportData.put("count", itemByIds.size());
+        exportData.put("list", itemByIds);
+
+        Map<Integer, Map<String, Object>> values = getExportValue(classId, exportData, disPlayFieldList, formTemplate);
+
+        return ExcelUtil.getHSSFWorkbook(formTemplate.getFormClass().getName(), disPlayFieldList, values, null);
+
     }
 
     /**
@@ -835,24 +853,22 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
      * 根据模板构建导出excel数据
      *
      * @param classId          业务类型
-     * @param conditions       查询条件集合
-     * @param sorts            排序条件集合
+     * @param exportData       导出的数据
      * @param disPlayFieldList 需导出的字段模板信息
+     * @param formTemplate     模板数据
      * @return 导出excel数据
      */
     @SuppressWarnings("unchecked")
-    private Map<Integer, Map<String, Object>> getExportValue(Integer classId, List<Condition> conditions,
-            List<Sort> sorts, List<FormField> disPlayFieldList, FormTemplate formTemplate) {
+    private Map<Integer, Map<String, Object>> getExportValue(Integer classId, Map<String, Object> exportData,
+            List<FormField> disPlayFieldList, FormTemplate formTemplate) {
 
         // 导出数据，类似二维数组，第一维行，第二维列(行数不固定，数组结构不合适)
         Map<Integer, Map<String, Object>> values = Maps.newLinkedHashMap();
 
-        Map<String, Object> items = getItems(classId, conditions, sorts, Integer.MAX_VALUE, 1);
-
         // 导出的单据数量
-        int count = Integer.valueOf(items.get("count").toString());
+        int count = Integer.valueOf(exportData.get("count").toString());
         // 导出数据
-        List<Map<String, Object>> list = (List<Map<String, Object>>) items.get("list");
+        List<Map<String, Object>> list = (List<Map<String, Object>>) exportData.get("list");
         // 列数(导出的字段数量)
         int column = disPlayFieldList.size();
 

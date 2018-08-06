@@ -144,7 +144,7 @@ public interface TemplateService {
      * 导出指定记录
      *
      * @param classId 业务类型
-     * @param ids     内码集合
+     * @param idList     内码集合
      */
-    HSSFWorkbook export(Integer classId, List<Long> ids);
+    HSSFWorkbook export(Integer classId, List<Long> idList);
 }

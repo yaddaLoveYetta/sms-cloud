@@ -259,6 +259,7 @@ public class TemplateController {
      * 按条件导出数据
      *
      * @param response  HttpServletResponse
+     * @param classId   业务类型
      * @param condition 查询条件
      * @param sort      排序条件
      */
@@ -288,6 +289,45 @@ public class TemplateController {
         HSSFWorkbook wb = templateService.export(classId, conditions, sorts);
 
         //响应到客户端
+        returnResult(response, fileName, wb);
+
+    }
+
+    /**
+     * 选择id导出数据
+     *
+     * @param response HttpServletResponse
+     * @param classId  业务类型
+     * @param ids      id集合
+     */
+    @RequestMapping(value = "exportById")
+    public void exportById(HttpServletResponse response, Integer classId, String ids) {
+
+        if (classId <= 0) {
+            throw new BusinessLogicRunTimeException("参数错误：必须提交classId");
+        }
+
+        List<Long> idList = new ArrayList<>();
+
+        if (StringUtils.isBlank(ids)) {
+            throw new BusinessLogicRunTimeException("参数错误：请勾选导出记录");
+        }
+
+        idList = JsonUtil.json2Collection(ids, List.class, Long.class);
+
+        FormTemplate formTemplate = templateService.getFormTemplate(classId, 1);
+        // 导出的excel文件名
+        String fileName = formTemplate.getFormClass().getName() + ".xls";
+        //创建HSSFWorkbook
+        HSSFWorkbook wb = templateService.export(classId, idList);
+
+        //响应到客户端
+        returnResult(response, fileName, wb);
+
+    }
+
+    private void returnResult(HttpServletResponse response, String fileName, HSSFWorkbook wb) {
+
         OutputStream os = null;
         try {
             this.setResponseHeader(response, fileName);

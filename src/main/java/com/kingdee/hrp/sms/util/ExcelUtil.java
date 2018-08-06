@@ -66,13 +66,13 @@ public class ExcelUtil {
     /**
      * 导出Excel
      *
-     * @param sheetName sheet名称
-     * @param title     标题
-     * @param values    内容
-     * @param wb        HSSFWorkbook对象
+     * @param sheetName    sheet名称
+     * @param disPlayField 标题
+     * @param values       内容
+     * @param wb           HSSFWorkbook对象
      * @return HSSFWorkbook  对象
      */
-    public static HSSFWorkbook getHSSFWorkbook(String sheetName, List<FormField> title,
+    public static HSSFWorkbook getHSSFWorkbook(String sheetName, List<FormField> disPlayField,
             Map<Integer, Map<String, Object>> values, HSSFWorkbook wb) {
 
         // 第一步，创建一个HSSFWorkbook，对应一个Excel文件
@@ -116,9 +116,9 @@ public class ExcelUtil {
         row.setHeightInPoints(25);
 
         HSSFCell cell = null;
-        for (int i = 0; i < title.size(); i++) {
+        for (int i = 0; i < disPlayField.size(); i++) {
             cell = row.createCell(i);
-            cell.setCellValue(title.get(i).getName());
+            cell.setCellValue(disPlayField.get(i).getName());
             // 标题行样式
             cell.setCellStyle(headerStyle);
         }
@@ -162,9 +162,9 @@ public class ExcelUtil {
             // 一行导出的数据
             Map<String, Object> lineData = values.get(i);
 
-            for (int k = 0; k < title.size(); k++) {
+            for (int k = 0; k < disPlayField.size(); k++) {
 
-                FormField formField = title.get(k);
+                FormField formField = disPlayField.get(k);
                 String key = formField.getKey();
 
                 if (formField.getCtrlType() == CtrlType.F7.value()) {
@@ -195,7 +195,7 @@ public class ExcelUtil {
 
         //设置自动列宽
 
-        for (int i = 0; i < title.size(); i++) {
+        for (int i = 0; i < disPlayField.size(); i++) {
             sheet.autoSizeColumn(i);
             // 自适应宽度稍微增加些更美观
             sheet.setColumnWidth(i, sheet.getColumnWidth(i) * 12 / 10);
