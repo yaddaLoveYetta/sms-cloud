@@ -225,9 +225,10 @@ define('Edit', function (require, module, exports) {
                 case 6:
                     // F7选择框
                     var selectorData = [{
-                        ID: value,
+                        id: value,
                         number: itemData[key + '_NmbName'] || '',
-                        name: itemData[key + '_DspName'] || ''
+                        name: itemData[key + '_DspName'] || '',
+                        all: itemData
                     }];
                     emitter.fire('selectorSet', [field, key, selectorData]);
                     break;

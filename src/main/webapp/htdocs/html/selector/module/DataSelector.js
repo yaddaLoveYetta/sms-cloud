@@ -43,7 +43,9 @@
             destClassId: config.destClassId || '', // 目标单据classId
             checkbox: config.checkbox,
             conditionF7Names: config.conditionF7Names || [], //F7动态约束条件集合(解析规则)
-            dataFieldKey: config.dataFieldKey,
+            dataFieldKey: config.dataFieldKey || {
+                'id': 'id', 'name': 'name', 'number': 'number'
+            },
             data: [{
                 'id': '',
                 'name': '',
@@ -200,8 +202,8 @@
                             var label = $(meta.container).find('[data-role="label"]')[0];
                             console.log(data)
                             //if (dialog.isSubmit && data[0].hasOwnProperty("ID")) {
-                            if (dialog.isSubmit && data[0] && typeof data[0].all[meta.dataFieldKey['id']] != "undefined") {
-                                if (meta.data[0].id != data[0].all[meta.dataFieldKey['id']]) {
+                            if (dialog.isSubmit && data[0] && typeof data[0].all[meta.dataFieldKey['id']] !== "undefined") {
+                                if (meta.data[0].id !== data[0].all[meta.dataFieldKey['id']]) {
                                     /**
                                      * 抛出个值改变事件
                                      *
@@ -303,12 +305,16 @@
 
         },
         setData: function (data) {
-
+            // setData是关联查询出基础资料的数据，用的key是本业务类型的key而非关联基础资料的key，
+            // F7选择时返回的key是基础资料业务类型
+            // 如打开中标库详情/编辑页面时，页面供应商由中标库关联供应商查询出，供应商内码key是supplier，名称是supplier_DspName,
+            // 但编辑页面选择供应商时查询的是供应商基础资料，到会来的供应商信息内码key是id，名称是name，代码是number
+            // 所以这里设置值的时候统一用id，name，number去取值，具体值由应用自己负责设置
             var meta = mapper.get(this);
             if (meta.container) {
                 var label = $(meta.container).find('[data-role="label"]')[0];
                 meta.data = data;
-                label.title = label.value = meta.data[0].all[meta.dataFieldKey['name']];
+                label.title = label.value = meta.data[0].name || '';
                 meta.hasData = true;
             }
 

@@ -616,8 +616,8 @@ define('FormEdit', function (require, module, exports) {
                     title: field.name,
                     dataFieldKey: { // 控件label有焦点时显示代码，无焦点时显示名称效果
                         'id': field.srcField,    // F7控件关联资料的id 值
-                        'name': field.key+'_DspName', // F7控件无焦点时显示的字段key
-                        'number':  field.key+'_NmbName' // F7有焦点时显示的字段key
+                        'name': field.displayField, // F7控件无焦点时显示的字段key
+                        'number':  field.displayExt // F7有焦点时显示的字段key
                     },
 
                     defaults: {
