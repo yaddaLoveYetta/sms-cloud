@@ -13,7 +13,9 @@ define('List/API/Head', function (require, module, exports) {
     var cache = null;
     var headItems = [];
     // 字段显示权限-后端disPlay定义:系统用户显示||医院用户显示||供应商用户显示
-    var display;
+    var displayMask;
+    // 字段过滤性控制-后端is_condition定义:1：系统角色过滤字段||2：医院角色过滤字段|:4：供应商角色过滤字段
+    var conditionMask;
 
     //检查登录
     if (!SMS.Login.check(true)) {
@@ -24,15 +26,19 @@ define('List/API/Head', function (require, module, exports) {
 
     if (roleType === 1) {
         // 平台用户
-        display = 1;
+        displayMask = 1;
+        conditionMask = 1;
     } else if (roleType === 2) {
         // 医院用户
-        display = 64;
+        displayMask = 64;
+        conditionMask = 2;
     } else if (roleType === 3) {
         // 供应商用户
-        display = 8;
+        displayMask = 8;
+        conditionMask = 4;
     } else {
-        display = 0;
+        displayMask = 0;
+        conditionMask = 0
     }
 
     /**
@@ -117,11 +123,11 @@ define('List/API/Head', function (require, module, exports) {
                 'type': item.ctrlType,
                 'key': item.key,
                 'width': item.showWidth,
-                'visible': !!(mask & display), //转成 boolean--字段按用户类别显示
+                'visible': !!(mask & displayMask), //转成 boolean--字段按用户类别显示
                 'lookupType': item.lookUpType,
                 'isCount': item.isCount,
                 'entryIndex': item.page,
-                'isEntry': item.page === 1,
+                'isEntry': item.page === 1
             };
 
             headItems.push(headItem);
@@ -154,7 +160,7 @@ define('List/API/Head', function (require, module, exports) {
                     'type': item.dataType,
                     'key': item.key,
                     'width': item.showWidth,
-                    'visible': !!(mask & display), // 转成 boolean--字段按用户类别显示
+                    'visible': !!(mask & displayMask), // 转成 boolean--字段按用户类别显示
                     'lookupType': item.lookUpType,
                     'dataIndex': item.index,
                     'isEntry': index != 0,
@@ -179,9 +185,11 @@ define('List/API/Head', function (require, module, exports) {
             var fields = formFields[index];
             $.Object.each(fields, function (key, item) {
 
-                var mask = item.display || 0;
+                var fieldDisplayMask = item.display || 0; //conditionMask
+                var fieldConditionMask = item.isCondition || 0;
 
-                if (item.isCondition === 1 && !!(mask & display)) { //表示过滤字段
+                if (!!(fieldConditionMask & conditionMask) && !!(fieldDisplayMask & displayMask)) {
+                    //表示过滤字段
                     filterItems.push(item);
                 }
             })
