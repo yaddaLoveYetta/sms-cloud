@@ -671,6 +671,11 @@ public class UserServiceImpl extends BaseService implements UserService {
                 && StringUtils.isBlank(registerModel.getCreditCode())) {
             logger.error("缺少企业统一信用代码");
             throw new BusinessLogicRunTimeException("缺少企业统一信用代码");
+        } else {
+            if (!Common.isValidCreditCode(registerModel.getCreditCode())) {
+                logger.error("企业统一信用代码不正确");
+                throw new BusinessLogicRunTimeException("企业统一信用代码不正确，请检查!");
+            }
         }
 
         if (StringUtils.isBlank(registerModel.getOrgName())) {
@@ -682,6 +687,7 @@ public class UserServiceImpl extends BaseService implements UserService {
             logger.error("该用户名已被注册");
             throw new BusinessLogicRunTimeException("该用户名已被注册,请换一个用户名!");
         }
+
     }
 
     /**
