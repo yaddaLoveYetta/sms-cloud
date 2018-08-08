@@ -607,17 +607,22 @@ define('FormEdit', function (require, module, exports) {
             if (field.ctrlType === 6 && field.lookUpType === 1) {
                 // 引用基础资料
                 var config = {
-                    targetType: 1, //跳转方案
+                    //跳转方案 1:基础资料列表 2:辅助资料列表 (已弃用)
+                    targetType: 1,
                     classId: field.lookUpClassId,
                     destClassId: field.classId,
                     hasBreadcrumbs: true,
                     fieldKey: field.key,
                     container: document.getElementById(field.key),
                     title: field.name,
-                    dataFieldKey: { // 控件label有焦点时显示代码，无焦点时显示名称效果
-                        'id': field.srcField,    // F7控件关联资料的id 值
-                        'name': field.displayField, // F7控件无焦点时显示的字段key
-                        'number':  field.displayExt // F7有焦点时显示的字段key
+                    // 控件label有焦点时显示代码，无焦点时显示名称效果
+                    dataFieldKey: {
+                        // F7控件关联资料的id 值
+                        'id': field.srcField,
+                        // F7控件无焦点时显示的字段key(引用基础资料的模板key)
+                        'name': field.displayField,
+                        // F7有焦点时显示的字段key(引用基础资料的模板key)
+                        'number': field.displayExt
                     },
 
                     defaults: {
@@ -1657,7 +1662,7 @@ define('FormEdit', function (require, module, exports) {
                     id: '',
                     number: '',
                     name: '',
-                    all:''
+                    all: ''
                 }];
 
                 selectors[keyName].setData(selectorData);

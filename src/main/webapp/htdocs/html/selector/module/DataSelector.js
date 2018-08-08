@@ -200,8 +200,8 @@
 
                             var data = dialog.getData();
                             var label = $(meta.container).find('[data-role="label"]')[0];
-                            console.log(data)
-                            //if (dialog.isSubmit && data[0].hasOwnProperty("ID")) {
+                            console.log(data);
+
                             if (dialog.isSubmit && data[0] && typeof data[0].all[meta.dataFieldKey['id']] !== "undefined") {
                                 if (meta.data[0].id !== data[0].all[meta.dataFieldKey['id']]) {
                                     /**
@@ -213,8 +213,15 @@
                                      */
                                     emitter.fire('change', [meta.destClassId, meta.fieldKey, data]);
                                 }
-                                meta.data = dialog.getData();
-                                label.title = label.value = data[0].all[meta.dataFieldKey['number']] || data[0].all[meta.dataFieldKey['name']];
+
+                                meta.data = [{
+                                    id: data[0].all[meta.dataFieldKey['id']],
+                                    number: data[0].all[meta.dataFieldKey['number']],
+                                    name: data[0].all[meta.dataFieldKey['name']],
+                                    all: data
+                                }];
+
+                                label.title = label.value = meta.data[0].number || meta.data[0].name;
                                 //抛出个确认事件
                                 emitter.fire('done', [meta.destClassId + '-' + meta.container.getAttribute("id") + '.DialogOk', meta.data]);
                                 label.focus();
@@ -234,16 +241,16 @@
                 'focus': function () {
                     var self = this;
                     if (meta.hasData) {
-                        if (meta.data[0].all[meta.dataFieldKey['number']]) {
-                            self.value = meta.data[0].all[meta.dataFieldKey['number']];
+                        if (meta.data[0].number) {
+                            self.value = meta.data[0].number;
                         }
                     }
                 },
                 'blur': function () {
                     var self = this;
                     if (meta.hasData) {
-                        if (meta.data[0].all[meta.dataFieldKey['name']]) {
-                            self.value = meta.data[0].all[meta.dataFieldKey['name']];
+                        if (meta.data[0].name) {
+                            self.value = meta.data[0].name;
                         }
                     }
                 },
