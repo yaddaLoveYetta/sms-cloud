@@ -5433,30 +5433,6 @@ a.text-#000000:hover {
     display: block;
 }
 
-.icon-color-green {
-    color: #0cb36f;
-}
-
-.icon-color-cyan {
-    color: #03a9f4;
-}
-
-.icon-color-red {
-    color: #f44336;
-}
-
-.icon-color-light-blue {
-    color: #8bc34a;
-}
-
-.icon-color-blue {
-    color: #0da5ef;
-}
-
-.icon-color-purple {
-    color: #bf06de;
-}
-
 /*div-tips*/
 .msg-box {
     position: fixed;

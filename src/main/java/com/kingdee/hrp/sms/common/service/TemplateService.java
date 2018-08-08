@@ -28,8 +28,8 @@ public interface TemplateService {
     /**
      * 获取基础资料/单据定义的功能操作列表
      *
-     * @param classId 业务类型
-     * @param operateType    获取按钮的场景 ( 0:查看(列表)1:(新增)2:(编辑)默认0)
+     * @param classId     业务类型
+     * @param operateType 获取按钮的场景 ( 0:查看(列表)1:(新增)2:(编辑)默认0)
      * @return 功能操作列表
      */
 
@@ -46,7 +46,7 @@ public interface TemplateService {
      */
 
     Map<String, Object> getItems(Integer classId, List<Condition> conditions, List<Sort> sorts, Integer pageSize,
-            Integer pageNo);
+                                 Integer pageNo);
 
     /**
      * 通过内码获取单个业务类型数据
@@ -68,7 +68,7 @@ public interface TemplateService {
      * @return 单据集合
      */
     List<Map<String, Object>> getItemByIds(Integer classId, List<Long> ids, List<Condition> conditions,
-            List<Sort> sorts);
+                                           List<Sort> sorts);
 
     /**
      * 新增数据
@@ -137,6 +137,7 @@ public interface TemplateService {
      * @param classId    业务类型
      * @param conditions 查询条件集合
      * @param sorts      排序条件集合
+     * @return HSSFWorkbook对象
      */
     HSSFWorkbook export(Integer classId, List<Condition> conditions, List<Sort> sorts);
 
@@ -144,7 +145,8 @@ public interface TemplateService {
      * 导出指定记录
      *
      * @param classId 业务类型
-     * @param idList     内码集合
+     * @param idList  内码集合
+     * @return HSSFWorkbook对象
      */
     HSSFWorkbook export(Integer classId, List<Long> idList);
 }
