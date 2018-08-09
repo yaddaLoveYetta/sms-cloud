@@ -1,155 +1,84 @@
 module.exports = function (grunt) {
 
-    require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
+    /*
+     * 安装插件 -并保存依赖到package.json
+     * npm install grunt --save-dev
+     * npm install grunt-contrib-clean --save-dev
+     * npm install grunt-contrib-copy --save-dev
+     * npm install grunt-contrib-uglify --save-dev
+    */
 
+    var path = {
+        src: 'htdocs',
+        dest: 'build',
+        tmp: '.tmp'
+    };
 
+    // 所有插件的配置信息
     grunt.initConfig({
 
+        // 读取package.json文件信息
         pkg: grunt.file.readJSON('package.json'),
 
-        //清除目录
+        path: path,
+
         clean: {
-            all: ['dist/html/**', 'dist/*.*'],
-            image: 'dist/html/images',
-            css: 'dist/html/css',
-            html: 'dist/html/**/*'
+            src: 'build/'
         },
 
         copy: {
             src: {
                 files: [
-                    {expand: true, cwd: 'src', src: ['*.html'], dest: 'dist/html'}
-                ]
-            },
-            image: {
-                files: [
-                    {expand: true, cwd: 'src', src: ['images/*.{png,jpg,jpeg,gif}'], dest: 'dist/html'}
-                ]
-            }
-        },
-
-        // 文件合并
-        concat: {
-            options: {
-                separator: ';',
-                stripBanners: false,
-                banner: 'concat by grunt=======> begin=========>',
-                footer: 'concat by grunt=======> end===========>',
-                sourceMap: true
-            },
-            js: {
-                src: [
-                    "src/js/*.js"
-                ],
-                dest: "dist/html/js/app.js"
-            },
-            css: {
-                src: [
-                    "src/css/*.css"
-                ],
-                dest: "dist/html/css/main.css"
-            }
-        },
-
-        //压缩JS
-        uglify: {
-            prod: {
-                options: {
-                    report: "min",
-                    mangle: {
-                        except: ['require', 'exports', 'module', 'window']
-                    },
-                    compress: {
-                        global_defs: {
-                            PROD: true
-                        },
-                        dead_code: true,
-                        pure_funcs: [
-                            "console.log",
-                            "console.info"
-                        ]
-                    },
-                    beautify: true,
-                    preserveComments: true,
-                    sourceMap: true
-                },
-
-                files: [{
-                    expand: true,
-                    cwd: 'dist/html',
-                    src: ['js/*.js', '!js/*.min.js'],
-                    dest: 'dist/html'
-                }]
-            }
-        },
-
-        //压缩CSS
-        cssmin: {
-            prod: {
-                options: {
-                    report: 'gzip'
-                },
-                files: [
                     {
                         expand: true,
-                        cwd: 'dist/html',
-                        src: ['css/*.css'],
-                        dest: 'dist/html'
+                        cwd: '<%= path.src %>/',
+                        src: ['**/*'],
+                        dest: '<%= path.dest %>'
                     }
                 ]
             }
         },
 
-        //压缩图片
-        imagemin: {
-            prod: {
-                options: {
-                    optimizationLevel: 7,
-                    pngquant: true
-                },
-                files: [
-                    {expand: true, cwd: 'dist/html', src: ['images/*.{png,jpg,jpeg,gif,webp,svg}'], dest: 'dist/html'}
-                ]
-            }
-        },
+        //uglify压缩插件配置信息
+        uglify: {
 
-        // 处理html中css、js 引入合并问题
-        usemin: {
-            html: 'dist/html/*.html'
-        },
-
-        //压缩HTML
-        htmlmin: {
             options: {
-                removeComments: true,
-                removeCommentsFromCDATA: true,
-                collapseWhitespace: true,
-                collapseBooleanAttributes: true,
-                removeAttributeQuotes: true,
-                removeRedundantAttributes: true,
-                useShortDoctype: true,
-                removeEmptyAttributes: true,
-                removeOptionalTags: true
+                // 去掉注释
+                stripBanners: true,
+                // 在压缩文件头部加上注释
+                banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> start... */\n',
+                //在压缩文件底部加上注释
+                footer: '\n/*! <%= pkg.name %> 最后修改于： <%= grunt.template.today("yyyy-mm-dd") %> */',
+                //不混淆函数名和变量名 默认会混淆
+                mangle: false,
+                //输出压缩率，可选的值有 false(不输出信息)，gzip
+                report: "min",
+                //不删除注释，还可以为 false（删除全部注释），some（保留@preserve @license @cc_on等注释）
+                preserveComments: 'all'
+
             },
-            html: {
-                files: [
-                    {expand: true, cwd: 'dist/html', src: ['*.html'], dest: 'dist/html'}
-                ]
+
+            // 批量压缩
+            batch: {
+                //将占位符*展开 即使用占位符匹配文件名
+                expand: true,
+                //压缩src目录及所有子目录下的js文件
+                src: ['<%= path.src %>/**/*.js', '!<%= path.src %>/**/*min.js'],
+                //压缩文件存放到build 目录下的同名目录
+                dest: 'build',
+                //压缩文件的后缀名
+                ext: '.min.js'
             }
         }
-
     });
 
+    // 加载clean插件
+    grunt.loadNpmTasks('grunt-contrib-clean');
+    // 加载copy插件
+    grunt.loadNpmTasks('grunt-contrib-copy');
+    // 加载uglify插件
+    grunt.loadNpmTasks('grunt-contrib-uglify');
 
-    grunt.registerTask('prod', [
-        'copy',                 //复制文件
-        'concat',               //合并文件
-        'imagemin',             //图片压缩
-        'cssmin',               //CSS压缩
-        'uglify',               //JS压缩
-        'usemin',               //HTML处理
-        'htmlmin'               //HTML压缩
-    ]);
-
-    grunt.registerTask('publish', ['clean', 'prod']);
+    // 告诉grunt在终端输入grunt时做什么任务(默认任务)任务按顺序执行
+    grunt.registerTask('default', ['clean', 'copy', 'uglify']);
 };
