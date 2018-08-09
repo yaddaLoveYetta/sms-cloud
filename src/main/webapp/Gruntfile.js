@@ -7,10 +7,13 @@ module.exports = function (grunt) {
      * npm install grunt --save-dev
      * npm install grunt-contrib-clean --save-dev   // 清理
      * npm install grunt-contrib-copy --save-dev    // 复制
+     * npm install grunt-contrib-jshint --save-dev  //js语法检查
      * npm install grunt-contrib-concat --save-dev    // 合并
      * npm install grunt-contrib-uglify --save-dev //  js压缩
+     * npm install grunt-contrib-csslint --save-dev  // css语法检查
      * npm install grunt-contrib-cssmin --save-dev // css压缩
      * npm install grunt-filerev --save-dev // 文件重命名
+     * npm install grunt-contrib-watch --save-dev  // 检测文件变化
      * npm install grunt-usemin --save-dev // 修改html对js，css的引用
     */
 
@@ -56,7 +59,12 @@ module.exports = function (grunt) {
 
         concat: {
             options: {
-                separator: ';'
+                // 合并文件之间分隔符号
+                separator: ';',
+                // 合并时允许输出头部信息
+                stripBanners: true,
+                // 头部注释
+                banner: '/*!<%= pkg.name %> - <%= pkg.version %>-' + '<%=grunt.template.today("yyyy-mm-dd") %> */'
             },
             dist: {
                 src: ['src/zepto.js', 'src/underscore.js', 'src/backbone.js'],
