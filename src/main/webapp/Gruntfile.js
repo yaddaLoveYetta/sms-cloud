@@ -45,9 +45,18 @@ module.exports = function (grunt) {
 
         // 对css和js文件重命名
         filerev: {
+            options: {
+                algorithm: 'md5',
+                length: 8
+            },
             build: {
                 files: [{
-                    src: ['<%= path.dest %>/**', '!<%= path.dest %>/**/*.html']
+                    src: [
+                        '<%= path.dest %>/**/*min.js',
+                        '<%= path.dest %>/**/*min.css',
+                        '!<%= path.dest %>/lib/**/*',
+                        '!<%= path.dest %>/**/*.html'
+                    ]
                 }
                 ]
             }
@@ -58,13 +67,13 @@ module.exports = function (grunt) {
 
             build: {
                 files: [{
-                    src: '<%= path.dest %>/**/*.html'
+                    src: '<%= path.src %>/**/*.html'
                 }
                 ]
             },
             options: {
                 // 定义临时文件夹
-                staging: '<%= path.tmp %>',
+                staging: '<%= path.tmp %>/',
                 // 定义目标文件夹
                 dest: '<%= path.dest %>',
                 // 默认是源html所在的文件夹，定义处理的资源文件的相对路径,concat:generated将从root开始找文件
@@ -105,14 +114,14 @@ module.exports = function (grunt) {
                                         // 可理解为保留换行
                                         beautify: true,
                                         // 保留注释相关，接受false、'all'、'some'、Function
-                                        preserveComments: true,
+                                        output: {comments: true},
                                         sourceMap: true,
                                         // 输出压缩率
                                         report: "min",
                                         // 压缩文件头注释
                                         banner: '/*concat-uglify by yadda use grunt==> begin===<%= grunt.template.today("yyyy-mm-dd HH:mm:ss") %>*/\n',
                                         // 压缩文件尾注释
-                                        footer: '/*concat-uglify by yadda use grunt==> end===<%= grunt.template.today("yyyy-mm-dd HH:mm:ss") %>*/\n',
+                                        footer: '\n/*concat-uglify by yadda use grunt==> end===<%= grunt.template.today("yyyy-mm-dd HH:mm:ss") %>*/\n',
                                         // 压缩
                                         compress: {
                                             // 去除console语句
@@ -144,8 +153,6 @@ module.exports = function (grunt) {
                                     //context.options即concat task
                                     var generated = context.options.generated;
                                     generated.options = {
-
-                                        sourceMap: true,
                                         // 输出压缩率
                                         report: "min"
                                     };
@@ -186,5 +193,5 @@ module.exports = function (grunt) {
     // 加载usemin插件
     grunt.loadNpmTasks('grunt-usemin');
 
-    grunt.registerTask('default', ['clean:beforeBuild', 'copy', 'useminPrepare', 'concat:generated', 'cssmin:generated', 'uglify:generated', 'usemin']);
+    grunt.registerTask('default', ['clean:beforeBuild', 'copy', 'useminPrepare', 'concat:generated', 'cssmin:generated', 'uglify:generated', 'filerev', 'usemin']);
 };
