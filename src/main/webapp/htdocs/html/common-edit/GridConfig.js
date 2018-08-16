@@ -75,10 +75,10 @@ define('GridConfig', function (require, module, exports) {
                     }*/
                 });
 
-                $(el).on("click", function () {
+                /*$(el).on("click", function () {
                     this.focus();
                     this.select();
-                });
+                });*/
 
                 //将子div添加到父div中
                 el.appendTo($div);

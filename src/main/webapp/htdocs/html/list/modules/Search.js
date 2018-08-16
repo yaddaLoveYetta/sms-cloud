@@ -325,12 +325,21 @@ define("Search", function (require, module, exports) {
                 var field = filterKeyFormFields[fieldKey];
                 var config = {
                     targetType: 1, //跳转方案
-                    classID: field.lookUpClassId,
+                    classId: field.lookUpClassId,
                     destClassId: field.classId,
                     hasBreadcrumbs: true,
                     fieldKey: field.key,
                     container: $targetTd.find("div[data-name='lookUp']")[0],
                     title: field.name,
+                    // 控件label有焦点时显示代码，无焦点时显示名称效果
+                    dataFieldKey: {
+                        // F7控件关联资料的id 值
+                        'id': field.srcField,
+                        // F7控件无焦点时显示的字段key(引用基础资料的模板key)
+                        'name': field.displayField,
+                        // F7有焦点时显示的字段key(引用基础资料的模板key)
+                        'number': field.displayExt
+                    },
                     defaults: {
                         pageSize: 10
                     }
@@ -385,10 +394,8 @@ define("Search", function (require, module, exports) {
 
                 } else if (ctrlType === 6) {
                     // F7
-                    value = selectors[key] && selectors[key].getData()[0]['ID'];
-                }
-
-                else {
+                    value = selectors[key] && selectors[key].getData()[0]['id'];
+                } else {
                     value = $(item).find("input[name='value']").val();
                 }
 

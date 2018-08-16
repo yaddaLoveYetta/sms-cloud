@@ -216,8 +216,8 @@
 
                                 meta.data = [{
                                     id: data[0].all[meta.dataFieldKey['id']],
-                                    number: data[0].all[meta.dataFieldKey['number']],
-                                    name: data[0].all[meta.dataFieldKey['name']],
+                                    number: data[0].all[meta.dataFieldKey['number']] || '',
+                                    name: data[0].all[meta.dataFieldKey['name']] || '',
                                     all: data
                                 }];
 

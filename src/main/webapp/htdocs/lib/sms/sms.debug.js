@@ -7153,6 +7153,7 @@
                             var row = gridRow.selrow;
                             var col = gridRow.iCol;
 
+
                             // 真实的key-保存的内码
                             var idModel = cfg.grid.getColProp(field.key)
 
@@ -7160,17 +7161,19 @@
                                 //cfg.grid.setCell(row, idModel.name, data[0].id);
                                 cfg.grid.setCell(row, idModel.name, data[0].all[field.srcField]);
                             }
-
-                            // 显示的名称
-                            idModel = cfg.grid.getColProp(field.key + '_DspName');
-                            if (idModel) {
-                                cfg.grid.setCell(row, idModel.name, data[0].all[field.displayField]);
-                            }
-                            // 显示的扩展属性
-                            idModel = cfg.grid.getColProp(field.key + '_NmbName');
-                            if (idModel) {
-                                cfg.grid.setCell(row, idModel.name, data[0].all[field.displayExt]);
-                            }
+                            
+                            /*                            // 显示的名称
+                                                        idModel = cfg.grid.getColProp(field.key + '_DspName');
+                                                        if (idModel.name) {
+                                                            cfg.grid.setCell(row, idModel.name, data[0].all[field.displayField]);
+                                                        }
+                            
+                                                        // 显示的扩展属性
+                                                        idModel = cfg.grid.getColProp(field.key + '_NmbName');
+                            
+                                                        if (idModel.name) {
+                                                            cfg.grid.setCell(row, idModel.name, data[0].all[field.displayExt]);
+                                                        }*/
 
                             // 显示字段
                             $(container).val(data[0].all[field.displayField]);

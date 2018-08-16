@@ -37,7 +37,9 @@ module.exports = function (grunt) {
                         // 匹配所有文件(复制所有文件)
                         src: ['**/*.*'],
                         // 目标文件路径前缀
-                        dest: '<%= path.dest %>/'
+                        dest: '<%= path.dest %>/',
+                        flatten: false,
+                        filter: 'isFile'
                     }
                 ]
             }
@@ -62,6 +64,40 @@ module.exports = function (grunt) {
             }
         },
 
+        uglify: {
+            options: {
+                // 不混淆代码
+                mangle: true,
+                // 可理解为保留换行
+                beautify: false,
+                // 保留注释相关，接受false、'all'、'some'、Function
+                output: {comments: false},
+                sourceMap: true,
+                // 输出压缩率
+                report: "min",
+                // 压缩文件头注释
+                banner: '/*concat-uglify by yadda use grunt==> begin===<%= grunt.template.today("yyyy-mm-dd HH:mm:ss") %>*/\n',
+                // 压缩文件尾注释
+                footer: '\n/*concat-uglify by yadda use grunt==> end===<%= grunt.template.today("yyyy-mm-dd HH:mm:ss") %>*/\n',
+                // 压缩
+                compress: {
+                    // 去除console语句
+                    drop_console: true
+                }
+            },
+            build: {
+                files: [{
+                    expand: true,
+                    // 所有src指定的匹配都将相对于此处指定的路径（但不包括此路径）
+                    cwd: '<%= path.src %>/',
+                    // 匹配所有文件(复制所有文件)
+                    src: ['**/*.js', '!**/lib/**/*'],
+                    // 目标文件路径前缀
+                    dest: '<%= path.dest %>/',
+                    ext: '.min.js'
+                }]
+            }
+        },
         //替换文件前准备
         useminPrepare: {
 
@@ -193,5 +229,12 @@ module.exports = function (grunt) {
     // 加载usemin插件
     grunt.loadNpmTasks('grunt-usemin');
 
-    grunt.registerTask('default', ['clean:beforeBuild', 'copy', 'useminPrepare', 'concat:generated', 'cssmin:generated', 'uglify:generated', 'filerev', 'usemin']);
+    //grunt.registerTask('default', ['clean:beforeBuild', 'copy', 'useminPrepare', 'concat:generated', 'cssmin:generated', 'uglify:generated', 'usemin']);
+
+    //grunt.registerTask('default', ['clean:beforeBuild', 'copy', 'useminPrepare', 'uglify', 'usemin']);
+
+    //grunt.registerTask('default', ['copy', 'uglify', 'filerev', 'usemin']);
+
+    grunt.registerTask('default', ['clean:beforeBuild', 'copy', 'useminPrepare', 'cssmin:generated', 'uglify', 'concat:generated', 'usemin']);
+
 };
