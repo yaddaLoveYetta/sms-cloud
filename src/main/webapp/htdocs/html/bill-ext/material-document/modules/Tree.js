@@ -18,7 +18,7 @@ define('Tree', function (require, module, exports) {
     //默认配置
     var defaults = {
         pageSize: 15,
-        pageNo: 1,
+        pageNo: 1
     };
 
     function load(config, fn) {
@@ -56,40 +56,30 @@ define('Tree', function (require, module, exports) {
         var conditions = [];
         if (keyWord && $.trim(keyWord) !== '') {
 
-            if (classId == 1005) {
-                conditions.push({
-                    'andOr': 'AND',
-                    'leftParenTheses': '((',
-                    'fieldKey': 'name',
-                    'logicOperator': 'like',
-                    'value': keyWord,
-                    'rightParenTheses': ')'
-                });
+            conditions.push({
+                'andOr': 'AND',
+                'leftParenTheses': '((',
+                'fieldKey': 'name',
+                'logicOperator': 'like',
+                'value': keyWord,
+                'rightParenTheses': ')'
+            });
 
-                conditions.push({
-                    'andOr': 'OR',
-                    'leftParenTheses': '(',
-                    'fieldKey': 'number',
-                    'logicOperator': 'like',
-                    'value': keyWord,
-                    'rightParenTheses': '))'
-                });
-            } else if (classId == 3030) {
-                conditions.push({
-                    'andOr': 'AND',
-                    'leftParenTheses': '(',
-                    'fieldKey': 'materialItem',
-                    'logicOperator': 'like',
-                    'value': keyWord,
-                    'rightParenTheses': ')'
-                });
-            }
+            conditions.push({
+                'andOr': 'OR',
+                'leftParenTheses': '(',
+                'fieldKey': 'number',
+                'logicOperator': 'like',
+                'value': keyWord,
+                'rightParenTheses': '))'
+            });
+
 
         }
 
-        if (classId == 1005) {
-            // 供应商过滤出审核状态的
-            conditions.push({
+
+        // 供应商过滤出审核状态的
+        /*    conditions.push({
                 'andOr': 'AND',
                 'leftParenTheses': '(',
                 'fieldKey': 'status',
@@ -97,14 +87,14 @@ define('Tree', function (require, module, exports) {
                 'value': 1,
                 'rightParenTheses': ')',
                 'needConvert': false
-            });
-        }
+            });*/
+
         SMS.Tips.loading("数据加载中...");
         load({
             classId: classId,
             pageNo: 1,
             pageSize: defaults.pageSize,
-            conditions: conditions,
+            conditions: conditions
         }, function (data, pageSize) {
             SMS.Tips.success("数据加载成功", 1500);
             buildTree(data.list || []);
@@ -116,7 +106,7 @@ define('Tree', function (require, module, exports) {
                         classId: classId,
                         pageNo: no,
                         pageSize: defaults.pageSize,
-                        conditions: [],
+                        conditions: []
                     }, function (data, pageSize) {
                         console.log(data.list);
                         buildTree(data.list || []);
@@ -124,7 +114,7 @@ define('Tree', function (require, module, exports) {
                 }
             });
         });
-    };
+    }
 
     function buildTree(treeData) {
 

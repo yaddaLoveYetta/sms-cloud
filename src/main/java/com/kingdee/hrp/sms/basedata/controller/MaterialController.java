@@ -1,6 +1,6 @@
 package com.kingdee.hrp.sms.basedata.controller;
 
-import com.kingdee.hrp.sms.basedata.service.IItemService;
+import com.kingdee.hrp.sms.basedata.service.IMaterialService;
 import com.kingdee.hrp.sms.common.exception.BusinessLogicRunTimeException;
 import com.kingdee.hrp.sms.util.FileOperate;
 import com.sun.jersey.api.client.Client;
@@ -24,8 +24,8 @@ import java.util.Map;
  * @date 2018/4/19 14:00
  */
 @Controller
-@RequestMapping(value = "/item/")
-public class ItemController {
+@RequestMapping(value = "/material/")
+public class MaterialController {
 
     /**
      * 后台图片保存地址
@@ -40,7 +40,7 @@ public class ItemController {
     private String fileHost;
 
     @Resource
-    private IItemService itemService;
+    private IMaterialService itemService;
 
     @ResponseBody
     @RequestMapping(value = "setImage", method = RequestMethod.POST)

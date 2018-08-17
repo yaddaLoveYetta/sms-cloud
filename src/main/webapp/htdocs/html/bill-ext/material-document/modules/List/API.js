@@ -1,5 +1,5 @@
 ﻿/**
- * API模块
+ * List/API模块
  */
 define('List/API', function (require, module, exports) {
 
@@ -9,27 +9,29 @@ define('List/API', function (require, module, exports) {
 
     var Multitask = SMS.require('Multitask');
 
-    var Head = require('/Head');
     //完整名称为 List/API/Head
-    var Body = require('/Body');
+    var Head = require('/Head');
     //完整名称为 List/API/Body
+    var Body = require('/Body');
 
     function get(config, fn) {
 
-        var tasks = [{
-            fn: Head.get,
-            args: [{
-                'classId': config.classId
-            }]
-        }, {
-            fn: Body.get,
-            args: [{
-                'classId': config.classId,
-                'pageNo': config.pageNo,
-                'pageSize': config.pageSize,
-                'conditions': config.conditions
-            }]
-        }];
+        var tasks = [
+            {
+                fn: Head.get,
+                args: [{
+                    'classId': config.classId
+                }]
+            },
+            {
+                fn: Body.get,
+                args: [{
+                    'classId': config.classId,
+                    'pageNo': config.pageNo,
+                    'pageSize': config.pageSize,
+                    'conditions': config.conditions
+                }]
+            }];
 
         //并行发起请求
         Multitask.concurrency(tasks, function (list) {
@@ -37,15 +39,13 @@ define('List/API', function (require, module, exports) {
             var headData = list[0];
             var bodyData = list[1];
             var headItems;
-            console.dir(list);
 
-            // var headItems = Head.getItems(bodyData['fieldShow'], headData.formFields[0]);  //old
+            // headItems = Head.getItems(headData.formFields[0]);
             headItems = Head.getItems(headData.formFields);
 
             var filterItems = Head.getFilterItem(headData.formFields);
 
-            //var bodyItems = Body.getItems(bodyData.list, headItems, headData.formClass.primaryKey);
-            var bodyItems = Body.getItems(bodyData.list, headItems, headData);
+            var bodyItems = Body.getItems(bodyData.list, headItems, headData.formClass.primaryKey);
 
             fn && fn({
                 checkbox: true,
@@ -58,12 +58,12 @@ define('List/API', function (require, module, exports) {
                     //过滤出 visible: true 的项
                     'items': $.Array.grep(headItems, function (item, index) {
                         return item.visible;
-                    }),
+                    })
                 },
                 body: {
                     'total': bodyData.count,
 
-                    'items': bodyData.total == 0 ? '' : $.Array.keep(bodyItems, function (row, no) { //行
+                    'items': bodyData.count === 0 ? '' : $.Array.keep(bodyItems, function (row, no) { //行
 
                         //过滤出 visible: true 的项
                         row.items = $.Array.grep(row.items, function (item, index) { //列
@@ -72,16 +72,18 @@ define('List/API', function (require, module, exports) {
                         });
 
                         return row;
-                    }),
+                    })
                 },
-                filterItems: filterItems
+                filterItems: filterItems,
+                metaData: headData
 
             });
         });
 
-    };
+    }
 
     return {
         get: get
-    };
+    }
+
 });

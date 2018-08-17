@@ -4,10 +4,13 @@
     <meta charset="UTF-8">
     <title>物料证件管理</title>
 
-    <link href="../../../css/global.debug.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="../../../css/global.debug.css" type="text/css"/>
+    <link rel="stylesheet" href="../../../css/bootstrap.css" type="text/css"/>
+    <link rel="stylesheet" href="../../../css/iconfont/iconfont.css">
 
     <!--grunt.css.begin-->
     <link rel="stylesheet" href="../../../css/bill-ext/material_document/index.debug.css">
+    <link rel="stylesheet" href="../../../css/list/index.debug.css">
     <!--grunt.css.end-->
 
 </head>
@@ -35,31 +38,93 @@
         <div class="text">物料证件</div>
     </div>
     <div id="list">
-        <div class="nav-panel">
-            <div id="div-cascade-path" class="bread-crumbs-box">
-            </div>
-            <div id="div-cascade-menus">
-            </div>
+        <!--按钮区-->
+        <div class="container-fluid options">
+            <div id="div-button-list" class="btn-box"></div>
+        </div>
+        <!--过滤条件 -->
+        <div id="search-box" class="container-fluid search-box">
 
-            <div class="search-box">
-                <i class="sms-icon-search"></i>
-                <input id="txt-simple-search" type="text" placeholder="代码/名称"/>
-            </div>
+            <table class="table">
+                <tbody>
+                <tr>
+                    <td class="col-sm-5">
+                        <table class="table">
+                            <tbody>
+                            <tr class="search-line search-line-first">
+                                <td class="col-sm-2" style="text-align: center;vertical-align: middle">
+                            <span id="searchgroup1">
+                                <strong>查询条件</strong>
+                            </span>
+                                </td>
+                                <td class="col-sm-3">
+                                    <select name="fieldKey" data-index="1" class="form-control field-key">
+                                    </select>
+                                </td>
+                                <td class="col-sm-2">
+                                    <select name="operator" class="form-control operator">
+                                    </select>
+                                </td>
+                                <td class="col-sm-3" data-name="value" style="overflow:visible">
+                                    <input type="text" name="value" value="" class="form-control  searchInput"
+                                           autocomplete="off">
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                    <td class="col-sm-5">
+                        <table class="table">
+                            <tbody>
+                            <tr class="search-line search-line-first">
+                                <td class="col-sm-2">
+                                    <select name="linkType" class="form-control">
+                                        <option value="and" selected="selected" data-keys="bingqie bq">并且</option>
+                                        <option value="or" data-keys="huozhe hz">或者</option>
+                                    </select>
+                                </td>
+                                <td class="col-sm-3">
+                                    <select name="fieldKey" data-index="3" class="form-control field-key">
+                                    </select>
+                                </td>
+                                <td class="col-sm-2">
+                                    <select name="operator" class="form-control operator">
+                                    </select>
+                                </td>
+                                <td class="col-sm-3" data-name="value" style="overflow:visible">
+                                    <input type="text" name="value" value="" class="form-control  searchInput"
+                                           autocomplete="off">
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                    <!--搜索按钮 -->
+                    <td class="col-sm-1"
+                        style="text-align: center;vertical-align: middle;padding-bottom: 5px !important;">
+
+                        <div class="btn-group col-sm-8">
+                            <button type="button" id="search" class="btn btn-primary" data-loading="稍候...">
+                                <i class=" iconfont icon-chaxun"></i>
+                                搜索
+                            </button>
+                        </div>
+                    </td>
+
+                </tr>
+                </tbody>
+            </table>
+
         </div>
 
-        <div class="options-panel">
-            <div id="div-button-list" class="btn-box">
-
-            </div>
-
-            <div id="div-pager-simple" class="pager-box">
-            </div>
-
+        <!-- 简易分页控件 -->
+        <div class="container-fluid">
+            <div id="div-pager-simple" class="pull-right"></div>
         </div>
-
-        <div id="div-list" class="table-panel">
+        <!--主显示区-->
+        <div id="div-list" class="container-fluid table-responsive">
             <!--
-            <table class="data-table">
+            <table class="table table-striped table-bordered table-hover">
                 <thead>
                 <tr>
                     #--th.checkbox.begin--#
@@ -69,7 +134,7 @@
                     #--th.checkbox.end--#
 
                     #--th.begin--#
-                    <th style="width: {width}px;">
+                    <th style="min-width: {width}px;">
                         {th}
                     </th>
                     #--th.end--#
@@ -87,35 +152,17 @@
                     </td>
                     #--td.checkbox.end--#
 
+                    #--td.image.begin--#
+                     <img src="{text}">
+                    #--td.image.end--#
+
                     #--td.begin--#
-                    <td data-index="{index}" key="{key}"  title="{title}" class="{number-class}">
+                    <td data-index="{index}" data-key="{key}" class="{number-class} {text-align}">
+                        {text}
 
-                        #--td.value.begin--#
-                            !--item.a.begin--!
-                            <a href="javascript:" title="{text}">{text}</a>
-                            !--item.a.end--!
-
-                            !--item.pop.menu.begin--!
-                              <div>
-                                        <input type="button" index="1" class="item-pop-menu" value="下载">
-                                        <input type="button" index="2"  class="item-pop-menu" value="删除" >
-                                </div>
-                            !--item.pop.menu.end--!
-
-                            !--item.table.begin--!
-                            <table>
-                                !--item.table.tr.begin--!
-                                <tr data-row="{row}"  data-col="{col}" child-index ="{child}" >
-                                    !--item.table.tr.td.begin--!
-                                    <td  key="{key}" >
-                                        <a class="attachment" href="javascript:void(0)">{td}</a>
-                                    </td>
-                                    !--item.table.tr.td.end--!
-                                </tr>
-                                !--item.table.tr.end--!
-                            </table>
-                            !--item.table.end--!
-                         #--td.value.end--#
+                        !--item.a.begin--!
+                        <a href="javascript:" title="{text}">{text}</a>
+                        !--item.a.end--!
 
                     </td>
                     #--td.end--#
@@ -125,7 +172,23 @@
             </table>
             -->
         </div>
-        <div id="div-pager-normal" class="page-panel"></div>
+        <!--标准分页控件 -->
+        <div id="div-pager-normal" class="container-fluid pull-right page-panel"></div>
+
+        <div id="filter-template" style="display: none">
+            <!--
+                #--option.begin--#
+                <option data-index="{index}" value="{value}" data-ctrltype="{ctrlType}" >{name}</option>
+                #--option.end--#
+                #--value.text.begin--#
+                <input type="text" name="value" value="" class="form-control  searchInput" autocomplete="off">
+                #--value.text.end--#
+                #--value.f7.begin--#
+                 <div class="col-sm-12" data-name="lookUp"></div>
+                #--value.f7.end--#
+
+            -->
+        </div>
     </div>
 
 </div>
@@ -136,15 +199,14 @@
 <script src="../../../config.js"></script>
 
 <!--grunt.js.begin-->
-<script src="modules/ButtonList.js"></script>
-<script src="modules/ButtonListOption.js"></script>
+<script src="../../selector/module/DataSelector.js"></script>
+<script src="../../common-edit/FormAction.js"></script>
 <script src="modules/List/Samples.js"></script>
 <script src="modules/List/API/Head.js"></script>
 <script src="modules/List/API/Body.js"></script>
 <script src="modules/List/API.js"></script>
 <script src="modules/List/Operation.js"></script>
 <script src="modules/List.js"></script>
-<script src="modules/ClassMapping.js"></script>
 <script src="modules/Pager.js"></script>
 <script src="modules/SupplierPager.js"></script>
 <script src="modules/Tree.js"></script>

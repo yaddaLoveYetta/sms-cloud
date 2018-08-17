@@ -1,6 +1,6 @@
 package com.kingdee.hrp.sms.basedata.service;
 
-public interface IItemService {
+public interface IMaterialService {
 
     /**
      * 物料图片,只能设置一张

@@ -44,39 +44,27 @@ define('List/Operation', function (require, module, exports) {
     }
 
     function del(classId, list, fn) {
-        var items = '';
+
+        var items = new Array();
         for (var item in list) {
             if (list[item]) {
-                items += (',' + list[item].primaryValue);
+                items.push(list[item].primaryValue);
             }
         }
 
-        items = items.substr(1);
         post('template/delItem', {
             'classId': classId,
-            'items': items,
+            'items': items
         }, fn);
     }
 
-    function edit(params, fn) {
-        post('template/editItem', params, fn);
-    }
-
-    function download(params, fn) {
-        post('file/download', params, fn);
-    }
-
     function forbid(classId, list, operateType, fn) {
-        var items = '';
+
+        var items = new Array();
         for (var item in list) {
             if (list[item]) {
-                items += (',' + list[item].primaryValue);
+                items.push(list[item].primaryValue);
             }
-        }
-        items = items.substr(1);
-
-        if (items == '') {
-            return;
         }
 
         post('template/forbid', {
@@ -87,35 +75,31 @@ define('List/Operation', function (require, module, exports) {
 
     }
 
-    function review(classId, list, fn) {
+    function check(classId, list, fn) {
 
-        var items = '';
+        var items = new Array();
         for (var item in list) {
             if (list[item]) {
-                items += (',' + list[item].primaryValue);
+                items.push(list[item].primaryValue);
             }
         }
 
-        items = items.substr(1);
-
-        post('template/checkItem', {
+        post('template/check', {
             'classId': classId,
             'items': items
         }, fn);
     }
 
-    function unReview(classId, list, fn) {
+    function unCheck(classId, list, fn) {
 
-        var items = '';
+        var items = new Array();
         for (var item in list) {
             if (list[item]) {
-                items += (',' + list[item].primaryValue);
+                items.push(list[item].primaryValue);
             }
         }
 
-        items = items.substr(1);
-
-        post('template/unCheckItem', {
+        post('template/unCheck', {
             'classId': classId,
             'items': items
         }, fn);
@@ -140,12 +124,10 @@ define('List/Operation', function (require, module, exports) {
 
     return {
         del: del,
-        edit: edit,
-        download: download,
         forbid: forbid,
-        review: review,
-        unReview: unReview,
-        send: send,
+        check: check,
+        unCheck: unCheck,
+        send: send
     };
 
 });

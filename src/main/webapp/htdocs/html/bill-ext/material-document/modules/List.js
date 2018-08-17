@@ -1,5 +1,4 @@
-﻿﻿
-/**
+﻿/**
  * List 模块
  *
  */
@@ -7,69 +6,66 @@ define("List", function (require, module, exports) {
     var $ = require("$");
     var MiniQuery = require("MiniQuery");
     var SMS = require("SMS");
-    var API = require("/API");
     // 完整名称为 List/API
-    var Operation = require("/Operation");
-
-    var Iframe = SMS.require('Iframe');
-
-    var Upload = require('/Upload');
-
-    var dialog = Iframe.getDialog();
+    var API = require("/API");
     // 完整名称为 List/Operation
+    var Operation = require("/Operation");
+    var Iframe = SMS.require('Iframe');
+    var dialog = Iframe.getDialog();
+    // 容器对象
     var div = document.getElementById("div-list");
-    var samples = require("/Samples")(div);
     // 完整名称为 List/Samples
+    var samples = require("/Samples")(div);
+    // 主键
     var primaryKey = "";
+    // 单据模板
+    var metaData = {};
+    // 列表数据
     var list = {};
+    // 事件绑定标识
     var hasBind = false;
     var emitter = MiniQuery.Event.create();
+    // 选中的记录
     var index$selected = {};
+
     // 记录选中的索引
-    var classId;
-
-    var tid = null;
-
     function load(config, fn) {
-        SMS.Tips.loading("数据加载中...");
-        classId = config.classId;
+
+        //SMS.Tips.loading("数据加载中...");
+        SMS.Tips.loading({
+            text: '数据加载中，请稍候...',
+            delay: 200
+        });
+
         API.get({
             classId: config.classId,
             pageNo: config.pageNo,
             pageSize: config.pageSize,
             conditions: config.conditions
         }, function (data) {
-            SMS.Tips.success("数据加载成功", 1500);
+            SMS.Tips.success("数据加载成功", 500);
             var total = data.body.total;
             fn && fn(data, total);
         });
     }
 
-    /**
-     *
-     * @param field 子表模板
-     * @param row 主表行
-     * @param col 主表列
-     * @param data子表数据
-     * @return {string}
-     */
-    function getTableHtml(field, row, col, data) {
+    function getTableHtml(field, data) {
 
-        if (!data || data.length == 0 || data[0] == null || data[0].primaryValue == null) {
+        if (!data || data.length == 0 || data[0] == null) {
             return "";
         }
         var html = $.String.format(samples["item.table"], {
             // 行
             'item_table_tr': $.Array.keep(data, function (item, no) {
-                item.value = getHtml(field.type, item.value);
                 return $.String.format(samples["item.table.tr"], {
-                    row: row,
-                    col: col,
-                    child: no,
+                    index: no,
+                    child: 1,
                     'item_table_tr_td': $.String.format(samples["item.table.tr.td"], {
+                        index: no,
+                        child: 1,
                         key: field.key,
-                        td: item.value.substr(item.value.lastIndexOf('/') + 1),
-                        'file-name': item.value.substr(item.value.lastIndexOf('/') + 1),
+                        td: item,
+                        title: item,
                     })
                 });
             }).join(""),
@@ -80,55 +76,157 @@ define("List", function (require, module, exports) {
 
     }
 
-    function getHtml(type, data) {
+    // 根据控件类型转换值显示形式 如 是/否类型控件，数据库中保存的是1/0 ，前端显示时应转换成 是/否 字样
+    function getHtml(ctrlType, data) {
+
         /*
-         * if ( typeof data == 'boolean') { data = data ? '是' : '否'; }
-         */
-        if (data == null) {
-            data = "";
+                           1	数字
+                           2	数字带小数
+                           3	选择框
+                           5	下拉列表
+                           6	F7选择框
+                           7	级联选择器
+                           8	手机号码
+                           9	座机电话
+                           10	普通文本
+                           11	多行文本
+                           12	日期时间
+                           13	男：女
+                           14	密码控件
+                           15	是：否
+                           16	单价/金额(两位小数)
+                           17	图片地址
+                        */
+        switch (ctrlType) {
+            case 1:
+            case 2:
+            case 6:
+            case 8:
+            case 9:
+            case 10:
+            case 11:
+            case 12:
+            case 14:
+            case 16:
+                data = data || '';
+                break;
+            case 3:
+                // checkbox
+                data = data ? "是" : "否";
+                break;
+            case 13:
+                //男：女
+                data = data ? "男" : "女";
+                break;
+            case 15: //是：否
+                data = data ? "是" : "否";
+                break;
+            case 17:
+                data = $.String.format(samples["td.image"], {
+                        text: data || "../../css/img/medicine.jpg"
+                    }
+                );
+                break;
+            default:
+                data = data || '';
         }
-        if (type == 4) {
-            // boolean 类型元数据
-            data = data ? "是" : "否";
-        }
-        if (type == 3) {
-            // 日期时间类型
-            console.log(data instanceof Date);
-        }
-        if (type == 98) {
-            // 处理男/女显示
-            data = data ? "女" : "男";
-        }
-        if (type == "entry") {
-            //如果只有一个就不返回下拉框了
-            if (data.length <= 1) {
-                return data[0] || "";
-            }
-            var html = "<select style='border: none;margin-left:-5px;background-color: transparent;'>"
-            $.Array.each(data, function (item, index) { //item.FCarNo
-                html += $.String.format("<option value='{0}'>{0}</option>", item || "");
-            });
-            html += " </select>";
-            return html;
-        }
+
+        /*        if (data == null) {
+                    data = "";
+                }
+                if (type == 4) {
+                    // boolean 类型元数据
+                    data = data ? "是" : "否";
+                }
+                if (type == 3) {
+                    // 日期时间类型
+                    console.log(data instanceof Date);
+                }
+                if (type == 98) {
+                    // 处理男/女显示
+                    data = data ? "女" : "男";
+                }
+                if (type == "entry") {
+                    //如果只有一个就不返回下拉框了
+                    if (data.length <= 1) {
+                        return data[0] || "";
+                    }
+                    var html = "<select style='border: none;margin-left:-5px;background-color: transparent;'>"
+                    $.Array.each(data, function (item, index) { //item.FCarNo
+                        html += $.String.format("<option value='{0}'>{0}</option>", item || "");
+                    });
+                    html += " </select>";
+                    return html;
+                }*/
+
         return data;
     }
 
+    // 根据控件类型确定蚊子显示位置
+    function getTextAlign(ctrlType) {
+
+        /*
+                   1	数字
+                   2	数字带小数
+                   3	选择框
+                   5	下拉列表
+                   6	F7选择框
+                   7	级联选择器
+                   8	手机号码
+                   9	座机电话
+                   10	普通文本
+                   11	多行文本
+                   12	日期时间
+                   13	男：女
+                   14	密码控件
+                   15	是：否
+                   16	单价/金额(两位小数)
+                */
+        switch (ctrlType) {
+            case 1:
+            case 2:
+            case 16:
+                return 'text-align-right';
+                break;
+            case 12:
+            case 13:
+            case 15:
+                return 'text-align-center';
+                break;
+            default:
+                return 'text-align-left';
+                break;
+        }
+
+    }
+
     function render(config, fn) {
+
         // 清空已选择项
         index$selected = {};
+
         load({
             classId: config.classId,
             pageNo: config.pageNo,
             pageSize: config.pageSize,
             conditions: config.conditions
         }, function (data, total) {
+
             list = data;
+            // 将单据模板缓存下来
+            metaData = list.metaData;
+            // 单据主键值
             primaryKey = list.primaryKey;
+            // 处理过的字段模板
             var headItems = data.head.items;
+            // 单据数据
             var bodyItems = data.body.items;
+
+            // 填充列表
             div.innerHTML = $.String.format(samples["table"], {
+
                 checkbox: data.checkbox ? samples["th.checkbox"] : "",
+
                 ths: $.Array.keep(headItems, function (field, index) {
                     return $.String.format(samples["th"], {
                         index: index,
@@ -136,15 +234,21 @@ define("List", function (require, module, exports) {
                         width: field.width
                     });
                 }).join(""),
+
                 trs: $.Array.keep(bodyItems, function (item, no) {
+
                     // 行
                     return $.String.format(samples["tr"], {
+
                         index: no,
-                        "disabled-class": item.disabled ? "disabled" : "",
+
+                        "disabled-class": "",
+
                         checkbox: data.checkbox ? $.String.format(samples["td.checkbox"], {
                             index: no
                         }) : "",
-                        tds: $.Array.keep(item.items, function (colItem, index) {
+                        image: "",
+                        tds: $.Array.keep(item.items, function (item, index) {
                             // 列
                             var field = headItems[index];
                             // 当前列的表头信息
@@ -152,40 +256,29 @@ define("List", function (require, module, exports) {
                                 index: index,
                                 key: field.key,
                                 "number-class": field.key == "number" ? "number" : "",
-                                td: field.isEntry ? getTableHtml(field, no, index, colItem.value) : getHtml(field.type, colItem.value),
-                                title: field.isEntry ? '' : getHtml(field.type, colItem.value),
+                                'text-align': getTextAlign(field.type),
+                                text: field.isEntry ? getTableHtml(field, item.value) : getHtml(field.type, item.value),
+                                title: field.isEntry ? '' : getHtml(field.type, item.value)
                             });
                         }).join("")
                     });
-                }).join(""),
-                emptys: data.checkbox ? samples["emptytd"] : "",
-                tdtotals: $.Array.keep(headItems, function (field, index) {
-                    return $.String.format(samples["tdtotal"], {
-                        index: index,
-                        key: field.key,
-                        needTotal: field.isCount == "1",//(field.type == 1 && field.lookupType == 0),
-                        width: field.width
-                    });
                 }).join("")
+
             });
-
-            sumTdTotal(data);
-
-            bindHover();
 
             if (!hasBind) {
                 bindEvents(config.multiSelect);
                 hasBind = true;
             }
+
             if (!config.multiSelect) {
                 // 处理刷新全选按钮出来的问题
                 $('[data-check="all"]').hide();
             }
+
             fn && fn(total, config.pageSize);
 
-            emitter.fire("renderDone", []);
         });
-
     }
 
     function sumTdTotal(data) {
@@ -215,22 +308,32 @@ define("List", function (require, module, exports) {
     function bindEvents(multiSelect) {
 
         if (multiSelect) {
+            // 支持多选-checkbox事件
             $(div).delegate('[data-check="all"]', "click", function (event) {
+                // 全选
                 var chk = this;
                 var checked = chk.checked;
                 $('[data-check="item"]').each(function () {
                     var chk = this;
                     check(chk, checked);
                 });
+                event.stopPropagation();
+
             }).delegate('[data-check="item"]', "click", function (event) {
+
+                // 选择单挑记录
                 var chk = this;
                 check(chk);
                 event.stopPropagation();
+
             });
         } else {
+
+            // 不支持多选-checkbox事件
             $('[data-check="all"]').hide();
+
             $(div).delegate("[data-check=item]", "click", function (event) {
-                // var item = this;
+
                 var item = this;
                 var checked = item.checked;
                 $('[data-check="item"]').each(function () {
@@ -239,16 +342,18 @@ define("List", function (require, module, exports) {
                 });
                 check(item, checked);
                 event.stopPropagation();
+
             });
         }
 
+        // 主表列单击事件
         $(div).delegate("td[data-index]", "click", function (event) {
             var td = this;
 
-            if (td.getAttribute("child-index")) {
+            if (td.getAttribute("child")) {
                 // 子表列单击
                 //td = td.parentNode.parentNode.parentNode.parentNode; // 转换成主表列
-                return; // 不触发,猫婆触发上级td事件
+                return; // 不触发,触发上级td事件
             }
 
             var tr = td.parentNode;
@@ -270,11 +375,14 @@ define("List", function (require, module, exports) {
             emitter.fire("click:" + no + "-" + index, args);
             emitter.fire("click:" + field.key, args);
             emitter.fire("cell.click", args);
+
         });
+
+        //主表行单击事件
         $(div).delegate("tr[data-index]", "click", function (event) {
             var tr = this;
 
-            if (tr.getAttribute("child-index")) {
+            if (tr.getAttribute("child")) {
                 // 子表列单击
                 // tr = tr.parentNode.parentNode.parentNode.parentNode; // 转换成主表行
                 return; // 不触发,猫婆触发上级tr事件
@@ -303,124 +411,27 @@ define("List", function (require, module, exports) {
             check(chk, checked);
         });
 
-        // 下载-删除功能按钮
-        $(document).on("click", ".item-pop-menu", function (event) {
-            var btn = this;
-            var index = btn.getAttribute("index");
+        //主表行双击事件
+        $(div).delegate("tr[data-index]", "dblclick", function (event) {
 
-            var tr = btn.parentNode.parentNode.parentNode;
-            var row = tr.getAttribute("data-row"); // 主表行
-            var col = tr.getAttribute("data-col"); // 主表列
-            var childNo = tr.getAttribute("child-index");
-
+            var tr = this;
+            var no = +tr.getAttribute("data-index");
+            // 行号
             var bodyItems = list.body.items;
-            var operate;
+            var args = [{
+                tr: this,
+                row: no,
+                body: bodyItems[no]
+            }, event];
 
-            if (index == 0) {
-                // 预览
-                var fileName = bodyItems[row].items[col].value[childNo].value.replace(/.*(\/|\\)/, "");
-                var fileExt = (/[.]/.exec(fileName)) ? /[^.]+$/.exec(fileName.toLowerCase()) : '';
+            emitter.fire("row.dblclick", args);
 
-                if (!(fileExt == "jpg" || fileExt == "jpeg" || fileExt == "png" || fileExt == "gif" || fileExt == "pdf")) {
-                    SMS.Tips.error("不支持该类型文件预览", 2000);
-                    return;
-                }
-
-                var $API = SMS.require('API');
-                var api = new $API("file/download");
-                var url = api.getUrl();
-                url = $.Url.addQueryString(url, {
-                    classId: classId,
-                    itemId: bodyItems[row].primaryValue,
-                    fileName: fileName,
-                })
-
-                if (fileExt == "pdf") {
-                    // pdf 预览
-                    url = encodeURIComponent(url);
-                    window.open("../../../lib/pdfjs/web/viewer.html?file=" + url);
-                    return;
-                } else {
-
-                    SMS.use('Dialog', function (Dialog) {
-
-                        var dialog = new Dialog({
-                            title: '图片预览',
-                            width: 700,
-                            height: 550,
-                            url: 'html/supplier/picView/index.html',
-                            data: {
-                                picUrl: url
-                            },
-                            button: [],
-                        });
-
-                        //默认关闭行为为不提交
-                        dialog.isSubmit = false;
-
-                        dialog.showModal();
-
-                    });
-
-                }
-                return;
-
-            }
-            else if (index == 1) {
-                // 下载
-                var fileDirector = bodyItems[row].items[col].value[childNo].value;
-                var fileName = fileDirector.substr(fileDirector.lastIndexOf('/') + 1);
-
-                var $a = $(btn).parent().prev();
-
-                operate = 1;
-
-                var args = [{
-                    itemId: bodyItems[row].primaryValue,
-                    fileName: fileName,
-                    control: $a[0],
-                    operate: operate
-                }, event];
-
-
-            } else if (index == 2) {
-                // 删除
-                operate = 2;
-                var args = [{
-                    row: row,
-                    col: col,
-                    entryRow: childNo,
-                    body: bodyItems[row],
-                    operate: operate
-                }, event];
-            }
-            emitter.fire("row.item.click", args);
         });
-        /*
-         $("a[class='attachment']").on('click', function () {
 
-         alert($(this).text());
-         });*/
-    }
-
-    function bindHover() {
-        $('.data-table table tbody tr td a').hover(function () {
-            if ($(this).siblings().length > 0) {
-                return;
-            }
-            $(this).after(samples["item.pop.menu"])
-
-        }, function () {
-            clearTimeout(tid);
-            var a = this;
-            tid = setTimeout(function () {
-                $(a).siblings().remove();
-            }, 3000);
-
-        })
     }
 
     function check(chk, checked) {
+
         checked = chk.checked = typeof checked == "boolean" ? checked : chk.checked;
         var tr = chk.parentNode.parentNode;
         $(tr).toggleClass("selected", checked);
@@ -446,7 +457,7 @@ define("List", function (require, module, exports) {
     }
 
     function getPrimaryKey() {
-        return primaryKey;
+        return list.primaryKey;
     }
 
     function forbid(classId, list, operateType, fn) {
@@ -457,90 +468,35 @@ define("List", function (require, module, exports) {
         Operation.del(classId, list, fn);
     }
 
-    function edit(params, fn) {
-        Operation.edit(params, fn);
-    }
-
-    function download(params, fn) {
-        Operation.download(params, fn);
-    }
-
     function review(classId, list, fn) {
-        Operation.review(classId, list, fn);
+        Operation.check(classId, list, fn);
     }
 
     function unReview(classId, list, fn) {
-        Operation.unReview(classId, list, fn);
+        Operation.unCheck(classId, list, fn);
     }
 
     function send(classId, list, fn) {
         Operation.send(classId, list, fn);
     }
 
-    function show() {
-
-        if ($(panel).hasClass('hover')) { //避免上次的隐藏动画还没结束又开始显示动画
-            return;
-        }
-
-        $(panel).addClass('hover');
-        $('#div-user-list').fadeIn();
-    }
-
-    function hide() {
-
-        $('#div-user-list').fadeOut(function () {
-            $(panel).removeClass('hover');
-        });
-    }
-
-    function checkExpired() {
-
-        var headItems = list.head.items;
-        var bodyItems = list.body.items;
-
-        var beginDate;
-        var endDate;
-
-        for (var i = 0; i < bodyItems.length; i++) {
-
-            beginDate = bodyItems[i]['data']['beginDate'];
-            endDate = bodyItems[i]['data']['endDate'];
-
-            if (beginDate && endDate) {
-
-                if (new Date(endDate.replace(/\-/g, '\/')) < new Date()) {
-                    //开始时间大于了结束时间
-                    $('tr[data-index=' + i + ']').css('color', '#f35151');
-                }
-
-                continue;
-
-            }
-
-        }
-    }
-
-    function getData() {
-        return list;
+    function getMetaData() {
+        return metaData;
     }
 
     return {
-        load: load,
         render: render,
         on: emitter.on.bind(emitter),
         getSelectedItems: getSelectedItems,
+        setItemSelected: check,
         getPrimaryKey: getPrimaryKey,
         del: del,
-        edit: edit,
-        download: download,
         getFilterItems: getFilterItems,
         forbid: forbid,
-        review: review,
-        unReview: unReview,
+        check: review,
+        unCheck: unReview,
         send: send,
-        checkExpired: checkExpired,
-        getData: getData,
+        getMetaData: getMetaData
     };
 })
 ;

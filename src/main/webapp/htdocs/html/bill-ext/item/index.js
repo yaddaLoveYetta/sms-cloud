@@ -125,7 +125,7 @@
                 $('#item-image-select').remove();
             } else {
 
-                var api = new API("item/setImage");
+                var api = new API("material/setImage");
 
                 FileUpload.render('#item-image-select', {
                     uploadUrl: api.getUrl(),// 上传请求路径

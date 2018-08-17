@@ -2,67 +2,74 @@
  * 菜单组模块
  *
  */
-define('ButtonList', function(require, module, exports) {
+define('ButtonList', function (require, module, exports) {
 
-	var $ = require('$');
-	var MiniQuery = require('MiniQuery');
-	var SMS = require('SMS');
+    var $ = require('$');
+    var MiniQuery = require('MiniQuery');
+    var SMS = require('SMS');
 
-	var ButtonList = SMS.require('ButtonList');
-	var Iframe = SMS.require('Iframe');
-	var API = SMS.require('API');
+    var ButtonList = SMS.require('ButtonList');
+    var Iframe = SMS.require('Iframe');
+    var API = SMS.require('API');
 
-	var config = {
-		container : '#div-button-list',
-		fields : {
-			text : 'text',
-			child : 'items',
-			callback : 'click',
-			route : 'name',
-		},
+    //检查登录
+    if (!SMS.Login.check(true)) {
+        return;
+    }
 
-		autoClose : true,
+    var config = {
+        container: '#div-button-list',
+        fields: {
+            text: 'text',
+            child: 'items',
+            callback: 'click',
+            route: 'name',
+            icon: 'icon'
+        },
 
-		items : [{
-			text : '新增',
-			name : 'add'
-		}, {
-			text : '删除',
-			name : 'delete'
-		}, {
-			text : '刷新',
-			name : 'refresh'
-		}, {
-			text : '禁用',
-			name : 'disable',
-			items : [{
-				text : '反禁用',
-				name : 'enable'
-			}],
-		},{
-			text : '显示禁用项',
-			name : 'showDisable'
-		}
-		]
-	};
+        autoClose: true,
 
-	function create(c) {
+        items: [{
+            text: '新增',
+            name: 'add',
+            icon: 'file.png'
+        }, {
+            text: '删除',
+            name: 'delete'
+        }, {
+            text: '刷新',
+            name: 'refresh'
+        }, {
+            text: '禁用',
+            name: 'disable',
+            items: [{
+                text: '反禁用',
+                name: 'enable'
+            }],
+        }, {
+            text: '显示禁用项',
+            name: 'showDisable'
+        }
+        ]
+    };
 
-		config = $.Object.extend({}, config, c);
+    function create(c) {
 
-		var bl = new ButtonList(config);
+        config = $.Object.extend({}, config, c);
 
-		//总事件，最后触发
-		bl.on('click', function(item, index) {
-			console.dir(item);
-		});
+        var bl = new ButtonList(config);
 
-		return bl;
+        //总事件，最后触发
+        bl.on('click', function (item, index) {
+            console.dir(item);
+        });
 
-	}
+        return bl;
 
-	return {
-		create : create,
-	};
+    }
+
+    return {
+        create: create,
+    };
 
 });

@@ -8,6 +8,11 @@ define('Pager', function(require, module, exports) {
 	var MiniQuery = require('MiniQuery');
 	var SMS = require('SMS');
 
+    //检查登录
+    if (!SMS.Login.check(true)) {
+        return;
+    }
+
 	function render(config) {
 
 		config = $.Object.extend({
@@ -21,7 +26,7 @@ define('Pager', function(require, module, exports) {
 			container : {
 				simple : '#div-pager-simple', //简易分页控件的容器
 				normal : '#div-pager-normal' //标准分页控件的容器
-			},
+			}
 		});
 
 		//SMS.SimplePager.create(config);

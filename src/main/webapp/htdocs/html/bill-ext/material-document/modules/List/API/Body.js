@@ -1,6 +1,6 @@
 ﻿/**
  *
- *
+ * 列表数据
  */
 define('List/API/Body', function (require, module, exports) {
 
@@ -17,23 +17,25 @@ define('List/API/Body', function (require, module, exports) {
      */
     function get(config, fn) {
 
-        var conditions = new Array();
-        for (var item in config.conditions) {
-            if (config.conditions[item] === '') {
-                continue;
-            }
-            conditions.push(config.conditions[item]);
-        }
+        /*        var conditions = new Array();
+
+                for (var item in config.conditions) {
+
+                    if (config.conditions[item] === '') {
+                        continue;
+                    }
+                    conditions.push(config.conditions[item]);
+                }*/
 
         var pageNo = config.pageNo;
-
         var api = new API('template/getItems');
 
         var params = {
             'classId': config.classId,
             'pageNo': pageNo,
             'pageSize': config.pageSize,
-            'condition': conditions.length > 0 ? conditions : '',
+            'condition': config.conditions.length > 0 ? config.conditions : '',
+            'sort': config.sort || ''
         };
 
         api.post(params);
@@ -41,13 +43,7 @@ define('List/API/Body', function (require, module, exports) {
         api.on({
             'success': function (data, json) {
 
-                if (!fields) {
-                    fields = data['fieldShow'];
-                } else {
-                    data['fieldShow'] = fields;
-                }
-
-                console.log('getBody finished');
+                //console.log('List/API/Body getBody finished');
                 fn && fn(data, json);
             },
 
@@ -63,9 +59,7 @@ define('List/API/Body', function (require, module, exports) {
 
     }
 
-    function getItems(list, fields, headData) {
-
-        var primaryKey = headData.formClass.primaryKey;
+    function getItems(list, fields, primaryKey) {
 
         if (!list) {
             return;
@@ -74,6 +68,7 @@ define('List/API/Body', function (require, module, exports) {
         return $.Array.keep(list, function (item, index) { // 行
 
             return {
+
                 'disabled': item['status'], // 是否禁用
                 'data': item,
                 'primaryValue': item[primaryKey], // 主键对应的值
@@ -91,14 +86,8 @@ define('List/API/Body', function (require, module, exports) {
                     if (field.isEntry) { // 子表数据
                         var entryIndex = field.entryIndex;
                         var entryValues = item.entry[entryIndex];
-                        var entryPrimaryKey = headData.formEntries[entryIndex]['primaryKey'];
                         value = $.Array.keep(entryValues, function (field, no) {
-                            //return field[key];
-                            return {
-                                primaryKey: entryPrimaryKey,
-                                primaryValue: field[entryPrimaryKey],
-                                value: field[key],
-                            };
+                            return field[key];
                         })
                     } else {
                         value = item[key];

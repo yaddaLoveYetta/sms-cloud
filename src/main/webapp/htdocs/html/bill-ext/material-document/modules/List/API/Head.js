@@ -12,16 +12,33 @@ define('List/API/Head', function (require, module, exports) {
 
     var cache = null;
     var headItems = [];
-    var display;
-    // 字段显示权限-后端FDisPlay定义 1：平台用户显示，2：供应商用户显示：3：都显示
-    if (user.type == 'QpXq24FxxE6c3lvHMPyYCxACEAI=') {
+    // 字段显示权限-后端disPlay定义:系统用户显示||医院用户显示||供应商用户显示
+    var displayMask;
+    // 字段过滤性控制-后端is_condition定义:1：系统角色过滤字段||2：医院角色过滤字段|:4：供应商角色过滤字段
+    var conditionMask;
+
+    //检查登录
+    if (!SMS.Login.check(true)) {
+        return;
+    }
+
+    var roleType = user.roles && user.roles[0] && user.roles[0]['type'];
+
+    if (roleType === 1) {
         // 平台用户
-        display = 1; // 00 -- 01 --10 --11
-    } else if (user.type == 'B3sMo22ZLkWApjO/oEeDOxACEAI=') {
+        displayMask = 1;
+        conditionMask = 1;
+    } else if (roleType === 2) {
+        // 医院用户
+        displayMask = 64;
+        conditionMask = 2;
+    } else if (roleType === 3) {
         // 供应商用户
-        display = 2; // 10
+        displayMask = 8;
+        conditionMask = 4;
     } else {
-        display = 0;
+        displayMask = 0;
+        conditionMask = 0
     }
 
     /**
@@ -44,9 +61,7 @@ define('List/API/Head', function (require, module, exports) {
         });
 
         api.on('success', function (data, json) {
-
-            console.log('getHead finished');
-
+            console.log('getHead from server finished');
             cache = data;
             fn && fn(data);
 
@@ -67,9 +82,29 @@ define('List/API/Head', function (require, module, exports) {
     }
 
     function getItems(fields) {
+        /*
+         //表头信息-数组
+         headItems = headItems || $.Array.keep(fields, function(item, index) {
 
-        fields = $.extend({}, fields["0"], fields["1"]); // 将主表及第一个子表模板取出
+         var key = item.fieldKey;
 
+         item = $.Object.extend({}, key$field[key], item);
+
+         var mask = item.visible || 0;
+
+         return {
+         'text' : item.caption,
+         'type' : item.listStyle,
+         'key' : key,
+         'width' : item.showWidth,
+         'visible' : !!(mask & 2), //转成 boolean
+         'lookupType' : item.lookupType,
+         };
+         });
+         */
+
+        //fields = $.extend({}, fields["0"], fields["1"]); // 将主表及第一个子表模板取出
+        fields = fields["0"];
         if (headItems.length > 0) {
             return headItems;
         }
@@ -84,14 +119,15 @@ define('List/API/Head', function (require, module, exports) {
 
             var headItem = {
                 'text': item.name,
-                'type': item.dataType,
+                //'type': item.dataType,
+                'type': item.ctrlType,
                 'key': item.key,
                 'width': item.showWidth,
-                'visible': !!(mask & display), //转成 boolean--字段按用户类别显示
+                'visible': !!(mask & displayMask), //转成 boolean--字段按用户类别显示
                 'lookupType': item.lookUpType,
                 'isCount': item.isCount,
-                'entryIndex':item.page,
-                'isEntry': item.page === 1,
+                'entryIndex': item.page,
+                'isEntry': item.page === 1
             };
 
             headItems.push(headItem);
@@ -102,7 +138,7 @@ define('List/API/Head', function (require, module, exports) {
 
     }
 
-    function getformFildItems(formFields) {
+    function getFormFieldItems(formFields) {
 
 
         if (headItems.length > 0) {
@@ -124,7 +160,7 @@ define('List/API/Head', function (require, module, exports) {
                     'type': item.dataType,
                     'key': item.key,
                     'width': item.showWidth,
-                    'visible': !!(mask & display), // 转成 boolean--字段按用户类别显示
+                    'visible': !!(mask & displayMask), // 转成 boolean--字段按用户类别显示
                     'lookupType': item.lookUpType,
                     'dataIndex': item.index,
                     'isEntry': index != 0,
@@ -148,11 +184,12 @@ define('List/API/Head', function (require, module, exports) {
         for (var index in formFields) {
             var fields = formFields[index];
             $.Object.each(fields, function (key, item) {
-                //				var mask = item.FDisplay || 0;
-                //				if (!!(mask & display)) {
-                //					filterItems.push(item)
-                //				}
-                if (item.isCondition == 1) { //表示过滤字段
+
+                var fieldDisplayMask = item.display || 0; //conditionMask
+                var fieldConditionMask = item.isCondition || 0;
+
+                if (!!(fieldConditionMask & conditionMask) && !!(fieldDisplayMask & displayMask)) {
+                    //表示过滤字段
                     filterItems.push(item);
                 }
             })
@@ -163,7 +200,7 @@ define('List/API/Head', function (require, module, exports) {
     return {
         get: get,
         getItems: getItems,
-        getformFildItems: getformFildItems,
+        getFormFieldItems: getFormFieldItems,
         getFilterItem: getFilterItem
     };
 

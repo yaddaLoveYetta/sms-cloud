@@ -32,7 +32,7 @@ define('SupplierPager', function (require, module, exports) {
 
     return {
 
-        render: render,
+        render: render
     };
 
 });

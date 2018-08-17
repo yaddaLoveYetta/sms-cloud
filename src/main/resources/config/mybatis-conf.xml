@@ -83,7 +83,7 @@
         <mapper resource="mapper/generate/HospitalMapper.xml"/>
         <mapper resource="mapper/generate/SupplierMapper.xml"/>
         <mapper resource="mapper/generate/HospitalSupplierMapper.xml"/>
-        <mapper resource="mapper/generate/ItemMapper.xml"/>
+        <mapper resource="mapper/generate/MaterialMapper.xml"/>
         <mapper resource="mapper/generate/PartnerMapper.xml"/>
         <mapper resource="mapper/generate/CooperationApplyMapper.xml"/>
         <mapper resource="mapper/generate/MessageMapper.xml"/>

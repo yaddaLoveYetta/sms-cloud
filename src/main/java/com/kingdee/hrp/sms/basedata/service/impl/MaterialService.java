@@ -1,8 +1,8 @@
 package com.kingdee.hrp.sms.basedata.service.impl;
 
-import com.kingdee.hrp.sms.basedata.service.IItemService;
-import com.kingdee.hrp.sms.common.dao.generate.ItemMapper;
-import com.kingdee.hrp.sms.common.model.Item;
+import com.kingdee.hrp.sms.basedata.service.IMaterialService;
+import com.kingdee.hrp.sms.common.dao.generate.MaterialMapper;
+import com.kingdee.hrp.sms.common.model.Material;
 import com.kingdee.hrp.sms.common.service.BaseService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 
 @Service
-public class ItemService extends BaseService implements IItemService {
+public class MaterialService extends BaseService implements IMaterialService {
     /**
      * 物料图片,只能设置一张
      *
@@ -26,12 +26,12 @@ public class ItemService extends BaseService implements IItemService {
     @Transactional(rollbackFor = Exception.class)
     public void setImage(Integer classId, Long id, String picUrl) {
 
-        ItemMapper mapper = sqlSession.getMapper(ItemMapper.class);
+        MaterialMapper mapper = sqlSession.getMapper(MaterialMapper.class);
 
-        Item item = new Item();
-        item.setId(id);
-        item.setImage(picUrl);
+        Material material = new Material();
+        material.setId(id);
+        material.setImage(picUrl);
 
-        mapper.updateByPrimaryKeySelective(item);
+        mapper.updateByPrimaryKeySelective(material);
     }
 }
