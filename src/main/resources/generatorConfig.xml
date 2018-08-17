@@ -167,7 +167,7 @@
              
         </table>
 
-        <table tableName="t_item" domainObjectName="Item">
+        <table tableName="t_material" domainObjectName="Material">
             <property name="useActualColumnNames" value="false"/>
              
         </table>

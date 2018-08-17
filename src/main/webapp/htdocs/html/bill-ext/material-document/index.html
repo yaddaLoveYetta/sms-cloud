@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="zh_CN">
+<head>
+    <meta charset="UTF-8">
+    <title>物料证件管理</title>
+
+    <link href="../../../css/global.debug.css" rel="stylesheet"/>
+
+    <!--grunt.css.begin-->
+    <link rel="stylesheet" href="../../../css/bill-ext/material_document/index.debug.css">
+    <!--grunt.css.end-->
+
+</head>
+<body class="iframe">
+
+<div class="left-panel">
+    <div class="nav-panel">
+        <div class="title">
+            <div class="text">点击项目查看</div>
+        </div>
+        <div class="search-box">
+            <i class="sms-icon-search"></i>
+            <input id="txt-item-search" type="text" placeholder="输入名称查找"/>
+        </div>
+    </div>
+    <div class="options-panel">
+        <div id="div-left-pager-simple" class="pager-box">
+        </div>
+    </div>
+    <ul id="tree" class="ztree"></ul>
+</div>
+
+<div class="right-panel">
+    <div class="title">
+        <div class="text">物料证件</div>
+    </div>
+    <div id="list">
+        <div class="nav-panel">
+            <div id="div-cascade-path" class="bread-crumbs-box">
+            </div>
+            <div id="div-cascade-menus">
+            </div>
+
+            <div class="search-box">
+                <i class="sms-icon-search"></i>
+                <input id="txt-simple-search" type="text" placeholder="代码/名称"/>
+            </div>
+        </div>
+
+        <div class="options-panel">
+            <div id="div-button-list" class="btn-box">
+
+            </div>
+
+            <div id="div-pager-simple" class="pager-box">
+            </div>
+
+        </div>
+
+        <div id="div-list" class="table-panel">
+            <!--
+            <table class="data-table">
+                <thead>
+                <tr>
+                    #--th.checkbox.begin--#
+                    <th style="width: 20px;">
+                        <input type="checkbox" data-check="all"/>
+                    </th>
+                    #--th.checkbox.end--#
+
+                    #--th.begin--#
+                    <th style="width: {width}px;">
+                        {th}
+                    </th>
+                    #--th.end--#
+
+                </tr>
+                </thead>
+                <tbody>
+
+                #--tr.begin--#
+                <tr data-index="{index}" class="{disabled-class}">
+
+                    #--td.checkbox.begin--#
+                    <td>
+                        <input type="checkbox" data-check="item" data-index="{index}"/>
+                    </td>
+                    #--td.checkbox.end--#
+
+                    #--td.begin--#
+                    <td data-index="{index}" key="{key}"  title="{title}" class="{number-class}">
+
+                        #--td.value.begin--#
+                            !--item.a.begin--!
+                            <a href="javascript:" title="{text}">{text}</a>
+                            !--item.a.end--!
+
+                            !--item.pop.menu.begin--!
+                              <div>
+                                        <input type="button" index="1" class="item-pop-menu" value="下载">
+                                        <input type="button" index="2"  class="item-pop-menu" value="删除" >
+                                </div>
+                            !--item.pop.menu.end--!
+
+                            !--item.table.begin--!
+                            <table>
+                                !--item.table.tr.begin--!
+                                <tr data-row="{row}"  data-col="{col}" child-index ="{child}" >
+                                    !--item.table.tr.td.begin--!
+                                    <td  key="{key}" >
+                                        <a class="attachment" href="javascript:void(0)">{td}</a>
+                                    </td>
+                                    !--item.table.tr.td.end--!
+                                </tr>
+                                !--item.table.tr.end--!
+                            </table>
+                            !--item.table.end--!
+                         #--td.value.end--#
+
+                    </td>
+                    #--td.end--#
+                </tr>
+                #--tr.end--#
+                </tbody>
+            </table>
+            -->
+        </div>
+        <div id="div-pager-normal" class="page-panel"></div>
+    </div>
+
+</div>
+
+<script src="../../../lib/jquery/jquery-1.11.1.debug.js"></script>
+<script src="../../../lib/miniquery/miniquery.debug.js"></script>
+<script src="../../../lib/sms/sms.debug.js"></script>
+<script src="../../../config.js"></script>
+
+<!--grunt.js.begin-->
+<script src="modules/ButtonList.js"></script>
+<script src="modules/ButtonListOption.js"></script>
+<script src="modules/List/Samples.js"></script>
+<script src="modules/List/API/Head.js"></script>
+<script src="modules/List/API/Body.js"></script>
+<script src="modules/List/API.js"></script>
+<script src="modules/List/Operation.js"></script>
+<script src="modules/List.js"></script>
+<script src="modules/ClassMapping.js"></script>
+<script src="modules/Pager.js"></script>
+<script src="modules/SupplierPager.js"></script>
+<script src="modules/Tree.js"></script>
+<script src="index.js"></script>
+<!--grunt.js.end-->
+</body>
+</html>
