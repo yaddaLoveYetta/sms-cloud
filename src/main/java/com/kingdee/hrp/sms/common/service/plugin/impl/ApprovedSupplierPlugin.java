@@ -1,23 +1,20 @@
 package com.kingdee.hrp.sms.common.service.plugin.impl;
 
 import com.kingdee.hrp.sms.common.dao.generate.CooperationApplyMapper;
-import com.kingdee.hrp.sms.common.dao.generate.PartnerMapper;
 import com.kingdee.hrp.sms.common.enums.ClassType;
 import com.kingdee.hrp.sms.common.enums.UserRoleType;
 import com.kingdee.hrp.sms.common.model.CooperationApply;
 import com.kingdee.hrp.sms.common.model.CooperationApplyExample;
-import com.kingdee.hrp.sms.common.model.PartnerExample;
 import com.kingdee.hrp.sms.common.pojo.Condition;
 import com.kingdee.hrp.sms.common.pojo.FormTemplate;
 import com.kingdee.hrp.sms.common.service.plugin.AbstractPlugInAdapter;
+import com.kingdee.hrp.sms.util.SessionUtil;
+import org.springframework.beans.factory.InitializingBean;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import com.kingdee.hrp.sms.util.SessionUtil;
-import org.springframework.beans.factory.InitializingBean;
 
 /**
  * 中标库插件
@@ -145,6 +142,8 @@ public class ApprovedSupplierPlugin extends AbstractPlugInAdapter implements Ini
                 hospitals.add(cooperationApply.getHospital());
                 hospitalSupplies.add(cooperationApply.getHospitalSupplier());
             });
+
+            // revert test
 
         }
 
