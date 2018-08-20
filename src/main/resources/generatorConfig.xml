@@ -167,6 +167,11 @@
              
         </table>
 
+        <table tableName="t_approved_supplier" domainObjectName="ApprovedSupplier">
+            <property name="useActualColumnNames" value="false"/>
+
+        </table>
+
         <table tableName="t_material" domainObjectName="Material">
             <property name="useActualColumnNames" value="false"/>
              

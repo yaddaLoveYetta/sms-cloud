@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.kingdee.hrp.sms.common.dao.generate.CooperationApplyMapper">
-  <resultMap id="BaseResultMap" type="com.kingdee.hrp.sms.common.model.CooperationApply">
+<mapper namespace="com.kingdee.hrp.sms.common.dao.generate.ApprovedSupplierMapper">
+  <resultMap id="BaseResultMap" type="com.kingdee.hrp.sms.common.model.ApprovedSupplier">
     <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="supplier" jdbcType="BIGINT" property="supplier" />
     <result column="hospital" jdbcType="BIGINT" property="hospital" />
-    <result column="date" jdbcType="TIMESTAMP" property="date" />
-    <result column="status" jdbcType="INTEGER" property="status" />
-    <result column="hospital_supplier" jdbcType="BIGINT" property="hospitalSupplier" />
+    <result column="supplier" jdbcType="BIGINT" property="supplier" />
+    <result column="item" jdbcType="BIGINT" property="item" />
+    <result column="price" jdbcType="DECIMAL" property="price" />
+    <result column="effectual_date" jdbcType="TIMESTAMP" property="effectualDate" />
+    <result column="uneffectual_date" jdbcType="TIMESTAMP" property="uneffectualDate" />
+    <result column="status" jdbcType="BIT" property="status" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -68,15 +70,15 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, supplier, hospital, `date`, `status`, hospital_supplier
+    id, hospital, supplier, item, price, effectual_date, uneffectual_date, `status`
   </sql>
-  <select id="selectByExample" parameterType="com.kingdee.hrp.sms.common.model.CooperationApplyExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="com.kingdee.hrp.sms.common.model.ApprovedSupplierExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from t_cooperation_apply
+    from t_approved_supplier
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -87,96 +89,114 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from t_cooperation_apply
+    from t_approved_supplier
     where id = #{id,jdbcType=BIGINT}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    delete from t_cooperation_apply
+    delete from t_approved_supplier
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <delete id="deleteByExample" parameterType="com.kingdee.hrp.sms.common.model.CooperationApplyExample">
-    delete from t_cooperation_apply
+  <delete id="deleteByExample" parameterType="com.kingdee.hrp.sms.common.model.ApprovedSupplierExample">
+    delete from t_approved_supplier
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.kingdee.hrp.sms.common.model.CooperationApply">
-    insert into t_cooperation_apply (id, supplier, hospital, 
-      `date`, `status`, hospital_supplier
-      )
-    values (#{id,jdbcType=BIGINT}, #{supplier,jdbcType=BIGINT}, #{hospital,jdbcType=BIGINT}, 
-      #{date,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER}, #{hospitalSupplier,jdbcType=BIGINT}
-      )
+  <insert id="insert" parameterType="com.kingdee.hrp.sms.common.model.ApprovedSupplier">
+    insert into t_approved_supplier (id, hospital, supplier, 
+      item, price, effectual_date, 
+      uneffectual_date, `status`)
+    values (#{id,jdbcType=BIGINT}, #{hospital,jdbcType=BIGINT}, #{supplier,jdbcType=BIGINT}, 
+      #{item,jdbcType=BIGINT}, #{price,jdbcType=DECIMAL}, #{effectualDate,jdbcType=TIMESTAMP}, 
+      #{uneffectualDate,jdbcType=TIMESTAMP}, #{status,jdbcType=BIT})
   </insert>
-  <insert id="insertSelective" parameterType="com.kingdee.hrp.sms.common.model.CooperationApply">
-    insert into t_cooperation_apply
+  <insert id="insertSelective" parameterType="com.kingdee.hrp.sms.common.model.ApprovedSupplier">
+    insert into t_approved_supplier
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         id,
       </if>
-      <if test="supplier != null">
-        supplier,
-      </if>
       <if test="hospital != null">
         hospital,
       </if>
-      <if test="date != null">
-        `date`,
+      <if test="supplier != null">
+        supplier,
+      </if>
+      <if test="item != null">
+        item,
+      </if>
+      <if test="price != null">
+        price,
+      </if>
+      <if test="effectualDate != null">
+        effectual_date,
+      </if>
+      <if test="uneffectualDate != null">
+        uneffectual_date,
       </if>
       <if test="status != null">
         `status`,
-      </if>
-      <if test="hospitalSupplier != null">
-        hospital_supplier,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
         #{id,jdbcType=BIGINT},
       </if>
-      <if test="supplier != null">
-        #{supplier,jdbcType=BIGINT},
-      </if>
       <if test="hospital != null">
         #{hospital,jdbcType=BIGINT},
       </if>
-      <if test="date != null">
-        #{date,jdbcType=TIMESTAMP},
+      <if test="supplier != null">
+        #{supplier,jdbcType=BIGINT},
+      </if>
+      <if test="item != null">
+        #{item,jdbcType=BIGINT},
+      </if>
+      <if test="price != null">
+        #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="effectualDate != null">
+        #{effectualDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="uneffectualDate != null">
+        #{uneffectualDate,jdbcType=TIMESTAMP},
       </if>
       <if test="status != null">
-        #{status,jdbcType=INTEGER},
-      </if>
-      <if test="hospitalSupplier != null">
-        #{hospitalSupplier,jdbcType=BIGINT},
+        #{status,jdbcType=BIT},
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.kingdee.hrp.sms.common.model.CooperationApplyExample" resultType="java.lang.Long">
-    select count(*) from t_cooperation_apply
+  <select id="countByExample" parameterType="com.kingdee.hrp.sms.common.model.ApprovedSupplierExample" resultType="java.lang.Long">
+    select count(*) from t_approved_supplier
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
-    update t_cooperation_apply
+    update t_approved_supplier
     <set>
       <if test="record.id != null">
         id = #{record.id,jdbcType=BIGINT},
       </if>
-      <if test="record.supplier != null">
-        supplier = #{record.supplier,jdbcType=BIGINT},
-      </if>
       <if test="record.hospital != null">
         hospital = #{record.hospital,jdbcType=BIGINT},
       </if>
-      <if test="record.date != null">
-        `date` = #{record.date,jdbcType=TIMESTAMP},
+      <if test="record.supplier != null">
+        supplier = #{record.supplier,jdbcType=BIGINT},
+      </if>
+      <if test="record.item != null">
+        item = #{record.item,jdbcType=BIGINT},
+      </if>
+      <if test="record.price != null">
+        price = #{record.price,jdbcType=DECIMAL},
+      </if>
+      <if test="record.effectualDate != null">
+        effectual_date = #{record.effectualDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.uneffectualDate != null">
+        uneffectual_date = #{record.uneffectualDate,jdbcType=TIMESTAMP},
       </if>
       <if test="record.status != null">
-        `status` = #{record.status,jdbcType=INTEGER},
-      </if>
-      <if test="record.hospitalSupplier != null">
-        hospital_supplier = #{record.hospitalSupplier,jdbcType=BIGINT},
+        `status` = #{record.status,jdbcType=BIT},
       </if>
     </set>
     <if test="_parameter != null">
@@ -184,45 +204,55 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map">
-    update t_cooperation_apply
+    update t_approved_supplier
     set id = #{record.id,jdbcType=BIGINT},
-      supplier = #{record.supplier,jdbcType=BIGINT},
       hospital = #{record.hospital,jdbcType=BIGINT},
-      `date` = #{record.date,jdbcType=TIMESTAMP},
-      `status` = #{record.status,jdbcType=INTEGER},
-      hospital_supplier = #{record.hospitalSupplier,jdbcType=BIGINT}
+      supplier = #{record.supplier,jdbcType=BIGINT},
+      item = #{record.item,jdbcType=BIGINT},
+      price = #{record.price,jdbcType=DECIMAL},
+      effectual_date = #{record.effectualDate,jdbcType=TIMESTAMP},
+      uneffectual_date = #{record.uneffectualDate,jdbcType=TIMESTAMP},
+      `status` = #{record.status,jdbcType=BIT}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.kingdee.hrp.sms.common.model.CooperationApply">
-    update t_cooperation_apply
+  <update id="updateByPrimaryKeySelective" parameterType="com.kingdee.hrp.sms.common.model.ApprovedSupplier">
+    update t_approved_supplier
     <set>
-      <if test="supplier != null">
-        supplier = #{supplier,jdbcType=BIGINT},
-      </if>
       <if test="hospital != null">
         hospital = #{hospital,jdbcType=BIGINT},
       </if>
-      <if test="date != null">
-        `date` = #{date,jdbcType=TIMESTAMP},
+      <if test="supplier != null">
+        supplier = #{supplier,jdbcType=BIGINT},
+      </if>
+      <if test="item != null">
+        item = #{item,jdbcType=BIGINT},
+      </if>
+      <if test="price != null">
+        price = #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="effectualDate != null">
+        effectual_date = #{effectualDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="uneffectualDate != null">
+        uneffectual_date = #{uneffectualDate,jdbcType=TIMESTAMP},
       </if>
       <if test="status != null">
-        `status` = #{status,jdbcType=INTEGER},
-      </if>
-      <if test="hospitalSupplier != null">
-        hospital_supplier = #{hospitalSupplier,jdbcType=BIGINT},
+        `status` = #{status,jdbcType=BIT},
       </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.kingdee.hrp.sms.common.model.CooperationApply">
-    update t_cooperation_apply
-    set supplier = #{supplier,jdbcType=BIGINT},
-      hospital = #{hospital,jdbcType=BIGINT},
-      `date` = #{date,jdbcType=TIMESTAMP},
-      `status` = #{status,jdbcType=INTEGER},
-      hospital_supplier = #{hospitalSupplier,jdbcType=BIGINT}
+  <update id="updateByPrimaryKey" parameterType="com.kingdee.hrp.sms.common.model.ApprovedSupplier">
+    update t_approved_supplier
+    set hospital = #{hospital,jdbcType=BIGINT},
+      supplier = #{supplier,jdbcType=BIGINT},
+      item = #{item,jdbcType=BIGINT},
+      price = #{price,jdbcType=DECIMAL},
+      effectual_date = #{effectualDate,jdbcType=TIMESTAMP},
+      uneffectual_date = #{uneffectualDate,jdbcType=TIMESTAMP},
+      `status` = #{status,jdbcType=BIT}
     where id = #{id,jdbcType=BIGINT}
   </update>
   <insert id="batchInsert" parameterType="map">
@@ -231,13 +261,13 @@
       This element is automatically generated by MyBatis Generator, do not modify.
       @project https://github.com/itfsw/mybatis-generator-plugin
     -->
-    insert into t_cooperation_apply
-    (id, supplier, hospital, `date`, `status`, hospital_supplier)
+    insert into t_approved_supplier
+    (id, hospital, supplier, item, price, effectual_date, uneffectual_date, `status`)
     values
     <foreach collection="list" item="item" separator=",">
-      (#{item.id,jdbcType=BIGINT}, #{item.supplier,jdbcType=BIGINT}, #{item.hospital,jdbcType=BIGINT}, 
-        #{item.date,jdbcType=TIMESTAMP}, #{item.status,jdbcType=INTEGER}, #{item.hospitalSupplier,jdbcType=BIGINT}
-        )
+      (#{item.id,jdbcType=BIGINT}, #{item.hospital,jdbcType=BIGINT}, #{item.supplier,jdbcType=BIGINT}, 
+        #{item.item,jdbcType=BIGINT}, #{item.price,jdbcType=DECIMAL}, #{item.effectualDate,jdbcType=TIMESTAMP}, 
+        #{item.uneffectualDate,jdbcType=TIMESTAMP}, #{item.status,jdbcType=BIT})
     </foreach>
   </insert>
   <insert id="batchInsertSelective" parameterType="map">
@@ -246,7 +276,7 @@
       This element is automatically generated by MyBatis Generator, do not modify.
       @project https://github.com/itfsw/mybatis-generator-plugin
     -->
-    insert into t_cooperation_apply (
+    insert into t_approved_supplier (
     <foreach collection="selective" item="column" separator=",">
       ${column.escapedColumnName}
     </foreach>
@@ -258,20 +288,26 @@
         <if test="'id'.toString() == column.value">
           #{item.id,jdbcType=BIGINT}
         </if>
-        <if test="'supplier'.toString() == column.value">
-          #{item.supplier,jdbcType=BIGINT}
-        </if>
         <if test="'hospital'.toString() == column.value">
           #{item.hospital,jdbcType=BIGINT}
         </if>
-        <if test="'date'.toString() == column.value">
-          #{item.date,jdbcType=TIMESTAMP}
+        <if test="'supplier'.toString() == column.value">
+          #{item.supplier,jdbcType=BIGINT}
+        </if>
+        <if test="'item'.toString() == column.value">
+          #{item.item,jdbcType=BIGINT}
+        </if>
+        <if test="'price'.toString() == column.value">
+          #{item.price,jdbcType=DECIMAL}
+        </if>
+        <if test="'effectual_date'.toString() == column.value">
+          #{item.effectualDate,jdbcType=TIMESTAMP}
+        </if>
+        <if test="'uneffectual_date'.toString() == column.value">
+          #{item.uneffectualDate,jdbcType=TIMESTAMP}
         </if>
         <if test="'status'.toString() == column.value">
-          #{item.status,jdbcType=INTEGER}
-        </if>
-        <if test="'hospital_supplier'.toString() == column.value">
-          #{item.hospitalSupplier,jdbcType=BIGINT}
+          #{item.status,jdbcType=BIT}
         </if>
       </foreach>
       )
