@@ -143,8 +143,6 @@ public class ApprovedSupplierPlugin extends AbstractPlugInAdapter implements Ini
                 hospitalSupplies.add(cooperationApply.getHospitalSupplier());
             });
 
-            // revert test
-
         }
 
         return ret;
