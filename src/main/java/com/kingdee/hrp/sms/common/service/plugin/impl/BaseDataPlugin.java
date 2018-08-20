@@ -3,11 +3,11 @@ package com.kingdee.hrp.sms.common.service.plugin.impl;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.kingdee.hrp.sms.common.dao.generate.UserMapper;
+import com.kingdee.hrp.sms.common.enums.ClassType;
 import com.kingdee.hrp.sms.common.enums.UserRoleType;
 import com.kingdee.hrp.sms.common.exception.BusinessLogicRunTimeException;
 import com.kingdee.hrp.sms.common.model.User;
 import com.kingdee.hrp.sms.common.model.UserExample;
-import com.kingdee.hrp.sms.common.enums.ClassType;
 import com.kingdee.hrp.sms.common.pojo.Condition;
 import com.kingdee.hrp.sms.common.pojo.FormTemplate;
 import com.kingdee.hrp.sms.common.service.plugin.AbstractPlugInAdapter;
@@ -16,7 +16,7 @@ import com.kingdee.hrp.sms.util.Environ;
 import com.kingdee.hrp.sms.util.SessionUtil;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
@@ -26,7 +26,7 @@ import java.util.*;
  *
  * @author yadda
  */
-@Service
+@Component
 public class BaseDataPlugin extends AbstractPlugInAdapter implements InitializingBean {
 
     /**

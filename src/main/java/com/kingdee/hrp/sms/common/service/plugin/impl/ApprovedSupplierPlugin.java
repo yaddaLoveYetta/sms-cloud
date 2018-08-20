@@ -1,5 +1,6 @@
 package com.kingdee.hrp.sms.common.service.plugin.impl;
 
+import com.google.common.base.Joiner;
 import com.kingdee.hrp.sms.common.dao.generate.CooperationApplyMapper;
 import com.kingdee.hrp.sms.common.enums.ClassType;
 import com.kingdee.hrp.sms.common.enums.UserRoleType;
@@ -10,6 +11,8 @@ import com.kingdee.hrp.sms.common.pojo.FormTemplate;
 import com.kingdee.hrp.sms.common.service.plugin.AbstractPlugInAdapter;
 import com.kingdee.hrp.sms.util.SessionUtil;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -21,6 +24,7 @@ import java.util.Set;
  *
  * @author le.xiao
  */
+@Component
 public class ApprovedSupplierPlugin extends AbstractPlugInAdapter implements InitializingBean {
 
     /**
@@ -142,6 +146,24 @@ public class ApprovedSupplierPlugin extends AbstractPlugInAdapter implements Ini
                 hospitals.add(cooperationApply.getHospital());
                 hospitalSupplies.add(cooperationApply.getHospitalSupplier());
             });
+
+            if (!CollectionUtils.isEmpty(hospitals)) {
+                Condition condition = new Condition();
+                condition.setLinkType(Condition.LinkType.AND);
+                condition.setFieldKey("hospital");
+                condition.setLogicOperator(Condition.LogicOperator.IN);
+                condition.setValue(Joiner.on(",").join(hospitals));
+                ret.add(condition);
+            }
+
+            if (!CollectionUtils.isEmpty(hospitalSupplies)) {
+                Condition condition = new Condition();
+                condition.setLinkType(Condition.LinkType.AND);
+                condition.setFieldKey("supplier");
+                condition.setLogicOperator(Condition.LogicOperator.IN);
+                condition.setValue(Joiner.on(",").join(hospitalSupplies));
+                ret.add(condition);
+            }
 
         }
 
