@@ -199,7 +199,7 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
     @Override
     @SuppressWarnings("unchecked")
     public Map<String, Object> getItems(Integer classId, List<Condition> conditions, List<Sort> sorts, Integer pageSize,
-            Integer pageNo) {
+                                        Integer pageNo) {
 
         // 返回结构
         Map<String, Object> ret = new HashMap<String, Object>(16);
@@ -371,7 +371,7 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
     @Override
     @SuppressWarnings("unchecked")
     public List<Map<String, Object>> getItemByIds(Integer classId, List<Long> idList, List<Condition> conditions,
-            List<Sort> sorts) {
+                                                  List<Sort> sorts) {
 
         if (idList == null || idList.size() == 0) {
             throw new BusinessLogicRunTimeException("请提交单据内码");
@@ -860,7 +860,7 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
      */
     @SuppressWarnings("unchecked")
     private Map<Integer, Map<String, Object>> getExportValue(Integer classId, Map<String, Object> exportData,
-            List<FormField> disPlayFieldList, FormTemplate formTemplate) {
+                                                             List<FormField> disPlayFieldList, FormTemplate formTemplate) {
 
         // 导出数据，类似二维数组，第一维行，第二维列(行数不固定，数组结构不合适)
         Map<Integer, Map<String, Object>> values = Maps.newLinkedHashMap();
@@ -1676,6 +1676,13 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
                 throw new BusinessLogicRunTimeException("参数错误：condition必须包含正确的logicOperator");
             }
 
+            if (logicOperator == Condition.LogicOperator.IN) {
+                // 不适用此系统动态查询方式，对于IN，手工拼接脚本
+                preValue = "(";
+                sufValue = ")";
+                skip = true;
+            }
+
             // 比较值
             Object value = condition.getValue();
 
@@ -1739,79 +1746,30 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
 
             switch (ctrlTypeEnum) {
 
-            case INTEGER:
-                break;
-            case DECIMAL:
-                break;
-            case CHECKBOX:
-                break;
-            case SELECT:
-                break;
-            case F7:
-                break;
-            case CASCADE:
-                break;
-            case MOBILE:
-                break;
-            case PHONE:
-                break;
-            case TEXT:
-            case TEXTAREA:
-                if (logicOperator == Condition.LogicOperator.LIKE) {
-                    // 不处理，调用者控制左匹配%xxx或右匹配xxx%或全匹配%xxx%
-                    //value = "%" + value + "%";
-                } else if (logicOperator == Condition.LogicOperator.IN) {
-                    // 不适用此系统动态查询方式，对于IN，手工拼接脚本
-                    preValue = "(";
-                    sufValue = ")";
-                    skip = true;
-                }
-                break;
-            case DATETIME:
-                if (logicOperator == Condition.LogicOperator.LESS_OR_EQUAL) {
-                    if (!Common.isLongDate(String.valueOf(value))) {
-                        // 由于数据库中日期可能存储有时分秒，过滤天时过滤到当前23:59:59
-                        value = value + " 23:59:59";
-                    }
-                } else if (logicOperator == Condition.LogicOperator.GREATER_OR_EQUAL) {
-                    if (!Common.isLongDate(String.valueOf(value))) {
-                        value = value + " 00:00:00";
-                    }
-                }
-                break;
-            case SEX:
-                break;
-            case PASSWORD:
-                break;
-            case WHETHER:
-                // boolean b = value.equals("是") ? true : false;
-                // 此类字段数据库中一般要求用bit类型,即非0即1
-                value = "是".equals(value) ? "1" : "否".equals(value) ? "0" : "2";
-                break;
-            case MONEY:
-                break;
-            default:
-                break;
-            }
-            /*
-            switch (ctrlTypeEnum) {
-
-               case NUMBER:
-                    // 一般数字类型的不可能用like
+                case INTEGER:
+                    break;
+                case DECIMAL:
+                    break;
+                case CHECKBOX:
+                    break;
+                case SELECT:
+                    break;
+                case F7:
+                    break;
+                case CASCADE:
+                    break;
+                case MOBILE:
+                    break;
+                case PHONE:
                     break;
                 case TEXT:
-
+                case TEXTAREA:
                     if (logicOperator == Condition.LogicOperator.LIKE) {
                         // 不处理，调用者控制左匹配%xxx或右匹配xxx%或全匹配%xxx%
                         //value = "%" + value + "%";
-                    } else if (logicOperator == Condition.LogicOperator.IN) {
-                        // 不适用此系统动态查询方式，对于IN，手工拼接脚本
-                        preValue = "(";
-                        sufValue = ")";
-                        skip = true;
                     }
                     break;
-                case TIME:
+                case DATETIME:
                     if (logicOperator == Condition.LogicOperator.LESS_OR_EQUAL) {
                         if (!Common.isLongDate(String.valueOf(value))) {
                             // 由于数据库中日期可能存储有时分秒，过滤天时过滤到当前23:59:59
@@ -1823,15 +1781,21 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
                         }
                     }
                     break;
-                case BOOLEAN:
+                case SEX:
+                    break;
+                case PASSWORD:
+                    break;
+                case WHETHER:
                     // boolean b = value.equals("是") ? true : false;
                     // 此类字段数据库中一般要求用bit类型,即非0即1
                     value = "是".equals(value) ? "1" : "否".equals(value) ? "0" : "2";
                     break;
+                case MONEY:
+                    break;
                 default:
                     break;
             }
-*/
+
             if (lookUpType == 1 || lookUpType == 2) {
                 // 基础资料-辅助资料引用类型
 
@@ -2154,7 +2118,7 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
      * @return Map<String, Object>
      */
     private Map<String, Object> prepareAddMap(JsonNode data, Map<String, FormField> formFields, String tableName,
-            String primaryKey, Long primaryValue) {
+                                              String primaryKey, Long primaryValue) {
 
         return prepareAddMap(data, formFields, tableName, primaryKey, primaryValue, null, null);
 
@@ -2173,7 +2137,7 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
      * @return Map<String, Object>
      */
     private Map<String, Object> prepareAddMap(JsonNode data, Map<String, FormField> formFields, String tableName,
-            String primaryKey, Long primaryValue, String foreignKey, Long foreignValue) {
+                                              String primaryKey, Long primaryValue, String foreignKey, Long foreignValue) {
 
         Map<String, Object> ret = new HashMap<String, Object>(8);
         Map<String, Object> fieldValuesParams = new HashMap<String, Object>(16);
@@ -2429,7 +2393,7 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
      * @return Map<String, Object>
      */
     private Map<String, Object> prepareEditMap(JsonNode data, Map<String, FormField> formFields,
-            String primaryTableName, String primaryKey, Long id) {
+                                               String primaryTableName, String primaryKey, Long id) {
 
         Map<String, Object> sqlParams = new HashMap<String, Object>();
 
@@ -2502,55 +2466,55 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
 
         switch (ctrlType) {
 
-        case INTEGER:
-            value = dataNode.asLong();
-            break;
-        case DECIMAL:
-            value = dataNode.asDouble(0.00D);
-            break;
-        case CHECKBOX:
-            value = dataNode.asInt(0);
-            break;
-        case SELECT:
-            value = dataNode.asInt(0);
-            break;
-        case F7:
-            value = dataNode.asLong();
-            break;
-        case CASCADE:
-            value = dataNode.asLong();
-            break;
-        case MOBILE:
-            value = dataNode.asText("");
-            break;
-        case PHONE:
-            value = dataNode.asText("");
-            break;
-        case TEXT:
-            value = dataNode.asText("");
-            break;
-        case TEXTAREA:
-            value = dataNode.asText("");
-            break;
-        case DATETIME:
-            value = dataNode.asText("");
-            break;
-        case SEX:
-            value = dataNode.asInt(0);
-            break;
-        case PASSWORD:
-            value = dataNode.asText("");
-            break;
-        case WHETHER:
-            value = dataNode.asInt(0);
-            break;
-        case MONEY:
-            value = dataNode.asDouble(0.00D);
-            break;
-        default:
-            // 默认文本
-            value = dataNode.asText("");
-            break;
+            case INTEGER:
+                value = dataNode.asLong();
+                break;
+            case DECIMAL:
+                value = dataNode.asDouble(0.00D);
+                break;
+            case CHECKBOX:
+                value = dataNode.asInt(0);
+                break;
+            case SELECT:
+                value = dataNode.asInt(0);
+                break;
+            case F7:
+                value = dataNode.asLong();
+                break;
+            case CASCADE:
+                value = dataNode.asLong();
+                break;
+            case MOBILE:
+                value = dataNode.asText("");
+                break;
+            case PHONE:
+                value = dataNode.asText("");
+                break;
+            case TEXT:
+                value = dataNode.asText("");
+                break;
+            case TEXTAREA:
+                value = dataNode.asText("");
+                break;
+            case DATETIME:
+                value = dataNode.asText("");
+                break;
+            case SEX:
+                value = dataNode.asInt(0);
+                break;
+            case PASSWORD:
+                value = dataNode.asText("");
+                break;
+            case WHETHER:
+                value = dataNode.asInt(0);
+                break;
+            case MONEY:
+                value = dataNode.asDouble(0.00D);
+                break;
+            default:
+                // 默认文本
+                value = dataNode.asText("");
+                break;
         }
 
         return value;
