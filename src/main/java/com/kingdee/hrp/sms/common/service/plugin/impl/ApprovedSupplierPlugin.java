@@ -1,11 +1,11 @@
 package com.kingdee.hrp.sms.common.service.plugin.impl;
 
 import com.google.common.base.Joiner;
-import com.kingdee.hrp.sms.common.dao.generate.CooperationApplyMapper;
+import com.kingdee.hrp.sms.common.dao.generate.PartnerMapper;
 import com.kingdee.hrp.sms.common.enums.ClassType;
 import com.kingdee.hrp.sms.common.enums.UserRoleType;
-import com.kingdee.hrp.sms.common.model.CooperationApply;
-import com.kingdee.hrp.sms.common.model.CooperationApplyExample;
+import com.kingdee.hrp.sms.common.model.Partner;
+import com.kingdee.hrp.sms.common.model.PartnerExample;
 import com.kingdee.hrp.sms.common.pojo.Condition;
 import com.kingdee.hrp.sms.common.pojo.FormTemplate;
 import com.kingdee.hrp.sms.common.service.plugin.AbstractPlugInAdapter;
@@ -110,6 +110,7 @@ public class ApprovedSupplierPlugin extends AbstractPlugInAdapter implements Ini
         List<Condition> ret = new ArrayList<>();
 
         if (classId != ClassType.APPROVED_SUPPLIER.classId()) {
+            // 本插件只支持中标库
             return super.getConditions(classId, formTemplate, conditions);
         }
 
@@ -127,24 +128,22 @@ public class ApprovedSupplierPlugin extends AbstractPlugInAdapter implements Ini
         } else if (SessionUtil.getUserRoleType() == UserRoleType.SUPPLIER) {
             // 供应商查看自己在所有医院的中标库
 
-            // 查供应商向医院发送的成为其供应商的申请来确定此供应商用户关联到了那些医院且在每个医院对应的HRP供应商
-            CooperationApplyMapper cooperationApplyMapper = sqlSession.getMapper(CooperationApplyMapper.class);
+            // 查询供应商的合作医院来确定此供应商用户关联到了哪些医院且在每个医院对应的HRP供应商
+            PartnerMapper partnerMapper = sqlSession.getMapper(PartnerMapper.class);
+            PartnerExample partnerExample = new PartnerExample();
+            // 未禁用的合作关系
+            partnerExample.createCriteria().andOrgEqualTo(SessionUtil.getUserLinkSupplier()).andStatusEqualTo(false);
 
-            CooperationApplyExample cooperationApplyExample = new CooperationApplyExample();
-            // 医院已经同意的申请记录 TODO
-            cooperationApplyExample.createCriteria().andSupplierEqualTo(SessionUtil.getUserLinkSupplier())
-                    .andStatusEqualTo(2);
-
-            List<CooperationApply> cooperationApplies = cooperationApplyMapper.selectByExample(cooperationApplyExample);
+            List<Partner> partners = partnerMapper.selectByExample(partnerExample);
 
             // 跟此供应商有合作关系的医院
             List<Long> hospitals = new ArrayList<>();
             // 此供应商在医院关联的HRP供应商
             List<Long> hospitalSupplies = new ArrayList<>();
 
-            cooperationApplies.forEach(cooperationApply -> {
-                hospitals.add(cooperationApply.getHospital());
-                hospitalSupplies.add(cooperationApply.getHospitalSupplier());
+            partners.forEach(partner -> {
+                hospitals.add(partner.getLinkOrg());
+                hospitalSupplies.add(partner.getSupplier());
             });
 
             if (!CollectionUtils.isEmpty(hospitals)) {
@@ -177,7 +176,6 @@ public class ApprovedSupplierPlugin extends AbstractPlugInAdapter implements Ini
                 condition.setValue(0);
                 ret.add(condition);
             }
-
 
         }
 

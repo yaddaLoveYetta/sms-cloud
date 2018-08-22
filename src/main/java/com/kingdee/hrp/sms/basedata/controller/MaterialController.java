@@ -1,6 +1,6 @@
 package com.kingdee.hrp.sms.basedata.controller;
 
-import com.kingdee.hrp.sms.basedata.service.IMaterialService;
+import com.kingdee.hrp.sms.basedata.service.MaterialService;
 import com.kingdee.hrp.sms.common.exception.BusinessLogicRunTimeException;
 import com.kingdee.hrp.sms.util.FileOperate;
 import com.sun.jersey.api.client.Client;
@@ -40,7 +40,7 @@ public class MaterialController {
     private String fileHost;
 
     @Resource
-    private IMaterialService itemService;
+    private MaterialService itemService;
 
     @ResponseBody
     @RequestMapping(value = "setImage", method = RequestMethod.POST)

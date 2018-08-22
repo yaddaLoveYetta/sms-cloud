@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
  * @author yadda
  */
 
-public interface IHospitalService {
+public interface HospitalService {
 
     /**
      * 保存医院logo

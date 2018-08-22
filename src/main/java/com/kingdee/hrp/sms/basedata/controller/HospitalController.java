@@ -1,6 +1,6 @@
 package com.kingdee.hrp.sms.basedata.controller;
 
-import com.kingdee.hrp.sms.basedata.service.IHospitalService;
+import com.kingdee.hrp.sms.basedata.service.HospitalService;
 import com.kingdee.hrp.sms.common.exception.BusinessLogicRunTimeException;
 import com.kingdee.hrp.sms.util.FileOperate;
 import com.sun.jersey.api.client.Client;
@@ -39,7 +39,7 @@ public class HospitalController {
     private String fileHost;
 
     @Resource
-    private IHospitalService hospitalService;
+    private HospitalService hospitalService;
 
     @ResponseBody
     @RequestMapping(value = "changeLogo", method = RequestMethod.POST)

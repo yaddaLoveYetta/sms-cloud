@@ -1,19 +1,23 @@
 package com.kingdee.hrp.sms.common.enums;
 
 import com.kingdee.hrp.sms.common.exception.BusinessLogicRunTimeException;
+import com.kingdee.hrp.sms.scm.enums.OrderDeliveryStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * 消息中心消息状态
+ * 消息中心消息类别
  * <p>
- * 值跟t_assistance表 type=41一致
+ * 值跟t_assistance表 type=40一致
  *
- * @author le.xiao
+ * @author yadda
  */
-public enum MessageStatus {
+public enum MessageType {
 
-    UN_PROCESSED(1, "未处理"), PROCESSED(2, "已处理");
+    /**
+     * 供应商向医院发送的希望成为其供应商的申请
+     */
+    COOPERATION_APPLICATION(1, "供应商向医院发送的希望成为其供应商的申请");
 
     private static Logger logger = LoggerFactory.getLogger(MessageType.class);
 
@@ -36,20 +40,23 @@ public enum MessageStatus {
         this.name = name;
     }
 
-    MessageStatus(int number, String name) {
+    public int value() {
+        return this.number;
+    }
+
+    MessageType(int number, String name) {
         this.number = number;
         this.name = name;
     }
 
-    public static MessageStatus getMessageStatus(int number) {
+    public static MessageType getMessageType(int number) {
 
-        for (MessageStatus d : MessageStatus.values()) {
+        for (MessageType d : MessageType.values()) {
             if (d.number == number) {
                 return d;
             }
         }
-        logger.error("MessageStatus不存状态值:" + number);
-        throw new BusinessLogicRunTimeException("MessageStatus不存状态值:" + number);
+        logger.error("MessageType不存状态值:" + number);
+        throw new BusinessLogicRunTimeException("MessageType不存状态值:" + number);
     }
-
 }

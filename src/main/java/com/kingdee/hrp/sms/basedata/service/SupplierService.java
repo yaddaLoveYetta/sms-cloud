@@ -4,7 +4,7 @@ package com.kingdee.hrp.sms.basedata.service;
  * @author yadda
  */
 
-public interface ISupplierService {
+public interface SupplierService {
 
     /**
      * 保存医院logo

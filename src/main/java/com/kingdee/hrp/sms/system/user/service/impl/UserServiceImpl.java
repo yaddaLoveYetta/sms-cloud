@@ -313,7 +313,7 @@ public class UserServiceImpl extends BaseService implements UserService {
 
         if (roleAccessControlList.size() > 1) {
 
-            Map<Integer, AccessControl> temp = new HashMap<>();
+            Map<Integer, AccessControl> temp = new HashMap<>(16);
             // 用户有多个角色
             for (Map<Integer, AccessControl> roleAccessControlItem : roleAccessControlList) {
                 // 这里只为获取用户所有有权限的class_id
@@ -494,10 +494,10 @@ public class UserServiceImpl extends BaseService implements UserService {
         criteria.andReceiverOrgEqualTo(org);
         if (type == 0) {
             // 未处理消息
-            criteria.andStatusEqualTo(CooperationApplyStatus.UN_PROCESSED.getNumber());
+            criteria.andStatusEqualTo(MessageStatus.UN_PROCESSED.getNumber());
         } else if (type == 1) {
             // 已处理消息
-            criteria.andStatusEqualTo(CooperationApplyStatus.PROCESSED.getNumber());
+            criteria.andStatusEqualTo(MessageStatus.PROCESSED.getNumber());
         }
 
         example.orderBy(Message.Column.date.desc());

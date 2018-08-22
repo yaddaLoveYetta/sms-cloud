@@ -21,6 +21,7 @@ import com.kingdee.hrp.sms.common.service.BaseService;
 import com.kingdee.hrp.sms.common.service.TemplateService;
 import com.kingdee.hrp.sms.common.service.plugin.PlugIn;
 import com.kingdee.hrp.sms.common.service.plugin.PlugInRet;
+import com.kingdee.hrp.sms.system.user.service.UserService;
 import com.kingdee.hrp.sms.util.Common;
 import com.kingdee.hrp.sms.util.Environ;
 import com.kingdee.hrp.sms.util.ExcelUtil;
@@ -35,6 +36,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author yadda
@@ -171,18 +173,32 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
 
         List<FormAction> formActions = formActionMapper.selectByExample(formActionExample);
 
-        Iterator<FormAction> it = formActions.iterator();
+        // 将对于该角色类别不显示的，或者当前操作场景不显示的功能过滤掉
+        formActions = formActions.stream().filter(formAction -> {
 
-        while (it.hasNext()) {
-            FormAction formAction = it.next();
             Integer actionOwnerType = formAction.getOwnerType();
             Integer actionDisplay = formAction.getDisplay();
-            // 权限验证 TODO
-            if (!((actionOwnerType & ownerType) == ownerType && (actionDisplay & display) == display)) {
-                // 不显示或非该角色类别拥有的功能
-                it.remove();
+            // 不显示或非该角色类别拥有的功能
+            return (actionOwnerType & ownerType) == ownerType && (actionDisplay & display) == display;
+
+        }).collect(Collectors.toList());
+
+        // 权限处理
+        UserService userService = Environ.getBean(UserService.class);
+        // 用户所有权限集合（用户有多个角色时将权限做和，||运算）
+        Map<Integer, Integer> accessControl = userService.getAccessControl();
+
+        // 过滤掉当前用户没权限的功能项
+        formActions = formActions.stream().filter(formAction -> {
+
+            Integer currentRoleMask = 0;
+            if (accessControl.containsKey(formAction.getClassId())) {
+                currentRoleMask = accessControl.get(formAction.getClassId());
             }
-        }
+
+            return (currentRoleMask & formAction.getAccessMask()) == formAction.getAccessMask();
+
+        }).collect(Collectors.toList());
 
         return formActions;
     }
@@ -199,7 +215,7 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
     @Override
     @SuppressWarnings("unchecked")
     public Map<String, Object> getItems(Integer classId, List<Condition> conditions, List<Sort> sorts, Integer pageSize,
-                                        Integer pageNo) {
+            Integer pageNo) {
 
         // 返回结构
         Map<String, Object> ret = new HashMap<String, Object>(16);
@@ -371,7 +387,7 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
     @Override
     @SuppressWarnings("unchecked")
     public List<Map<String, Object>> getItemByIds(Integer classId, List<Long> idList, List<Condition> conditions,
-                                                  List<Sort> sorts) {
+            List<Sort> sorts) {
 
         if (idList == null || idList.size() == 0) {
             throw new BusinessLogicRunTimeException("请提交单据内码");
@@ -860,7 +876,7 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
      */
     @SuppressWarnings("unchecked")
     private Map<Integer, Map<String, Object>> getExportValue(Integer classId, Map<String, Object> exportData,
-                                                             List<FormField> disPlayFieldList, FormTemplate formTemplate) {
+            List<FormField> disPlayFieldList, FormTemplate formTemplate) {
 
         // 导出数据，类似二维数组，第一维行，第二维列(行数不固定，数组结构不合适)
         Map<Integer, Map<String, Object>> values = Maps.newLinkedHashMap();
@@ -1746,54 +1762,54 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
 
             switch (ctrlTypeEnum) {
 
-                case INTEGER:
-                    break;
-                case DECIMAL:
-                    break;
-                case CHECKBOX:
-                    break;
-                case SELECT:
-                    break;
-                case F7:
-                    break;
-                case CASCADE:
-                    break;
-                case MOBILE:
-                    break;
-                case PHONE:
-                    break;
-                case TEXT:
-                case TEXTAREA:
-                    if (logicOperator == Condition.LogicOperator.LIKE) {
-                        // 不处理，调用者控制左匹配%xxx或右匹配xxx%或全匹配%xxx%
-                        //value = "%" + value + "%";
+            case INTEGER:
+                break;
+            case DECIMAL:
+                break;
+            case CHECKBOX:
+                break;
+            case SELECT:
+                break;
+            case F7:
+                break;
+            case CASCADE:
+                break;
+            case MOBILE:
+                break;
+            case PHONE:
+                break;
+            case TEXT:
+            case TEXTAREA:
+                if (logicOperator == Condition.LogicOperator.LIKE) {
+                    // 不处理，调用者控制左匹配%xxx或右匹配xxx%或全匹配%xxx%
+                    //value = "%" + value + "%";
+                }
+                break;
+            case DATETIME:
+                if (logicOperator == Condition.LogicOperator.LESS_OR_EQUAL) {
+                    if (!Common.isLongDate(String.valueOf(value))) {
+                        // 由于数据库中日期可能存储有时分秒，过滤天时过滤到当前23:59:59
+                        value = value + " 23:59:59";
                     }
-                    break;
-                case DATETIME:
-                    if (logicOperator == Condition.LogicOperator.LESS_OR_EQUAL) {
-                        if (!Common.isLongDate(String.valueOf(value))) {
-                            // 由于数据库中日期可能存储有时分秒，过滤天时过滤到当前23:59:59
-                            value = value + " 23:59:59";
-                        }
-                    } else if (logicOperator == Condition.LogicOperator.GREATER_OR_EQUAL) {
-                        if (!Common.isLongDate(String.valueOf(value))) {
-                            value = value + " 00:00:00";
-                        }
+                } else if (logicOperator == Condition.LogicOperator.GREATER_OR_EQUAL) {
+                    if (!Common.isLongDate(String.valueOf(value))) {
+                        value = value + " 00:00:00";
                     }
-                    break;
-                case SEX:
-                    break;
-                case PASSWORD:
-                    break;
-                case WHETHER:
-                    // boolean b = value.equals("是") ? true : false;
-                    // 此类字段数据库中一般要求用bit类型,即非0即1
-                    value = "是".equals(value) ? "1" : "否".equals(value) ? "0" : "2";
-                    break;
-                case MONEY:
-                    break;
-                default:
-                    break;
+                }
+                break;
+            case SEX:
+                break;
+            case PASSWORD:
+                break;
+            case WHETHER:
+                // boolean b = value.equals("是") ? true : false;
+                // 此类字段数据库中一般要求用bit类型,即非0即1
+                value = "是".equals(value) ? "1" : "否".equals(value) ? "0" : "2";
+                break;
+            case MONEY:
+                break;
+            default:
+                break;
             }
 
             if (lookUpType == 1 || lookUpType == 2) {
@@ -2118,7 +2134,7 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
      * @return Map<String, Object>
      */
     private Map<String, Object> prepareAddMap(JsonNode data, Map<String, FormField> formFields, String tableName,
-                                              String primaryKey, Long primaryValue) {
+            String primaryKey, Long primaryValue) {
 
         return prepareAddMap(data, formFields, tableName, primaryKey, primaryValue, null, null);
 
@@ -2137,7 +2153,7 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
      * @return Map<String, Object>
      */
     private Map<String, Object> prepareAddMap(JsonNode data, Map<String, FormField> formFields, String tableName,
-                                              String primaryKey, Long primaryValue, String foreignKey, Long foreignValue) {
+            String primaryKey, Long primaryValue, String foreignKey, Long foreignValue) {
 
         Map<String, Object> ret = new HashMap<String, Object>(8);
         Map<String, Object> fieldValuesParams = new HashMap<String, Object>(16);
@@ -2393,7 +2409,7 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
      * @return Map<String, Object>
      */
     private Map<String, Object> prepareEditMap(JsonNode data, Map<String, FormField> formFields,
-                                               String primaryTableName, String primaryKey, Long id) {
+            String primaryTableName, String primaryKey, Long id) {
 
         Map<String, Object> sqlParams = new HashMap<String, Object>();
 
@@ -2466,55 +2482,55 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
 
         switch (ctrlType) {
 
-            case INTEGER:
-                value = dataNode.asLong();
-                break;
-            case DECIMAL:
-                value = dataNode.asDouble(0.00D);
-                break;
-            case CHECKBOX:
-                value = dataNode.asInt(0);
-                break;
-            case SELECT:
-                value = dataNode.asInt(0);
-                break;
-            case F7:
-                value = dataNode.asLong();
-                break;
-            case CASCADE:
-                value = dataNode.asLong();
-                break;
-            case MOBILE:
-                value = dataNode.asText("");
-                break;
-            case PHONE:
-                value = dataNode.asText("");
-                break;
-            case TEXT:
-                value = dataNode.asText("");
-                break;
-            case TEXTAREA:
-                value = dataNode.asText("");
-                break;
-            case DATETIME:
-                value = dataNode.asText("");
-                break;
-            case SEX:
-                value = dataNode.asInt(0);
-                break;
-            case PASSWORD:
-                value = dataNode.asText("");
-                break;
-            case WHETHER:
-                value = dataNode.asInt(0);
-                break;
-            case MONEY:
-                value = dataNode.asDouble(0.00D);
-                break;
-            default:
-                // 默认文本
-                value = dataNode.asText("");
-                break;
+        case INTEGER:
+            value = dataNode.asLong();
+            break;
+        case DECIMAL:
+            value = dataNode.asDouble(0.00D);
+            break;
+        case CHECKBOX:
+            value = dataNode.asInt(0);
+            break;
+        case SELECT:
+            value = dataNode.asInt(0);
+            break;
+        case F7:
+            value = dataNode.asLong();
+            break;
+        case CASCADE:
+            value = dataNode.asLong();
+            break;
+        case MOBILE:
+            value = dataNode.asText("");
+            break;
+        case PHONE:
+            value = dataNode.asText("");
+            break;
+        case TEXT:
+            value = dataNode.asText("");
+            break;
+        case TEXTAREA:
+            value = dataNode.asText("");
+            break;
+        case DATETIME:
+            value = dataNode.asText("");
+            break;
+        case SEX:
+            value = dataNode.asInt(0);
+            break;
+        case PASSWORD:
+            value = dataNode.asText("");
+            break;
+        case WHETHER:
+            value = dataNode.asInt(0);
+            break;
+        case MONEY:
+            value = dataNode.asDouble(0.00D);
+            break;
+        default:
+            // 默认文本
+            value = dataNode.asText("");
+            break;
         }
 
         return value;

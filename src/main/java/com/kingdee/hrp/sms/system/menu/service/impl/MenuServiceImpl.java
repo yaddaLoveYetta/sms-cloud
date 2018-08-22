@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author yadda<silenceisok@163.com>
@@ -77,8 +78,15 @@ public class MenuServiceImpl extends BaseService implements MenuService {
 
             Integer formActionId = menu.getFormActionId();
 
+            // 一级菜单先不过滤
+            if (menu.getParentId() == 0) {
+                ret.add(menu);
+                continue;
+            }
+
+            // for test
             if (null == formActionId || formActionId == 0) {
-                // 没有配置formActionId的菜单认为是不需要控制，如一级菜单
+                // 没有配置formActionId的菜单认为是不需要控制，如一级菜单 for test
                 ret.add(menu);
                 continue;
             }
@@ -138,6 +146,15 @@ public class MenuServiceImpl extends BaseService implements MenuService {
             }
 
         }
+
+/*        ret.stream().filter(menu -> {
+
+            if (menu.getParentId() != 0) {
+                return true;
+            }
+
+            return false;
+        }).collect(Collectors.toList());*/
 
         return ret;
 

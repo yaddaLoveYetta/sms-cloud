@@ -3,11 +3,12 @@
 <mapper namespace="com.kingdee.hrp.sms.common.dao.generate.PartnerMapper">
   <resultMap id="BaseResultMap" type="com.kingdee.hrp.sms.common.model.Partner">
     <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="link_org" jdbcType="BIGINT" property="linkOrg" />
     <result column="org" jdbcType="BIGINT" property="org" />
+    <result column="link_org" jdbcType="BIGINT" property="linkOrg" />
     <result column="check_status" jdbcType="INTEGER" property="checkStatus" />
     <result column="status" jdbcType="BIT" property="status" />
     <result column="type" jdbcType="BIT" property="type" />
+    <result column="supplier" jdbcType="BIGINT" property="supplier" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -68,7 +69,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, link_org, org, check_status, `status`, `type`
+    id, org, link_org, check_status, `status`, `type`, supplier
   </sql>
   <select id="selectByExample" parameterType="com.kingdee.hrp.sms.common.model.PartnerExample" resultMap="BaseResultMap">
     select
@@ -101,10 +102,12 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.kingdee.hrp.sms.common.model.Partner">
-    insert into t_partner (id, link_org, org, 
-      check_status, `status`, `type`)
-    values (#{id,jdbcType=BIGINT}, #{linkOrg,jdbcType=BIGINT}, #{org,jdbcType=BIGINT}, 
-      #{checkStatus,jdbcType=INTEGER}, #{status,jdbcType=BIT}, #{type,jdbcType=BIT})
+    insert into t_partner (id, org, link_org, 
+      check_status, `status`, `type`, 
+      supplier)
+    values (#{id,jdbcType=BIGINT}, #{org,jdbcType=BIGINT}, #{linkOrg,jdbcType=BIGINT}, 
+      #{checkStatus,jdbcType=INTEGER}, #{status,jdbcType=BIT}, #{type,jdbcType=BIT}, 
+      #{supplier,jdbcType=BIGINT})
   </insert>
   <insert id="insertSelective" parameterType="com.kingdee.hrp.sms.common.model.Partner">
     insert into t_partner
@@ -112,11 +115,11 @@
       <if test="id != null">
         id,
       </if>
-      <if test="linkOrg != null">
-        link_org,
-      </if>
       <if test="org != null">
         org,
+      </if>
+      <if test="linkOrg != null">
+        link_org,
       </if>
       <if test="checkStatus != null">
         check_status,
@@ -127,16 +130,19 @@
       <if test="type != null">
         `type`,
       </if>
+      <if test="supplier != null">
+        supplier,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
         #{id,jdbcType=BIGINT},
       </if>
-      <if test="linkOrg != null">
-        #{linkOrg,jdbcType=BIGINT},
-      </if>
       <if test="org != null">
         #{org,jdbcType=BIGINT},
+      </if>
+      <if test="linkOrg != null">
+        #{linkOrg,jdbcType=BIGINT},
       </if>
       <if test="checkStatus != null">
         #{checkStatus,jdbcType=INTEGER},
@@ -146,6 +152,9 @@
       </if>
       <if test="type != null">
         #{type,jdbcType=BIT},
+      </if>
+      <if test="supplier != null">
+        #{supplier,jdbcType=BIGINT},
       </if>
     </trim>
   </insert>
@@ -161,11 +170,11 @@
       <if test="record.id != null">
         id = #{record.id,jdbcType=BIGINT},
       </if>
-      <if test="record.linkOrg != null">
-        link_org = #{record.linkOrg,jdbcType=BIGINT},
-      </if>
       <if test="record.org != null">
         org = #{record.org,jdbcType=BIGINT},
+      </if>
+      <if test="record.linkOrg != null">
+        link_org = #{record.linkOrg,jdbcType=BIGINT},
       </if>
       <if test="record.checkStatus != null">
         check_status = #{record.checkStatus,jdbcType=INTEGER},
@@ -176,6 +185,9 @@
       <if test="record.type != null">
         `type` = #{record.type,jdbcType=BIT},
       </if>
+      <if test="record.supplier != null">
+        supplier = #{record.supplier,jdbcType=BIGINT},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -184,11 +196,12 @@
   <update id="updateByExample" parameterType="map">
     update t_partner
     set id = #{record.id,jdbcType=BIGINT},
-      link_org = #{record.linkOrg,jdbcType=BIGINT},
       org = #{record.org,jdbcType=BIGINT},
+      link_org = #{record.linkOrg,jdbcType=BIGINT},
       check_status = #{record.checkStatus,jdbcType=INTEGER},
       `status` = #{record.status,jdbcType=BIT},
-      `type` = #{record.type,jdbcType=BIT}
+      `type` = #{record.type,jdbcType=BIT},
+      supplier = #{record.supplier,jdbcType=BIGINT}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -196,11 +209,11 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.kingdee.hrp.sms.common.model.Partner">
     update t_partner
     <set>
-      <if test="linkOrg != null">
-        link_org = #{linkOrg,jdbcType=BIGINT},
-      </if>
       <if test="org != null">
         org = #{org,jdbcType=BIGINT},
+      </if>
+      <if test="linkOrg != null">
+        link_org = #{linkOrg,jdbcType=BIGINT},
       </if>
       <if test="checkStatus != null">
         check_status = #{checkStatus,jdbcType=INTEGER},
@@ -211,16 +224,20 @@
       <if test="type != null">
         `type` = #{type,jdbcType=BIT},
       </if>
+      <if test="supplier != null">
+        supplier = #{supplier,jdbcType=BIGINT},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.kingdee.hrp.sms.common.model.Partner">
     update t_partner
-    set link_org = #{linkOrg,jdbcType=BIGINT},
-      org = #{org,jdbcType=BIGINT},
+    set org = #{org,jdbcType=BIGINT},
+      link_org = #{linkOrg,jdbcType=BIGINT},
       check_status = #{checkStatus,jdbcType=INTEGER},
       `status` = #{status,jdbcType=BIT},
-      `type` = #{type,jdbcType=BIT}
+      `type` = #{type,jdbcType=BIT},
+      supplier = #{supplier,jdbcType=BIGINT}
     where id = #{id,jdbcType=BIGINT}
   </update>
   <insert id="batchInsert" parameterType="map">
@@ -230,12 +247,12 @@
       @project https://github.com/itfsw/mybatis-generator-plugin
     -->
     insert into t_partner
-    (id, link_org, org, check_status, `status`, `type`)
+    (id, org, link_org, check_status, `status`, `type`, supplier)
     values
     <foreach collection="list" item="item" separator=",">
-      (#{item.id,jdbcType=BIGINT}, #{item.linkOrg,jdbcType=BIGINT}, #{item.org,jdbcType=BIGINT}, 
-        #{item.checkStatus,jdbcType=INTEGER}, #{item.status,jdbcType=BIT}, #{item.type,jdbcType=BIT}
-        )
+      (#{item.id,jdbcType=BIGINT}, #{item.org,jdbcType=BIGINT}, #{item.linkOrg,jdbcType=BIGINT}, 
+        #{item.checkStatus,jdbcType=INTEGER}, #{item.status,jdbcType=BIT}, #{item.type,jdbcType=BIT}, 
+        #{item.supplier,jdbcType=BIGINT})
     </foreach>
   </insert>
   <insert id="batchInsertSelective" parameterType="map">
@@ -256,11 +273,11 @@
         <if test="'id'.toString() == column.value">
           #{item.id,jdbcType=BIGINT}
         </if>
-        <if test="'link_org'.toString() == column.value">
-          #{item.linkOrg,jdbcType=BIGINT}
-        </if>
         <if test="'org'.toString() == column.value">
           #{item.org,jdbcType=BIGINT}
+        </if>
+        <if test="'link_org'.toString() == column.value">
+          #{item.linkOrg,jdbcType=BIGINT}
         </if>
         <if test="'check_status'.toString() == column.value">
           #{item.checkStatus,jdbcType=INTEGER}
@@ -270,6 +287,9 @@
         </if>
         <if test="'type'.toString() == column.value">
           #{item.type,jdbcType=BIT}
+        </if>
+        <if test="'supplier'.toString() == column.value">
+          #{item.supplier,jdbcType=BIGINT}
         </if>
       </foreach>
       )

@@ -1,6 +1,6 @@
 package com.kingdee.hrp.sms.basedata.service.impl;
 
-import com.kingdee.hrp.sms.basedata.service.IHospitalService;
+import com.kingdee.hrp.sms.basedata.service.HospitalService;
 import com.kingdee.hrp.sms.common.dao.generate.HospitalMapper;
 import com.kingdee.hrp.sms.common.model.Hospital;
 import com.kingdee.hrp.sms.common.service.BaseService;
@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @date 2018/4/13 11:18
  */
 @Service
-public class HospitalService extends BaseService implements IHospitalService {
+public class HospitalServiceImpl extends BaseService implements HospitalService {
     /**
      * 保存医院logo
      *

@@ -1,6 +1,6 @@
 package com.kingdee.hrp.sms.basedata.controller;
 
-import com.kingdee.hrp.sms.basedata.service.ISupplierService;
+import com.kingdee.hrp.sms.basedata.service.SupplierService;
 import com.kingdee.hrp.sms.common.exception.BusinessLogicRunTimeException;
 import com.kingdee.hrp.sms.util.FileOperate;
 import com.kingdee.hrp.sms.util.SessionUtil;
@@ -40,11 +40,12 @@ public class SupplierController {
     private String fileHost;
 
     @Resource
-    private ISupplierService supplierService;
+    private SupplierService supplierService;
 
     @ResponseBody
     @RequestMapping(value = "changeLogo", method = RequestMethod.POST)
-    public Map<String, Object> changeLogo(HttpServletRequest request, HttpServletResponse response, Integer classId, Long id) {
+    public Map<String, Object> changeLogo(HttpServletRequest request, HttpServletResponse response, Integer classId,
+            Long id) {
 
         if (classId == null || id == null) {
             throw new BusinessLogicRunTimeException("缺少参数classId或id");
@@ -97,7 +98,7 @@ public class SupplierController {
         // 供应商
         Long supplier = SessionUtil.getUserLinkSupplier();
         if (supplier <= 0) {
-            throw new BusinessLogicRunTimeException("当前用户身份错误，不能进行此操作!");
+            throw new BusinessLogicRunTimeException("只有供应商能进行此操作!");
         }
 
         return supplierService.addCooperationApply(supplier, hospital);

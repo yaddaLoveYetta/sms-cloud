@@ -1,11 +1,13 @@
 package com.kingdee.hrp.sms.basedata.service.impl;
 
-import com.kingdee.hrp.sms.basedata.service.ISupplierService;
+import com.kingdee.hrp.sms.basedata.service.SupplierService;
 import com.kingdee.hrp.sms.common.dao.generate.CooperationApplyMapper;
 import com.kingdee.hrp.sms.common.dao.generate.MessageMapper;
 import com.kingdee.hrp.sms.common.dao.generate.PartnerMapper;
 import com.kingdee.hrp.sms.common.dao.generate.SupplierMapper;
 import com.kingdee.hrp.sms.common.enums.CooperationApplyStatus;
+import com.kingdee.hrp.sms.common.enums.MessageStatus;
+import com.kingdee.hrp.sms.common.enums.MessageType;
 import com.kingdee.hrp.sms.common.enums.UserRoleType;
 import com.kingdee.hrp.sms.common.exception.BusinessLogicRunTimeException;
 import com.kingdee.hrp.sms.common.model.*;
@@ -21,7 +23,7 @@ import java.util.List;
  * @date 2018/4/13 11:18
  */
 @Service
-public class SupplierService extends BaseService implements ISupplierService {
+public class SupplierServiceImpl extends BaseService implements SupplierService {
     /**
      * 保存医院logo
      *
@@ -98,8 +100,8 @@ public class SupplierService extends BaseService implements ISupplierService {
         Message message = new Message();
         message.setId(getId());
         // 消息类别，参考t_assistance表type_id=40的记录
-        message.setType(1);
-        message.setStatus(CooperationApplyStatus.UN_PROCESSED.getNumber());
+        message.setType(MessageType.COOPERATION_APPLICATION.value());
+        message.setStatus(MessageStatus.UN_PROCESSED.getNumber());
         message.setDate(applyDate);
         // 扩展数据中保存了申请id
         message.setData(applyId.toString());

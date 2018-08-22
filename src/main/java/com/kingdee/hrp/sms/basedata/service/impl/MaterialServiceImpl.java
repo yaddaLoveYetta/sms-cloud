@@ -1,6 +1,6 @@
 package com.kingdee.hrp.sms.basedata.service.impl;
 
-import com.kingdee.hrp.sms.basedata.service.IMaterialService;
+import com.kingdee.hrp.sms.basedata.service.MaterialService;
 import com.kingdee.hrp.sms.common.dao.generate.MaterialMapper;
 import com.kingdee.hrp.sms.common.model.Material;
 import com.kingdee.hrp.sms.common.service.BaseService;
@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 
 @Service
-public class MaterialService extends BaseService implements IMaterialService {
+public class MaterialServiceImpl extends BaseService implements MaterialService {
     /**
      * 物料图片,只能设置一张
      *
