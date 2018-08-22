@@ -118,11 +118,11 @@ public class ApprovedSupplierPlugin extends AbstractPlugInAdapter implements Ini
 
             // 医院只能查看本院中标库
             Condition condition = new Condition();
-            condition.setLinkType(Condition.LinkType.AND);
-            condition.setFieldKey("hospital");
-            condition.setLogicOperator(Condition.LogicOperator.EQUAL);
-            condition.setValue(SessionUtil.getUserLinkHospital());
-            condition.setNeedConvert(false);
+            condition.setLinkType(Condition.LinkType.AND)
+                    .setFieldKey("hospital")
+                    .setLogicOperator(Condition.LogicOperator.EQUAL)
+                    .setValue(SessionUtil.getUserLinkHospital())
+                    .setNeedConvert(false);
             ret.add(condition);
 
         } else if (SessionUtil.getUserRoleType() == UserRoleType.SUPPLIER) {
@@ -148,21 +148,21 @@ public class ApprovedSupplierPlugin extends AbstractPlugInAdapter implements Ini
 
             if (!CollectionUtils.isEmpty(hospitals)) {
                 Condition condition = new Condition();
-                condition.setLinkType(Condition.LinkType.AND);
-                condition.setFieldKey("hospital");
-                condition.setLogicOperator(Condition.LogicOperator.IN);
-                condition.setValue(Joiner.on(",").join(hospitals));
-                condition.setNeedConvert(false);
+                condition.setLinkType(Condition.LinkType.AND)
+                        .setFieldKey("hospital")
+                        .setLogicOperator(Condition.LogicOperator.IN)
+                        .setValue(Joiner.on(",").join(hospitals))
+                        .setNeedConvert(false);
                 ret.add(condition);
             }
 
             if (!CollectionUtils.isEmpty(hospitalSupplies)) {
                 Condition condition = new Condition();
-                condition.setLinkType(Condition.LinkType.AND);
-                condition.setFieldKey("supplier");
-                condition.setLogicOperator(Condition.LogicOperator.IN);
-                condition.setValue(Joiner.on(",").join(hospitalSupplies));
-                condition.setNeedConvert(false);
+                condition.setLinkType(Condition.LinkType.AND)
+                        .setFieldKey("supplier")
+                        .setLogicOperator(Condition.LogicOperator.IN)
+                        .setValue(Joiner.on(",").join(hospitalSupplies))
+                        .setNeedConvert(false);
                 ret.add(condition);
             }
 
@@ -170,10 +170,10 @@ public class ApprovedSupplierPlugin extends AbstractPlugInAdapter implements Ini
                 // 没有同任何医院有合作关系或者有合作关系的医院未将此供应商关联医院HRP供应商，不能看到任何中标库信息,
                 // 此处设置一个条件使查询无数据
                 Condition condition = new Condition();
-                condition.setLinkType(Condition.LinkType.AND);
-                condition.setFieldKey("id");
-                condition.setLogicOperator(Condition.LogicOperator.EQUAL);
-                condition.setValue(0);
+                condition.setLinkType(Condition.LinkType.AND)
+                        .setFieldKey("id")
+                        .setLogicOperator(Condition.LogicOperator.EQUAL)
+                        .setValue(0);
                 ret.add(condition);
             }
 
