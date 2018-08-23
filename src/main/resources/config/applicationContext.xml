@@ -38,6 +38,7 @@
                 <value>classpath:/config/default-permissions.properties</value>
                 <value>classpath:/config/file.properties</value>
                 <value>classpath:/config/common.properties</value>
+                <value>classpath:/config/redis.properties</value>
             </list>
         </property>
         <!-- 设置编码格式 -->
@@ -128,6 +129,9 @@
     <!-- business service bean configure -->
 
     <import resource="beans.xml"/>
+
+    <!-- spring-redis configure -->
+    <import resource="spring-context-redis.xml"/>
 
 
 </beans>

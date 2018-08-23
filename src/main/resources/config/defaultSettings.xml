@@ -12,7 +12,6 @@
 
     <setting ownerType="system">
 
-        <ttt>0</ttt>
         <!--参数类类目，通常用于区分个模块的参数 -->
         <category>sys</category>
         <!-- 参数显示名称-->

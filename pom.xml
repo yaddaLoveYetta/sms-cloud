@@ -37,6 +37,8 @@
         <pinyin4j.version>2.5.1</pinyin4j.version>
         <lombok.version>1.16.22</lombok.version>
         <dom4j.version>1.6.1</dom4j.version>
+        <redis.client.version>2.9.0</redis.client.version>
+        <spring.data.redis.version>1.7.5.RELEASE</spring.data.redis.version>
 
     </properties>
 
@@ -89,6 +91,18 @@
         </dependency>
 
         <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+            <version>${redis.client.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-redis</artifactId>
+            <version>${spring.data.redis.version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
             <version>${spring.version}</version>
@@ -129,11 +143,11 @@
             <version>${jackson.version}</version>
         </dependency>
 
-<!--        <dependency>
-            <groupId>org.codehaus.jackson</groupId>
-            <artifactId>jackson-mapper-asl</artifactId>
-            <version>1.9.13</version>
-        </dependency>-->
+        <!--        <dependency>
+                    <groupId>org.codehaus.jackson</groupId>
+                    <artifactId>jackson-mapper-asl</artifactId>
+                    <version>1.9.13</version>
+                </dependency>-->
 
         <dependency>
             <groupId>com.github.pagehelper</groupId>

@@ -18,10 +18,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * @author yadda<silenceisok@163.com>
@@ -121,40 +121,9 @@ public class MenuServiceImpl extends BaseService implements MenuService {
         // for test----end-----
 
         // 二次过滤，将没有二级菜单的一级菜单过滤掉
-        Iterator<Menu> iterator = ret.iterator();
-
-        while (iterator.hasNext()) {
-
-            Menu menu = iterator.next();
-            // 表示是否存在二级菜单
-            boolean existSubMenu = false;
-
-            if (menu.getParentId() != 0) {
-                continue;
-            }
-
-            for (Menu item : ret) {
-                if (item.getParentId() == menu.getId().intValue()) {
-                    existSubMenu = true;
-                    break;
-                }
-            }
-
-            if (!existSubMenu) {
-                // 用户对该一级菜单的所有二级菜单都没有权限查看，则该一级菜单不显示
-                iterator.remove();
-            }
-
-        }
-
-/*        ret.stream().filter(menu -> {
-
-            if (menu.getParentId() != 0) {
-                return true;
-            }
-
-            return false;
-        }).collect(Collectors.toList());*/
+        ret.stream().filter(menu ->
+                menu.getParentId() != 0 || ret.stream().anyMatch(item -> item.getParentId().equals(menu.getId())))
+                .collect(Collectors.toList());
 
         return ret;
 
