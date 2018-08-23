@@ -15,7 +15,14 @@ import org.slf4j.LoggerFactory;
 
 public enum CooperationApplyStatus {
 
-    UN_PROCESSED(1, "未处理"), PROCESSED(2, "已处理");
+    /**
+     * 未处理状态的申请
+     */
+    UN_PROCESSED(1, "未处理"),
+    /**
+     * 已处理状态的申请
+     */
+    PROCESSED(2, "已处理");
 
     private static Logger logger = LoggerFactory.getLogger(OrderDeliveryStatus.class);
 

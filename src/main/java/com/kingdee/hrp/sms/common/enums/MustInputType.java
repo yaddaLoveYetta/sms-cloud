@@ -2,6 +2,8 @@ package com.kingdee.hrp.sms.common.enums;
 
 /**
  * 必录性控制
+ * <p>
+ * 值跟t_assistance表 type=25一致
  *
  * @author yadda(silenceisok@163.com)
  * @date 2018/7/17 22:19

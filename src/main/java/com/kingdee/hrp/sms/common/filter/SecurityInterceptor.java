@@ -86,10 +86,6 @@ public class SecurityInterceptor extends HandlerInterceptorAdapter {
 
         if (user == null) {
 
-            // ResponseWriteUtil.output(response, StatusCode.SESSION_LOST, "会话结束请重新登陆!");
-            //return false;
-            //throw new SessionLostRuntimeException("会话结束请重新登陆!");
-
             ResultWarp result = new ResultWarp();
             result.setCode(StatusCode.SESSION_LOST);
             result.setMsg("会话结束请重新登陆!");

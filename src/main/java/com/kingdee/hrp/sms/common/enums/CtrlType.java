@@ -1,6 +1,10 @@
 package com.kingdee.hrp.sms.common.enums;
 
 /**
+ * 字段控件类型，控制前端显示实现样式
+ *
+ * 值跟t_assistance表 type=30一致
+ *
  * @author : yadda(silenceisok@163.com)
  * @date : 2018/3/19 11:25
  */

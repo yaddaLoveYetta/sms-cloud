@@ -7,7 +7,22 @@ package com.kingdee.hrp.sms.common.enums;
  */
 public enum BillOperateType {
 
-    NOT_SUPPORT(-1, "不支持的类别"), VIEW(0, "查看"), ADD(1, "新增"), EDIT(2, "编辑");
+    /**
+     * 不支持的类别
+     */
+    NOT_SUPPORT(-1, "不支持的类别"),
+    /**
+     * 查看
+     */
+    VIEW(0, "查看"),
+    /**
+     * 新增
+     */
+    ADD(1, "新增"),
+    /**
+     * 编辑
+     */
+    EDIT(2, "编辑");
 
     private int number;
     private String desc;

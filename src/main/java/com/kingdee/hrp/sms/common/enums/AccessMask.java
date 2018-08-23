@@ -8,8 +8,8 @@ package com.kingdee.hrp.sms.common.enums;
  */
 public enum AccessMask {
 
-    // 系统预留权限项
-    /*    查看:1;
+    /* 系统预留权限项
+        查看:1;
         新增:2;
         修改:4;
         删除:8;
@@ -21,8 +21,55 @@ public enum AccessMask {
         同步:512;
         导入:1024;
         导出:2048;*/
-    VIEW(1, "查看"), ADD(2, "新增"), EDIT(4, "修改"), DEL(8, "删除"), CHECK(16, "审核"), UNCHECK(32, "反审核"),
-    FORBID(64, "禁用"), UNFORBID(128, "反禁用"), SYNC(1, "同步"), IMPORT(1024, "导入"), EXPORT(2048, "导出"), OTHER(0, "其他");
+
+    /**
+     * 查看
+     */
+    VIEW(1, "查看"),
+    /**
+     * 新增
+     */
+    ADD(2, "新增"),
+    /**
+     * 修改
+     */
+    EDIT(4, "修改"),
+    /**
+     * 删除
+     */
+    DEL(8, "删除"),
+    /**
+     * 审核
+     */
+    CHECK(16, "审核"),
+    /**
+     * 反审核
+     */
+    UN_CHECK(32, "反审核"),
+    /**
+     * 禁用
+     */
+    FORBID(64, "禁用"),
+    /**
+     * 反禁用
+     */
+    UN_FORBID(128, "反禁用"),
+    /**
+     * 同步
+     */
+    SYNC(1, "同步"),
+    /**
+     * 导入
+     */
+    IMPORT(1024, "导入"),
+    /**
+     * 导出
+     */
+    EXPORT(2048, "导出"),
+    /**
+     * 其他,不是系统预留权限项，由业务系统自行处理
+     */
+    OTHER(0, "其他");
 
     private Integer number;
     private String name;
@@ -34,7 +81,6 @@ public enum AccessMask {
     public void setNumber(Integer number) {
         this.number = number;
     }
-
 
     public String getName() {
         return name;

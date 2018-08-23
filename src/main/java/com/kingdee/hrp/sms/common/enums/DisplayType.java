@@ -3,6 +3,8 @@ package com.kingdee.hrp.sms.common.enums;
 /**
  * 显示性控制
  *
+ * 值跟t_assistance表 type=20一致
+ *
  * @author yadda(silenceisok@163.com)
  * @date 2018/7/17 22:19
  */
