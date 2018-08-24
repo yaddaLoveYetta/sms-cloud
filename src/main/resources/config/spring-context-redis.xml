@@ -17,7 +17,7 @@
                 ignore-unresolvable="true" location="classpath:/config/redis.properties"/>-->
 
     <!-- redis连接池配置-->
-    <bean id="poolConfig" class="redis.clients.jedis.JedisPoolConfig">
+    <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
         <!--最大空闲数-->
         <property name="maxIdle" value="${redis.maxIdle}" />
         <!--连接池的最大数据库连接数  -->

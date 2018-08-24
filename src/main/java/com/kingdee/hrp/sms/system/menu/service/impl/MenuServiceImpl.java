@@ -17,11 +17,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * @author yadda<silenceisok@163.com>
@@ -43,8 +42,6 @@ public class MenuServiceImpl extends BaseService implements MenuService {
     @Override
     public List<Menu> getMenusByParentId(Integer parentId) {
 
-        List<Menu> ret = new ArrayList<>();
-
         MenuMapper menuMapper = sqlSession.getMapper(MenuMapper.class);
 
         MenuExample example = new MenuExample();
@@ -56,16 +53,15 @@ public class MenuServiceImpl extends BaseService implements MenuService {
 
         List<Menu> menus = menuMapper.selectByExample(example);
 
+        // 用户角色类别
         UserRoleType userRoleType = SessionUtil.getUserRoleType();
-        // 用户所属组织
-        Long userLinkOrg = SessionUtil.getUserLinkOrg();
 
         // 查询t_form_action 用于检验用户类别是否拥有menu的查看权（没有查看权限菜单不显示）
         FormActionMapper formActionMapper = sqlSession.getMapper(FormActionMapper.class);
+
         FormActionExample formActionExample = new FormActionExample();
-        FormActionExample.Criteria criteria = formActionExample.createCriteria();
         // 只查询查看权限，有查看权限才可能需要显示菜单
-        criteria.andAccessMaskEqualTo(AccessMask.VIEW.getNumber());
+        formActionExample.createCriteria().andAccessMaskEqualTo(AccessMask.VIEW.getNumber());
 
         List<FormAction> formActions = formActionMapper.selectByExample(formActionExample);
 
@@ -73,59 +69,56 @@ public class MenuServiceImpl extends BaseService implements MenuService {
         UserService userService = Environ.getBean(UserService.class);
         Map<Integer, Integer> roleAccessControl = userService.getAccessControl();
 
+
         // 迭代过滤菜单项
-        for (Menu menu : menus) {
+        menus = menus.stream().filter(menu -> {
 
             Integer formActionId = menu.getFormActionId();
 
+
+            // for test
+            if (userRoleType == UserRoleType.SYSTEM) {
+                return true;
+            }
+
             // 一级菜单先不过滤
             if (menu.getParentId() == 0) {
-                ret.add(menu);
-                continue;
+                return true;
             }
 
             // for test
             if (null == formActionId || formActionId == 0) {
                 // 没有配置formActionId的菜单认为是不需要控制，如一级菜单 for test
-                ret.add(menu);
-                continue;
+                return true;
             }
 
-            for (FormAction formAction : formActions) {
+            // 是否这个用户类别可见的菜单，每个菜单配置一个查看权限
+            Optional<FormAction> formActionOptional = formActions.stream().filter(formAction -> formActionId == formAction.getClassId().intValue() &&
+                    ((userRoleType.getNumber() & formAction.getOwnerType()) == userRoleType.getNumber())).findFirst();
 
-                Integer formActionClassId = formAction.getClassId();
-                Integer ownerType = formAction.getOwnerType();
-
-                if (formActionId == formActionClassId.intValue() &&
-                        ((userRoleType.getNumber() & ownerType) == userRoleType.getNumber())) {
-                    // 是这个用户类别可见的菜单
-                    Integer accessMask = roleAccessControl.get(formActionId);
-                    if (accessMask != null &&
-                            (accessMask & AccessMask.VIEW.getNumber()) == AccessMask.VIEW.getNumber()) {
-                        // 查看权限是1，判断是否有查看权限(此处为有权限)
-                        ret.add(menu);
-                        break;
-                    }
-
-                }
-
+            if (!formActionOptional.isPresent()) {
+                // 该菜单未配置查看权限或菜单非该用户类别可见
+                return false;
             }
-        }
 
-        // for test----begin----
-        if (userRoleType == UserRoleType.SYSTEM) {
-            ret.clear();
-            ret.addAll(menus);
-        }
+            Integer accessMask = roleAccessControl.get(formActionId);
 
-        // for test----end-----
+            // formAction中查看权限AccessMask必须配置为1即 AccessMask.VIEW.getNumber()
+            if (accessMask != null && (accessMask & AccessMask.VIEW.getNumber()) == AccessMask.VIEW.getNumber()) {
+                // 查看权限是1，判断是否有查看权限(此处为有权限)
+                return true;
+            }
+
+            return false;
+
+        }).collect(Collectors.toList());
+
+        List<Menu> ret = menus;
 
         // 二次过滤，将没有二级菜单的一级菜单过滤掉
-        ret.stream().filter(menu ->
-                menu.getParentId() != 0 || ret.stream().anyMatch(item -> item.getParentId().equals(menu.getId())))
-                .collect(Collectors.toList());
 
-        return ret;
+        return ret.stream().filter(menu -> menu.getParentId() != 0 || ret.stream().anyMatch(item -> item.getParentId().equals(menu.getId())))
+                .collect(Collectors.toList());
 
     }
 
