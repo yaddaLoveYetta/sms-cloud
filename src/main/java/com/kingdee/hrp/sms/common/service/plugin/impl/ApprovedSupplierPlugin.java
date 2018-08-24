@@ -174,7 +174,6 @@ public class ApprovedSupplierPlugin extends AbstractPlugInAdapter implements Ini
                         .setFieldKey("id")
                         .setLogicOperator(Condition.LogicOperator.EQUAL)
                         .setValue(0);
-
                 ret.add(condition);
             }
 
