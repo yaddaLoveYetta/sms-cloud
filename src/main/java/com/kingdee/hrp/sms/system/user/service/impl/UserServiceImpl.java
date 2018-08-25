@@ -34,6 +34,7 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author yadda<silenceisok@163.com>
@@ -54,7 +55,7 @@ public class UserServiceImpl extends BaseService implements UserService {
      * @param registerModel 用户注册信息
      */
     @Override
-    @Transactional(rollbackFor = { Exception.class })
+    @Transactional(rollbackFor = {Exception.class})
     public void register(RegisterModel registerModel) throws IOException {
 
         // 1:参数校验
@@ -177,7 +178,7 @@ public class UserServiceImpl extends BaseService implements UserService {
     }
 
     @Override
-    @Transactional(rollbackFor = { Exception.class })
+    @Transactional(rollbackFor = {Exception.class})
     public Boolean editPwd(Long userId, String oldPwd, String newPwd) {
 
         User user = null;
@@ -351,7 +352,6 @@ public class UserServiceImpl extends BaseService implements UserService {
      *
      * @param roleId            角色id
      * @param accessControlList 角色授权结果
-     * @return Boolean
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -364,8 +364,41 @@ public class UserServiceImpl extends BaseService implements UserService {
         accessControlExampleCriteria.andRoleIdEqualTo(roleId);
         accessControlMapper.deleteByExample(accessControlExample);
 
+
+        // 可能有多个二级菜单使用相同的formActionId即多个菜单公用权限，此处对accessControlList处理，将共用formActionId的权限做|取权限和
+        // 如此配置可能会出现意想不到的结果，不建议这样配置，
+
+        List<AccessControl> accessControlWarp = new ArrayList<>();
+
+        Map<Integer, List<AccessControl>> accessControlMap = accessControlList.stream()
+                .collect(Collectors.groupingBy(AccessControlKey::getClassId));
+
+        for (Map.Entry<Integer, List<AccessControl>> entry : accessControlMap.entrySet()) {
+
+            if (entry.getValue().size() > 1) {
+                // 多个菜单公用权限
+                AccessControl accessControl = new AccessControl();
+
+                accessControl.setClassId(entry.getValue().get(0).getClassId());
+                accessControl.setRoleId(entry.getValue().get(0).getRoleId());
+
+                // 合并后的权限掩码
+                Integer accessMaskMerged = 0;
+                for (AccessControl control : entry.getValue()) {
+                    accessMaskMerged = accessMaskMerged | control.getAccessMask();
+                }
+
+                accessControl.setAccessMask(accessMaskMerged);
+
+                accessControlWarp.add(accessControl);
+            } else {
+
+                accessControlWarp.addAll(entry.getValue());
+            }
+        }
+
         // 新增roleId权限项rolePermissions
-        accessControlMapper.batchInsert(accessControlList);
+        accessControlMapper.batchInsert(accessControlWarp);
     }
 
     /**
@@ -378,7 +411,7 @@ public class UserServiceImpl extends BaseService implements UserService {
      * @return list
      */
     private List<Map<String, Object>> toTree(List<Menu> menus, List<FormAction> formActions,
-            Map<Integer, AccessControl> accessControlsMap, int parentId, Role role) {
+                                             Map<Integer, AccessControl> accessControlsMap, int parentId, Role role) {
 
         List<Map<String, Object>> ret = new ArrayList<>();
 
@@ -393,6 +426,7 @@ public class UserServiceImpl extends BaseService implements UserService {
 
             if (menu.getParentId() == parentId) {
 
+                // 根据parentId来递归处理该parentId下所有二级菜单
                 Map<String, Object> menuItem = new LinkedHashMap<>();
 
                 String name = menu.getName();
@@ -403,6 +437,7 @@ public class UserServiceImpl extends BaseService implements UserService {
                 menuItem.put("name", name);
                 menuItem.put("formActionId", formActionId);
 
+                // 递归处理parentId=id的所有子菜单
                 List<Map<String, Object>> items = toTree(menus, formActions, accessControlsMap, id, role);
 
                 if (items.size() == 0) {
@@ -410,54 +445,45 @@ public class UserServiceImpl extends BaseService implements UserService {
                     List<Map<String, Object>> accessList = new ArrayList<>();
 
                     // 是否需要进行权限控制-menu可以不进行权限控制
-                    // (当t_menu不配置form_action_id或者配置的form_action在t_form_action中不存在时，认为不需要进行权限控制)
+                    // (当t_menu不配置form_action_id或者配置的form_action在t_form_action中不存在时，认为不需要进行权限控制)-test
                     Boolean isAccessControl = false;
 
-                    for (FormAction formAction : formActions) {
+                    // 当前菜单可用的所有功能项
+                    List<FormAction> currentSubMenuFormActions = formActions.stream().filter(formAction -> formAction.getClassId().equals(formActionId)).collect(Collectors.toList());
 
-                        if (formAction.getClassId().equals(formActionId)) {
+                    currentSubMenuFormActions.forEach(formAction -> {
 
-                            // 有在t_form_action表中配置权限项
-                            isAccessControl = true;
+                        Integer accessMask = formAction.getAccessMask();
+                        Integer accessUse = formAction.getAccessUse();
+                        String accessName = formAction.getName();
+                        Integer accessOwnerType = formAction.getOwnerType();
 
-                            Integer accessMask = formAction.getAccessMask();
-                            Integer accessUse = formAction.getAccessUse();
-                            String accessName = formAction.getName();
-                            Integer accessOwnerType = formAction.getOwnerType();
-
-                            Integer currentRoleMask = 0;
-                            if (accessControlsMap.containsKey(formActionId)) {
-                                currentRoleMask = accessControlsMap.get(formActionId).getAccessMask();
-                            }
-                            // 判断是否该角色类别可用的权限，如果是，获取该权限对当前角色的设置
-                            if ((accessOwnerType & roleTypeControl) == roleTypeControl) {
-                                // 是该角色类别可用的权限
-
-/*                                if ((currentRoleMask & accessMask) == accessMask) {
-                                    // 当前角色对该权限项有权限(已授权)
-                                }else {
-                                    // 当前角色对该权限项没有权限(未授权)
-                                }*/
-
-                                Map<String, Object> accessItem = new HashMap<>(8);
-                                accessItem.put("accessMask", accessMask);
-                                accessItem.put("accessUse", accessUse);
-                                accessItem.put("accessName", accessName);
-                                accessItem.put("enable", (currentRoleMask & accessMask) == accessMask);
-                                accessList.add(accessItem);
-                            }
+                        Integer currentRoleMask = 0;
+                        if (accessControlsMap.containsKey(formActionId)) {
+                            currentRoleMask = accessControlsMap.get(formActionId).getAccessMask();
                         }
-                    }
+                        // 判断是否该角色类别可用的权限，如果是，获取该权限对当前角色的设置
+                        if ((accessOwnerType & roleTypeControl) == roleTypeControl) {
+                            // 是该角色类别可用的权限
+
+                            Map<String, Object> accessItem = new HashMap<>(8);
+
+                            accessItem.put("accessMask", accessMask);
+                            accessItem.put("accessUse", accessUse);
+                            accessItem.put("accessName", accessName);
+                            accessItem.put("enable", (currentRoleMask & accessMask) == accessMask);
+                            accessList.add(accessItem);
+                        }
+
+                    });
 
                     if (accessList.size() > 0) {
                         menuItem.put("accessList", accessList);
                     }
 
                 } else {
-
-                    if (items.size() > 0) {
-                        menuItem.put("items", items);
-                    }
+                    // 有下级菜单，当前项为一级菜单
+                    menuItem.put("items", items);
                 }
 
                 if (menuItem.get("items") != null || menuItem.get("accessList") != null) {
@@ -481,7 +507,7 @@ public class UserServiceImpl extends BaseService implements UserService {
      */
     @Override
     public Map<String, Object> getMessage(Integer userRoleType, Long org, Integer type, Integer pageSize,
-            Integer pageNo) {
+                                          Integer pageNo) {
 
         Map<String, Object> ret = new HashMap<>(16);
 

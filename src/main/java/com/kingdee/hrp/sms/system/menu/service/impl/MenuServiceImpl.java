@@ -37,7 +37,7 @@ public class MenuServiceImpl extends BaseService implements MenuService {
      * 必须是用户有权限的菜单
      *
      * @param parentId 父菜单id
-     * @return
+     * @return List<Menu>
      */
     @Override
     public List<Menu> getMenusByParentId(Integer parentId) {
@@ -104,19 +104,13 @@ public class MenuServiceImpl extends BaseService implements MenuService {
             Integer accessMask = roleAccessControl.get(formActionId);
 
             // formAction中查看权限AccessMask必须配置为1即 AccessMask.VIEW.getNumber()
-            if (accessMask != null && (accessMask & AccessMask.VIEW.getNumber()) == AccessMask.VIEW.getNumber()) {
-                // 查看权限是1，判断是否有查看权限(此处为有权限)
-                return true;
-            }
-
-            return false;
+            return accessMask != null && (accessMask & AccessMask.VIEW.getNumber()) == AccessMask.VIEW.getNumber();
 
         }).collect(Collectors.toList());
 
         List<Menu> ret = menus;
 
         // 二次过滤，将没有二级菜单的一级菜单过滤掉
-
         return ret.stream().filter(menu -> menu.getParentId() != 0 || ret.stream().anyMatch(item -> item.getParentId().equals(menu.getId())))
                 .collect(Collectors.toList());
 
