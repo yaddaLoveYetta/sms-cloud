@@ -5635,6 +5635,30 @@
 
                 });
             }
+            // 跑出一个双击事件
+            $(container).delegate(selector, 'dblclick', function (event) {
+                // 阻止事件冒泡
+                event.stopPropagation();
+
+                var item = this;
+                var index;
+
+                if ('indexKey' in config) { // 推荐的方式
+                    index = +item.getAttribute(config.indexKey);
+                }
+                else {
+                    var list = $(container).find(selector).toArray();
+
+                    index = $.Array.findIndex(list, function (node, index) {
+                        return node === item;
+                    });
+                }
+
+                if (index === meta.activedIndex) {
+                    emitter.fire('dblclick', [index, item]);
+                }
+
+            });
 
 
             var change = config.change;

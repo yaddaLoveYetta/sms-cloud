@@ -78,7 +78,7 @@
         var item = List.getSelectedItem();
 
         if (!item || item.length === 0) {
-            SMS.Tips.error('请选择一个医院查看资料!', 1500);
+            SMS.Tips.error('请选择一个医院!', 1500);
             return;
         }
 

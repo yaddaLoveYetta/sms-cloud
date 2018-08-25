@@ -65,6 +65,9 @@
             PageList.active(item);  //安静模式，不触发事件
             //Sidebar.active(item);     //安静模式，不触发事件
         },
+        'dblclick':function (item) {
+            return Iframe.fire('dblclick', item);
+        },
         'remove': function (item) {
             Iframes.remove(item);  //会触发 remove 事件
             PageList.remove(item); //安静模式，不触发 remove 事件，但会触发 active 事件

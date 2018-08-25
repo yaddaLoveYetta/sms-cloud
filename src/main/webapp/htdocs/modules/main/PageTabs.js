@@ -29,7 +29,7 @@ define('PageTabs', function (require, module, exports) {
                 return s.replace(/\n/g, '')     //去掉空行
                     .replace(/\s{2,}/g, ' ');   //把多个空格合成一个
             }
-        },
+        }
     ]);
 
     var emitter = MiniQuery.Event.create();
@@ -167,6 +167,18 @@ define('PageTabs', function (require, module, exports) {
             active(index);
         });
 
+        tabs.on('dblclick', function (index, item) {
+
+            var index = +item.getAttribute('data-index');
+
+            if (index === 0) { //首页
+                return;
+            }
+
+            item = list[index];
+            emitter.fire('dblclick', [item]);
+        });
+
 
         //点击关闭按钮
         $(ul).delegate('>li>i', 'click', function (event) {
@@ -174,7 +186,7 @@ define('PageTabs', function (require, module, exports) {
             var li = this.parentNode;
             var index = +li.getAttribute('data-index');
 
-            if (index == 0) { //首页
+            if (index === 0) { //首页
                 return;
             }
 

@@ -81,6 +81,10 @@
         }
     }
 
+    Iframe.on('dblclick', function (infos) {
+        refresh();
+    });
+
     // 必须指明获取功能按钮的场景 0:查看(列表)1:(新增)2:(编辑)
     FormAction.create({'classId': classId, 'type': 0}, function (config) {
 
@@ -443,10 +447,10 @@
             'import': function (item, index) {
 
             },
-            //中标库查看关联供应商详细资料
+            //中标库-合作申请查看关联供应商详细资料
             'view-supplier': function (item, index) {
 
-                if (classId !== 1007) {
+                if (classId !== 1007 && classId !== 3001) {
                     return;
                 }
 
@@ -462,24 +466,56 @@
                     return;
                 }
 
-                var url = require("UrlMapping")(1005);
-                var name = list[0].data.supplier_DspName || '';
+                var targetClassId;
+                var url;
+                var name;
 
-                if (!url) {
-                    // 没有配置编辑页面或不需要编辑功能
-                    return;
+                if (classId === 1007) {
+                    // 中标库查看的供应商是HRP供应商
+                    targetClassId = 1005;
+                    url = require("UrlMapping")(1005);
+
+                    name = list[0].data.supplier_DspName || '';
+
+                    if (!url) {
+                        // 没有配置编辑页面或不需要编辑功能
+                        return;
+                    }
+
+                    Iframe.open({
+                        id: classId + '-view-supplier-' + list[0].primaryValue,
+                        name: '供应商资料-' + name,
+                        url: url,
+                        query: {
+                            'id': list[0].data.supplier,
+                            'classId': 1005,
+                            'operate': 0
+                        }
+                    });
+                } else if (classId === 3001) {
+                    // 合作申请查看的供应商是供应商注册用户资料
+                    targetClassId = 1013;
+                    url = require("UrlMapping")(1013);
+
+                    name = list[0].data.supplier_DspName || '';
+
+                    if (!url) {
+                        // 没有配置编辑页面或不需要编辑功能
+                        return;
+                    }
+
+                    Iframe.open({
+                        id: classId + '-view-supplier-' + list[0].primaryValue,
+                        name: '供应商注册资料-' + name,
+                        url: url,
+                        query: {
+                            'id': list[0].data.supplier,
+                            'classId': 1013,
+                            'operate': 0
+                        }
+                    });
                 }
 
-                Iframe.open({
-                    id: classId + '-view-supplier-' + list[0].primaryValue,
-                    name: '供应商资料-' + name,
-                    url: url,
-                    query: {
-                        'id': list[0].data.supplier,
-                        'classId': 1005,
-                        'operate': 0
-                    }
-                });
 
             },
             // 中标库查看关联合同资料
@@ -489,7 +525,7 @@
             // 供应商合作医院-查看医院详细信息
             'view-hospital': function (item, index) {
 
-                if (classId !== 1008) {
+                if (classId !== 3001) {
                     return;
                 }
 
@@ -528,7 +564,7 @@
             // 供应商合作医院-添加合作医院
             'cooperation-apply': function (item, index) {
 
-                if (classId !== 1008) {
+                if (classId !== 3001) {
                     return;
                 }
 
