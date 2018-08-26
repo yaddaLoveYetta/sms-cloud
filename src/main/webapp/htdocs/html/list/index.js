@@ -594,11 +594,11 @@
             conditions = userConditions;
             refresh();
         },
-        'initSelector': function (lookUpClassId, key) {
+        'initSelector': function (destClassId, lookUpClassId, key, field) {
 
             var config = {};
 
-            if (classId === 1008) {
+            if (classId === 1008 && key === 'hospital') {
 
                 // 供应商-我的合作医院查询中医院过滤条件只能在跟自身有关系的医院中过滤
                 config = {
@@ -606,6 +606,19 @@
                         type: "selector",
                         target: 'supplier',
                         filterKey: "supplier"
+                    }]
+                };
+
+            }
+
+            if (destClassId === 3001 && key === 'status') {
+
+                // 申请记录状态
+                return {
+                    conditionF7Names: [{
+                        type: "fixedValue",
+                        filterValue: 43,
+                        filterKey: "type"
                     }]
                 };
 

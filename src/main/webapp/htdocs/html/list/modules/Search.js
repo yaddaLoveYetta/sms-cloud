@@ -346,7 +346,7 @@ define("Search", function (require, module, exports) {
                 };
 
                 // 个性化配置
-                var pConfig = emitter.fire('initSelector', [field.lookUpClassId, field.key]);
+                var pConfig = emitter.fire('initSelector', [field.classId, field.lookUpClassId, field.key, field]);
 
                 pConfig = pConfig && pConfig[pConfig.length - 1];
 
