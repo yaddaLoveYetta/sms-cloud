@@ -136,6 +136,17 @@ public class PlugInFactory implements PlugIn, InitializingBean, ApplicationConte
     }
 
     /**
+     * 插件是否支持指定的业务单据
+     *
+     * @param classId 业务单据类型
+     * @return true if support , false not support
+     */
+    @Override
+    public boolean support(Integer classId) {
+        return false;
+    }
+
+    /**
      * 基础资料新增前操作
      *
      * @param classId      业务类型
@@ -149,7 +160,7 @@ public class PlugInFactory implements PlugIn, InitializingBean, ApplicationConte
         PlugInRet plugInRet = new PlugInRet();
 
         for (PlugIn plugIn : plugIns) {
-            if (plugIn.getClassIdSet() != null && plugIn.getClassIdSet().contains(classId)) {
+            if (plugIn.getClassIdSet() != null && plugIn.support(classId)) {
                 plugInRet = plugIn.beforeSave(classId, formTemplate, data);
                 if (plugInRet.getCode() != StatusCode.SUCCESS) {
                     // 插件返回了阻止继续运行的情况--返回不继续执行后续插件
@@ -175,7 +186,7 @@ public class PlugInFactory implements PlugIn, InitializingBean, ApplicationConte
         PlugInRet plugInRet = new PlugInRet();
 
         for (PlugIn plugIn : plugIns) {
-            if (plugIn.getClassIdSet() != null && plugIn.getClassIdSet().contains(classId)) {
+            if (plugIn.getClassIdSet() != null && plugIn.support(classId)) {
                 plugInRet = plugIn.afterSave(classId, id, data);
                 if (plugInRet.getCode() != StatusCode.SUCCESS) {
                     // 插件返回了阻止继续运行的情况--返回不继续执行后续插件
@@ -202,7 +213,7 @@ public class PlugInFactory implements PlugIn, InitializingBean, ApplicationConte
         PlugInRet plugInRet = new PlugInRet();
 
         for (PlugIn plugIn : plugIns) {
-            if (plugIn.getClassIdSet() != null && plugIn.getClassIdSet().contains(classId)) {
+            if (plugIn.getClassIdSet() != null && plugIn.support(classId)) {
                 plugInRet = plugIn.beforeModify(classId, id, formTemplate, data);
                 if (plugInRet.getCode() != StatusCode.SUCCESS) {
                     // 插件返回了阻止继续运行的情况--返回不继续执行后续插件
@@ -228,12 +239,12 @@ public class PlugInFactory implements PlugIn, InitializingBean, ApplicationConte
      */
     @Override
     public PlugInRet beforeEntryModify(int classId, String primaryId, String entryId, FormTemplate formTemplate,
-                                       JsonNode data) {
+            JsonNode data) {
 
         PlugInRet plugInRet = new PlugInRet();
 
         for (PlugIn plugIn : plugIns) {
-            if (plugIn.getClassIdSet() != null && plugIn.getClassIdSet().contains(classId)) {
+            if (plugIn.getClassIdSet() != null && plugIn.support(classId)) {
                 plugInRet = plugIn.beforeEntryModify(classId, primaryId, entryId, formTemplate, data);
                 if (plugInRet.getCode() != StatusCode.SUCCESS) {
                     // 插件返回了阻止继续运行的情况--返回不继续执行后续插件
@@ -260,7 +271,7 @@ public class PlugInFactory implements PlugIn, InitializingBean, ApplicationConte
         PlugInRet plugInRet = new PlugInRet();
 
         for (PlugIn plugIn : plugIns) {
-            if (plugIn.getClassIdSet() != null && plugIn.getClassIdSet().contains(classId)) {
+            if (plugIn.getClassIdSet() != null && plugIn.support(classId)) {
                 plugInRet = plugIn.afterModify(classId, id, formTemplate, data);
                 if (plugInRet.getCode() != StatusCode.SUCCESS) {
                     // 插件返回了阻止继续运行的情况--返回不继续执行后续插件
@@ -286,7 +297,7 @@ public class PlugInFactory implements PlugIn, InitializingBean, ApplicationConte
         PlugInRet plugInRet = new PlugInRet();
 
         for (PlugIn plugIn : plugIns) {
-            if (plugIn.getClassIdSet() != null && plugIn.getClassIdSet().contains(classId)) {
+            if (plugIn.getClassIdSet() != null && plugIn.support(classId)) {
                 plugInRet = plugIn.beforeDelete(classId, formTemplate, ids);
                 if (plugInRet.getCode() != StatusCode.SUCCESS) {
                     // 插件返回了阻止继续运行的情况--返回不继续执行后续插件
@@ -311,12 +322,12 @@ public class PlugInFactory implements PlugIn, InitializingBean, ApplicationConte
      */
     @Override
     public PlugInRet beforeEntryDelete(int classId, String primaryId, String entryId,
-                                       FormTemplate formTemplate) {
+            FormTemplate formTemplate) {
 
         PlugInRet plugInRet = new PlugInRet();
 
         for (PlugIn plugIn : plugIns) {
-            if (plugIn.getClassIdSet() != null && plugIn.getClassIdSet().contains(classId)) {
+            if (plugIn.getClassIdSet() != null && plugIn.support(classId)) {
                 plugInRet = plugIn.beforeEntryDelete(classId, primaryId, entryId, formTemplate);
                 if (plugInRet.getCode() != StatusCode.SUCCESS) {
                     // 插件返回了阻止继续运行的情况--返回不继续执行后续插件
@@ -342,7 +353,7 @@ public class PlugInFactory implements PlugIn, InitializingBean, ApplicationConte
         PlugInRet plugInRet = new PlugInRet();
 
         for (PlugIn plugIn : plugIns) {
-            if (plugIn.getClassIdSet() != null && plugIn.getClassIdSet().contains(classId)) {
+            if (plugIn.getClassIdSet() != null && plugIn.support(classId)) {
                 plugInRet = plugIn.afterDelete(classId, formTemplate, ids);
                 if (plugInRet.getCode() != StatusCode.SUCCESS) {
                     // 插件返回了阻止继续运行的情况--返回不继续执行后续插件
@@ -368,7 +379,7 @@ public class PlugInFactory implements PlugIn, InitializingBean, ApplicationConte
         PlugInRet plugInRet = new PlugInRet();
 
         for (PlugIn plugIn : plugIns) {
-            if (plugIn.getClassIdSet() != null && plugIn.getClassIdSet().contains(classId)) {
+            if (plugIn.getClassIdSet() != null && plugIn.support(classId)) {
                 plugInRet = plugIn.beforeQuery(classId, formTemplate, conditons);
                 if (plugInRet.getCode() != StatusCode.SUCCESS) {
                     // 插件返回了阻止继续运行的情况--返回不继续执行后续插件
@@ -393,7 +404,7 @@ public class PlugInFactory implements PlugIn, InitializingBean, ApplicationConte
         PlugInRet plugInRet = new PlugInRet();
 
         for (PlugIn plugIn : plugIns) {
-            if (plugIn.getClassIdSet() != null && plugIn.getClassIdSet().contains(classId)) {
+            if (plugIn.getClassIdSet() != null && plugIn.support(classId)) {
                 plugInRet = plugIn.afterQuery(classId, list);
                 if (plugInRet.getCode() != StatusCode.SUCCESS) {
                     // 插件返回了阻止继续运行的情况--返回不继续执行后续插件
@@ -418,8 +429,8 @@ public class PlugInFactory implements PlugIn, InitializingBean, ApplicationConte
 
         List<Condition> pluginConditions = new ArrayList<Condition>();
 
-            for (PlugIn plugIn : plugIns) {
-            if (plugIn.getClassIdSet() != null && plugIn.getClassIdSet().contains(classId)) {
+        for (PlugIn plugIn : plugIns) {
+            if (plugIn.getClassIdSet() != null && plugIn.support(classId)) {
 
                 List<Condition> c = plugIn.getConditions(classId, formTemplate, conditions);
                 if (!CollectionUtils.isEmpty(c)) {
@@ -446,7 +457,7 @@ public class PlugInFactory implements PlugIn, InitializingBean, ApplicationConte
         PlugInRet plugInRet = new PlugInRet();
 
         for (PlugIn plugIn : plugIns) {
-            if (plugIn.getClassIdSet() != null && plugIn.getClassIdSet().contains(classId)) {
+            if (plugIn.getClassIdSet() != null && plugIn.support(classId)) {
                 plugInRet = plugIn.beforeForbid(classId, template, ids, operateType);
                 if (plugInRet.getCode() != StatusCode.SUCCESS) {
                     // 插件返回了阻止继续运行的情况--返回不继续执行后续插件
@@ -473,7 +484,7 @@ public class PlugInFactory implements PlugIn, InitializingBean, ApplicationConte
         PlugInRet plugInRet = new PlugInRet();
 
         for (PlugIn plugIn : plugIns) {
-            if (plugIn.getClassIdSet() != null && plugIn.getClassIdSet().contains(classId)) {
+            if (plugIn.getClassIdSet() != null && plugIn.support(classId)) {
                 plugInRet = plugIn.afterForbid(classId, template, ids, operateType);
                 if (plugInRet.getCode() != StatusCode.SUCCESS) {
                     // 插件返回了阻止继续运行的情况--返回不继续执行后续插件
@@ -499,7 +510,7 @@ public class PlugInFactory implements PlugIn, InitializingBean, ApplicationConte
         String key = null;
 
         for (PlugIn plugIn : plugIns) {
-            if (plugIn.getClassIdSet() != null && plugIn.getClassIdSet().contains(classId)) {
+            if (plugIn.getClassIdSet() != null && plugIn.support(classId)) {
 
                 String temp = plugIn.checkFieldKey(classId);
 

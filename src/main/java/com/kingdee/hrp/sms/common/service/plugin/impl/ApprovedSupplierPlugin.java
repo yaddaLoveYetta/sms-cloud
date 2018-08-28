@@ -77,6 +77,17 @@ public class ApprovedSupplierPlugin extends AbstractPlugInAdapter implements Ini
     }
 
     /**
+     * 插件是否支持指定的业务单据
+     *
+     * @param classId 业务单据类型
+     * @return true if support , false not support
+     */
+    @Override
+    public boolean support(Integer classId) {
+        return classIdSet.contains(classId);
+    }
+
+    /**
      * Invoked by a BeanFactory after it has set all bean properties supplied
      * (and satisfied BeanFactoryAware and ApplicationContextAware).
      * <p>This method allows the bean instance to perform initialization only

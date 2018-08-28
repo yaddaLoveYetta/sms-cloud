@@ -51,7 +51,15 @@ public interface PlugIn {
      *
      * @return 插件支持的业务类型classId集合
      */
-    public Set<Integer> getClassIdSet();
+    Set<Integer> getClassIdSet();
+
+    /**
+     * 插件是否支持指定的业务单据
+     *
+     * @param classId 业务单据类型
+     * @return true if support , false not support
+     */
+    boolean support(Integer classId);
 
     /**
      * 基础资料新增前操作
@@ -61,7 +69,7 @@ public interface PlugIn {
      * @param data         业务数据
      * @return PlugInRet
      */
-    public PlugInRet beforeSave(int classId, FormTemplate formTemplate, JsonNode data);
+    PlugInRet beforeSave(int classId, FormTemplate formTemplate, JsonNode data);
 
     /**
      * 基础资料新增后操作
@@ -71,7 +79,7 @@ public interface PlugIn {
      * @param data    业务数据
      * @return
      */
-    public PlugInRet afterSave(int classId, Long id, JsonNode data);
+    PlugInRet afterSave(int classId, Long id, JsonNode data);
 
     /**
      * 单据修改前操作
@@ -82,7 +90,7 @@ public interface PlugIn {
      * @param data         业务数据
      * @return PlugInRet
      */
-    public PlugInRet beforeModify(int classId, Long id, FormTemplate formTemplate, JsonNode data);
+    PlugInRet beforeModify(int classId, Long id, FormTemplate formTemplate, JsonNode data);
 
     /**
      * 单据/基础资料修改分录数据前事件
@@ -96,7 +104,7 @@ public interface PlugIn {
      * @Title beforeEntryModify
      * @date 2017-07-12 09:05:42 星期三
      */
-    public PlugInRet beforeEntryModify(int classId, String primaryId, String entryId, FormTemplate formTemplate,
+    PlugInRet beforeEntryModify(int classId, String primaryId, String entryId, FormTemplate formTemplate,
             JsonNode data);
 
     /**
@@ -108,7 +116,7 @@ public interface PlugIn {
      * @param data         业务数据
      * @return PlugInRet
      */
-    public PlugInRet afterModify(int classId, Long id, FormTemplate formTemplate, JsonNode data);
+    PlugInRet afterModify(int classId, Long id, FormTemplate formTemplate, JsonNode data);
 
     /**
      * 删除前操作
@@ -118,7 +126,7 @@ public interface PlugIn {
      * @param ids          删除的内码集合
      * @return PlugInRet
      */
-    public PlugInRet beforeDelete(int classId, FormTemplate formTemplate, List<Long> ids);
+    PlugInRet beforeDelete(int classId, FormTemplate formTemplate, List<Long> ids);
 
     /**
      * 单据/基础资料分录删除前事件
@@ -131,7 +139,7 @@ public interface PlugIn {
      * @Title beforeentryDelete
      * @date 2017-07-12 09:10:46 星期三
      */
-    public PlugInRet beforeEntryDelete(int classId, String primaryId, String entryId, FormTemplate formTemplate);
+    PlugInRet beforeEntryDelete(int classId, String primaryId, String entryId, FormTemplate formTemplate);
 
     /**
      * 删除后操作
@@ -141,7 +149,7 @@ public interface PlugIn {
      * @param ids          删除的内码集合
      * @return PlugInRet
      */
-    public PlugInRet afterDelete(int classId, FormTemplate formTemplate, List<Long> ids);
+    PlugInRet afterDelete(int classId, FormTemplate formTemplate, List<Long> ids);
 
     /**
      * 基础资料查询前操作
@@ -151,7 +159,7 @@ public interface PlugIn {
      * @param conditons    原始过滤条件
      * @return
      */
-    public PlugInRet beforeQuery(int classId, FormTemplate formTemplate, List<Condition> conditons);
+    PlugInRet beforeQuery(int classId, FormTemplate formTemplate, List<Condition> conditons);
 
     /**
      * 基础资料查询后操作
@@ -160,7 +168,7 @@ public interface PlugIn {
      * @param list    查询结果集
      * @return
      */
-    public PlugInRet afterQuery(int classId, List<Map<String, Object>> list);
+    PlugInRet afterQuery(int classId, List<Map<String, Object>> list);
 
     /**
      * 查询前插件查询条件处理
@@ -170,7 +178,7 @@ public interface PlugIn {
      * @param conditions   原始过滤条件
      * @return 插件过滤条件
      */
-    public List<Condition> getConditions(int classId, FormTemplate formTemplate, List<Condition> conditions);
+    List<Condition> getConditions(int classId, FormTemplate formTemplate, List<Condition> conditions);
 
     /**
      * 禁用/反禁用前置事件（基础资料用）

@@ -107,6 +107,17 @@ public class BaseDataPlugin extends AbstractPlugInAdapter implements Initializin
     }
 
     /**
+     * 插件是否支持指定的业务单据
+     *
+     * @param classId 业务单据类型
+     * @return true if support , false not support
+     */
+    @Override
+    public boolean support(Integer classId) {
+        return classIdSet.contains(classId);
+    }
+
+    /**
      * 禁用/反禁用后置事件（基础资料用）
      *
      * @param classId     业务类别
