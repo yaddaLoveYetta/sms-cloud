@@ -51,7 +51,7 @@ public interface PlugIn {
      *
      * @return 插件支持的业务类型classId集合
      */
-    Set<Integer> getClassIdSet();
+    Set<Integer> getSupports();
 
     /**
      * 插件是否支持指定的业务单据

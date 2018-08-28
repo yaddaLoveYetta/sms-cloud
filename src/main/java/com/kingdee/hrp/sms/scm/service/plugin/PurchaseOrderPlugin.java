@@ -66,7 +66,7 @@ public class PurchaseOrderPlugin extends AbstractPlugInAdapter implements Initia
      * @return 插件支持的业务类型classId集合
      */
     @Override
-    public Set<Integer> getClassIdSet() {
+    public Set<Integer> getSupports() {
         return classIdSet;
     }
 
