@@ -1,9 +1,13 @@
 package com.kingdee.hrp.sms.basedata.controller;
 
 import com.kingdee.hrp.sms.basedata.service.HospitalService;
+import com.kingdee.hrp.sms.common.controller.TemplateController;
+import com.kingdee.hrp.sms.common.enums.CooperationApplyStatus;
 import com.kingdee.hrp.sms.common.exception.BusinessLogicRunTimeException;
 import com.kingdee.hrp.sms.util.FileOperate;
 import com.sun.jersey.api.client.Client;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,6 +30,8 @@ import java.util.Map;
 @RequestMapping(value = "/hospital/")
 public class HospitalController {
 
+    private static Logger logger = LoggerFactory.getLogger(HospitalController.class);
+
     /**
      * 后台图片保存地址
      */
@@ -41,9 +47,19 @@ public class HospitalController {
     @Resource
     private HospitalService hospitalService;
 
+    /**
+     * 更换医院logo
+     *
+     * @param request  HttpServletRequest
+     * @param response HttpServletResponse
+     * @param classId  业务类型
+     * @param id       医院id
+     * @return Map<String, Object>
+     */
     @ResponseBody
     @RequestMapping(value = "changeLogo", method = RequestMethod.POST)
-    public Map<String, Object> changeLogo(HttpServletRequest request, HttpServletResponse response, Integer classId, Long id) {
+    public Map<String, Object> changeLogo(HttpServletRequest request, HttpServletResponse response, Integer classId,
+            Long id) {
 
         if (classId == null || id == null) {
             throw new BusinessLogicRunTimeException("缺少参数classId或id");
@@ -87,6 +103,42 @@ public class HospitalController {
         }
 
         return ret;
+    }
+
+    /**
+     * 医院同意供应商成为合作供应商的申请
+     *
+     * @param id          申请记录id
+     * @param hrpSupplier 医院制定关联的本地HRP供应商
+     */
+    @ResponseBody
+    @RequestMapping(value = "agreeApply")
+    public void agreeApply(Long id, Long hrpSupplier) {
+
+        if (null == id) {
+            throw new BusinessLogicRunTimeException("请选择记录进行操作!");
+        }
+        if (null == hrpSupplier) {
+            throw new BusinessLogicRunTimeException("必须关联HRP供应商!");
+        }
+
+        hospitalService.processCooperationApply(id, hrpSupplier, CooperationApplyStatus.AGREE);
+    }
+
+    /**
+     * 医院拒绝供应商成为合作供应商的申请
+     *
+     * @param id 申请记录id
+     */
+    @ResponseBody
+    @RequestMapping(value = "disagreeApply")
+    public void disagreeApply(Long id) {
+
+        if (null == id) {
+            throw new BusinessLogicRunTimeException("请选择记录进行操作!");
+        }
+
+        hospitalService.processCooperationApply(id, null, CooperationApplyStatus.DISAGREE);
     }
 
 }

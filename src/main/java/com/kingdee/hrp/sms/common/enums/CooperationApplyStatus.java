@@ -18,11 +18,15 @@ public enum CooperationApplyStatus {
     /**
      * 未处理状态的申请
      */
-    UN_PROCESSED(1, "未处理"),
+    UN_PROCESSED(1, "待处理"),
     /**
-     * 已处理状态的申请
+     * 同意
      */
-    PROCESSED(2, "已处理");
+    AGREE(2, "同意"),
+    /**
+     * 拒绝
+     */
+    DISAGREE(3, "拒绝");
 
     private static Logger logger = LoggerFactory.getLogger(OrderDeliveryStatus.class);
 
@@ -43,6 +47,10 @@ public enum CooperationApplyStatus {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public int value() {
+        return this.getNumber();
     }
 
     CooperationApplyStatus(int number, String name) {

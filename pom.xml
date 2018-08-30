@@ -39,6 +39,7 @@
         <dom4j.version>1.6.1</dom4j.version>
         <redis.client.version>2.9.0</redis.client.version>
         <spring.data.redis.version>1.7.5.RELEASE</spring.data.redis.version>
+        <baidu.aip.version>4.2.0</baidu.aip.version>
 
     </properties>
 
@@ -270,6 +271,13 @@
             <artifactId>dom4j</artifactId>
             <version>${dom4j.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.baidu.aip</groupId>
+            <artifactId>java-sdk</artifactId>
+            <version>${baidu.aip.version}</version>
+        </dependency>
+
 
     </dependencies>
 

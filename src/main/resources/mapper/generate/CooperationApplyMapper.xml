@@ -7,6 +7,7 @@
     <result column="hospital" jdbcType="BIGINT" property="hospital" />
     <result column="date" jdbcType="TIMESTAMP" property="date" />
     <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="process_date" jdbcType="TIMESTAMP" property="processDate" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -67,7 +68,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, supplier, hospital, `date`, `status`
+    id, supplier, hospital, `date`, `status`, process_date
   </sql>
   <select id="selectByExample" parameterType="com.kingdee.hrp.sms.common.model.CooperationApplyExample" resultMap="BaseResultMap">
     select
@@ -101,9 +102,11 @@
   </delete>
   <insert id="insert" parameterType="com.kingdee.hrp.sms.common.model.CooperationApply">
     insert into t_cooperation_apply (id, supplier, hospital, 
-      `date`, `status`)
+      `date`, `status`, process_date
+      )
     values (#{id,jdbcType=BIGINT}, #{supplier,jdbcType=BIGINT}, #{hospital,jdbcType=BIGINT}, 
-      #{date,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER})
+      #{date,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER}, #{processDate,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.kingdee.hrp.sms.common.model.CooperationApply">
     insert into t_cooperation_apply
@@ -123,6 +126,9 @@
       <if test="status != null">
         `status`,
       </if>
+      <if test="processDate != null">
+        process_date,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -139,6 +145,9 @@
       </if>
       <if test="status != null">
         #{status,jdbcType=INTEGER},
+      </if>
+      <if test="processDate != null">
+        #{processDate,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -166,6 +175,9 @@
       <if test="record.status != null">
         `status` = #{record.status,jdbcType=INTEGER},
       </if>
+      <if test="record.processDate != null">
+        process_date = #{record.processDate,jdbcType=TIMESTAMP},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -177,7 +189,8 @@
       supplier = #{record.supplier,jdbcType=BIGINT},
       hospital = #{record.hospital,jdbcType=BIGINT},
       `date` = #{record.date,jdbcType=TIMESTAMP},
-      `status` = #{record.status,jdbcType=INTEGER}
+      `status` = #{record.status,jdbcType=INTEGER},
+      process_date = #{record.processDate,jdbcType=TIMESTAMP}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -197,6 +210,9 @@
       <if test="status != null">
         `status` = #{status,jdbcType=INTEGER},
       </if>
+      <if test="processDate != null">
+        process_date = #{processDate,jdbcType=TIMESTAMP},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -205,7 +221,8 @@
     set supplier = #{supplier,jdbcType=BIGINT},
       hospital = #{hospital,jdbcType=BIGINT},
       `date` = #{date,jdbcType=TIMESTAMP},
-      `status` = #{status,jdbcType=INTEGER}
+      `status` = #{status,jdbcType=INTEGER},
+      process_date = #{processDate,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
   </update>
   <insert id="batchInsert" parameterType="map">
@@ -215,11 +232,12 @@
       @project https://github.com/itfsw/mybatis-generator-plugin
     -->
     insert into t_cooperation_apply
-    (id, supplier, hospital, `date`, `status`)
+    (id, supplier, hospital, `date`, `status`, process_date)
     values
     <foreach collection="list" item="item" separator=",">
       (#{item.id,jdbcType=BIGINT}, #{item.supplier,jdbcType=BIGINT}, #{item.hospital,jdbcType=BIGINT}, 
-        #{item.date,jdbcType=TIMESTAMP}, #{item.status,jdbcType=INTEGER})
+        #{item.date,jdbcType=TIMESTAMP}, #{item.status,jdbcType=INTEGER}, #{item.processDate,jdbcType=TIMESTAMP}
+        )
     </foreach>
   </insert>
   <insert id="batchInsertSelective" parameterType="map">
@@ -251,6 +269,9 @@
         </if>
         <if test="'status'.toString() == column.value">
           #{item.status,jdbcType=INTEGER}
+        </if>
+        <if test="'process_date'.toString() == column.value">
+          #{item.processDate,jdbcType=TIMESTAMP}
         </if>
       </foreach>
       )

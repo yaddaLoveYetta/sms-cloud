@@ -17,7 +17,11 @@ public enum MessageType {
     /**
      * 供应商向医院发送的希望成为其供应商的申请
      */
-    COOPERATION_APPLICATION(1, "供应商向医院发送的希望成为其供应商的申请");
+    COOPERATION_APPLICATION(1, "供应商向医院发送的希望成为其供应商的申请"),
+    /**
+     * 医院处理了供应商的申请消息
+     */
+    COOPERATION_APPLICATION_PROCESSED(2, "医院处理了供应商发送成为其供应商的申请");
 
     private static Logger logger = LoggerFactory.getLogger(MessageType.class);
 
