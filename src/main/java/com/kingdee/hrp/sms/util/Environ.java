@@ -9,44 +9,35 @@ import org.springframework.stereotype.Service;
  * 此工具类为service提供动态获取实例bean可能
  *
  * @author yadda
- * @ClassName Environ
  * @date 2017-04-10 20:01:55
  */
 @Service
-public class Environ implements ApplicationContextAware {
+public final class Environ implements ApplicationContextAware {
 
     private static ApplicationContext ctx;
 
-    public static ApplicationContext getApplicationContext() {
+    private static ApplicationContext getApplicationContext() {
         return ctx;
     }
 
     /**
      * 获取bean
      *
-     * @param name
-     * @return
+     * @param name bean name
+     * @return bean instance
      */
     public static Object getBean(String name) {
-        try {
-            return getApplicationContext().getBean(name);
-        } catch (BeansException e) {
-            return null;
-        }
+        return getApplicationContext().getBean(name);
     }
 
     /**
      * 获取指定类型对象
      *
-     * @param clazz
-     * @return
+     * @param clazz Class
+     * @return Class<T> instance
      */
     public static <T> T getBean(Class<T> clazz) {
-        try {
-            return getApplicationContext().getBean(clazz);
-        } catch (BeansException e) {
-            return null;
-        }
+        return getApplicationContext().getBean(clazz);
     }
 
     @Override

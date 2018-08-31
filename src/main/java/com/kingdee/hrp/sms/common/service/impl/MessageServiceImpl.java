@@ -1,12 +1,13 @@
 package com.kingdee.hrp.sms.common.service.impl;
 
+import com.github.pagehelper.PageHelper;
 import com.kingdee.hrp.sms.common.dao.generate.MessageMapper;
 import com.kingdee.hrp.sms.common.enums.MessageStatus;
 import com.kingdee.hrp.sms.common.model.Message;
 import com.kingdee.hrp.sms.common.model.MessageExample;
 import com.kingdee.hrp.sms.common.service.BaseService;
 import com.kingdee.hrp.sms.common.service.MessageService;
-import lombok.val;
+import com.sun.istack.internal.NotNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,6 +29,10 @@ public class MessageServiceImpl extends BaseService implements MessageService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Long add(Message message) {
+
+        if (null == message) {
+            return -1L;
+        }
 
         MessageMapper mapper = sqlSession.getMapper(MessageMapper.class);
         mapper.insert(message);
@@ -52,7 +57,7 @@ public class MessageServiceImpl extends BaseService implements MessageService {
      * 获取指定归属组织的消息，最多返回10条记录
      *
      * @param org   消息归属组织
-     * @param count 消息数量，最多返回10条,默认10条
+     * @param count 消息数量，最多返回100条,默认10条
      * @return List<Message>
      */
     @Override
@@ -60,6 +65,12 @@ public class MessageServiceImpl extends BaseService implements MessageService {
         MessageMapper mapper = sqlSession.getMapper(MessageMapper.class);
         MessageExample example = new MessageExample();
         example.createCriteria().andReceiverOrgEqualTo(org);
+
+        count = null == count ? 10 : count;
+        count = count > 100 ? 100 : count;
+
+        PageHelper.startPage(1, count, false);
+
         return mapper.selectByExample(example);
     }
 
@@ -68,13 +79,24 @@ public class MessageServiceImpl extends BaseService implements MessageService {
      *
      * @param org    消息归属组织
      * @param status 消息状态
+     * @param count  消息数量，最多返回100条,默认10条
      * @return List<Message>
      */
     @Override
-    public List<Message> getByOrg(Long org, MessageStatus status) {
+    public List<Message> getByOrg(Long org, MessageStatus status, Integer count) {
+
         MessageMapper mapper = sqlSession.getMapper(MessageMapper.class);
         MessageExample example = new MessageExample();
+
         example.createCriteria().andReceiverOrgEqualTo(org).andStatusEqualTo(status.getNumber());
+
+        example.orderBy(Message.Column.date.desc());
+
+        count = null == count ? 10 : count;
+        count = count > 100 ? 100 : count;
+
+        PageHelper.startPage(1, count, false);
+
         return mapper.selectByExample(example);
     }
 }

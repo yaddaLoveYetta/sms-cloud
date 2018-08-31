@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+    用户注册时，新增角色与其绑定，新增角色的默认权限配置
+
+    此文件描述了三类角色类别的默认权限
+
+    permission:一个角色类别的默认权限描述
+    ownerType:标识该permission是属于哪个角色类别
+
+    ownerType:角色类别
+    system：系统角色 hospital：医院角色 supplier：供应商角色
+
+    item:一个业务类型的权限配置
+    classId:业务类别id，参考t_form_class表配置
+    accessMask:配置的权限掩码(classId对应可用权限的默认授权结果)
+
+
+    ps:对每一个角色类别至少要有"角色权限设置"权限，否则其无法对新增用户进行权限管理
+ -->
+
+<permissions>
+
+    <permission ownerType="system">
+        <item classId="1001" accessMask="463"/>
+        <item classId="1002" accessMask="463"/>
+    </permission>
+    <permission ownerType="hospital">
+        <item classId="1001" accessMask="463"/>
+        <item classId="1002" accessMask="463"/>
+    </permission>
+    <permission ownerType="supplier">
+        <item classId="1001" accessMask="463"/>
+        <item classId="1002" accessMask="463"/>
+    </permission>
+
+</permissions>

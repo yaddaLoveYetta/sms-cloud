@@ -19,6 +19,7 @@ import com.kingdee.hrp.sms.util.Common;
 import com.kingdee.hrp.sms.util.Environ;
 import com.kingdee.hrp.sms.util.Pinyin4jUtil;
 import com.kingdee.hrp.sms.util.SessionUtil;
+import com.sun.tools.internal.xjc.reader.dtd.bindinfo.BIUserConversion;
 import org.apache.commons.lang.StringUtils;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
@@ -55,7 +56,7 @@ public class UserServiceImpl extends BaseService implements UserService {
      * @param registerModel 用户注册信息
      */
     @Override
-    @Transactional(rollbackFor = {Exception.class})
+    @Transactional(rollbackFor = { Exception.class })
     public void register(RegisterModel registerModel) throws IOException {
 
         // 1:参数校验
@@ -72,11 +73,11 @@ public class UserServiceImpl extends BaseService implements UserService {
 
         // ======================其他对新增用户的关联处理项=================================
 
-        // 给生成的角色授默认权限(角色类别的全部可用权限)
+        // 4:给生成的角色授默认权限(角色类别的全部可用权限)
         setDefaultPermission(role);
 
-        // 给生成的医院/供应商组织设置系统默认参数
-        if (registerModel.getUserType() != UserRoleType.SYSTEM.getNumber().intValue()) {
+        // 5:给生成的医院/供应商组织设置系统默认参数
+        if (registerModel.getUserType() != UserRoleType.SYSTEM.value()) {
             setDefaultSystemSetting(registerModel.getUserType(), orgId);
         }
 
@@ -178,7 +179,7 @@ public class UserServiceImpl extends BaseService implements UserService {
     }
 
     @Override
-    @Transactional(rollbackFor = {Exception.class})
+    @Transactional(rollbackFor = { Exception.class })
     public Boolean editPwd(Long userId, String oldPwd, String newPwd) {
 
         User user = null;
@@ -364,7 +365,6 @@ public class UserServiceImpl extends BaseService implements UserService {
         accessControlExampleCriteria.andRoleIdEqualTo(roleId);
         accessControlMapper.deleteByExample(accessControlExample);
 
-
         // 可能有多个二级菜单使用相同的formActionId即多个菜单公用权限，此处对accessControlList处理，将共用formActionId的权限做|取权限和
         // 如此配置可能会出现意想不到的结果，不建议这样配置，
 
@@ -411,7 +411,7 @@ public class UserServiceImpl extends BaseService implements UserService {
      * @return list
      */
     private List<Map<String, Object>> toTree(List<Menu> menus, List<FormAction> formActions,
-                                             Map<Integer, AccessControl> accessControlsMap, int parentId, Role role) {
+            Map<Integer, AccessControl> accessControlsMap, int parentId, Role role) {
 
         List<Map<String, Object>> ret = new ArrayList<>();
 
@@ -449,7 +449,9 @@ public class UserServiceImpl extends BaseService implements UserService {
                     Boolean isAccessControl = false;
 
                     // 当前菜单可用的所有功能项
-                    List<FormAction> currentSubMenuFormActions = formActions.stream().filter(formAction -> formAction.getClassId().equals(formActionId)).collect(Collectors.toList());
+                    List<FormAction> currentSubMenuFormActions = formActions.stream()
+                            .filter(formAction -> formAction.getClassId().equals(formActionId))
+                            .collect(Collectors.toList());
 
                     currentSubMenuFormActions.forEach(formAction -> {
 
@@ -507,7 +509,7 @@ public class UserServiceImpl extends BaseService implements UserService {
      */
     @Override
     public Map<String, Object> getMessage(Integer userRoleType, Long org, Integer type, Integer pageSize,
-                                          Integer pageNo) {
+            Integer pageNo) {
 
         Map<String, Object> ret = new HashMap<>(16);
 
@@ -830,60 +832,95 @@ public class UserServiceImpl extends BaseService implements UserService {
      *
      * @param role 角色
      */
-    private void setDefaultPermission(Role role) throws IOException {
+    private void setDefaultPermission(Role role) {
+
+        String configPath = Thread.currentThread().getContextClassLoader().getResource("config/default-permissions.xml")
+                .getPath();
+
+        if (StringUtils.isBlank(configPath)) {
+            throw new BusinessLogicRunTimeException("默认权限配置文件不存在!");
+        }
+
+        SAXReader saxReader = new SAXReader();
+
+        try {
+
+            Document document = saxReader.read(new File(configPath));
+
+            List<AccessControl> accessControls = parserDefaultPermissions(document, role);
+
+            AccessControlMapper accessControlMapper = sqlSession.getMapper(AccessControlMapper.class);
+
+            // 新增时创建的新角色，直接插入，无需先删除
+            accessControlMapper.batchInsert(accessControls);
+
+        } catch (DocumentException e) {
+            logger.error("解析默认权限配置xml错误:" + e.getMessage(), e);
+            throw new BusinessLogicRunTimeException("解析默认权限配置xml错误:" + e.getMessage(), e);
+        }
+
+    }
+
+    /**
+     * @param document 系统参数配置文件
+     * @param role     角色
+     * @return 角色默认权限列表
+     */
+    @SuppressWarnings("unchecked")
+    private List<AccessControl> parserDefaultPermissions(Document document, Role role) {
+
+        List<AccessControl> accessControls = new ArrayList<>();
 
         String roleTypeName = "";
 
-        if (role.getType() == UserRoleType.HOSPITAL.getNumber().intValue()) {
+        if (role.getType() == UserRoleType.SYSTEM.value()) {
+            roleTypeName = "system";
+        } else if (role.getType() == UserRoleType.HOSPITAL.value()) {
             roleTypeName = "hospital";
-        } else if (role.getType() == UserRoleType.SUPPLIER.getNumber().intValue()) {
+        } else if (role.getType() == UserRoleType.SUPPLIER.value()) {
             roleTypeName = "supplier";
         } else {
             logger.error("不支持该类别角色默认权限设置");
             throw new BusinessLogicRunTimeException("不支持该类别角色默认权限设置");
         }
 
-        String defaultPermission = SmsPropertyPlaceholderConfigurer.getContextProperty(roleTypeName);
+        Element ele = document.getRootElement();
 
-        if (defaultPermission == null || "".equals(defaultPermission.trim())) {
-            logger.error(String.format("不存在[%s]默认权限配置，请检查权限配置文件!", roleTypeName));
-            throw new BusinessLogicRunTimeException(String.format("不存在[%s]默认权限配置，请检查权限配置文件!", roleTypeName));
+        List<Element> permissionItems = ele.elements();
+
+        // 过滤出当前注册用户角色类别的配置项
+        String finalRoleTypeName = roleTypeName;
+        permissionItems = permissionItems.stream().filter(permissionItem -> finalRoleTypeName
+                .equalsIgnoreCase(permissionItem.attribute("ownerType").getValue())).collect(Collectors.toList());
+
+        if (CollectionUtils.isEmpty(permissionItems)) {
+            // 没有配置该角色类别的默认权限
+            logger.error("没有配置角色类别:{}的默认权限", role.getType());
+            return accessControls;
         }
 
-        ObjectMapper mapper = Environ.getBean(ObjectMapper.class);
-        JsonNode defaultPermissions = mapper.readTree(defaultPermission);
+        // permissionItems应该只有一个节点了-否则就是重复配置-只取第一个
+        Element permissionItem = permissionItems.get(0);
 
-        if (!defaultPermissions.isArray()) {
-            logger.error(String.format("[%s]默认权限配置错误，请检查权限配置文件!", roleTypeName));
-            throw new BusinessLogicRunTimeException(String.format("[%s]默认权限配置错误，请检查权限配置文件!", roleTypeName));
-        }
+        // 所有业务类别配置的默认权限
+        List<Element> accessControlItems = permissionItem.elements();
 
-        List<AccessControl> accessControlList = new ArrayList<AccessControl>();
-
-        for (JsonNode permission : defaultPermissions) {
-
-            int classId = permission.path("classId").asInt(0);
-            int accessMask = permission.path("accessMask").asInt(0);
-
-            if (classId <= 0) {
-                // ignore error conf
-                continue;
-            }
+        for (Element accessControlItem : accessControlItems) {
 
             AccessControl accessControl = new AccessControl();
+
+            Integer classId = Integer.parseInt(accessControlItem.attribute("classId").getValue());
+            Integer accessMask = Integer.parseInt(accessControlItem.attribute("accessMask").getValue());
+
             accessControl.setRoleId(role.getId());
             accessControl.setClassId(classId);
             accessControl.setAccessMask(accessMask);
 
-            accessControlList.add(accessControl);
+            accessControls.add(accessControl);
+
         }
 
-        AccessControlMapper accessControlMapper = sqlSession.getMapper(AccessControlMapper.class);
-        // 授权结果插入数据库--暂时走单条循环插入，应该自写mapper批量插入
-        for (AccessControl accessControl : accessControlList) {
-            accessControlMapper.insertSelective(accessControl);
-        }
-        // accessControlMapper.batchInsert(accessControlList);
+        return accessControls;
 
     }
 
@@ -895,7 +932,7 @@ public class UserServiceImpl extends BaseService implements UserService {
      */
     private void setDefaultSystemSetting(Integer userType, Long orgId) {
 
-        String configPath = Thread.currentThread().getContextClassLoader().getResource("config/defaultSettings.xml")
+        String configPath = Thread.currentThread().getContextClassLoader().getResource("config/default-settings.xml")
                 .getPath();
 
         SAXReader saxReader = new SAXReader();
@@ -906,7 +943,7 @@ public class UserServiceImpl extends BaseService implements UserService {
 
             List<SystemSetting> systemSettings = parserSystemSettings(document, userType, orgId);
 
-            // systemSettings正确定校验 TODO
+            // systemSettings正确性校验 TODO
 
             SystemSettingMapper systemSettingMapper = sqlSession.getMapper(SystemSettingMapper.class);
 
@@ -926,6 +963,7 @@ public class UserServiceImpl extends BaseService implements UserService {
      * @param orgId    组织id
      * @return 组织的系统默认参数列表
      */
+    @SuppressWarnings("unchecked")
     private List<SystemSetting> parserSystemSettings(Document document, Integer ownerType, Long orgId) {
 
         List<SystemSetting> systemSettings = new ArrayList<>();
@@ -1002,4 +1040,5 @@ public class UserServiceImpl extends BaseService implements UserService {
 
         return systemSettings;
     }
+
 }

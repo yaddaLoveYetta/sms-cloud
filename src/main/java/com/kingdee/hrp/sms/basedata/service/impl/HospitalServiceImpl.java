@@ -91,10 +91,7 @@ public class HospitalServiceImpl extends BaseService implements HospitalService 
 
         cooperationApplyMapper.updateByPrimaryKeySelective(cooperationApply);
 
-        // 发一条消息给供应商 TODO
-
-        // 发送消息通知给医院
-
+        // 发一条消息给供应商
         Message message = new Message();
         message.setId(getId());
         message.setType(MessageType.COOPERATION_APPLICATION_PROCESSED.value());
@@ -109,7 +106,9 @@ public class HospitalServiceImpl extends BaseService implements HospitalService 
         message.setTopic("你的申请医院已审批，点击查看审批结果!");
 
         MessageService messageService = Environ.getBean(MessageService.class);
-        messageService.add(message);
+        if (messageService != null) {
+            messageService.add(message);
+        }
 
         if (cooperationApplyStatus == CooperationApplyStatus.DISAGREE) {
             return;

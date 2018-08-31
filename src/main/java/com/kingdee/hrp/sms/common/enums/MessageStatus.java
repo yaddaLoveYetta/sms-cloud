@@ -13,7 +13,14 @@ import org.slf4j.LoggerFactory;
  */
 public enum MessageStatus {
 
-    UN_PROCESSED(1, "未处理"), PROCESSED(2, "已处理");
+    /**
+     * 未处理状态
+     */
+    UN_PROCESSED(1, "未处理"),
+    /**
+     * 已处理状态
+     */
+    PROCESSED(2, "已处理");
 
     private static Logger logger = LoggerFactory.getLogger(MessageType.class);
 
@@ -34,6 +41,10 @@ public enum MessageStatus {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public int value() {
+        return this.number;
     }
 
     MessageStatus(int number, String name) {

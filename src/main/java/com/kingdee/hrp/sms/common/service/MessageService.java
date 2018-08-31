@@ -33,7 +33,7 @@ public interface MessageService {
      * 获取指定归属组织的消息，最多返回10条记录
      *
      * @param org   消息归属组织
-     * @param count 消息数量，最多返回10条,默认10条
+     * @param count 消息数量，最多返回100条,默认10条
      * @return List<Message>
      */
     List<Message> getByOrg(Long org, Integer count);
@@ -43,8 +43,9 @@ public interface MessageService {
      *
      * @param org    消息归属组织
      * @param status 消息状态
+     * @param count  消息数量，最多返回100条,默认10条
      * @return List<Message>
      */
-    List<Message> getByOrg(Long org, MessageStatus status);
+    List<Message> getByOrg(Long org, MessageStatus status, Integer count);
 
 }
