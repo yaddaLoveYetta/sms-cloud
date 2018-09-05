@@ -35,7 +35,6 @@
         <property name="locations">
             <list>
                 <value>classpath:/config/jdbc-mysql.properties</value>
-                <value>classpath:/config/default-permissions.properties</value>
                 <value>classpath:/config/file.properties</value>
                 <value>classpath:/config/common.properties</value>
                 <value>classpath:/config/redis.properties</value>

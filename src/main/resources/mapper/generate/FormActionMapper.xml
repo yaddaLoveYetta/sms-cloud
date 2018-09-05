@@ -3,12 +3,12 @@
 <mapper namespace="com.kingdee.hrp.sms.common.dao.generate.FormActionMapper">
   <resultMap id="BaseResultMap" type="com.kingdee.hrp.sms.common.model.FormAction">
     <id column="class_id" jdbcType="INTEGER" property="classId" />
-    <id column="access_mask" jdbcType="INTEGER" property="accessMask" />
+    <id column="index" jdbcType="INTEGER" property="index" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="name_modify" jdbcType="VARCHAR" property="nameModify" />
     <result column="text" jdbcType="VARCHAR" property="text" />
     <result column="text_modify" jdbcType="VARCHAR" property="textModify" />
-    <result column="index" jdbcType="INTEGER" property="index" />
+    <result column="access_mask" jdbcType="INTEGER" property="accessMask" />
     <result column="access_use" jdbcType="INTEGER" property="accessUse" />
     <result column="display" jdbcType="INTEGER" property="display" />
     <result column="owner_type" jdbcType="INTEGER" property="ownerType" />
@@ -16,6 +16,9 @@
     <result column="icon" jdbcType="VARCHAR" property="icon" />
     <result column="icon_modify" jdbcType="VARCHAR" property="iconModify" />
     <result column="desc" jdbcType="VARCHAR" property="desc" />
+    <result column="url" jdbcType="VARCHAR" property="url" />
+    <result column="api_url" jdbcType="VARCHAR" property="apiUrl" />
+    <result column="need_authorization" jdbcType="BIT" property="needAuthorization" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -76,8 +79,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    class_id, access_mask, `name`, name_modify, `text`, text_modify, `index`, access_use, 
-    display, owner_type, `group`, icon, icon_modify, `desc`
+    class_id, `index`, `name`, name_modify, `text`, text_modify, access_mask, access_use, 
+    display, owner_type, `group`, icon, icon_modify, `desc`, url, api_url, need_authorization
   </sql>
   <select id="selectByExample" parameterType="com.kingdee.hrp.sms.common.model.FormActionExample" resultMap="BaseResultMap">
     select
@@ -98,12 +101,12 @@
     <include refid="Base_Column_List" />
     from t_form_action
     where class_id = #{classId,jdbcType=INTEGER}
-      and access_mask = #{accessMask,jdbcType=INTEGER}
+      and `index` = #{index,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="com.kingdee.hrp.sms.common.model.FormActionKey">
     delete from t_form_action
     where class_id = #{classId,jdbcType=INTEGER}
-      and access_mask = #{accessMask,jdbcType=INTEGER}
+      and `index` = #{index,jdbcType=INTEGER}
   </delete>
   <delete id="deleteByExample" parameterType="com.kingdee.hrp.sms.common.model.FormActionExample">
     delete from t_form_action
@@ -112,16 +115,18 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.kingdee.hrp.sms.common.model.FormAction">
-    insert into t_form_action (class_id, access_mask, `name`, 
+    insert into t_form_action (class_id, `index`, `name`, 
       name_modify, `text`, text_modify, 
-      `index`, access_use, display, 
+      access_mask, access_use, display, 
       owner_type, `group`, icon, 
-      icon_modify, `desc`)
-    values (#{classId,jdbcType=INTEGER}, #{accessMask,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, 
+      icon_modify, `desc`, url, 
+      api_url, need_authorization)
+    values (#{classId,jdbcType=INTEGER}, #{index,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, 
       #{nameModify,jdbcType=VARCHAR}, #{text,jdbcType=VARCHAR}, #{textModify,jdbcType=VARCHAR}, 
-      #{index,jdbcType=INTEGER}, #{accessUse,jdbcType=INTEGER}, #{display,jdbcType=INTEGER}, 
+      #{accessMask,jdbcType=INTEGER}, #{accessUse,jdbcType=INTEGER}, #{display,jdbcType=INTEGER}, 
       #{ownerType,jdbcType=INTEGER}, #{group,jdbcType=INTEGER}, #{icon,jdbcType=VARCHAR}, 
-      #{iconModify,jdbcType=VARCHAR}, #{desc,jdbcType=VARCHAR})
+      #{iconModify,jdbcType=VARCHAR}, #{desc,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, 
+      #{apiUrl,jdbcType=VARCHAR}, #{needAuthorization,jdbcType=BIT})
   </insert>
   <insert id="insertSelective" parameterType="com.kingdee.hrp.sms.common.model.FormAction">
     insert into t_form_action
@@ -129,8 +134,8 @@
       <if test="classId != null">
         class_id,
       </if>
-      <if test="accessMask != null">
-        access_mask,
+      <if test="index != null">
+        `index`,
       </if>
       <if test="name != null">
         `name`,
@@ -144,8 +149,8 @@
       <if test="textModify != null">
         text_modify,
       </if>
-      <if test="index != null">
-        `index`,
+      <if test="accessMask != null">
+        access_mask,
       </if>
       <if test="accessUse != null">
         access_use,
@@ -168,13 +173,22 @@
       <if test="desc != null">
         `desc`,
       </if>
+      <if test="url != null">
+        url,
+      </if>
+      <if test="apiUrl != null">
+        api_url,
+      </if>
+      <if test="needAuthorization != null">
+        need_authorization,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="classId != null">
         #{classId,jdbcType=INTEGER},
       </if>
-      <if test="accessMask != null">
-        #{accessMask,jdbcType=INTEGER},
+      <if test="index != null">
+        #{index,jdbcType=INTEGER},
       </if>
       <if test="name != null">
         #{name,jdbcType=VARCHAR},
@@ -188,8 +202,8 @@
       <if test="textModify != null">
         #{textModify,jdbcType=VARCHAR},
       </if>
-      <if test="index != null">
-        #{index,jdbcType=INTEGER},
+      <if test="accessMask != null">
+        #{accessMask,jdbcType=INTEGER},
       </if>
       <if test="accessUse != null">
         #{accessUse,jdbcType=INTEGER},
@@ -212,6 +226,15 @@
       <if test="desc != null">
         #{desc,jdbcType=VARCHAR},
       </if>
+      <if test="url != null">
+        #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="apiUrl != null">
+        #{apiUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="needAuthorization != null">
+        #{needAuthorization,jdbcType=BIT},
+      </if>
     </trim>
   </insert>
   <select id="countByExample" parameterType="com.kingdee.hrp.sms.common.model.FormActionExample" resultType="java.lang.Long">
@@ -226,8 +249,8 @@
       <if test="record.classId != null">
         class_id = #{record.classId,jdbcType=INTEGER},
       </if>
-      <if test="record.accessMask != null">
-        access_mask = #{record.accessMask,jdbcType=INTEGER},
+      <if test="record.index != null">
+        `index` = #{record.index,jdbcType=INTEGER},
       </if>
       <if test="record.name != null">
         `name` = #{record.name,jdbcType=VARCHAR},
@@ -241,8 +264,8 @@
       <if test="record.textModify != null">
         text_modify = #{record.textModify,jdbcType=VARCHAR},
       </if>
-      <if test="record.index != null">
-        `index` = #{record.index,jdbcType=INTEGER},
+      <if test="record.accessMask != null">
+        access_mask = #{record.accessMask,jdbcType=INTEGER},
       </if>
       <if test="record.accessUse != null">
         access_use = #{record.accessUse,jdbcType=INTEGER},
@@ -265,6 +288,15 @@
       <if test="record.desc != null">
         `desc` = #{record.desc,jdbcType=VARCHAR},
       </if>
+      <if test="record.url != null">
+        url = #{record.url,jdbcType=VARCHAR},
+      </if>
+      <if test="record.apiUrl != null">
+        api_url = #{record.apiUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.needAuthorization != null">
+        need_authorization = #{record.needAuthorization,jdbcType=BIT},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -273,19 +305,22 @@
   <update id="updateByExample" parameterType="map">
     update t_form_action
     set class_id = #{record.classId,jdbcType=INTEGER},
-      access_mask = #{record.accessMask,jdbcType=INTEGER},
+      `index` = #{record.index,jdbcType=INTEGER},
       `name` = #{record.name,jdbcType=VARCHAR},
       name_modify = #{record.nameModify,jdbcType=VARCHAR},
       `text` = #{record.text,jdbcType=VARCHAR},
       text_modify = #{record.textModify,jdbcType=VARCHAR},
-      `index` = #{record.index,jdbcType=INTEGER},
+      access_mask = #{record.accessMask,jdbcType=INTEGER},
       access_use = #{record.accessUse,jdbcType=INTEGER},
       display = #{record.display,jdbcType=INTEGER},
       owner_type = #{record.ownerType,jdbcType=INTEGER},
       `group` = #{record.group,jdbcType=INTEGER},
       icon = #{record.icon,jdbcType=VARCHAR},
       icon_modify = #{record.iconModify,jdbcType=VARCHAR},
-      `desc` = #{record.desc,jdbcType=VARCHAR}
+      `desc` = #{record.desc,jdbcType=VARCHAR},
+      url = #{record.url,jdbcType=VARCHAR},
+      api_url = #{record.apiUrl,jdbcType=VARCHAR},
+      need_authorization = #{record.needAuthorization,jdbcType=BIT}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -305,8 +340,8 @@
       <if test="textModify != null">
         text_modify = #{textModify,jdbcType=VARCHAR},
       </if>
-      <if test="index != null">
-        `index` = #{index,jdbcType=INTEGER},
+      <if test="accessMask != null">
+        access_mask = #{accessMask,jdbcType=INTEGER},
       </if>
       <if test="accessUse != null">
         access_use = #{accessUse,jdbcType=INTEGER},
@@ -329,9 +364,18 @@
       <if test="desc != null">
         `desc` = #{desc,jdbcType=VARCHAR},
       </if>
+      <if test="url != null">
+        url = #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="apiUrl != null">
+        api_url = #{apiUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="needAuthorization != null">
+        need_authorization = #{needAuthorization,jdbcType=BIT},
+      </if>
     </set>
     where class_id = #{classId,jdbcType=INTEGER}
-      and access_mask = #{accessMask,jdbcType=INTEGER}
+      and `index` = #{index,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.kingdee.hrp.sms.common.model.FormAction">
     update t_form_action
@@ -339,16 +383,19 @@
       name_modify = #{nameModify,jdbcType=VARCHAR},
       `text` = #{text,jdbcType=VARCHAR},
       text_modify = #{textModify,jdbcType=VARCHAR},
-      `index` = #{index,jdbcType=INTEGER},
+      access_mask = #{accessMask,jdbcType=INTEGER},
       access_use = #{accessUse,jdbcType=INTEGER},
       display = #{display,jdbcType=INTEGER},
       owner_type = #{ownerType,jdbcType=INTEGER},
       `group` = #{group,jdbcType=INTEGER},
       icon = #{icon,jdbcType=VARCHAR},
       icon_modify = #{iconModify,jdbcType=VARCHAR},
-      `desc` = #{desc,jdbcType=VARCHAR}
+      `desc` = #{desc,jdbcType=VARCHAR},
+      url = #{url,jdbcType=VARCHAR},
+      api_url = #{apiUrl,jdbcType=VARCHAR},
+      need_authorization = #{needAuthorization,jdbcType=BIT}
     where class_id = #{classId,jdbcType=INTEGER}
-      and access_mask = #{accessMask,jdbcType=INTEGER}
+      and `index` = #{index,jdbcType=INTEGER}
   </update>
   <insert id="batchInsert" parameterType="map">
     <!--
@@ -357,15 +404,17 @@
       @project https://github.com/itfsw/mybatis-generator-plugin
     -->
     insert into t_form_action
-    (class_id, access_mask, `name`, name_modify, `text`, text_modify, `index`, access_use, 
-      display, owner_type, `group`, icon, icon_modify, `desc`)
+    (class_id, `index`, `name`, name_modify, `text`, text_modify, access_mask, access_use, 
+      display, owner_type, `group`, icon, icon_modify, `desc`, url, api_url, need_authorization
+      )
     values
     <foreach collection="list" item="item" separator=",">
-      (#{item.classId,jdbcType=INTEGER}, #{item.accessMask,jdbcType=INTEGER}, #{item.name,jdbcType=VARCHAR}, 
+      (#{item.classId,jdbcType=INTEGER}, #{item.index,jdbcType=INTEGER}, #{item.name,jdbcType=VARCHAR}, 
         #{item.nameModify,jdbcType=VARCHAR}, #{item.text,jdbcType=VARCHAR}, #{item.textModify,jdbcType=VARCHAR}, 
-        #{item.index,jdbcType=INTEGER}, #{item.accessUse,jdbcType=INTEGER}, #{item.display,jdbcType=INTEGER}, 
+        #{item.accessMask,jdbcType=INTEGER}, #{item.accessUse,jdbcType=INTEGER}, #{item.display,jdbcType=INTEGER}, 
         #{item.ownerType,jdbcType=INTEGER}, #{item.group,jdbcType=INTEGER}, #{item.icon,jdbcType=VARCHAR}, 
-        #{item.iconModify,jdbcType=VARCHAR}, #{item.desc,jdbcType=VARCHAR})
+        #{item.iconModify,jdbcType=VARCHAR}, #{item.desc,jdbcType=VARCHAR}, #{item.url,jdbcType=VARCHAR}, 
+        #{item.apiUrl,jdbcType=VARCHAR}, #{item.needAuthorization,jdbcType=BIT})
     </foreach>
   </insert>
   <insert id="batchInsertSelective" parameterType="map">
@@ -386,8 +435,8 @@
         <if test="'class_id'.toString() == column.value">
           #{item.classId,jdbcType=INTEGER}
         </if>
-        <if test="'access_mask'.toString() == column.value">
-          #{item.accessMask,jdbcType=INTEGER}
+        <if test="'index'.toString() == column.value">
+          #{item.index,jdbcType=INTEGER}
         </if>
         <if test="'name'.toString() == column.value">
           #{item.name,jdbcType=VARCHAR}
@@ -401,8 +450,8 @@
         <if test="'text_modify'.toString() == column.value">
           #{item.textModify,jdbcType=VARCHAR}
         </if>
-        <if test="'index'.toString() == column.value">
-          #{item.index,jdbcType=INTEGER}
+        <if test="'access_mask'.toString() == column.value">
+          #{item.accessMask,jdbcType=INTEGER}
         </if>
         <if test="'access_use'.toString() == column.value">
           #{item.accessUse,jdbcType=INTEGER}
@@ -424,6 +473,15 @@
         </if>
         <if test="'desc'.toString() == column.value">
           #{item.desc,jdbcType=VARCHAR}
+        </if>
+        <if test="'url'.toString() == column.value">
+          #{item.url,jdbcType=VARCHAR}
+        </if>
+        <if test="'api_url'.toString() == column.value">
+          #{item.apiUrl,jdbcType=VARCHAR}
+        </if>
+        <if test="'need_authorization'.toString() == column.value">
+          #{item.needAuthorization,jdbcType=BIT}
         </if>
       </foreach>
       )

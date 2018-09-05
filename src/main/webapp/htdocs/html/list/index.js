@@ -120,11 +120,11 @@
                 }
 
                 var metaData = List.getMetaData();
-                var url = require("UrlMapping")(classId);
+                //var url = require("UrlMapping")(classId);
+                var url = item.url;
                 var name = metaData.formClass.name || '';
 
                 if (!url) {
-                    // 没有配置编辑页面或不需要编辑功能
                     return;
                 }
 
@@ -143,11 +143,11 @@
             'add': function (item, index) {
 
                 var metaData = List.getMetaData();
-                var url = require("UrlMapping")(classId);
+                //var url = require("UrlMapping")(classId);
+                var url = item.url;
                 var name = metaData.formClass.name || '';
 
                 if (!url) {
-                    // 没有配置编辑页面或不需要编辑功能
                     return;
                 }
 
@@ -177,11 +177,12 @@
                 }
 
                 var metaData = List.getMetaData();
-                var url = require("UrlMapping")(classId);
+                //var url = require("UrlMapping")(classId);
+                var url = item.url;
                 var name = metaData.formClass.name || '';
 
                 if (!url) {
-                    // 没有配置编辑页面或不需要编辑功能
+                    // 没有配置
                     return;
                 }
 

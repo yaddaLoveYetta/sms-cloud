@@ -450,7 +450,8 @@ public class UserServiceImpl extends BaseService implements UserService {
 
                     // 当前菜单可用的所有功能项
                     List<FormAction> currentSubMenuFormActions = formActions.stream()
-                            .filter(formAction -> formAction.getClassId().equals(formActionId))
+                            .filter(formAction -> formAction.getClassId().equals(formActionId) &&
+                                    formAction.getNeedAuthorization())
                             .collect(Collectors.toList());
 
                     currentSubMenuFormActions.forEach(formAction -> {

@@ -15,6 +15,9 @@
     classId:业务类别id，参考t_form_class表配置
     accessMask:配置的权限掩码(classId对应可用权限的默认授权结果)
 
+    ownerType="system"系统用户类别用户注册后权限的默认授权结果
+    ownerType="hospital"医院类别用户注册后权限的默认授权结果
+    ownerType="supplier"医院类别用户注册后权限的默认授权结果
 
     ps:对每一个角色类别至少要有"角色权限设置"权限，否则其无法对新增用户进行权限管理
  -->
