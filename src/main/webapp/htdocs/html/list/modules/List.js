@@ -460,24 +460,24 @@ define("List", function (require, module, exports) {
         return list.primaryKey;
     }
 
-    function forbid(classId, list, operateType, fn) {
-        Operation.forbid(classId, list, operateType, fn);
+    function forbid(classId, list, operateType, api, fn) {
+        Operation.forbid(classId, list, operateType, api, fn);
     }
 
-    function del(classId, list, fn) {
-        Operation.del(classId, list, fn);
+    function del(classId, list, api, fn) {
+        Operation.del(classId, list, api, fn);
     }
 
-    function review(classId, list, fn) {
-        Operation.check(classId, list, fn);
+    function review(classId, list, api, fn) {
+        Operation.check(classId, list, api, fn);
     }
 
-    function unReview(classId, list, fn) {
-        Operation.unCheck(classId, list, fn);
+    function unReview(classId, list, api, fn) {
+        Operation.unCheck(classId, list, api, fn);
     }
 
-    function send(classId, list, fn) {
-        Operation.send(classId, list, fn);
+    function send(classId, list, api, fn) {
+        Operation.send(classId, list, api, fn);
     }
 
     function getMetaData() {

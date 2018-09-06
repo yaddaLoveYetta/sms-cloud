@@ -121,7 +121,7 @@
 
                 var metaData = List.getMetaData();
                 //var url = require("UrlMapping")(classId);
-                var url = item.url;
+                var url = item.info.url;
                 var name = metaData.formClass.name || '';
 
                 if (!url) {
@@ -144,7 +144,7 @@
 
                 var metaData = List.getMetaData();
                 //var url = require("UrlMapping")(classId);
-                var url = item.url;
+                var url = item.info.url;
                 var name = metaData.formClass.name || '';
 
                 if (!url) {
@@ -178,7 +178,7 @@
 
                 var metaData = List.getMetaData();
                 //var url = require("UrlMapping")(classId);
-                var url = item.url;
+                var url = item.info.url;
                 var name = metaData.formClass.name || '';
 
                 if (!url) {
@@ -209,7 +209,7 @@
                 }
                 MessageBox.confirm('确定删除选择的项?', function (result) {
                     if (result) {
-                        List.del(classId, list, function () {
+                        List.del(classId, list, item.info.apiUrl, function () {
                             refresh();
                         });
                     }
@@ -231,7 +231,7 @@
                 }
                 MessageBox.confirm('禁用后资料不能参与业务。\r\n确定禁用?', function (result) {
                     if (result) {
-                        List.forbid(classId, list, 1, function () {
+                        List.forbid(classId, list, 1,item.info.apiUrl, function () {
                             refresh();
                         });
                     }
@@ -248,7 +248,7 @@
                 }
                 MessageBox.confirm('确定启用选择的项?', function (result) {
                     if (result) {
-                        List.forbid(classId, list, 2, function () {
+                        List.forbid(classId, list, 2,item.info.apiUrl, function () {
                             refresh();
                         });
                     }
@@ -354,7 +354,7 @@
                     SMS.Tips.error('一次只能对一条记录进行操作', 1500);
                     return;
                 }
-                List.check(classId, list, function () {
+                List.check(classId, list,item.info.apiUrl, function () {
                     SMS.Tips.success('审核成功', 2000);
                     refresh();
                 });
@@ -375,7 +375,7 @@
                     return;
                 }
 
-                List.unCheck(classId, list, function () {
+                List.unCheck(classId, list,item.info.apiUrl, function () {
                     SMS.Tips.success('反审核成功', 2000);
                     refresh();
                 });
@@ -411,7 +411,7 @@
 
                 MessageBox.confirm('确定要将该记录发送给医院?', function (result) {
                     if (result) {
-                        List.send(classId, list, function () {
+                        List.send(classId, list,item.info.apiUrl, function () {
                             SMS.Tips.success('发送成功', 2000);
                             refresh();
                         });
@@ -422,7 +422,7 @@
             // 导出 TODO
             'export': function (item, index) {
 
-                var api = new API("template/exportByCondition");
+                var api = new API(item.info.apiUrl);
 
                 var url = api.getUrl();
                 url = $.Url.addQueryString(url, {
@@ -474,7 +474,8 @@
                 if (classId === 1007) {
                     // 中标库查看的供应商是HRP供应商
                     targetClassId = 1005;
-                    url = require("UrlMapping")(1005);
+                    //url =  require("UrlMapping")(1005);
+                    url =  item.info.url;
 
                     name = list[0].data.supplier_DspName || '';
 
@@ -496,7 +497,8 @@
                 } else if (classId === 3001) {
                     // 合作申请查看的供应商是供应商注册用户资料
                     targetClassId = 1013;
-                    url = require("UrlMapping")(1013);
+                    //url = require("UrlMapping")(1013);
+                    url = item.info.apiUrl;
 
                     name = list[0].data.supplier_DspName || '';
 
@@ -542,7 +544,8 @@
                     return;
                 }
 
-                var url = require("UrlMapping")(1012);
+                //var url = require("UrlMapping")(1012);
+                var url = item.info.apiUrl;
                 var name = list[0].data.hospital_DspName || '';
 
                 if (!url) {

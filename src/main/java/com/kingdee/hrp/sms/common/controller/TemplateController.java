@@ -263,8 +263,8 @@ public class TemplateController {
      * @param condition 查询条件
      * @param sort      排序条件
      */
-    @RequestMapping(value = "exportByCondition")
-    public void exportByCondition(HttpServletResponse response, Integer classId, String condition, String sort) {
+    @RequestMapping(value = "export")
+    public void export(HttpServletResponse response, Integer classId, String condition, String sort) {
 
         if (classId <= 0) {
             throw new BusinessLogicRunTimeException("参数错误：必须提交classId");

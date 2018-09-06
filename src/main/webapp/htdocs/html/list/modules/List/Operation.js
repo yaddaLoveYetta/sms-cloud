@@ -36,14 +36,14 @@ define('List/Operation', function (require, module, exports) {
 
             'error': function () {
                 SMS.Tips.error('网络错误，请稍候再试', 2000);
-            },
+            }
 
         });
         api.post();
 
     }
 
-    function del(classId, list, fn) {
+    function del(classId, list, api, fn) {
 
         var items = new Array();
         for (var item in list) {
@@ -52,13 +52,13 @@ define('List/Operation', function (require, module, exports) {
             }
         }
 
-        post('template/delItem', {
+        post(api, {
             'classId': classId,
             'items': items
         }, fn);
     }
 
-    function forbid(classId, list, operateType, fn) {
+    function forbid(classId, list, operateType, api, fn) {
 
         var items = new Array();
         for (var item in list) {
@@ -67,7 +67,7 @@ define('List/Operation', function (require, module, exports) {
             }
         }
 
-        post('template/forbid', {
+        post(api, {
             'classId': classId,
             'items': items,
             'operateType': operateType
@@ -75,7 +75,7 @@ define('List/Operation', function (require, module, exports) {
 
     }
 
-    function check(classId, list, fn) {
+    function check(classId, list, api, fn) {
 
         var items = new Array();
         for (var item in list) {
@@ -84,13 +84,13 @@ define('List/Operation', function (require, module, exports) {
             }
         }
 
-        post('template/check', {
+        post(api, {
             'classId': classId,
             'items': items
         }, fn);
     }
 
-    function unCheck(classId, list, fn) {
+    function unCheck(classId, list, api, fn) {
 
         var items = new Array();
         for (var item in list) {
@@ -99,13 +99,13 @@ define('List/Operation', function (require, module, exports) {
             }
         }
 
-        post('template/unCheck', {
+        post(api, {
             'classId': classId,
             'items': items
         }, fn);
     }
 
-    function send(classId, list, fn) {
+    function send(classId, list, api, fn) {
 
         var items = '';
         for (var item in list) {
@@ -116,7 +116,7 @@ define('List/Operation', function (require, module, exports) {
 
         items = items.substr(1);
 
-        post('sync/hrp/sendItem', {
+        post(api, {
             'classId': classId,
             'items': items,
         }, fn);
