@@ -2,7 +2,7 @@ package com.kingdee.hrp.sms.scm.service.impl;
 
 import com.kingdee.hrp.sms.common.dao.generate.PurchaseOrderEntryMapper;
 import com.kingdee.hrp.sms.common.dao.generate.PurchaseOrderMapper;
-import com.kingdee.hrp.sms.common.enums.UserRoleType;
+import com.kingdee.hrp.sms.common.enums.Constant;
 import com.kingdee.hrp.sms.common.exception.BusinessLogicRunTimeException;
 import com.kingdee.hrp.sms.common.model.PurchaseOrder;
 import com.kingdee.hrp.sms.common.model.PurchaseOrderEntry;
@@ -497,7 +497,7 @@ public class PurchaseOrderServiceImpl extends AbstractOrderService implements Pu
 
         PurchaseOrderExample.Criteria criteria = purchaseOrderExample.createCriteria();
 
-        if (getUserRoleType() != UserRoleType.SYSTEM && debug) {
+        if (getUserRoleType() != Constant.UserRoleType.SYSTEM && debug) {
             criteria.andHospitalEqualTo(getUserLinkOrg());
         }
 
@@ -541,7 +541,7 @@ public class PurchaseOrderServiceImpl extends AbstractOrderService implements Pu
 
         PurchaseOrderExample.Criteria criteria = purchaseOrderExample.createCriteria();
 
-        if (getUserRoleType() != UserRoleType.SYSTEM && debug) {
+        if (getUserRoleType() != Constant.UserRoleType.SYSTEM && debug) {
             criteria.andHospitalEqualTo(getUserLinkOrg());
         }
 
@@ -584,7 +584,7 @@ public class PurchaseOrderServiceImpl extends AbstractOrderService implements Pu
 
         PurchaseOrderExample.Criteria criteria = purchaseOrderExample.createCriteria();
 
-        if (getUserRoleType() != UserRoleType.SYSTEM && debug) {
+        if (getUserRoleType() != Constant.UserRoleType.SYSTEM && debug) {
             criteria.andHospitalEqualTo(getUserLinkOrg());
         }
 

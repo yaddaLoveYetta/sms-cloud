@@ -1,8 +1,8 @@
 package com.kingdee.hrp.sms.common.service.plugin;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.kingdee.hrp.sms.common.enums.Constant;
 import com.kingdee.hrp.sms.common.pojo.Condition;
-import com.kingdee.hrp.sms.common.enums.UserRoleType;
 import com.kingdee.hrp.sms.common.pojo.FormTemplate;
 import com.kingdee.hrp.sms.util.SessionUtil;
 
@@ -221,11 +221,11 @@ public interface PlugIn {
      */
     default Long getUserLinkOrg() {
 
-        UserRoleType userRoleType = SessionUtil.getUserRoleType();
-        if (userRoleType == UserRoleType.HOSPITAL) {
+        Constant.UserRoleType userRoleType = SessionUtil.getUserRoleType();
+        if (userRoleType == Constant.UserRoleType.HOSPITAL) {
             //医院角色
             return SessionUtil.getUserLinkHospital();
-        } else if (userRoleType == UserRoleType.SUPPLIER) {
+        } else if (userRoleType == Constant.UserRoleType.SUPPLIER) {
             //供应商角色
             return SessionUtil.getUserLinkSupplier();
         }
@@ -237,7 +237,7 @@ public interface PlugIn {
      *
      * @return Integer
      */
-    default UserRoleType getUserRoleType() {
+    default Constant.UserRoleType getUserRoleType() {
         return SessionUtil.getUserRoleType();
     }
 }

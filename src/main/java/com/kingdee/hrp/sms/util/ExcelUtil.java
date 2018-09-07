@@ -1,6 +1,6 @@
 package com.kingdee.hrp.sms.util;
 
-import com.kingdee.hrp.sms.common.enums.CtrlType;
+import com.kingdee.hrp.sms.common.enums.Constant;
 import com.kingdee.hrp.sms.common.model.FormField;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.ss.usermodel.*;
@@ -167,7 +167,7 @@ public class ExcelUtil {
                 FormField formField = disPlayField.get(k);
                 String key = formField.getKey();
 
-                if (formField.getCtrlType() == CtrlType.F7.value()) {
+                if (formField.getCtrlType() == Constant.CtrlType.F7.value()) {
                     // F7类型导出名称
                     key = key + "_DspName";
                 }

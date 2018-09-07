@@ -37,9 +37,9 @@
     FormAction.create({
         'classId': classId,
         'type': operate,
-        'textKey': 'textModify',
+/*        'textKey': 'textModify',
         'routeKey': 'nameModify',
-        'iconKey': 'iconModify'
+        'iconKey': 'iconModify'*/
     }, function (config) {
 
         if (operate === 0) {

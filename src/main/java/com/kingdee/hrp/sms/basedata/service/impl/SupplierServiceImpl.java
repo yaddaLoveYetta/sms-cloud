@@ -5,10 +5,7 @@ import com.kingdee.hrp.sms.common.dao.generate.CooperationApplyMapper;
 import com.kingdee.hrp.sms.common.dao.generate.MessageMapper;
 import com.kingdee.hrp.sms.common.dao.generate.PartnerMapper;
 import com.kingdee.hrp.sms.common.dao.generate.SupplierMapper;
-import com.kingdee.hrp.sms.common.enums.CooperationApplyStatus;
-import com.kingdee.hrp.sms.common.enums.MessageStatus;
-import com.kingdee.hrp.sms.common.enums.MessageType;
-import com.kingdee.hrp.sms.common.enums.UserRoleType;
+import com.kingdee.hrp.sms.common.enums.Constant;
 import com.kingdee.hrp.sms.common.exception.BusinessLogicRunTimeException;
 import com.kingdee.hrp.sms.common.model.*;
 import com.kingdee.hrp.sms.common.service.BaseService;
@@ -90,7 +87,7 @@ public class SupplierServiceImpl extends BaseService implements SupplierService 
         apply.setId(applyId);
         apply.setSupplier(supplier);
         apply.setHospital(hospital);
-        apply.setStatus(CooperationApplyStatus.UN_PROCESSED.getNumber());
+        apply.setStatus(Constant.CooperationApplyStatus.UN_PROCESSED.getNumber());
         apply.setDate(applyDate);
 
         mapper.insert(apply);
@@ -100,15 +97,15 @@ public class SupplierServiceImpl extends BaseService implements SupplierService 
         Message message = new Message();
         message.setId(getId());
         // 消息类别，参考t_assistance表type_id=40的记录
-        message.setType(MessageType.COOPERATION_APPLICATION.value());
-        message.setStatus(MessageStatus.UN_PROCESSED.getNumber());
+        message.setType(Constant.MessageType.COOPERATION_APPLICATION.value());
+        message.setStatus(Constant.MessageStatus.UN_PROCESSED.getNumber());
         message.setDate(applyDate);
         // 扩展数据中保存了申请id
         message.setData(applyId.toString());
 
-        message.setReceiverType(UserRoleType.HOSPITAL.getNumber());
+        message.setReceiverType(Constant.UserRoleType.HOSPITAL.getNumber());
         message.setReceiverOrg(hospital);
-        message.setSenderType(UserRoleType.SUPPLIER.getNumber());
+        message.setSenderType(Constant.UserRoleType.SUPPLIER.getNumber());
         message.setSenderOrg(supplier);
 
         message.setTopic("收到一个申请，希望成为您医院的供应商");

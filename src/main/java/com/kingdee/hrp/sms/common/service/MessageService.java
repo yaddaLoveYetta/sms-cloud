@@ -1,8 +1,7 @@
 package com.kingdee.hrp.sms.common.service;
 
-import com.kingdee.hrp.sms.common.enums.MessageStatus;
+import com.kingdee.hrp.sms.common.enums.Constant;
 import com.kingdee.hrp.sms.common.model.Message;
-import sun.reflect.generics.tree.VoidDescriptor;
 
 import java.util.List;
 
@@ -46,6 +45,6 @@ public interface MessageService {
      * @param count  消息数量，最多返回100条,默认10条
      * @return List<Message>
      */
-    List<Message> getByOrg(Long org, MessageStatus status, Integer count);
+    List<Message> getByOrg(Long org, Constant.MessageStatus status, Integer count);
 
 }

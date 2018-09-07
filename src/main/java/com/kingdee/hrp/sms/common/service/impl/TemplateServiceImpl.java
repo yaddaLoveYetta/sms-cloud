@@ -10,9 +10,7 @@ import com.kingdee.hrp.sms.common.dao.generate.FormActionMapper;
 import com.kingdee.hrp.sms.common.dao.generate.FormClassEntryMapper;
 import com.kingdee.hrp.sms.common.dao.generate.FormClassMapper;
 import com.kingdee.hrp.sms.common.dao.generate.FormFieldMapper;
-import com.kingdee.hrp.sms.common.enums.BillOperateType;
-import com.kingdee.hrp.sms.common.enums.CtrlType;
-import com.kingdee.hrp.sms.common.enums.UserRoleType;
+import com.kingdee.hrp.sms.common.enums.Constant;
 import com.kingdee.hrp.sms.common.exception.BusinessLogicRunTimeException;
 import com.kingdee.hrp.sms.common.exception.PlugInRuntimeException;
 import com.kingdee.hrp.sms.common.model.*;
@@ -151,12 +149,12 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
      * @return 功能操作列表
      */
     @Override
-    public List<FormAction> getFormAction(Integer classId, BillOperateType operateType) {
+    public List<FormAction> getFormAction(Integer classId, Constant.BillOperateType operateType) {
 
-        UserRoleType userRoleType = SessionUtil.getUserRoleType();
+        Constant.UserRoleType userRoleType = SessionUtil.getUserRoleType();
 
         // 按钮可用性-跟FormFields 模板中display字段配置规则一致
-        int ownerType = userRoleType == UserRoleType.SYSTEM ? 1 : userRoleType == UserRoleType.HOSPITAL ? 2 : 4;
+        int ownerType = userRoleType == Constant.UserRoleType.SYSTEM ? 1 : userRoleType == Constant.UserRoleType.HOSPITAL ? 2 : 4;
 
         // 按钮显示性(根据用户角色类别确定)
         int display = getCurrentDisplayMask(operateType);
@@ -904,7 +902,7 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
                 if (0 == formField.getPage()) {
                     // 先把单据头字段打包成一行
                     String key = formField.getKey();
-                    if (formField.getCtrlType() == CtrlType.F7.value()) {
+                    if (formField.getCtrlType() == Constant.CtrlType.F7.value()) {
                         // 引用类型导出名称
                         key = key + "_DspName";
                         lineData.put(formField.getKey(), item.get(formField.getKey()));
@@ -934,7 +932,7 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
                             if (1 == formField.getPage()) {
 
                                 String key = formField.getKey();
-                                if (formField.getCtrlType() == CtrlType.F7.value()) {
+                                if (formField.getCtrlType() == Constant.CtrlType.F7.value()) {
                                     // 引用类型导出名称
                                     key = key + "_DspName";
                                     lineData.put(formField.getKey(), entryItem.get(formField.getKey()));
@@ -957,7 +955,7 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
                             if (1 == formField.getPage()) {
 
                                 String key = formField.getKey();
-                                if (formField.getCtrlType() == CtrlType.F7.value()) {
+                                if (formField.getCtrlType() == Constant.CtrlType.F7.value()) {
                                     // 引用类型导出名称
                                     key = key + "_DspName";
                                     newExportLineData.put(formField.getKey(), entryItem.get(formField.getKey()));
@@ -1752,12 +1750,12 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
             String fieldName = sqlColumnName;
 
             // 模板字段的数据类型(数字，本文，日期，布尔)
-            CtrlType ctrlTypeEnum = CtrlType.getType(ctrlType);
+            Constant.CtrlType ctrlTypeEnum = Constant.CtrlType.getType(ctrlType);
 
             if (needConvert && lookUpType > 0) {
                 // 只有引用类型有转换与非转换情况
                 // 需要转换为名称查询的引用类型的查询条件，dataType可能不是文本类型，但条件值是文本，需要文本格式化，此处修正值格式化类型
-                ctrlTypeEnum = CtrlType.TEXT;
+                ctrlTypeEnum = Constant.CtrlType.TEXT;
             }
 
             switch (ctrlTypeEnum) {
@@ -2200,7 +2198,7 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
             // 值
             JsonNode dataNode = data.findValue(key);
             // 目标转义值(默认String)
-            Object value = transformValue(dataNode, CtrlType.getType(formField.getCtrlType()));
+            Object value = transformValue(dataNode, Constant.CtrlType.getType(formField.getCtrlType()));
 
             // 子表的外键值为主表主键值，有后台生成
             if (key.equalsIgnoreCase(foreignKey)) {
@@ -2445,7 +2443,7 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
             // 值
             JsonNode dataNode = data.findValue(key);
             // 目标转义值(默认String)
-            Object value = transformValue(dataNode, CtrlType.getType(formField.getCtrlType()));
+            Object value = transformValue(dataNode, Constant.CtrlType.getType(formField.getCtrlType()));
 
             if (!StringUtils.isNotBlank(fieldName)) {
                 // 理论上不应该出现，执行到此可能是模板配置错误
@@ -2476,7 +2474,7 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
      * @param ctrlType 字段类型
      * @return 转换后的类型
      */
-    private Object transformValue(JsonNode dataNode, CtrlType ctrlType) {
+    private Object transformValue(JsonNode dataNode, Constant.CtrlType ctrlType) {
 
         Object value;
 

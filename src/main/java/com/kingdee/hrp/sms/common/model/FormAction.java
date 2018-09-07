@@ -7,11 +7,7 @@ import java.util.Arrays;
 public class FormAction extends FormActionKey implements Serializable {
     private String name;
 
-    private String nameModify;
-
     private String text;
-
-    private String textModify;
 
     private Integer accessMask;
 
@@ -24,8 +20,6 @@ public class FormAction extends FormActionKey implements Serializable {
     private Integer group;
 
     private String icon;
-
-    private String iconModify;
 
     private String desc;
 
@@ -45,28 +39,12 @@ public class FormAction extends FormActionKey implements Serializable {
         this.name = name == null ? null : name.trim();
     }
 
-    public String getNameModify() {
-        return nameModify;
-    }
-
-    public void setNameModify(String nameModify) {
-        this.nameModify = nameModify == null ? null : nameModify.trim();
-    }
-
     public String getText() {
         return text;
     }
 
     public void setText(String text) {
         this.text = text == null ? null : text.trim();
-    }
-
-    public String getTextModify() {
-        return textModify;
-    }
-
-    public void setTextModify(String textModify) {
-        this.textModify = textModify == null ? null : textModify.trim();
     }
 
     public Integer getAccessMask() {
@@ -117,14 +95,6 @@ public class FormAction extends FormActionKey implements Serializable {
         this.icon = icon == null ? null : icon.trim();
     }
 
-    public String getIconModify() {
-        return iconModify;
-    }
-
-    public void setIconModify(String iconModify) {
-        this.iconModify = iconModify == null ? null : iconModify.trim();
-    }
-
     public String getDesc() {
         return desc;
     }
@@ -164,16 +134,13 @@ public class FormAction extends FormActionKey implements Serializable {
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
         sb.append(", name=").append(name);
-        sb.append(", nameModify=").append(nameModify);
         sb.append(", text=").append(text);
-        sb.append(", textModify=").append(textModify);
         sb.append(", accessMask=").append(accessMask);
         sb.append(", accessUse=").append(accessUse);
         sb.append(", display=").append(display);
         sb.append(", ownerType=").append(ownerType);
         sb.append(", group=").append(group);
         sb.append(", icon=").append(icon);
-        sb.append(", iconModify=").append(iconModify);
         sb.append(", desc=").append(desc);
         sb.append(", url=").append(url);
         sb.append(", apiUrl=").append(apiUrl);
@@ -194,16 +161,13 @@ public class FormAction extends FormActionKey implements Serializable {
         classId("class_id", "classId", "INTEGER", false),
         index("index", "index", "INTEGER", true),
         name("name", "name", "VARCHAR", true),
-        nameModify("name_modify", "nameModify", "VARCHAR", false),
         text("text", "text", "VARCHAR", true),
-        textModify("text_modify", "textModify", "VARCHAR", false),
         accessMask("access_mask", "accessMask", "INTEGER", false),
         accessUse("access_use", "accessUse", "INTEGER", false),
         display("display", "display", "INTEGER", false),
         ownerType("owner_type", "ownerType", "INTEGER", false),
         group("group", "group", "INTEGER", true),
         icon("icon", "icon", "VARCHAR", false),
-        iconModify("icon_modify", "iconModify", "VARCHAR", false),
         desc("desc", "desc", "VARCHAR", true),
         url("url", "url", "VARCHAR", false),
         apiUrl("api_url", "apiUrl", "VARCHAR", false),

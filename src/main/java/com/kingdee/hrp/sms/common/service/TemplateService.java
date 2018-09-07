@@ -1,6 +1,6 @@
 package com.kingdee.hrp.sms.common.service;
 
-import com.kingdee.hrp.sms.common.enums.BillOperateType;
+import com.kingdee.hrp.sms.common.enums.Constant;
 import com.kingdee.hrp.sms.common.model.FormAction;
 import com.kingdee.hrp.sms.common.pojo.Condition;
 import com.kingdee.hrp.sms.common.pojo.FormTemplate;
@@ -33,7 +33,7 @@ public interface TemplateService {
      * @return 功能操作列表
      */
 
-    List<FormAction> getFormAction(Integer classId, BillOperateType operateType);
+    List<FormAction> getFormAction(Integer classId, Constant.BillOperateType operateType);
 
     /**
      * 通过模板获取业务数据
