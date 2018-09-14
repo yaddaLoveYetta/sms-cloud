@@ -3,7 +3,7 @@ package com.kingdee.hrp.sms.common.service.plugin.impl;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.kingdee.hrp.sms.common.dao.generate.UserMapper;
-import com.kingdee.hrp.sms.common.enums.Constant;
+import com.kingdee.hrp.sms.common.enums.Constants;
 import com.kingdee.hrp.sms.common.exception.BusinessLogicRunTimeException;
 import com.kingdee.hrp.sms.common.model.User;
 import com.kingdee.hrp.sms.common.model.UserExample;
@@ -80,19 +80,19 @@ public class BaseDataPlugin extends AbstractPlugInAdapter implements Initializin
 
         classIdSet = new HashSet<>();
         // 用户
-        classIdSet.add(Constant.ClassType.USER.classId());
+        classIdSet.add(Constants.ClassType.USER.classId());
         // 角色
-        classIdSet.add(Constant.ClassType.ROLE.classId());
+        classIdSet.add(Constants.ClassType.ROLE.classId());
         // 供应商类别
-        classIdSet.add(Constant.ClassType.SUPPLIER_TYPE.classId());
+        classIdSet.add(Constants.ClassType.SUPPLIER_TYPE.classId());
         //医院供应商
-        classIdSet.add(Constant.ClassType.HOSPITAL_SUPPLIER.classId());
+        classIdSet.add(Constants.ClassType.HOSPITAL_SUPPLIER.classId());
         // 医院物料
-        classIdSet.add(Constant.ClassType.ITEM.classId());
+        classIdSet.add(Constants.ClassType.ITEM.classId());
         // 单位
-        classIdSet.add(Constant.ClassType.UNIT.classId());
+        classIdSet.add(Constants.ClassType.UNIT.classId());
         // 职员
-        classIdSet.add(Constant.ClassType.EMP.classId());
+        classIdSet.add(Constants.ClassType.EMP.classId());
     }
 
     /**
@@ -129,7 +129,7 @@ public class BaseDataPlugin extends AbstractPlugInAdapter implements Initializin
     @Transactional(rollbackFor = Exception.class)
     public PlugInRet afterForbid(Integer classId, FormTemplate template, List<Long> ids, Integer operateType) {
 
-        if (classId == Constant.ClassType.USER.classId() && operateType == 1) {
+        if (classId == Constants.ClassType.USER.classId() && operateType == 1) {
             // 禁用用户时，如果该用户是医院/供应商的管理员,则将归属该医院、供应商的所有用户一并禁用
             SqlSession sqlSession = Environ.getBean(SqlSession.class);
             UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
@@ -215,18 +215,18 @@ public class BaseDataPlugin extends AbstractPlugInAdapter implements Initializin
 
         List<Condition> ret = new ArrayList<Condition>();
 
-        Constant.UserRoleType userRoleType = getUserRoleType();
+        Constants.UserRoleType userRoleType = getUserRoleType();
         Long linkOrg = getUserLinkOrg();
 
-        if (userRoleType == Constant.UserRoleType.SYSTEM) {
+        if (userRoleType == Constants.UserRoleType.SYSTEM) {
             // 系统角色类别放开所有数据查看权限
             return ret;
         }
 
-        if (userRoleType == Constant.UserRoleType.HOSPITAL) {
+        if (userRoleType == Constants.UserRoleType.HOSPITAL) {
             // 当前是医院角色的用户在操作
 
-            if (classId == Constant.ClassType.USER.classId() || classId == Constant.ClassType.ROLE.classId()) {
+            if (classId == Constants.ClassType.USER.classId() || classId == Constants.ClassType.ROLE.classId()) {
                 // 用户、角色
                 Condition condition = new Condition();
                 condition.setLinkType(Condition.LinkType.AND);
@@ -237,8 +237,8 @@ public class BaseDataPlugin extends AbstractPlugInAdapter implements Initializin
                 ret.add(condition);
             }
 
-            if (classId == Constant.ClassType.SUPPLIER_TYPE.classId() || classId == Constant.ClassType.HOSPITAL_SUPPLIER.classId() ||
-                    classId == Constant.ClassType.ITEM.classId()) {
+            if (classId == Constants.ClassType.SUPPLIER_TYPE.classId() || classId == Constants.ClassType.HOSPITAL_SUPPLIER.classId() ||
+                    classId == Constants.ClassType.ITEM.classId()) {
                 // 供应商类别、医院供应商
                 Condition condition = new Condition();
                 condition.setLinkType(Condition.LinkType.AND);
@@ -251,10 +251,10 @@ public class BaseDataPlugin extends AbstractPlugInAdapter implements Initializin
 
         }
 
-        if (userRoleType == Constant.UserRoleType.SUPPLIER) {
+        if (userRoleType == Constants.UserRoleType.SUPPLIER) {
             // 当前是供应商角色的用户在操作
 
-            if (classId == Constant.ClassType.USER.classId() || classId == Constant.ClassType.ROLE.classId()) {
+            if (classId == Constants.ClassType.USER.classId() || classId == Constants.ClassType.ROLE.classId()) {
                 // 用户、角色
                 Condition condition = new Condition();
                 condition.setLinkType(Condition.LinkType.AND);
@@ -280,9 +280,9 @@ public class BaseDataPlugin extends AbstractPlugInAdapter implements Initializin
      */
     private void dataProcess(int classId, FormTemplate formTemplate, JsonNode data) {
 
-        Constant.UserRoleType userRoleType = SessionUtil.getUserRoleType();
+        Constants.UserRoleType userRoleType = SessionUtil.getUserRoleType();
 
-        if (classId == Constant.ClassType.EMP.classId() || classId == Constant.ClassType.UNIT.classId()) {
+        if (classId == Constants.ClassType.EMP.classId() || classId == Constants.ClassType.UNIT.classId()) {
             // 单位，职员新增时，设置归属医院
             if (SessionUtil.getUserLinkHospital() == -1) {
                 throw new BusinessLogicRunTimeException("当前登录用户非医院用户，不能进行此操作!");
@@ -291,17 +291,17 @@ public class BaseDataPlugin extends AbstractPlugInAdapter implements Initializin
             ((ObjectNode) data).put("org", SessionUtil.getUserLinkHospital());
         }
 
-        if (userRoleType != Constant.UserRoleType.SYSTEM && classId == Constant.ClassType.ROLE.classId()) {
+        if (userRoleType != Constants.UserRoleType.SYSTEM && classId == Constants.ClassType.ROLE.classId()) {
             // 非系统管理员操作角色新增功能时，
             // 新增的角色类别与当前登录用户类别相同(即医院只能新增医院角色，供应商只能新增供应商角色)
             ((ObjectNode) data).put("type", SessionUtil.getUserRoleTypeNumber());
 
-            if (userRoleType == Constant.UserRoleType.HOSPITAL) {
+            if (userRoleType == Constants.UserRoleType.HOSPITAL) {
                 // 医院新增角色--绑定新增的角色所属医院
                 ((ObjectNode) data).put("org_hospital", SessionUtil.getUserLinkHospital());
             }
 
-            if (userRoleType == Constant.UserRoleType.SUPPLIER) {
+            if (userRoleType == Constants.UserRoleType.SUPPLIER) {
                 // 供应商新增角色--绑定新增的角色所属供应商
                 ((ObjectNode) data).put("org_supplier", SessionUtil.getUserLinkSupplier());
             }

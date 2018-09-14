@@ -2,7 +2,7 @@ package com.kingdee.hrp.sms.common.service;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.kingdee.hrp.sms.common.enums.Constant;
+import com.kingdee.hrp.sms.common.enums.Constants;
 import com.kingdee.hrp.sms.common.model.FormClassEntry;
 import com.kingdee.hrp.sms.common.model.FormField;
 import com.kingdee.hrp.sms.common.pojo.FormTemplate;
@@ -45,52 +45,52 @@ public abstract class BaseService {
      * @param operateType 操作类型 1：查看2：新增3：编辑 null：全部(查看|新增|编辑)
      * @return 显示控制性掩码
      */
-    protected Integer getCurrentDisplayMask(Constant.BillOperateType operateType) {
+    protected Integer getCurrentDisplayMask(Constants.BillOperateType operateType) {
 
-        Constant.UserRoleType userRoleType = SessionUtil.getUserRoleType();
+        Constants.UserRoleType userRoleType = SessionUtil.getUserRoleType();
 
         switch (userRoleType) {
         case SYSTEM:
-            if (operateType == Constant.BillOperateType.VIEW) {
-                return Constant.DisplayType.VIEW_SYSTEM_SHOW.value();
-            } else if (operateType == Constant.BillOperateType.ADD) {
-                return Constant.DisplayType.ADD_SYSTEM_SHOW.value();
-            } else if (operateType == Constant.BillOperateType.EDIT) {
-                return Constant.DisplayType.EDIT_SYSTEM_SHOW.value();
+            if (operateType == Constants.BillOperateType.VIEW) {
+                return Constants.DisplayType.VIEW_SYSTEM_SHOW.value();
+            } else if (operateType == Constants.BillOperateType.ADD) {
+                return Constants.DisplayType.ADD_SYSTEM_SHOW.value();
+            } else if (operateType == Constants.BillOperateType.EDIT) {
+                return Constants.DisplayType.EDIT_SYSTEM_SHOW.value();
             } else {
-                return Constant.DisplayType.VIEW_SYSTEM_SHOW.value() | Constant.DisplayType.ADD_SYSTEM_SHOW.value() |
-                        Constant.DisplayType.EDIT_SYSTEM_SHOW.value();
+                return Constants.DisplayType.VIEW_SYSTEM_SHOW.value() | Constants.DisplayType.ADD_SYSTEM_SHOW.value() |
+                        Constants.DisplayType.EDIT_SYSTEM_SHOW.value();
             }
         case HOSPITAL:
-            if (operateType == Constant.BillOperateType.VIEW) {
-                return Constant.DisplayType.VIEW_HOSPITAL_SHOW.value();
-            } else if (operateType == Constant.BillOperateType.ADD) {
-                return Constant.DisplayType.ADD_HOSPITAL_SHOW.value();
-            } else if (operateType == Constant.BillOperateType.EDIT) {
-                return Constant.DisplayType.EDIT_HOSPITAL_SHOW.value();
+            if (operateType == Constants.BillOperateType.VIEW) {
+                return Constants.DisplayType.VIEW_HOSPITAL_SHOW.value();
+            } else if (operateType == Constants.BillOperateType.ADD) {
+                return Constants.DisplayType.ADD_HOSPITAL_SHOW.value();
+            } else if (operateType == Constants.BillOperateType.EDIT) {
+                return Constants.DisplayType.EDIT_HOSPITAL_SHOW.value();
             } else {
-                return Constant.DisplayType.VIEW_HOSPITAL_SHOW.value() | Constant.DisplayType.ADD_HOSPITAL_SHOW.value() |
-                        Constant.DisplayType.EDIT_HOSPITAL_SHOW.value();
+                return Constants.DisplayType.VIEW_HOSPITAL_SHOW.value() | Constants.DisplayType.ADD_HOSPITAL_SHOW.value() |
+                        Constants.DisplayType.EDIT_HOSPITAL_SHOW.value();
             }
         case SUPPLIER:
-            if (operateType == Constant.BillOperateType.VIEW) {
-                return Constant.DisplayType.VIEW_SUPPLIER_SHOW.value();
-            } else if (operateType == Constant.BillOperateType.ADD) {
-                return Constant.DisplayType.ADD_SUPPLIER_SHOW.value();
-            } else if (operateType == Constant.BillOperateType.EDIT) {
-                return Constant.DisplayType.EDIT_SUPPLIER_SHOW.value();
+            if (operateType == Constants.BillOperateType.VIEW) {
+                return Constants.DisplayType.VIEW_SUPPLIER_SHOW.value();
+            } else if (operateType == Constants.BillOperateType.ADD) {
+                return Constants.DisplayType.ADD_SUPPLIER_SHOW.value();
+            } else if (operateType == Constants.BillOperateType.EDIT) {
+                return Constants.DisplayType.EDIT_SUPPLIER_SHOW.value();
             } else {
-                return Constant.DisplayType.VIEW_SUPPLIER_SHOW.value() | Constant.DisplayType.ADD_SUPPLIER_SHOW.value() |
-                        Constant.DisplayType.EDIT_SUPPLIER_SHOW.value();
+                return Constants.DisplayType.VIEW_SUPPLIER_SHOW.value() | Constants.DisplayType.ADD_SUPPLIER_SHOW.value() |
+                        Constants.DisplayType.EDIT_SUPPLIER_SHOW.value();
             }
         default:
         }
 
-        int maskAll = Constant.DisplayType.VIEW_SYSTEM_SHOW.value() | Constant.DisplayType.ADD_SYSTEM_SHOW.value() |
-                Constant.DisplayType.EDIT_SYSTEM_SHOW.value() | Constant.DisplayType.VIEW_HOSPITAL_SHOW.value() |
-                Constant.DisplayType.ADD_HOSPITAL_SHOW.value() | Constant.DisplayType.EDIT_HOSPITAL_SHOW.value() |
-                Constant.DisplayType.VIEW_SUPPLIER_SHOW.value() | Constant.DisplayType.ADD_SUPPLIER_SHOW.value() |
-                Constant.DisplayType.EDIT_SUPPLIER_SHOW.value();
+        int maskAll = Constants.DisplayType.VIEW_SYSTEM_SHOW.value() | Constants.DisplayType.ADD_SYSTEM_SHOW.value() |
+                Constants.DisplayType.EDIT_SYSTEM_SHOW.value() | Constants.DisplayType.VIEW_HOSPITAL_SHOW.value() |
+                Constants.DisplayType.ADD_HOSPITAL_SHOW.value() | Constants.DisplayType.EDIT_HOSPITAL_SHOW.value() |
+                Constants.DisplayType.VIEW_SUPPLIER_SHOW.value() | Constants.DisplayType.ADD_SUPPLIER_SHOW.value() |
+                Constants.DisplayType.EDIT_SUPPLIER_SHOW.value();
         return maskAll;
 
     }
@@ -102,7 +102,7 @@ public abstract class BaseService {
      * @param operateType 操作类型 1：查看2：新增3：编辑 null：全部(查看|新增|编辑)
      * @return 是否显示
      */
-    protected Boolean isNeedDisplay(FormField formField, Constant.BillOperateType operateType) {
+    protected Boolean isNeedDisplay(FormField formField, Constants.BillOperateType operateType) {
 
         Integer display = formField.getDisplay();
         Integer currentDisplayMask = getCurrentDisplayMask(operateType);
@@ -118,7 +118,7 @@ public abstract class BaseService {
      * @param operateType  操作类型 1：查看2：新增3：编辑 null：全部(查看|新增|编辑)
      * @return Map<String, FormField>
      */
-    protected Map<String, FormField> getDisPlayField(FormTemplate formTemplate, Constant.BillOperateType operateType) {
+    protected Map<String, FormField> getDisPlayField(FormTemplate formTemplate, Constants.BillOperateType operateType) {
 
         Map<String, FormField> ret = Maps.newLinkedHashMap();
 
@@ -138,7 +138,7 @@ public abstract class BaseService {
      * @param operateType  操作类型 1：查看2：新增3：编辑 null：全部(查看|新增|编辑)
      * @return List<FormField>
      */
-    protected List<FormField> getDisPlayFieldList(FormTemplate formTemplate, Constant.BillOperateType operateType) {
+    protected List<FormField> getDisPlayFieldList(FormTemplate formTemplate, Constants.BillOperateType operateType) {
 
         List<FormField> disPlayFieldList = Lists.newArrayList();
 
@@ -177,41 +177,41 @@ public abstract class BaseService {
      * @param operateType 操作类型 2：新增3：编辑 null：全部(查看|新增|编辑)
      * @return 必录性控制掩码
      */
-    protected Integer getCurrentMustInputMask(Constant.BillOperateType operateType) {
+    protected Integer getCurrentMustInputMask(Constants.BillOperateType operateType) {
 
-        Constant.UserRoleType userRoleType = SessionUtil.getUserRoleType();
+        Constants.UserRoleType userRoleType = SessionUtil.getUserRoleType();
 
         switch (userRoleType) {
         case SYSTEM:
-            if (operateType == Constant.BillOperateType.ADD) {
-                return Constant.MustInputType.ADD_SYSTEM_MUST.value();
-            } else if (operateType == Constant.BillOperateType.EDIT) {
-                return Constant.MustInputType.EDIT_SYSTEM_MUST.value();
+            if (operateType == Constants.BillOperateType.ADD) {
+                return Constants.MustInputType.ADD_SYSTEM_MUST.value();
+            } else if (operateType == Constants.BillOperateType.EDIT) {
+                return Constants.MustInputType.EDIT_SYSTEM_MUST.value();
             } else {
-                return Constant.MustInputType.ADD_SYSTEM_MUST.value() | Constant.MustInputType.EDIT_SYSTEM_MUST.value();
+                return Constants.MustInputType.ADD_SYSTEM_MUST.value() | Constants.MustInputType.EDIT_SYSTEM_MUST.value();
             }
         case HOSPITAL:
-            if (operateType == Constant.BillOperateType.ADD) {
-                return Constant.MustInputType.ADD_HOSPITAL_MUST.value();
-            } else if (operateType == Constant.BillOperateType.EDIT) {
-                return Constant.MustInputType.EDIT_HOSPITAL_MUST.value();
+            if (operateType == Constants.BillOperateType.ADD) {
+                return Constants.MustInputType.ADD_HOSPITAL_MUST.value();
+            } else if (operateType == Constants.BillOperateType.EDIT) {
+                return Constants.MustInputType.EDIT_HOSPITAL_MUST.value();
             } else {
-                return Constant.MustInputType.ADD_HOSPITAL_MUST.value() | Constant.MustInputType.EDIT_HOSPITAL_MUST.value();
+                return Constants.MustInputType.ADD_HOSPITAL_MUST.value() | Constants.MustInputType.EDIT_HOSPITAL_MUST.value();
             }
         case SUPPLIER:
-            if (operateType == Constant.BillOperateType.ADD) {
-                return Constant.MustInputType.ADD_SUPPLIER_MUST.value();
-            } else if (operateType == Constant.BillOperateType.EDIT) {
-                return Constant.MustInputType.EDIT_SUPPLIER_MUST.value();
+            if (operateType == Constants.BillOperateType.ADD) {
+                return Constants.MustInputType.ADD_SUPPLIER_MUST.value();
+            } else if (operateType == Constants.BillOperateType.EDIT) {
+                return Constants.MustInputType.EDIT_SUPPLIER_MUST.value();
             } else {
-                return Constant.MustInputType.ADD_SUPPLIER_MUST.value() | Constant.MustInputType.EDIT_SUPPLIER_MUST.value();
+                return Constants.MustInputType.ADD_SUPPLIER_MUST.value() | Constants.MustInputType.EDIT_SUPPLIER_MUST.value();
             }
         default:
         }
 
-        int maskAll = Constant.MustInputType.ADD_SYSTEM_MUST.value() | Constant.MustInputType.EDIT_SYSTEM_MUST.value() |
-                Constant.MustInputType.ADD_HOSPITAL_MUST.value() | Constant.MustInputType.EDIT_HOSPITAL_MUST.value() |
-                Constant.MustInputType.ADD_SUPPLIER_MUST.value() | Constant.MustInputType.EDIT_SUPPLIER_MUST.value();
+        int maskAll = Constants.MustInputType.ADD_SYSTEM_MUST.value() | Constants.MustInputType.EDIT_SYSTEM_MUST.value() |
+                Constants.MustInputType.ADD_HOSPITAL_MUST.value() | Constants.MustInputType.EDIT_HOSPITAL_MUST.value() |
+                Constants.MustInputType.ADD_SUPPLIER_MUST.value() | Constants.MustInputType.EDIT_SUPPLIER_MUST.value();
 
         return maskAll;
 

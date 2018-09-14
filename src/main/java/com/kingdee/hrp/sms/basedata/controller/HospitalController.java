@@ -1,7 +1,7 @@
 package com.kingdee.hrp.sms.basedata.controller;
 
 import com.kingdee.hrp.sms.basedata.service.HospitalService;
-import com.kingdee.hrp.sms.common.enums.Constant;
+import com.kingdee.hrp.sms.common.enums.Constants;
 import com.kingdee.hrp.sms.common.exception.BusinessLogicRunTimeException;
 import com.kingdee.hrp.sms.util.FileOperate;
 import com.sun.jersey.api.client.Client;
@@ -121,7 +121,7 @@ public class HospitalController {
             throw new BusinessLogicRunTimeException("必须关联HRP供应商!");
         }
 
-        hospitalService.processCooperationApply(id, hrpSupplier, Constant.CooperationApplyStatus.AGREE);
+        hospitalService.processCooperationApply(id, hrpSupplier, Constants.CooperationApplyStatus.AGREE);
     }
 
     /**
@@ -137,7 +137,7 @@ public class HospitalController {
             throw new BusinessLogicRunTimeException("请选择记录进行操作!");
         }
 
-        hospitalService.processCooperationApply(id, null, Constant.CooperationApplyStatus.DISAGREE);
+        hospitalService.processCooperationApply(id, null, Constants.CooperationApplyStatus.DISAGREE);
     }
 
 }

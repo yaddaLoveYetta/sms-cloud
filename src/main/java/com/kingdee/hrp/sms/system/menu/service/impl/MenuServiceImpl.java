@@ -2,7 +2,7 @@ package com.kingdee.hrp.sms.system.menu.service.impl;
 
 import com.kingdee.hrp.sms.common.dao.generate.FormActionMapper;
 import com.kingdee.hrp.sms.common.dao.generate.MenuMapper;
-import com.kingdee.hrp.sms.common.enums.Constant;
+import com.kingdee.hrp.sms.common.enums.Constants;
 import com.kingdee.hrp.sms.common.model.FormAction;
 import com.kingdee.hrp.sms.common.model.FormActionExample;
 import com.kingdee.hrp.sms.common.model.Menu;
@@ -53,14 +53,14 @@ public class MenuServiceImpl extends BaseService implements MenuService {
         List<Menu> menus = menuMapper.selectByExample(example);
 
         // 用户角色类别
-        Constant.UserRoleType userRoleType = SessionUtil.getUserRoleType();
+        Constants.UserRoleType userRoleType = SessionUtil.getUserRoleType();
 
         // 查询t_form_action 用于检验用户类别是否拥有menu的查看权（没有查看权限菜单不显示）
         FormActionMapper formActionMapper = sqlSession.getMapper(FormActionMapper.class);
 
         FormActionExample formActionExample = new FormActionExample();
         // 只查询查看权限，有查看权限才可能需要显示菜单
-        formActionExample.createCriteria().andAccessMaskEqualTo(Constant.AccessMask.VIEW.getNumber());
+        formActionExample.createCriteria().andAccessMaskEqualTo(Constants.AccessMask.VIEW.getNumber());
 
         List<FormAction> formActions = formActionMapper.selectByExample(formActionExample);
 
@@ -76,7 +76,7 @@ public class MenuServiceImpl extends BaseService implements MenuService {
 
 
             // for test
-            if (userRoleType == Constant.UserRoleType.SYSTEM) {
+            if (userRoleType == Constants.UserRoleType.SYSTEM) {
                 return true;
             }
 
@@ -103,7 +103,7 @@ public class MenuServiceImpl extends BaseService implements MenuService {
             Integer accessMask = roleAccessControl.get(formActionId);
 
             // formAction中查看权限AccessMask必须配置为1即 AccessMask.VIEW.getNumber()
-            return accessMask != null && (accessMask & Constant.AccessMask.VIEW.getNumber()) == Constant.AccessMask.VIEW.getNumber();
+            return accessMask != null && (accessMask & Constants.AccessMask.VIEW.getNumber()) == Constants.AccessMask.VIEW.getNumber();
 
         }).collect(Collectors.toList());
 

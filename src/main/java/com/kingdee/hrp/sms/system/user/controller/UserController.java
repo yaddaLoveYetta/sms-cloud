@@ -1,6 +1,6 @@
 package com.kingdee.hrp.sms.system.user.controller;
 
-import com.kingdee.hrp.sms.common.enums.Constant;
+import com.kingdee.hrp.sms.common.enums.Constants;
 import com.kingdee.hrp.sms.common.exception.BusinessLogicRunTimeException;
 import com.kingdee.hrp.sms.common.model.AccessControl;
 import com.kingdee.hrp.sms.common.model.Role;
@@ -107,11 +107,11 @@ public class UserController {
 
             // 获取用户所属的组织信息(医院/供应商)
             Object userLinkOrg = null;
-            if (roles.get(0).getType() == Constant.UserRoleType.HOSPITAL.getNumber().intValue()) {
+            if (roles.get(0).getType() == Constants.UserRoleType.HOSPITAL.getNumber().intValue()) {
                 // 医院角色
                 userLinkOrg = userService.getUserLinkHospital(user.getOrg());
             }
-            if (roles.get(0).getType() == Constant.UserRoleType.SUPPLIER.getNumber().intValue()) {
+            if (roles.get(0).getType() == Constants.UserRoleType.SUPPLIER.getNumber().intValue()) {
                 // 供应商角色
                 userLinkOrg = userService.getUserLinkSupplier(user.getOrg());
             }

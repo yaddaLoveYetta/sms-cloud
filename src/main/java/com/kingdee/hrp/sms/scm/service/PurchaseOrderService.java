@@ -1,6 +1,6 @@
 package com.kingdee.hrp.sms.scm.service;
 
-import com.kingdee.hrp.sms.common.enums.Constant;
+import com.kingdee.hrp.sms.common.enums.Constants;
 import com.kingdee.hrp.sms.common.model.PurchaseOrder;
 import com.kingdee.hrp.sms.common.model.PurchaseOrderEntry;
 import com.kingdee.hrp.sms.common.pojo.Condition;
@@ -216,11 +216,11 @@ public interface PurchaseOrderService {
      */
     default Long getUserLinkOrg() {
 
-        Constant.UserRoleType userRoleType = SessionUtil.getUserRoleType();
-        if (userRoleType == Constant.UserRoleType.HOSPITAL) {
+        Constants.UserRoleType userRoleType = SessionUtil.getUserRoleType();
+        if (userRoleType == Constants.UserRoleType.HOSPITAL) {
             //医院角色
             return SessionUtil.getUserLinkHospital();
-        } else if (userRoleType == Constant.UserRoleType.SUPPLIER) {
+        } else if (userRoleType == Constants.UserRoleType.SUPPLIER) {
             //供应商角色
             return SessionUtil.getUserLinkSupplier();
         }
@@ -232,7 +232,7 @@ public interface PurchaseOrderService {
      *
      * @return Integer
      */
-    default Constant.UserRoleType getUserRoleType() {
+    default Constants.UserRoleType getUserRoleType() {
         return SessionUtil.getUserRoleType();
     }
 }

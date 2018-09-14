@@ -1,7 +1,7 @@
 package com.kingdee.hrp.sms.common.service.plugin;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.kingdee.hrp.sms.common.enums.Constant;
+import com.kingdee.hrp.sms.common.enums.Constants;
 import com.kingdee.hrp.sms.common.model.FormClass;
 import com.kingdee.hrp.sms.common.model.FormClassEntry;
 import com.kingdee.hrp.sms.common.model.FormField;
@@ -254,7 +254,7 @@ public abstract class AbstractPlugInAdapter extends BaseService implements PlugI
         Map<String, FormField> formFields0 = template.getFormFields().get(0);
 
         // 新增时笔录性校验掩码
-        int mustInputRoleMask = getCurrentMustInputMask(Constant.BillOperateType.ADD);
+        int mustInputRoleMask = getCurrentMustInputMask(Constants.BillOperateType.ADD);
 
         String errMsg;
 

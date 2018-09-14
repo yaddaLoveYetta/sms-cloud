@@ -1,6 +1,6 @@
 package com.kingdee.hrp.sms.common.controller;
 
-import com.kingdee.hrp.sms.common.enums.Constant;
+import com.kingdee.hrp.sms.common.enums.Constants;
 import com.kingdee.hrp.sms.common.exception.BusinessLogicRunTimeException;
 import com.kingdee.hrp.sms.common.model.FormAction;
 import com.kingdee.hrp.sms.common.pojo.Condition;
@@ -67,9 +67,9 @@ public class TemplateController {
     public List<FormAction> getFormAction(Integer classId, @RequestParam(defaultValue = "0") Integer type) {
 
         //0:查看(列表)1:(新增)2:(编辑)
-        Constant.BillOperateType operateType = Constant.BillOperateType.getBillOperateType(type);
+        Constants.BillOperateType operateType = Constants.BillOperateType.getBillOperateType(type);
 
-        if (operateType == Constant.BillOperateType.NOT_SUPPORT) {
+        if (operateType == Constants.BillOperateType.NOT_SUPPORT) {
             throw new BusinessLogicRunTimeException("type类型错误!");
         }
         return templateService.getFormAction(classId, operateType);

@@ -1,6 +1,6 @@
 package com.kingdee.hrp.sms.scm.service.impl;
 
-import com.kingdee.hrp.sms.common.enums.Constant;
+import com.kingdee.hrp.sms.common.enums.Constants;
 import com.kingdee.hrp.sms.common.model.PurchaseOrderExample;
 import com.kingdee.hrp.sms.common.service.BaseService;
 import com.kingdee.hrp.sms.util.SessionUtil;
@@ -33,14 +33,14 @@ public abstract class AbstractOrderService extends BaseService {
      */
     protected PurchaseOrderExample getPurchaseOrderExample(PurchaseOrderExample orderExample) {
 
-        if (SessionUtil.getUserRoleType() != Constant.UserRoleType.SYSTEM) {
+        if (SessionUtil.getUserRoleType() != Constants.UserRoleType.SYSTEM) {
             // 供应商或医院时加org条件
             if (orderExample.getOredCriteria().size() == 1) {
                 // 只有一个Criteria，将org添加加入该Criteria
                 orderExample.getOredCriteria().get(0).andHospitalEqualTo(SessionUtil.getUserLinkOrg());
             } else {
                 // 没有或多个Criteria，创建Criteria
-                if (SessionUtil.getUserRoleType() != Constant.UserRoleType.SYSTEM) {
+                if (SessionUtil.getUserRoleType() != Constants.UserRoleType.SYSTEM) {
                     orderExample.createCriteria().andHospitalEqualTo(SessionUtil.getUserLinkOrg());
                 }
             }
@@ -60,9 +60,9 @@ public abstract class AbstractOrderService extends BaseService {
         PurchaseOrderExample orderExample = new PurchaseOrderExample();
         PurchaseOrderExample.Criteria criteria = orderExample.createCriteria();
 
-        if (SessionUtil.getUserRoleType() == Constant.UserRoleType.HOSPITAL) {
+        if (SessionUtil.getUserRoleType() == Constants.UserRoleType.HOSPITAL) {
             criteria.andHospitalEqualTo(SessionUtil.getUserLinkOrg());
-        } else if (SessionUtil.getUserRoleType() == Constant.UserRoleType.SUPPLIER) {
+        } else if (SessionUtil.getUserRoleType() == Constants.UserRoleType.SUPPLIER) {
             criteria.andSupplierEqualTo(SessionUtil.getUserLinkOrg());
         }
 

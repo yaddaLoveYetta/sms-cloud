@@ -2,7 +2,7 @@ package com.kingdee.hrp.sms.scm.service.plugin;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.kingdee.hrp.sms.common.enums.Constant;
+import com.kingdee.hrp.sms.common.enums.Constants;
 import com.kingdee.hrp.sms.common.exception.BusinessLogicRunTimeException;
 import com.kingdee.hrp.sms.common.pojo.Condition;
 import com.kingdee.hrp.sms.common.pojo.FormTemplate;
@@ -85,7 +85,7 @@ public class PurchaseOrderPlugin extends AbstractPlugInAdapter implements Initia
 
         classIdSet = new HashSet<>();
         // 订单
-        classIdSet.add(Constant.ClassType.PURCHASE_ORDER.classId());
+        classIdSet.add(Constants.ClassType.PURCHASE_ORDER.classId());
 
     }
 
@@ -100,11 +100,11 @@ public class PurchaseOrderPlugin extends AbstractPlugInAdapter implements Initia
     @Override
     public PlugInRet beforeSave(int classId, FormTemplate formTemplate, JsonNode data) {
 
-        if (classId != Constant.ClassType.PURCHASE_ORDER.classId()) {
+        if (classId != Constants.ClassType.PURCHASE_ORDER.classId()) {
             return super.beforeSave(classId, formTemplate, data);
         }
 
-        if (SessionUtil.getUserRoleType() != Constant.UserRoleType.HOSPITAL) {
+        if (SessionUtil.getUserRoleType() != Constants.UserRoleType.HOSPITAL) {
             throw new BusinessLogicRunTimeException("非医院用户不能新增订单");
         }
 
@@ -137,10 +137,10 @@ public class PurchaseOrderPlugin extends AbstractPlugInAdapter implements Initia
     @Override
     public PlugInRet beforeModify(int classId, Long id, FormTemplate formTemplate, JsonNode data) {
 
-        if (classId != Constant.ClassType.PURCHASE_ORDER.classId()) {
+        if (classId != Constants.ClassType.PURCHASE_ORDER.classId()) {
             return super.beforeSave(classId, formTemplate, data);
         }
-        if (SessionUtil.getUserRoleType() != Constant.UserRoleType.HOSPITAL) {
+        if (SessionUtil.getUserRoleType() != Constants.UserRoleType.HOSPITAL) {
             throw new BusinessLogicRunTimeException("非医院用户不能新增订单");
         }
 
@@ -171,13 +171,13 @@ public class PurchaseOrderPlugin extends AbstractPlugInAdapter implements Initia
 
         List<Condition> ret = new ArrayList<>();
 
-        Constant.UserRoleType userRoleType = getUserRoleType();
+        Constants.UserRoleType userRoleType = getUserRoleType();
         Long linkOrg = getUserLinkOrg();
 
-        if (userRoleType == Constant.UserRoleType.SYSTEM) {
+        if (userRoleType == Constants.UserRoleType.SYSTEM) {
             // 系统角色类别放开所有数据查看权限
             return ret;
-        } else if (userRoleType == Constant.UserRoleType.HOSPITAL) {
+        } else if (userRoleType == Constants.UserRoleType.HOSPITAL) {
             // 医院只能查看本院的订单
             Condition condition = new Condition();
             condition.setLinkType(Condition.LinkType.AND);
@@ -187,7 +187,7 @@ public class PurchaseOrderPlugin extends AbstractPlugInAdapter implements Initia
             condition.setNeedConvert(false);
             ret.add(condition);
 
-        } else if (userRoleType == Constant.UserRoleType.SUPPLIER) {
+        } else if (userRoleType == Constants.UserRoleType.SUPPLIER) {
             //  供应商只能查看医院发送给自己的订单
             Condition condition = new Condition();
             condition.setLinkType(Condition.LinkType.AND);

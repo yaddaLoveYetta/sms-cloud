@@ -1,6 +1,6 @@
 package com.kingdee.hrp.sms.basedata.service;
 
-import com.kingdee.hrp.sms.common.enums.Constant;
+import com.kingdee.hrp.sms.common.enums.Constants;
 
 /**
  * 医院相关功能接口
@@ -26,5 +26,5 @@ public interface HospitalService {
      * @param hrpSupplier            医院指定关联的本地HRP供应商（operateType=0时必须有）
      * @param cooperationApplyStatus 操作类型
      */
-    void processCooperationApply(Long id, Long hrpSupplier, Constant.CooperationApplyStatus cooperationApplyStatus);
+    void processCooperationApply(Long id, Long hrpSupplier, Constants.CooperationApplyStatus cooperationApplyStatus);
 }

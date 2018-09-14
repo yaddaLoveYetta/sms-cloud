@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author yadda
  */
-public final class Constant {
+public final class Constants {
 
     /**
      * 系统预留权限项掩码

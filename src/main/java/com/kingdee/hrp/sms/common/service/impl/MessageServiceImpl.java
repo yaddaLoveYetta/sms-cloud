@@ -2,7 +2,7 @@ package com.kingdee.hrp.sms.common.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.kingdee.hrp.sms.common.dao.generate.MessageMapper;
-import com.kingdee.hrp.sms.common.enums.Constant;
+import com.kingdee.hrp.sms.common.enums.Constants;
 import com.kingdee.hrp.sms.common.model.Message;
 import com.kingdee.hrp.sms.common.model.MessageExample;
 import com.kingdee.hrp.sms.common.service.BaseService;
@@ -82,7 +82,7 @@ public class MessageServiceImpl extends BaseService implements MessageService {
      * @return List<Message>
      */
     @Override
-    public List<Message> getByOrg(Long org, Constant.MessageStatus status, Integer count) {
+    public List<Message> getByOrg(Long org, Constants.MessageStatus status, Integer count) {
 
         MessageMapper mapper = sqlSession.getMapper(MessageMapper.class);
         MessageExample example = new MessageExample();

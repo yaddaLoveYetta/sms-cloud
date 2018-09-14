@@ -2,7 +2,7 @@ package com.kingdee.hrp.sms.common.service.plugin.impl;
 
 import com.google.common.base.Joiner;
 import com.kingdee.hrp.sms.common.dao.generate.PartnerMapper;
-import com.kingdee.hrp.sms.common.enums.Constant;
+import com.kingdee.hrp.sms.common.enums.Constants;
 import com.kingdee.hrp.sms.common.model.Partner;
 import com.kingdee.hrp.sms.common.model.PartnerExample;
 import com.kingdee.hrp.sms.common.pojo.Condition;
@@ -100,7 +100,7 @@ public class ApprovedSupplierPlugin extends AbstractPlugInAdapter implements Ini
     public void afterPropertiesSet() throws Exception {
         classIdSet = new HashSet<>();
         // 中标库
-        classIdSet.add(Constant.ClassType.APPROVED_SUPPLIER.classId());
+        classIdSet.add(Constants.ClassType.APPROVED_SUPPLIER.classId());
 
     }
 
@@ -119,12 +119,12 @@ public class ApprovedSupplierPlugin extends AbstractPlugInAdapter implements Ini
 
         List<Condition> ret = new ArrayList<>();
 
-        if (classId != Constant.ClassType.APPROVED_SUPPLIER.classId()) {
+        if (classId != Constants.ClassType.APPROVED_SUPPLIER.classId()) {
             // 本插件只支持中标库
             return super.getConditions(classId, formTemplate, conditions);
         }
 
-        if (SessionUtil.getUserRoleType() == Constant.UserRoleType.HOSPITAL) {
+        if (SessionUtil.getUserRoleType() == Constants.UserRoleType.HOSPITAL) {
 
             // 医院只能查看本院中标库
             Condition condition = new Condition();
@@ -135,7 +135,7 @@ public class ApprovedSupplierPlugin extends AbstractPlugInAdapter implements Ini
                     .setNeedConvert(false);
             ret.add(condition);
 
-        } else if (SessionUtil.getUserRoleType() == Constant.UserRoleType.SUPPLIER) {
+        } else if (SessionUtil.getUserRoleType() == Constants.UserRoleType.SUPPLIER) {
             // 供应商查看自己在所有医院的中标库
 
             // 查询供应商的合作医院来确定此供应商用户关联到了哪些医院且在每个医院对应的HRP供应商

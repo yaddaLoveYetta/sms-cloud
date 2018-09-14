@@ -4,7 +4,7 @@ import com.kingdee.hrp.sms.basedata.service.HospitalService;
 import com.kingdee.hrp.sms.common.dao.generate.CooperationApplyMapper;
 import com.kingdee.hrp.sms.common.dao.generate.HospitalMapper;
 import com.kingdee.hrp.sms.common.dao.generate.PartnerMapper;
-import com.kingdee.hrp.sms.common.enums.Constant;
+import com.kingdee.hrp.sms.common.enums.Constants;
 import com.kingdee.hrp.sms.common.exception.BusinessLogicRunTimeException;
 import com.kingdee.hrp.sms.common.model.CooperationApply;
 import com.kingdee.hrp.sms.common.model.Hospital;
@@ -60,12 +60,12 @@ public class HospitalServiceImpl extends BaseService implements HospitalService 
      * @param cooperationApplyStatus 操作类型
      */
     @Override
-    public void processCooperationApply(Long id, Long hrpSupplier, Constant.CooperationApplyStatus cooperationApplyStatus) {
+    public void processCooperationApply(Long id, Long hrpSupplier, Constants.CooperationApplyStatus cooperationApplyStatus) {
 
         if (null == id) {
             throw new BusinessLogicRunTimeException("请选择记录进行操作!");
         }
-        if (null == hrpSupplier && cooperationApplyStatus == Constant.CooperationApplyStatus.AGREE) {
+        if (null == hrpSupplier && cooperationApplyStatus == Constants.CooperationApplyStatus.AGREE) {
             // 同意申请是必须关联hrp供应商
             throw new BusinessLogicRunTimeException("必须关联HRP供应商!");
         }
@@ -89,14 +89,14 @@ public class HospitalServiceImpl extends BaseService implements HospitalService 
         // 发一条消息给供应商
         Message message = new Message();
         message.setId(getId());
-        message.setType(Constant.MessageType.COOPERATION_APPLICATION_PROCESSED.value());
-        message.setStatus(Constant.MessageStatus.UN_PROCESSED.getNumber());
+        message.setType(Constants.MessageType.COOPERATION_APPLICATION_PROCESSED.value());
+        message.setStatus(Constants.MessageStatus.UN_PROCESSED.getNumber());
         message.setDate(new Date());
         // 扩展数据中保存了申请id
         message.setData(cooperationApply.getId().toString());
-        message.setReceiverType(Constant.UserRoleType.SUPPLIER.value());
+        message.setReceiverType(Constants.UserRoleType.SUPPLIER.value());
         message.setReceiverOrg(cooperationApply.getSupplier());
-        message.setSenderType(Constant.UserRoleType.HOSPITAL.value());
+        message.setSenderType(Constants.UserRoleType.HOSPITAL.value());
         message.setSenderOrg(SessionUtil.getUserLinkHospital());
         message.setTopic("你的申请医院已审批，点击查看审批结果!");
 
@@ -105,7 +105,7 @@ public class HospitalServiceImpl extends BaseService implements HospitalService 
             messageService.add(message);
         }
 
-        if (cooperationApplyStatus == Constant.CooperationApplyStatus.DISAGREE) {
+        if (cooperationApplyStatus == Constants.CooperationApplyStatus.DISAGREE) {
             return;
         }
 
