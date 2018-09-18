@@ -231,7 +231,7 @@
                 }
                 MessageBox.confirm('禁用后资料不能参与业务。\r\n确定禁用?', function (result) {
                     if (result) {
-                        List.forbid(classId, list, 1,item.info.apiUrl, function () {
+                        List.forbid(classId, list, 1, item.info.apiUrl, function () {
                             refresh();
                         });
                     }
@@ -248,7 +248,7 @@
                 }
                 MessageBox.confirm('确定启用选择的项?', function (result) {
                     if (result) {
-                        List.forbid(classId, list, 2,item.info.apiUrl, function () {
+                        List.forbid(classId, list, 2, item.info.apiUrl, function () {
                             refresh();
                         });
                     }
@@ -354,7 +354,7 @@
                     SMS.Tips.error('一次只能对一条记录进行操作', 1500);
                     return;
                 }
-                List.check(classId, list,item.info.apiUrl, function () {
+                List.check(classId, list, item.info.apiUrl, function () {
                     SMS.Tips.success('审核成功', 2000);
                     refresh();
                 });
@@ -375,7 +375,7 @@
                     return;
                 }
 
-                List.unCheck(classId, list,item.info.apiUrl, function () {
+                List.unCheck(classId, list, item.info.apiUrl, function () {
                     SMS.Tips.success('反审核成功', 2000);
                     refresh();
                 });
@@ -411,7 +411,7 @@
 
                 MessageBox.confirm('确定要将该记录发送给医院?', function (result) {
                     if (result) {
-                        List.send(classId, list,item.info.apiUrl, function () {
+                        List.send(classId, list, item.info.apiUrl, function () {
                             SMS.Tips.success('发送成功', 2000);
                             refresh();
                         });
@@ -475,7 +475,7 @@
                     // 中标库查看的供应商是HRP供应商
                     targetClassId = 1005;
                     //url =  require("UrlMapping")(1005);
-                    url =  item.info.url;
+                    url = item.info.url;
 
                     name = list[0].data.supplier_DspName || '';
 
@@ -588,6 +588,113 @@
 
                     dialog.showModal();
                 });
+            },
+            // 医院同意供应商提交的合作申请
+            'agree': function (item, index) {
+
+                if (classId !== 3001) {
+                    return;
+                }
+
+                var list = List.getSelectedItems();
+
+                if (list.length === 0) {
+                    SMS.Tips.error('请选择要操作的项', 1000);
+                    return;
+                }
+
+                if (list.length > 1) {
+                    SMS.Tips.error('一次只能对一条记录进行操作', 1000);
+                    return;
+                }
+
+                if (list[0].data.status !== 1) {
+                    SMS.Tips.error('该记录已操作，不可重复操作', 1000);
+                    return;
+                }
+
+                SMS.use('Dialog', function (Dialog) {
+
+                    var dialog = new Dialog({
+                        id: 'cooperation-apply-agree',
+                        title: '请选择关联本地供应商',
+                        url: item.info.url,
+                        width: 400,
+                        height: 200,
+                        button: [
+                            {
+                                value: '取消',
+                                className: 'sms-cancel-btn'
+                            },
+                            {
+                                value: '确定',
+                                className: 'sms-submit-btn',
+                                callback: function () {
+                                    dialog.__dispatchEvent('get');
+                                    var data = dialog.getData();
+                                    if (data && data[0].all) {
+                                        return true;
+                                    } else {
+                                        var err = {
+                                            result: false,
+                                            msg: '请指定关联HRP供应商!'
+                                        };
+                                        dialog.setData(err);
+                                        dialog.__dispatchEvent('back');
+                                        return false;
+                                    }
+                                }
+                            }]
+                    });
+
+                    dialog.on({
+                        remove: function () {
+
+                            var data = dialog.getData();
+
+                            if (data) {
+                                agree(data[0].id, function () {
+                                    SMS.Tips.success("操作成功!", 1000);
+                                    refresh();
+                                });
+                            }
+                        }
+                    });
+
+                    dialog.showModal();
+                });
+
+                function agree(hrpSupplier, fn) {
+
+                    var url = item.info.apiUrl;
+
+                    var api = new API('hospital/agreeApply');
+
+                    api.post({
+                        id: list[0].primaryValue,
+                        hrpSupplier: hrpSupplier
+                    });
+
+                    api.on({
+                        'success': function (data, json) {
+                            fn && fn(data, json);
+                        },
+
+                        'fail': function (code, msg, json) {
+                            var s = $.String.format('{0} (错误码: {1})', msg, code);
+                            SMS.Tips.error(s);
+                        },
+
+                        'error': function () {
+                            SMS.Tips.error('网络繁忙，请稍候再试');
+                        }
+                    });
+
+                }
+            },
+            // 医院拒绝供应商提交的合作申请
+            'disagree': function (item, index) {
+
             }
 
         });

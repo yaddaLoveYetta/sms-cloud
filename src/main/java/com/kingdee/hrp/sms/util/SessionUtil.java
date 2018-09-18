@@ -1,6 +1,6 @@
 package com.kingdee.hrp.sms.util;
 
-import com.kingdee.hrp.sms.common.enums.Constants;
+import com.kingdee.hrp.sms.common.enums.Constants.UserRoleType;
 import com.kingdee.hrp.sms.common.exception.SessionLostRuntimeException;
 import com.kingdee.hrp.sms.common.model.Role;
 import com.kingdee.hrp.sms.common.model.User;
@@ -134,7 +134,7 @@ public final class SessionUtil {
      * @return 用户角色类别
      */
 
-    public static Constants.UserRoleType getUserRoleType() {
+    public static UserRoleType getUserRoleType() {
 
         Object object = get("roles");
 
@@ -145,7 +145,7 @@ public final class SessionUtil {
 
         Integer type = roles.get(0).getType();
 
-        return Constants.UserRoleType.getUserRoleType(type);
+        return UserRoleType.getUserRoleType(type);
 
     }
 
@@ -170,7 +170,7 @@ public final class SessionUtil {
      */
     public static Long getUserLinkSupplier() {
         // 1: 系统角色 2: 医院角色 3: 供应商角色
-        if (getUserRoleType() != Constants.UserRoleType.SUPPLIER) {
+        if (getUserRoleType() != UserRoleType.SUPPLIER) {
             return -1L;
         }
         return getUserRole().get(0).getOrg();
@@ -186,7 +186,7 @@ public final class SessionUtil {
      */
     public static Long getUserLinkHospital() {
         // 1: 系统角色 2: 医院角色 3: 供应商角色
-        if (getUserRoleType() != Constants.UserRoleType.HOSPITAL) {
+        if (getUserRoleType() != UserRoleType.HOSPITAL) {
             return -1L;
         }
         return getUserRole().get(0).getOrg();

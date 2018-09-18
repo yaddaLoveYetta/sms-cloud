@@ -359,7 +359,6 @@ public class TemplateController {
     private void setResponseHeader(HttpServletResponse response, String fileName) {
         try {
             try {
-                //fileName = new String(fileName.getBytes(), "utf-8");
                 fileName = new String(fileName.getBytes("utf-8"), "ISO-8859-1");
             } catch (UnsupportedEncodingException e) {
                 logger.error(e.getMessage(), e);

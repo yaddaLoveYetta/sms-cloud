@@ -60,7 +60,9 @@ public class HospitalServiceImpl extends BaseService implements HospitalService 
      * @param cooperationApplyStatus 操作类型
      */
     @Override
-    public void processCooperationApply(Long id, Long hrpSupplier, Constants.CooperationApplyStatus cooperationApplyStatus) {
+    @Transactional(rollbackFor = Exception.class)
+    public void processCooperationApply(Long id, Long hrpSupplier,
+            Constants.CooperationApplyStatus cooperationApplyStatus) {
 
         if (null == id) {
             throw new BusinessLogicRunTimeException("请选择记录进行操作!");
@@ -77,6 +79,11 @@ public class HospitalServiceImpl extends BaseService implements HospitalService 
         if (null == cooperationApply) {
             logger.error("不存在id为{}的供应商申请记录!", id);
             throw new BusinessLogicRunTimeException(String.format("不存在id为%d的供应商申请记录!", id));
+        }
+
+        if (cooperationApply.getStatus() != Constants.CooperationApplyStatus.UN_PROCESSED.value()) {
+            logger.error("该记录已操作，不可重复操作,id:{}", id);
+            throw new BusinessLogicRunTimeException(String.format("该记录已操作，不可重复操作!", id));
         }
 
         // 更新申请记录状态为已处理
