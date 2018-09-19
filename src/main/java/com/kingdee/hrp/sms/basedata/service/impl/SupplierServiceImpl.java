@@ -57,24 +57,26 @@ public class SupplierServiceImpl extends BaseService implements SupplierService 
         PartnerExample partnerExample = new PartnerExample();
 
         PartnerExample.Criteria partnerExampleCriteria = partnerExample.createCriteria();
-        partnerExampleCriteria.andLinkOrgEqualTo(hospital);
-        partnerExampleCriteria.andOrgEqualTo(supplier);
+        partnerExampleCriteria.andLinkOrgEqualTo(hospital).andOrgEqualTo(supplier);
 
         List<Partner> partners = partnerMapper.selectByExample(partnerExample);
         if (partners != null && partners.size() > 0) {
             throw new BusinessLogicRunTimeException("您已经是该医院的供应商，不需要申请!");
         }
+
         // 判断是否已经向该医院发出过申请，不能重复向医院发送申请
         CooperationApplyMapper mapper = sqlSession.getMapper(CooperationApplyMapper.class);
 
         CooperationApplyExample example = new CooperationApplyExample();
         CooperationApplyExample.Criteria criteria = example.createCriteria();
-        criteria.andSupplierEqualTo(supplier);
-        criteria.andHospitalEqualTo(hospital);
+        // 未处理的申请
+        criteria.andSupplierEqualTo(supplier).andHospitalEqualTo(hospital).andStatusEqualTo(
+                Constants.CooperationApplyStatus.UN_PROCESSED.value());
 
         List<CooperationApply> cooperationApplies = mapper.selectByExample(example);
 
         if (cooperationApplies != null && cooperationApplies.size() > 0) {
+            // 存在待处理的申请不允许再新增 (只有申请被拒绝后可重新提申请)
             throw new BusinessLogicRunTimeException("您已经对该医院发送过申请，请到申请列表中查看状态!");
         }
 
@@ -93,8 +95,23 @@ public class SupplierServiceImpl extends BaseService implements SupplierService 
         mapper.insert(apply);
 
         // 发送消息通知给医院
-        MessageMapper messageMapper = sqlSession.getMapper(MessageMapper.class);
+        sendMessage(supplier, hospital, applyId, applyDate);
+
+        return true;
+    }
+
+    /**
+     * 发送消息给医院
+     *
+     * @param supplier  供应商
+     * @param hospital  医院
+     * @param applyId   合作申请申请id
+     * @param applyDate 时间
+     */
+    private void sendMessage(Long supplier, Long hospital, Long applyId, Date applyDate) {
+
         Message message = new Message();
+
         message.setId(getId());
         // 消息类别，参考t_assistance表type_id=40的记录
         message.setType(Constants.MessageType.COOPERATION_APPLICATION.value());
@@ -110,8 +127,8 @@ public class SupplierServiceImpl extends BaseService implements SupplierService 
 
         message.setTopic("收到一个申请，希望成为您医院的供应商");
 
-        messageMapper.insertSelective(message);
+        MessageMapper messageMapper = sqlSession.getMapper(MessageMapper.class);
 
-        return true;
+        messageMapper.insertSelective(message);
     }
 }

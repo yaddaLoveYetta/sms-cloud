@@ -23,7 +23,7 @@ public interface HospitalService {
      * 医院处理供应商成为合作供应商的申请
      *
      * @param id                     申请记录id
-     * @param hrpSupplier            医院指定关联的本地HRP供应商（operateType=0时必须有）
+     * @param hrpSupplier            医院指定关联的本地HRP供应商（cooperationApplyStatus=Constants.CooperationApplyStatus.AGREE 时必须有时必须有）
      * @param cooperationApplyStatus 操作类型
      */
     void processCooperationApply(Long id, Long hrpSupplier, Constants.CooperationApplyStatus cooperationApplyStatus);

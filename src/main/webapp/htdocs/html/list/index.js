@@ -280,7 +280,7 @@
                         title: '角色-' + list[0].data.name + '-权限管理',
                         url: './html/role/index.html',
                         width: $(window).width() * 0.8,
-                        height: 600,
+                        height: $(window).height(),
                         button: [{
                             value: '取消授权',
                             className: 'sms-cancel-btn'
@@ -448,10 +448,10 @@
             'import': function (item, index) {
 
             },
-            //中标库-合作申请查看关联供应商详细资料
+            //中标库-合作申请-合作供应商 查看关联供应商详细资料
             'view-supplier': function (item, index) {
 
-                if (classId !== 1007 && classId !== 3001) {
+                if (classId !== 1007 && classId !== 3001 && classId !== 1009) {
                     return;
                 }
 
@@ -467,14 +467,11 @@
                     return;
                 }
 
-                var targetClassId;
                 var url;
                 var name;
 
                 if (classId === 1007) {
                     // 中标库查看的供应商是HRP供应商
-                    targetClassId = 1005;
-                    //url =  require("UrlMapping")(1005);
                     url = item.info.url;
 
                     name = list[0].data.supplier_DspName || '';
@@ -494,11 +491,9 @@
                             'operate': 0
                         }
                     });
-                } else if (classId === 3001) {
-                    // 合作申请查看的供应商是供应商注册用户资料
-                    targetClassId = 1013;
-                    //url = require("UrlMapping")(1013);
-                    url = item.info.apiUrl;
+                } else if (classId === 3001 || classId === 1009) {
+                    // 合作申请-合作供应商查看的供应商是供应商注册用户资料
+                    url = item.info.url;
 
                     name = list[0].data.supplier_DspName || '';
 
@@ -545,7 +540,7 @@
                 }
 
                 //var url = require("UrlMapping")(1012);
-                var url = item.info.apiUrl;
+                var url = item.info.url;
                 var name = list[0].data.hospital_DspName || '';
 
                 if (!url) {
@@ -694,6 +689,61 @@
             },
             // 医院拒绝供应商提交的合作申请
             'disagree': function (item, index) {
+
+                if (classId !== 3001) {
+                    return;
+                }
+
+                var list = List.getSelectedItems();
+
+                if (list.length === 0) {
+                    SMS.Tips.error('请选择要操作的项', 1000);
+                    return;
+                }
+
+                if (list.length > 1) {
+                    SMS.Tips.error('一次只能对一条记录进行操作', 1000);
+                    return;
+                }
+
+                if (list[0].data.status !== 1) {
+                    SMS.Tips.error('该记录已操作，不可重复操作', 1000);
+                    return;
+                }
+
+                MessageBox.confirm('确定不接受该供应商申请?', function (result) {
+                    if (result) {
+                        disagree();
+                    }
+                });
+
+                function disagree() {
+
+                    var url = item.info.apiUrl;
+
+                    var api = new API('hospital/disagreeApply');
+
+                    api.post({
+                        id: list[0].primaryValue
+                    });
+
+                    api.on({
+                        'success': function (data, json) {
+                            SMS.Tips.success("操作成功!", 1000);
+                            refresh();
+                        },
+
+                        'fail': function (code, msg, json) {
+                            var s = $.String.format('{0} (错误码: {1})', msg, code);
+                            SMS.Tips.error(s);
+                        },
+
+                        'error': function () {
+                            SMS.Tips.error('网络繁忙，请稍候再试');
+                        }
+                    });
+
+                }
 
             }
 

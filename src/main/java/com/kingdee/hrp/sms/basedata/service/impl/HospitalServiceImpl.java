@@ -56,7 +56,7 @@ public class HospitalServiceImpl extends BaseService implements HospitalService 
      * 医院处理供应商成为合作供应商的申请
      *
      * @param id                     申请记录id
-     * @param hrpSupplier            医院指定关联的本地HRP供应商（operateType=0时必须有）
+     * @param hrpSupplier            医院指定关联的本地HRP供应商（cooperationApplyStatus=Constants.CooperationApplyStatus.AGREE 时必须有）
      * @param cooperationApplyStatus 操作类型
      */
     @Override
@@ -94,30 +94,26 @@ public class HospitalServiceImpl extends BaseService implements HospitalService 
         cooperationApplyMapper.updateByPrimaryKeySelective(cooperationApply);
 
         // 发一条消息给供应商
-        Message message = new Message();
-        message.setId(getId());
-        message.setType(Constants.MessageType.COOPERATION_APPLICATION_PROCESSED.value());
-        message.setStatus(Constants.MessageStatus.UN_PROCESSED.getNumber());
-        message.setDate(new Date());
-        // 扩展数据中保存了申请id
-        message.setData(cooperationApply.getId().toString());
-        message.setReceiverType(Constants.UserRoleType.SUPPLIER.value());
-        message.setReceiverOrg(cooperationApply.getSupplier());
-        message.setSenderType(Constants.UserRoleType.HOSPITAL.value());
-        message.setSenderOrg(SessionUtil.getUserLinkHospital());
-        message.setTopic("你的申请医院已审批，点击查看审批结果!");
-
-        MessageService messageService = Environ.getBean(MessageService.class);
-        if (messageService != null) {
-            messageService.add(message);
-        }
+        sendMessage(cooperationApply);
 
         if (cooperationApplyStatus == Constants.CooperationApplyStatus.DISAGREE) {
             return;
         }
 
-        // 如果是同意供应商的申请-将供应商加入到医院的合作供应商中，将医院加入到供应商的合作医院中
-        PartnerMapper partnerMapper = sqlSession.getMapper(PartnerMapper.class);
+        if (cooperationApplyStatus == Constants.CooperationApplyStatus.AGREE) {
+            // 如果是同意供应商的申请-将供应商加入到医院的合作供应商中，将医院加入到供应商的合作医院中，即互成对方partner
+            generatePartner(hrpSupplier, cooperationApply);
+        }
+
+    }
+
+    /**
+     * 新增合作伙伴(医院与供应商互成对方partner)
+     *
+     * @param hrpSupplier      医院HRP供应商
+     * @param cooperationApply 合作申请
+     */
+    private void generatePartner(Long hrpSupplier, CooperationApply cooperationApply) {
 
         // 医院的合作供应商
         Partner hospitalPartner = new Partner();
@@ -147,8 +143,39 @@ public class HospitalServiceImpl extends BaseService implements HospitalService 
         // 已审核
         supplierPartner.setCheckStatus(2);
 
+        PartnerMapper partnerMapper = sqlSession.getMapper(PartnerMapper.class);
+
         partnerMapper.insert(hospitalPartner);
         partnerMapper.insert(supplierPartner);
 
     }
+
+    /**
+     * 发一天申请已处理的消息给供应商
+     *
+     * @param cooperationApply 合作申请
+     */
+    private void sendMessage(CooperationApply cooperationApply) {
+
+        Message message = new Message();
+        message.setId(getId());
+        message.setType(Constants.MessageType.COOPERATION_APPLICATION_PROCESSED.value());
+        message.setStatus(Constants.MessageStatus.UN_PROCESSED.getNumber());
+        message.setDate(new Date());
+        // 扩展数据中保存了申请id
+        message.setData(cooperationApply.getId().toString());
+        message.setReceiverType(Constants.UserRoleType.SUPPLIER.value());
+        message.setReceiverOrg(cooperationApply.getSupplier());
+        message.setSenderType(Constants.UserRoleType.HOSPITAL.value());
+        message.setSenderOrg(SessionUtil.getUserLinkHospital());
+        message.setTopic("你的申请医院已审批，点击查看审批结果!");
+
+        MessageService messageService = Environ.getBean(MessageService.class);
+
+        if (messageService != null) {
+            messageService.add(message);
+        }
+
+    }
+
 }

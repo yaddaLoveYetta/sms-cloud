@@ -225,7 +225,7 @@ a:hover .caret-white {
 
 .list-group {
     border-radius: 2px;
-    max-height: 600px !important;
+    max-height: 500px !important;
 }
 
 .list-group.no-radius .list-group-item {
