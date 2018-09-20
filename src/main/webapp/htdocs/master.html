@@ -496,44 +496,44 @@
 
     <!--Samples.Bootstrap.ButtonList--!
 
-    #--ul.begin--#
+        #--ul.begin--#
 
-    #--item.begin--#
-    <button data-index="{index}" type="button" class="btn btn-primary">
-        <i class=" iconfont {icon}"></i>
-        {text}
-    </button>
-    #--item.end--#
-
-    #--group.begin--#
-    <div class="btn-group">
+        #--item.begin--#
         <button data-index="{index}" type="button" class="btn btn-primary">
             <i class=" iconfont {icon}"></i>
             {text}
         </button>
-        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                aria-expanded="false">
-            <span class="caret"></span>
-            <span class="sr-only">Toggle Dropdown</span>
-        </button>
-        <ul class="dropdown-menu">
-            #--group.item.begin--#
+        #--item.end--#
 
-            <li data-index="{index}" data-no="{no}">
-                <a href="javascript:">
-                    <i class=" iconfont {icon}"></i>
-                    {text}
-                </a>
-            </li>
+        #--group.begin--#
+        <div class="btn-group">
+            <button data-index="{index}" type="button" class="btn btn-primary">
+                <i class=" iconfont {icon}"></i>
+                {text}
+            </button>
+            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                    aria-expanded="false">
+                <span class="caret"></span>
+                <span class="sr-only">Toggle Dropdown</span>
+            </button>
+            <ul class="dropdown-menu">
+                #--group.item.begin--#
 
-            <li role="separator" class="divider"></li>
+                <li data-index="{index}" data-no="{no}">
+                    <a href="javascript:">
+                        <i class=" iconfont {icon}"></i>
+                        {text}
+                    </a>
+                </li>
 
-            #--group.item.end--#
-        </ul>
-    </div>
-     #--group.end--#
+                <li role="separator" class="divider"></li>
 
-    #--ul.end--#
+                #--group.item.end--#
+            </ul>
+        </div>
+         #--group.end--#
+
+        #--ul.end--#
 
     --Samples.Bootstrap.ButtonList-->
 </div>

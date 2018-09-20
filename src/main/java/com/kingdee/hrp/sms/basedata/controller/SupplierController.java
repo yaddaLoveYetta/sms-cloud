@@ -103,4 +103,8 @@ public class SupplierController {
 
         return supplierService.addCooperationApply(supplier, hospital);
     }
+
+    public void getQualification(Long hospitalId){
+
+    }
 }

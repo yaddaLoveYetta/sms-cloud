@@ -206,6 +206,21 @@
 
         </table>
 
+        <table tableName="t_material_document_type" domainObjectName="MaterialDocumentType">
+            <property name="useActualColumnNames" value="false"/>
+
+        </table>
+
+        <table tableName="t_material_document" domainObjectName="MaterialDocument">
+            <property name="useActualColumnNames" value="false"/>
+
+        </table>
+
+        <table tableName="t_supplier_qualification_type" domainObjectName="SupplierQualificationType">
+            <property name="useActualColumnNames" value="false"/>
+
+        </table>
+
     </context>
 
 </generatorConfiguration> 

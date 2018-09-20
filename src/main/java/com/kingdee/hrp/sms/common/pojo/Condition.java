@@ -33,8 +33,9 @@ public class Condition implements Serializable {
     private String fieldKey;
     /**
      * 比较符号
+     * 默认=
      */
-    private LogicOperator logicOperator;
+    private LogicOperator logicOperator = LogicOperator.EQUAL;
     /**
      * 比较值
      */

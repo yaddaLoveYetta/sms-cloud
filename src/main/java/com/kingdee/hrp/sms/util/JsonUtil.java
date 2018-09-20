@@ -19,7 +19,7 @@ import java.util.*;
  *
  * @author le.xiao
  */
-public class JsonUtil {
+public final class JsonUtil {
 
     private static ObjectMapper mapper = new ObjectMapper();
 
@@ -47,14 +47,14 @@ public class JsonUtil {
     /**
      * json字符串转bean
      *
-     * @param jsonStr     json字符串
-     * @param targetClass 目标bean类型
-     * @param <T>         目标bean类型
+     * @param jsonStr    json字符串
+     * @param targetType 目标bean类型
+     * @param <T>        目标bean类型
      * @return 目标bean
      */
-    public static <T> T json2Bean(String jsonStr, Class<T> targetClass) {
+    public static <T> T json2Bean(String jsonStr, Class<T> targetType) {
         try {
-            return mapper.readValue(jsonStr, targetClass);
+            return mapper.readValue(jsonStr, targetType);
         } catch (IOException e) {
             throw new BusinessLogicRunTimeException(e.getMessage(), e);
         }
@@ -65,14 +65,14 @@ public class JsonUtil {
      * <p>
      * eg:  List<Condition> conditions = JsonUtil.json2Collection(condition, List.class, Condition.class);
      *
-     * @param jsonStr         json字符串
-     * @param collectionClass 目标集合类型 eg: List.class
-     * @param elementClasses  目标集合类型子项类型 eg:String.class   List<String></>
-     * @param <T>             eg:List<String>
+     * @param jsonStr        json字符串
+     * @param collectionType 目标集合类型 eg: List.class
+     * @param elementType    目标集合类型子项类型 eg:String.class   List<String></>
+     * @param <T>            eg:List<String>
      * @return 转换后集合类型
      */
-    public static <T extends Collection> T json2Collection(String jsonStr, Class<? extends Collection> collectionClass,
-            Class<?>... elementClasses) {
+    public static <T extends Collection> T json2Collection(String jsonStr, Class<? extends Collection> collectionType,
+            Class<?>... elementType) {
 
         T target;
 
@@ -82,7 +82,7 @@ public class JsonUtil {
 
         try {
 
-            JavaType javaType = mapper.getTypeFactory().constructParametricType(collectionClass, elementClasses);
+            JavaType javaType = mapper.getTypeFactory().constructParametricType(collectionType, elementType);
 
             target = mapper.readValue(jsonStr, javaType);
 
@@ -98,19 +98,19 @@ public class JsonUtil {
      * <p>
      * eg: Map<String, Condition> map = json2Map(s2, Map.class, String.class, Condition.class);
      *
-     * @param jsonStr    json字符串
-     * @param mapClass   Map或其子类
-     * @param keyClass   Map key类型
-     * @param valueClass Map value类型
-     * @param <T>        Map 类型
+     * @param jsonStr   json字符串
+     * @param mapType  Map或其子类
+     * @param keyType   Map key类型
+     * @param valueType Map value类型
+     * @param <T>       Map 类型
      * @return Map
      */
-    public static <T extends Map> T json2Map(String jsonStr, Class<T> mapClass, Class<?> keyClass,
-            Class<?> valueClass) {
+    public static <T extends Map> T json2Map(String jsonStr, Class<T> mapType, Class<?> keyType,
+            Class<?> valueType) {
 
         try {
 
-            JavaType javaType = mapper.getTypeFactory().constructParametricType(mapClass, keyClass, valueClass);
+            JavaType javaType = mapper.getTypeFactory().constructParametricType(mapType, keyType, valueType);
 
             return mapper.readValue(jsonStr, javaType);
 

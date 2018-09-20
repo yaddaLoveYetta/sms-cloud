@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.kingdee.hrp.sms.common.dao.generate.PartnerMapper">
-  <resultMap id="BaseResultMap" type="com.kingdee.hrp.sms.common.model.Partner">
+<mapper namespace="com.kingdee.hrp.sms.common.dao.generate.MaterialDocumentTypeMapper">
+  <resultMap id="BaseResultMap" type="com.kingdee.hrp.sms.common.model.MaterialDocumentType">
     <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="org" jdbcType="BIGINT" property="org" />
-    <result column="link_org" jdbcType="BIGINT" property="linkOrg" />
-    <result column="check_status" jdbcType="INTEGER" property="checkStatus" />
-    <result column="status" jdbcType="BIT" property="status" />
-    <result column="type" jdbcType="BIT" property="type" />
-    <result column="hrp_supplier" jdbcType="BIGINT" property="hrpSupplier" />
+    <result column="number" jdbcType="VARCHAR" property="number" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="is_must" jdbcType="BIT" property="isMust" />
+    <result column="hospital" jdbcType="BIGINT" property="hospital" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -69,15 +67,15 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, org, link_org, check_status, `status`, `type`, hrp_supplier
+    id, `number`, `name`, is_must, hospital
   </sql>
-  <select id="selectByExample" parameterType="com.kingdee.hrp.sms.common.model.PartnerExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="com.kingdee.hrp.sms.common.model.MaterialDocumentTypeExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from t_partner
+    from t_material_document_type
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -88,105 +86,85 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from t_partner
+    from t_material_document_type
     where id = #{id,jdbcType=BIGINT}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    delete from t_partner
+    delete from t_material_document_type
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <delete id="deleteByExample" parameterType="com.kingdee.hrp.sms.common.model.PartnerExample">
-    delete from t_partner
+  <delete id="deleteByExample" parameterType="com.kingdee.hrp.sms.common.model.MaterialDocumentTypeExample">
+    delete from t_material_document_type
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.kingdee.hrp.sms.common.model.Partner">
-    insert into t_partner (id, org, link_org, 
-      check_status, `status`, `type`, 
-      hrp_supplier)
-    values (#{id,jdbcType=BIGINT}, #{org,jdbcType=BIGINT}, #{linkOrg,jdbcType=BIGINT}, 
-      #{checkStatus,jdbcType=INTEGER}, #{status,jdbcType=BIT}, #{type,jdbcType=BIT}, 
-      #{hrpSupplier,jdbcType=BIGINT})
+  <insert id="insert" parameterType="com.kingdee.hrp.sms.common.model.MaterialDocumentType">
+    insert into t_material_document_type (id, `number`, `name`, 
+      is_must, hospital)
+    values (#{id,jdbcType=BIGINT}, #{number,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{isMust,jdbcType=BIT}, #{hospital,jdbcType=BIGINT})
   </insert>
-  <insert id="insertSelective" parameterType="com.kingdee.hrp.sms.common.model.Partner">
-    insert into t_partner
+  <insert id="insertSelective" parameterType="com.kingdee.hrp.sms.common.model.MaterialDocumentType">
+    insert into t_material_document_type
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         id,
       </if>
-      <if test="org != null">
-        org,
+      <if test="number != null">
+        `number`,
       </if>
-      <if test="linkOrg != null">
-        link_org,
+      <if test="name != null">
+        `name`,
       </if>
-      <if test="checkStatus != null">
-        check_status,
+      <if test="isMust != null">
+        is_must,
       </if>
-      <if test="status != null">
-        `status`,
-      </if>
-      <if test="type != null">
-        `type`,
-      </if>
-      <if test="hrpSupplier != null">
-        hrp_supplier,
+      <if test="hospital != null">
+        hospital,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
         #{id,jdbcType=BIGINT},
       </if>
-      <if test="org != null">
-        #{org,jdbcType=BIGINT},
+      <if test="number != null">
+        #{number,jdbcType=VARCHAR},
       </if>
-      <if test="linkOrg != null">
-        #{linkOrg,jdbcType=BIGINT},
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
       </if>
-      <if test="checkStatus != null">
-        #{checkStatus,jdbcType=INTEGER},
+      <if test="isMust != null">
+        #{isMust,jdbcType=BIT},
       </if>
-      <if test="status != null">
-        #{status,jdbcType=BIT},
-      </if>
-      <if test="type != null">
-        #{type,jdbcType=BIT},
-      </if>
-      <if test="hrpSupplier != null">
-        #{hrpSupplier,jdbcType=BIGINT},
+      <if test="hospital != null">
+        #{hospital,jdbcType=BIGINT},
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.kingdee.hrp.sms.common.model.PartnerExample" resultType="java.lang.Long">
-    select count(*) from t_partner
+  <select id="countByExample" parameterType="com.kingdee.hrp.sms.common.model.MaterialDocumentTypeExample" resultType="java.lang.Long">
+    select count(*) from t_material_document_type
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
-    update t_partner
+    update t_material_document_type
     <set>
       <if test="record.id != null">
         id = #{record.id,jdbcType=BIGINT},
       </if>
-      <if test="record.org != null">
-        org = #{record.org,jdbcType=BIGINT},
+      <if test="record.number != null">
+        `number` = #{record.number,jdbcType=VARCHAR},
       </if>
-      <if test="record.linkOrg != null">
-        link_org = #{record.linkOrg,jdbcType=BIGINT},
+      <if test="record.name != null">
+        `name` = #{record.name,jdbcType=VARCHAR},
       </if>
-      <if test="record.checkStatus != null">
-        check_status = #{record.checkStatus,jdbcType=INTEGER},
+      <if test="record.isMust != null">
+        is_must = #{record.isMust,jdbcType=BIT},
       </if>
-      <if test="record.status != null">
-        `status` = #{record.status,jdbcType=BIT},
-      </if>
-      <if test="record.type != null">
-        `type` = #{record.type,jdbcType=BIT},
-      </if>
-      <if test="record.hrpSupplier != null">
-        hrp_supplier = #{record.hrpSupplier,jdbcType=BIGINT},
+      <if test="record.hospital != null">
+        hospital = #{record.hospital,jdbcType=BIGINT},
       </if>
     </set>
     <if test="_parameter != null">
@@ -194,50 +172,40 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map">
-    update t_partner
+    update t_material_document_type
     set id = #{record.id,jdbcType=BIGINT},
-      org = #{record.org,jdbcType=BIGINT},
-      link_org = #{record.linkOrg,jdbcType=BIGINT},
-      check_status = #{record.checkStatus,jdbcType=INTEGER},
-      `status` = #{record.status,jdbcType=BIT},
-      `type` = #{record.type,jdbcType=BIT},
-      hrp_supplier = #{record.hrpSupplier,jdbcType=BIGINT}
+      `number` = #{record.number,jdbcType=VARCHAR},
+      `name` = #{record.name,jdbcType=VARCHAR},
+      is_must = #{record.isMust,jdbcType=BIT},
+      hospital = #{record.hospital,jdbcType=BIGINT}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.kingdee.hrp.sms.common.model.Partner">
-    update t_partner
+  <update id="updateByPrimaryKeySelective" parameterType="com.kingdee.hrp.sms.common.model.MaterialDocumentType">
+    update t_material_document_type
     <set>
-      <if test="org != null">
-        org = #{org,jdbcType=BIGINT},
+      <if test="number != null">
+        `number` = #{number,jdbcType=VARCHAR},
       </if>
-      <if test="linkOrg != null">
-        link_org = #{linkOrg,jdbcType=BIGINT},
+      <if test="name != null">
+        `name` = #{name,jdbcType=VARCHAR},
       </if>
-      <if test="checkStatus != null">
-        check_status = #{checkStatus,jdbcType=INTEGER},
+      <if test="isMust != null">
+        is_must = #{isMust,jdbcType=BIT},
       </if>
-      <if test="status != null">
-        `status` = #{status,jdbcType=BIT},
-      </if>
-      <if test="type != null">
-        `type` = #{type,jdbcType=BIT},
-      </if>
-      <if test="hrpSupplier != null">
-        hrp_supplier = #{hrpSupplier,jdbcType=BIGINT},
+      <if test="hospital != null">
+        hospital = #{hospital,jdbcType=BIGINT},
       </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.kingdee.hrp.sms.common.model.Partner">
-    update t_partner
-    set org = #{org,jdbcType=BIGINT},
-      link_org = #{linkOrg,jdbcType=BIGINT},
-      check_status = #{checkStatus,jdbcType=INTEGER},
-      `status` = #{status,jdbcType=BIT},
-      `type` = #{type,jdbcType=BIT},
-      hrp_supplier = #{hrpSupplier,jdbcType=BIGINT}
+  <update id="updateByPrimaryKey" parameterType="com.kingdee.hrp.sms.common.model.MaterialDocumentType">
+    update t_material_document_type
+    set `number` = #{number,jdbcType=VARCHAR},
+      `name` = #{name,jdbcType=VARCHAR},
+      is_must = #{isMust,jdbcType=BIT},
+      hospital = #{hospital,jdbcType=BIGINT}
     where id = #{id,jdbcType=BIGINT}
   </update>
   <insert id="batchInsert" parameterType="map">
@@ -246,13 +214,12 @@
       This element is automatically generated by MyBatis Generator, do not modify.
       @project https://github.com/itfsw/mybatis-generator-plugin
     -->
-    insert into t_partner
-    (id, org, link_org, check_status, `status`, `type`, hrp_supplier)
+    insert into t_material_document_type
+    (id, `number`, `name`, is_must, hospital)
     values
     <foreach collection="list" item="item" separator=",">
-      (#{item.id,jdbcType=BIGINT}, #{item.org,jdbcType=BIGINT}, #{item.linkOrg,jdbcType=BIGINT}, 
-        #{item.checkStatus,jdbcType=INTEGER}, #{item.status,jdbcType=BIT}, #{item.type,jdbcType=BIT}, 
-        #{item.hrpSupplier,jdbcType=BIGINT})
+      (#{item.id,jdbcType=BIGINT}, #{item.number,jdbcType=VARCHAR}, #{item.name,jdbcType=VARCHAR}, 
+        #{item.isMust,jdbcType=BIT}, #{item.hospital,jdbcType=BIGINT})
     </foreach>
   </insert>
   <insert id="batchInsertSelective" parameterType="map">
@@ -261,7 +228,7 @@
       This element is automatically generated by MyBatis Generator, do not modify.
       @project https://github.com/itfsw/mybatis-generator-plugin
     -->
-    insert into t_partner (
+    insert into t_material_document_type (
     <foreach collection="selective" item="column" separator=",">
       ${column.escapedColumnName}
     </foreach>
@@ -273,23 +240,17 @@
         <if test="'id'.toString() == column.value">
           #{item.id,jdbcType=BIGINT}
         </if>
-        <if test="'org'.toString() == column.value">
-          #{item.org,jdbcType=BIGINT}
+        <if test="'number'.toString() == column.value">
+          #{item.number,jdbcType=VARCHAR}
         </if>
-        <if test="'link_org'.toString() == column.value">
-          #{item.linkOrg,jdbcType=BIGINT}
+        <if test="'name'.toString() == column.value">
+          #{item.name,jdbcType=VARCHAR}
         </if>
-        <if test="'check_status'.toString() == column.value">
-          #{item.checkStatus,jdbcType=INTEGER}
+        <if test="'is_must'.toString() == column.value">
+          #{item.isMust,jdbcType=BIT}
         </if>
-        <if test="'status'.toString() == column.value">
-          #{item.status,jdbcType=BIT}
-        </if>
-        <if test="'type'.toString() == column.value">
-          #{item.type,jdbcType=BIT}
-        </if>
-        <if test="'hrp_supplier'.toString() == column.value">
-          #{item.hrpSupplier,jdbcType=BIGINT}
+        <if test="'hospital'.toString() == column.value">
+          #{item.hospital,jdbcType=BIGINT}
         </if>
       </foreach>
       )

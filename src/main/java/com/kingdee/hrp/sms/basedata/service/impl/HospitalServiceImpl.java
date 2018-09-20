@@ -121,7 +121,7 @@ public class HospitalServiceImpl extends BaseService implements HospitalService 
         hospitalPartner.setId(getId());
         hospitalPartner.setOrg(SessionUtil.getUserLinkHospital());
         hospitalPartner.setLinkOrg(cooperationApply.getSupplier());
-        hospitalPartner.setSupplier(hrpSupplier);
+        hospitalPartner.setHrpSupplier(hrpSupplier);
         // 医院的合作供应商
         hospitalPartner.setType(false);
         // 非禁用
