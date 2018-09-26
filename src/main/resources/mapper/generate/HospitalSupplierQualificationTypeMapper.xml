@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.kingdee.hrp.sms.common.dao.generate.SupplierQualificationTypeMapper">
-  <resultMap id="BaseResultMap" type="com.kingdee.hrp.sms.common.model.SupplierQualificationType">
+<mapper namespace="com.kingdee.hrp.sms.common.dao.generate.HospitalSupplierQualificationTypeMapper">
+  <resultMap id="BaseResultMap" type="com.kingdee.hrp.sms.common.model.HospitalSupplierQualificationType">
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="number" jdbcType="VARCHAR" property="number" />
     <result column="name" jdbcType="VARCHAR" property="name" />
-    <result column="supplier" jdbcType="BIGINT" property="supplier" />
+    <result column="is_must" jdbcType="BIT" property="isMust" />
+    <result column="hospital" jdbcType="BIGINT" property="hospital" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -66,15 +67,15 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, `number`, `name`, supplier
+    id, `number`, `name`, is_must, hospital
   </sql>
-  <select id="selectByExample" parameterType="com.kingdee.hrp.sms.common.model.SupplierQualificationTypeExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="com.kingdee.hrp.sms.common.model.HospitalSupplierQualificationTypeExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from t_supplier_qualification_type
+    from t_hospital_supplier_qualification_type
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -85,27 +86,27 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from t_supplier_qualification_type
+    from t_hospital_supplier_qualification_type
     where id = #{id,jdbcType=BIGINT}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    delete from t_supplier_qualification_type
+    delete from t_hospital_supplier_qualification_type
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <delete id="deleteByExample" parameterType="com.kingdee.hrp.sms.common.model.SupplierQualificationTypeExample">
-    delete from t_supplier_qualification_type
+  <delete id="deleteByExample" parameterType="com.kingdee.hrp.sms.common.model.HospitalSupplierQualificationTypeExample">
+    delete from t_hospital_supplier_qualification_type
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.kingdee.hrp.sms.common.model.SupplierQualificationType">
-    insert into t_supplier_qualification_type (id, `number`, `name`, 
-      supplier)
+  <insert id="insert" parameterType="com.kingdee.hrp.sms.common.model.HospitalSupplierQualificationType">
+    insert into t_hospital_supplier_qualification_type (id, `number`, `name`, 
+      is_must, hospital)
     values (#{id,jdbcType=BIGINT}, #{number,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
-      #{supplier,jdbcType=BIGINT})
+      #{isMust,jdbcType=BIT}, #{hospital,jdbcType=BIGINT})
   </insert>
-  <insert id="insertSelective" parameterType="com.kingdee.hrp.sms.common.model.SupplierQualificationType">
-    insert into t_supplier_qualification_type
+  <insert id="insertSelective" parameterType="com.kingdee.hrp.sms.common.model.HospitalSupplierQualificationType">
+    insert into t_hospital_supplier_qualification_type
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         id,
@@ -116,8 +117,11 @@
       <if test="name != null">
         `name`,
       </if>
-      <if test="supplier != null">
-        supplier,
+      <if test="isMust != null">
+        is_must,
+      </if>
+      <if test="hospital != null">
+        hospital,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -130,19 +134,22 @@
       <if test="name != null">
         #{name,jdbcType=VARCHAR},
       </if>
-      <if test="supplier != null">
-        #{supplier,jdbcType=BIGINT},
+      <if test="isMust != null">
+        #{isMust,jdbcType=BIT},
+      </if>
+      <if test="hospital != null">
+        #{hospital,jdbcType=BIGINT},
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.kingdee.hrp.sms.common.model.SupplierQualificationTypeExample" resultType="java.lang.Long">
-    select count(*) from t_supplier_qualification_type
+  <select id="countByExample" parameterType="com.kingdee.hrp.sms.common.model.HospitalSupplierQualificationTypeExample" resultType="java.lang.Long">
+    select count(*) from t_hospital_supplier_qualification_type
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
-    update t_supplier_qualification_type
+    update t_hospital_supplier_qualification_type
     <set>
       <if test="record.id != null">
         id = #{record.id,jdbcType=BIGINT},
@@ -153,8 +160,11 @@
       <if test="record.name != null">
         `name` = #{record.name,jdbcType=VARCHAR},
       </if>
-      <if test="record.supplier != null">
-        supplier = #{record.supplier,jdbcType=BIGINT},
+      <if test="record.isMust != null">
+        is_must = #{record.isMust,jdbcType=BIT},
+      </if>
+      <if test="record.hospital != null">
+        hospital = #{record.hospital,jdbcType=BIGINT},
       </if>
     </set>
     <if test="_parameter != null">
@@ -162,17 +172,18 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map">
-    update t_supplier_qualification_type
+    update t_hospital_supplier_qualification_type
     set id = #{record.id,jdbcType=BIGINT},
       `number` = #{record.number,jdbcType=VARCHAR},
       `name` = #{record.name,jdbcType=VARCHAR},
-      supplier = #{record.supplier,jdbcType=BIGINT}
+      is_must = #{record.isMust,jdbcType=BIT},
+      hospital = #{record.hospital,jdbcType=BIGINT}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.kingdee.hrp.sms.common.model.SupplierQualificationType">
-    update t_supplier_qualification_type
+  <update id="updateByPrimaryKeySelective" parameterType="com.kingdee.hrp.sms.common.model.HospitalSupplierQualificationType">
+    update t_hospital_supplier_qualification_type
     <set>
       <if test="number != null">
         `number` = #{number,jdbcType=VARCHAR},
@@ -180,17 +191,21 @@
       <if test="name != null">
         `name` = #{name,jdbcType=VARCHAR},
       </if>
-      <if test="supplier != null">
-        supplier = #{supplier,jdbcType=BIGINT},
+      <if test="isMust != null">
+        is_must = #{isMust,jdbcType=BIT},
+      </if>
+      <if test="hospital != null">
+        hospital = #{hospital,jdbcType=BIGINT},
       </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.kingdee.hrp.sms.common.model.SupplierQualificationType">
-    update t_supplier_qualification_type
+  <update id="updateByPrimaryKey" parameterType="com.kingdee.hrp.sms.common.model.HospitalSupplierQualificationType">
+    update t_hospital_supplier_qualification_type
     set `number` = #{number,jdbcType=VARCHAR},
       `name` = #{name,jdbcType=VARCHAR},
-      supplier = #{supplier,jdbcType=BIGINT}
+      is_must = #{isMust,jdbcType=BIT},
+      hospital = #{hospital,jdbcType=BIGINT}
     where id = #{id,jdbcType=BIGINT}
   </update>
   <insert id="batchInsert" parameterType="map">
@@ -199,12 +214,12 @@
       This element is automatically generated by MyBatis Generator, do not modify.
       @project https://github.com/itfsw/mybatis-generator-plugin
     -->
-    insert into t_supplier_qualification_type
-    (id, `number`, `name`, supplier)
+    insert into t_hospital_supplier_qualification_type
+    (id, `number`, `name`, is_must, hospital)
     values
     <foreach collection="list" item="item" separator=",">
       (#{item.id,jdbcType=BIGINT}, #{item.number,jdbcType=VARCHAR}, #{item.name,jdbcType=VARCHAR}, 
-        #{item.supplier,jdbcType=BIGINT})
+        #{item.isMust,jdbcType=BIT}, #{item.hospital,jdbcType=BIGINT})
     </foreach>
   </insert>
   <insert id="batchInsertSelective" parameterType="map">
@@ -213,7 +228,7 @@
       This element is automatically generated by MyBatis Generator, do not modify.
       @project https://github.com/itfsw/mybatis-generator-plugin
     -->
-    insert into t_supplier_qualification_type (
+    insert into t_hospital_supplier_qualification_type (
     <foreach collection="selective" item="column" separator=",">
       ${column.escapedColumnName}
     </foreach>
@@ -231,8 +246,11 @@
         <if test="'name'.toString() == column.value">
           #{item.name,jdbcType=VARCHAR}
         </if>
-        <if test="'supplier'.toString() == column.value">
-          #{item.supplier,jdbcType=BIGINT}
+        <if test="'is_must'.toString() == column.value">
+          #{item.isMust,jdbcType=BIT}
+        </if>
+        <if test="'hospital'.toString() == column.value">
+          #{item.hospital,jdbcType=BIGINT}
         </if>
       </foreach>
       )

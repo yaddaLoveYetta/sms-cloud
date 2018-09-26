@@ -216,7 +216,21 @@
 
         </table>
 
+        <table tableName="t_hospital_supplier_qualification_type" domainObjectName="HospitalSupplierQualificationType">
+            <property name="useActualColumnNames" value="false"/>
+
+        </table>
+
+        <table tableName="t_hospital_supplier_qualification" domainObjectName="HospitalSupplierQualification">
+            <property name="useActualColumnNames" value="false"/>
+
+        </table>
+
         <table tableName="t_supplier_qualification_type" domainObjectName="SupplierQualificationType">
+            <property name="useActualColumnNames" value="false"/>
+
+        </table>
+        <table tableName="t_supplier_qualification" domainObjectName="SupplierQualification">
             <property name="useActualColumnNames" value="false"/>
 
         </table>

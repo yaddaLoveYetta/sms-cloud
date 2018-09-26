@@ -1,5 +1,7 @@
 package com.kingdee.hrp.sms.basedata.service;
 
+import com.kingdee.hrp.sms.common.pojo.SupplierQualification;
+
 /**
  * @author yadda
  */
@@ -23,4 +25,13 @@ public interface SupplierService {
      * @return Boolean
      */
     Boolean addCooperationApply(Long supplier, Long hospital);
+
+    /**
+     * 获取指定医院对供应商资质的要求且特定供应商已提供资质明细
+     *
+     * @param hospital 医院
+     * @param supplier 供应商
+     * @return SupplierQualification
+     */
+    SupplierQualification getQualificationByHospital(Long supplier, Long hospital);
 }

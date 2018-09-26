@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.kingdee.hrp.sms.common.dao.generate.SupplierQualificationTypeMapper">
-  <resultMap id="BaseResultMap" type="com.kingdee.hrp.sms.common.model.SupplierQualificationType">
+<mapper namespace="com.kingdee.hrp.sms.common.dao.generate.SupplierQualificationMapper">
+  <resultMap id="BaseResultMap" type="com.kingdee.hrp.sms.common.model.SupplierQualification">
     <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="qualification_type" jdbcType="BIGINT" property="qualificationType" />
     <result column="number" jdbcType="VARCHAR" property="number" />
-    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="issue" jdbcType="VARCHAR" property="issue" />
+    <result column="validity_period_begin" jdbcType="DATE" property="validityPeriodBegin" />
+    <result column="validity_period_end" jdbcType="DATE" property="validityPeriodEnd" />
     <result column="supplier" jdbcType="BIGINT" property="supplier" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -66,15 +70,16 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, `number`, `name`, supplier
+    id, qualification_type, `number`, issue, validity_period_begin, validity_period_end, 
+    supplier, remark
   </sql>
-  <select id="selectByExample" parameterType="com.kingdee.hrp.sms.common.model.SupplierQualificationTypeExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="com.kingdee.hrp.sms.common.model.SupplierQualificationExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from t_supplier_qualification_type
+    from t_supplier_qualification
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -85,76 +90,114 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from t_supplier_qualification_type
+    from t_supplier_qualification
     where id = #{id,jdbcType=BIGINT}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    delete from t_supplier_qualification_type
+    delete from t_supplier_qualification
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <delete id="deleteByExample" parameterType="com.kingdee.hrp.sms.common.model.SupplierQualificationTypeExample">
-    delete from t_supplier_qualification_type
+  <delete id="deleteByExample" parameterType="com.kingdee.hrp.sms.common.model.SupplierQualificationExample">
+    delete from t_supplier_qualification
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.kingdee.hrp.sms.common.model.SupplierQualificationType">
-    insert into t_supplier_qualification_type (id, `number`, `name`, 
-      supplier)
-    values (#{id,jdbcType=BIGINT}, #{number,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
-      #{supplier,jdbcType=BIGINT})
+  <insert id="insert" parameterType="com.kingdee.hrp.sms.common.model.SupplierQualification">
+    insert into t_supplier_qualification (id, qualification_type, `number`, 
+      issue, validity_period_begin, validity_period_end, 
+      supplier, remark)
+    values (#{id,jdbcType=BIGINT}, #{qualificationType,jdbcType=BIGINT}, #{number,jdbcType=VARCHAR}, 
+      #{issue,jdbcType=VARCHAR}, #{validityPeriodBegin,jdbcType=DATE}, #{validityPeriodEnd,jdbcType=DATE}, 
+      #{supplier,jdbcType=BIGINT}, #{remark,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.kingdee.hrp.sms.common.model.SupplierQualificationType">
-    insert into t_supplier_qualification_type
+  <insert id="insertSelective" parameterType="com.kingdee.hrp.sms.common.model.SupplierQualification">
+    insert into t_supplier_qualification
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         id,
       </if>
+      <if test="qualificationType != null">
+        qualification_type,
+      </if>
       <if test="number != null">
         `number`,
       </if>
-      <if test="name != null">
-        `name`,
+      <if test="issue != null">
+        issue,
+      </if>
+      <if test="validityPeriodBegin != null">
+        validity_period_begin,
+      </if>
+      <if test="validityPeriodEnd != null">
+        validity_period_end,
       </if>
       <if test="supplier != null">
         supplier,
+      </if>
+      <if test="remark != null">
+        remark,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
         #{id,jdbcType=BIGINT},
       </if>
+      <if test="qualificationType != null">
+        #{qualificationType,jdbcType=BIGINT},
+      </if>
       <if test="number != null">
         #{number,jdbcType=VARCHAR},
       </if>
-      <if test="name != null">
-        #{name,jdbcType=VARCHAR},
+      <if test="issue != null">
+        #{issue,jdbcType=VARCHAR},
+      </if>
+      <if test="validityPeriodBegin != null">
+        #{validityPeriodBegin,jdbcType=DATE},
+      </if>
+      <if test="validityPeriodEnd != null">
+        #{validityPeriodEnd,jdbcType=DATE},
       </if>
       <if test="supplier != null">
         #{supplier,jdbcType=BIGINT},
       </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.kingdee.hrp.sms.common.model.SupplierQualificationTypeExample" resultType="java.lang.Long">
-    select count(*) from t_supplier_qualification_type
+  <select id="countByExample" parameterType="com.kingdee.hrp.sms.common.model.SupplierQualificationExample" resultType="java.lang.Long">
+    select count(*) from t_supplier_qualification
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
-    update t_supplier_qualification_type
+    update t_supplier_qualification
     <set>
       <if test="record.id != null">
         id = #{record.id,jdbcType=BIGINT},
       </if>
+      <if test="record.qualificationType != null">
+        qualification_type = #{record.qualificationType,jdbcType=BIGINT},
+      </if>
       <if test="record.number != null">
         `number` = #{record.number,jdbcType=VARCHAR},
       </if>
-      <if test="record.name != null">
-        `name` = #{record.name,jdbcType=VARCHAR},
+      <if test="record.issue != null">
+        issue = #{record.issue,jdbcType=VARCHAR},
+      </if>
+      <if test="record.validityPeriodBegin != null">
+        validity_period_begin = #{record.validityPeriodBegin,jdbcType=DATE},
+      </if>
+      <if test="record.validityPeriodEnd != null">
+        validity_period_end = #{record.validityPeriodEnd,jdbcType=DATE},
       </if>
       <if test="record.supplier != null">
         supplier = #{record.supplier,jdbcType=BIGINT},
+      </if>
+      <if test="record.remark != null">
+        remark = #{record.remark,jdbcType=VARCHAR},
       </if>
     </set>
     <if test="_parameter != null">
@@ -162,35 +205,55 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map">
-    update t_supplier_qualification_type
+    update t_supplier_qualification
     set id = #{record.id,jdbcType=BIGINT},
+      qualification_type = #{record.qualificationType,jdbcType=BIGINT},
       `number` = #{record.number,jdbcType=VARCHAR},
-      `name` = #{record.name,jdbcType=VARCHAR},
-      supplier = #{record.supplier,jdbcType=BIGINT}
+      issue = #{record.issue,jdbcType=VARCHAR},
+      validity_period_begin = #{record.validityPeriodBegin,jdbcType=DATE},
+      validity_period_end = #{record.validityPeriodEnd,jdbcType=DATE},
+      supplier = #{record.supplier,jdbcType=BIGINT},
+      remark = #{record.remark,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.kingdee.hrp.sms.common.model.SupplierQualificationType">
-    update t_supplier_qualification_type
+  <update id="updateByPrimaryKeySelective" parameterType="com.kingdee.hrp.sms.common.model.SupplierQualification">
+    update t_supplier_qualification
     <set>
+      <if test="qualificationType != null">
+        qualification_type = #{qualificationType,jdbcType=BIGINT},
+      </if>
       <if test="number != null">
         `number` = #{number,jdbcType=VARCHAR},
       </if>
-      <if test="name != null">
-        `name` = #{name,jdbcType=VARCHAR},
+      <if test="issue != null">
+        issue = #{issue,jdbcType=VARCHAR},
+      </if>
+      <if test="validityPeriodBegin != null">
+        validity_period_begin = #{validityPeriodBegin,jdbcType=DATE},
+      </if>
+      <if test="validityPeriodEnd != null">
+        validity_period_end = #{validityPeriodEnd,jdbcType=DATE},
       </if>
       <if test="supplier != null">
         supplier = #{supplier,jdbcType=BIGINT},
       </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.kingdee.hrp.sms.common.model.SupplierQualificationType">
-    update t_supplier_qualification_type
-    set `number` = #{number,jdbcType=VARCHAR},
-      `name` = #{name,jdbcType=VARCHAR},
-      supplier = #{supplier,jdbcType=BIGINT}
+  <update id="updateByPrimaryKey" parameterType="com.kingdee.hrp.sms.common.model.SupplierQualification">
+    update t_supplier_qualification
+    set qualification_type = #{qualificationType,jdbcType=BIGINT},
+      `number` = #{number,jdbcType=VARCHAR},
+      issue = #{issue,jdbcType=VARCHAR},
+      validity_period_begin = #{validityPeriodBegin,jdbcType=DATE},
+      validity_period_end = #{validityPeriodEnd,jdbcType=DATE},
+      supplier = #{supplier,jdbcType=BIGINT},
+      remark = #{remark,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
   <insert id="batchInsert" parameterType="map">
@@ -199,12 +262,14 @@
       This element is automatically generated by MyBatis Generator, do not modify.
       @project https://github.com/itfsw/mybatis-generator-plugin
     -->
-    insert into t_supplier_qualification_type
-    (id, `number`, `name`, supplier)
+    insert into t_supplier_qualification
+    (id, qualification_type, `number`, issue, validity_period_begin, validity_period_end, 
+      supplier, remark)
     values
     <foreach collection="list" item="item" separator=",">
-      (#{item.id,jdbcType=BIGINT}, #{item.number,jdbcType=VARCHAR}, #{item.name,jdbcType=VARCHAR}, 
-        #{item.supplier,jdbcType=BIGINT})
+      (#{item.id,jdbcType=BIGINT}, #{item.qualificationType,jdbcType=BIGINT}, #{item.number,jdbcType=VARCHAR}, 
+        #{item.issue,jdbcType=VARCHAR}, #{item.validityPeriodBegin,jdbcType=DATE}, #{item.validityPeriodEnd,jdbcType=DATE}, 
+        #{item.supplier,jdbcType=BIGINT}, #{item.remark,jdbcType=VARCHAR})
     </foreach>
   </insert>
   <insert id="batchInsertSelective" parameterType="map">
@@ -213,7 +278,7 @@
       This element is automatically generated by MyBatis Generator, do not modify.
       @project https://github.com/itfsw/mybatis-generator-plugin
     -->
-    insert into t_supplier_qualification_type (
+    insert into t_supplier_qualification (
     <foreach collection="selective" item="column" separator=",">
       ${column.escapedColumnName}
     </foreach>
@@ -225,14 +290,26 @@
         <if test="'id'.toString() == column.value">
           #{item.id,jdbcType=BIGINT}
         </if>
+        <if test="'qualification_type'.toString() == column.value">
+          #{item.qualificationType,jdbcType=BIGINT}
+        </if>
         <if test="'number'.toString() == column.value">
           #{item.number,jdbcType=VARCHAR}
         </if>
-        <if test="'name'.toString() == column.value">
-          #{item.name,jdbcType=VARCHAR}
+        <if test="'issue'.toString() == column.value">
+          #{item.issue,jdbcType=VARCHAR}
+        </if>
+        <if test="'validity_period_begin'.toString() == column.value">
+          #{item.validityPeriodBegin,jdbcType=DATE}
+        </if>
+        <if test="'validity_period_end'.toString() == column.value">
+          #{item.validityPeriodEnd,jdbcType=DATE}
         </if>
         <if test="'supplier'.toString() == column.value">
           #{item.supplier,jdbcType=BIGINT}
+        </if>
+        <if test="'remark'.toString() == column.value">
+          #{item.remark,jdbcType=VARCHAR}
         </if>
       </foreach>
       )

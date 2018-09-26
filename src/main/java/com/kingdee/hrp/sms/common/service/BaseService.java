@@ -9,6 +9,7 @@ import com.kingdee.hrp.sms.common.pojo.FormTemplate;
 import com.kingdee.hrp.sms.util.SessionUtil;
 import com.kingdee.hrp.sms.util.SnowFlake;
 import org.apache.ibatis.session.SqlSession;
+import org.apache.poi.ss.formula.functions.T;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,10 @@ public abstract class BaseService {
 
     @Resource
     protected SqlSession sqlSession;
+
+    protected <T> T getMapper(Class<T> clazz) {
+        return sqlSession.getMapper(clazz);
+    }
 
     /**
      * 新增记录主键生成策略
@@ -69,7 +74,8 @@ public abstract class BaseService {
             } else if (operateType == Constants.BillOperateType.EDIT) {
                 return Constants.DisplayType.EDIT_HOSPITAL_SHOW.value();
             } else {
-                return Constants.DisplayType.VIEW_HOSPITAL_SHOW.value() | Constants.DisplayType.ADD_HOSPITAL_SHOW.value() |
+                return Constants.DisplayType.VIEW_HOSPITAL_SHOW.value() |
+                        Constants.DisplayType.ADD_HOSPITAL_SHOW.value() |
                         Constants.DisplayType.EDIT_HOSPITAL_SHOW.value();
             }
         case SUPPLIER:
@@ -80,7 +86,8 @@ public abstract class BaseService {
             } else if (operateType == Constants.BillOperateType.EDIT) {
                 return Constants.DisplayType.EDIT_SUPPLIER_SHOW.value();
             } else {
-                return Constants.DisplayType.VIEW_SUPPLIER_SHOW.value() | Constants.DisplayType.ADD_SUPPLIER_SHOW.value() |
+                return Constants.DisplayType.VIEW_SUPPLIER_SHOW.value() |
+                        Constants.DisplayType.ADD_SUPPLIER_SHOW.value() |
                         Constants.DisplayType.EDIT_SUPPLIER_SHOW.value();
             }
         default:
@@ -188,7 +195,8 @@ public abstract class BaseService {
             } else if (operateType == Constants.BillOperateType.EDIT) {
                 return Constants.MustInputType.EDIT_SYSTEM_MUST.value();
             } else {
-                return Constants.MustInputType.ADD_SYSTEM_MUST.value() | Constants.MustInputType.EDIT_SYSTEM_MUST.value();
+                return Constants.MustInputType.ADD_SYSTEM_MUST.value() |
+                        Constants.MustInputType.EDIT_SYSTEM_MUST.value();
             }
         case HOSPITAL:
             if (operateType == Constants.BillOperateType.ADD) {
@@ -196,7 +204,8 @@ public abstract class BaseService {
             } else if (operateType == Constants.BillOperateType.EDIT) {
                 return Constants.MustInputType.EDIT_HOSPITAL_MUST.value();
             } else {
-                return Constants.MustInputType.ADD_HOSPITAL_MUST.value() | Constants.MustInputType.EDIT_HOSPITAL_MUST.value();
+                return Constants.MustInputType.ADD_HOSPITAL_MUST.value() |
+                        Constants.MustInputType.EDIT_HOSPITAL_MUST.value();
             }
         case SUPPLIER:
             if (operateType == Constants.BillOperateType.ADD) {
@@ -204,14 +213,18 @@ public abstract class BaseService {
             } else if (operateType == Constants.BillOperateType.EDIT) {
                 return Constants.MustInputType.EDIT_SUPPLIER_MUST.value();
             } else {
-                return Constants.MustInputType.ADD_SUPPLIER_MUST.value() | Constants.MustInputType.EDIT_SUPPLIER_MUST.value();
+                return Constants.MustInputType.ADD_SUPPLIER_MUST.value() |
+                        Constants.MustInputType.EDIT_SUPPLIER_MUST.value();
             }
         default:
         }
 
-        int maskAll = Constants.MustInputType.ADD_SYSTEM_MUST.value() | Constants.MustInputType.EDIT_SYSTEM_MUST.value() |
-                Constants.MustInputType.ADD_HOSPITAL_MUST.value() | Constants.MustInputType.EDIT_HOSPITAL_MUST.value() |
-                Constants.MustInputType.ADD_SUPPLIER_MUST.value() | Constants.MustInputType.EDIT_SUPPLIER_MUST.value();
+        int maskAll =
+                Constants.MustInputType.ADD_SYSTEM_MUST.value() | Constants.MustInputType.EDIT_SYSTEM_MUST.value() |
+                        Constants.MustInputType.ADD_HOSPITAL_MUST.value() |
+                        Constants.MustInputType.EDIT_HOSPITAL_MUST.value() |
+                        Constants.MustInputType.ADD_SUPPLIER_MUST.value() |
+                        Constants.MustInputType.EDIT_SUPPLIER_MUST.value();
 
         return maskAll;
 

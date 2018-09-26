@@ -2,6 +2,7 @@ package com.kingdee.hrp.sms.basedata.controller;
 
 import com.kingdee.hrp.sms.basedata.service.SupplierService;
 import com.kingdee.hrp.sms.common.exception.BusinessLogicRunTimeException;
+import com.kingdee.hrp.sms.common.pojo.SupplierQualification;
 import com.kingdee.hrp.sms.util.FileOperate;
 import com.kingdee.hrp.sms.util.SessionUtil;
 import com.sun.jersey.api.client.Client;
@@ -104,7 +105,27 @@ public class SupplierController {
         return supplierService.addCooperationApply(supplier, hospital);
     }
 
-    public void getQualification(Long hospitalId){
+    /**
+     * 获取供应商对指定医院提供的资质
+     * <p>
+     * 返回医院要求的所有资质类型及当前供应商已经提供的资质类型，资质明细
+     *
+     * @param hospitalId 医院id
+     */
+    @RequestMapping(value = "getQualificationByHospital")
+    public SupplierQualification getQualificationByHospital(Long hospitalId) {
+
+        // 供应商
+        Long supplier = SessionUtil.getUserLinkSupplier();
+        if (supplier <= 0) {
+            throw new BusinessLogicRunTimeException("只有供应商能进行此操作!");
+        }
+
+        if (null == hospitalId) {
+            throw new BusinessLogicRunTimeException("请指定医院!");
+        }
+
+        return supplierService.getQualificationByHospital(supplier, hospitalId);
 
     }
 }
