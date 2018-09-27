@@ -2,14 +2,14 @@ package com.kingdee.hrp.sms.basedata.controller;
 
 import com.kingdee.hrp.sms.basedata.service.SupplierService;
 import com.kingdee.hrp.sms.common.exception.BusinessLogicRunTimeException;
-import com.kingdee.hrp.sms.common.pojo.SupplierQualification;
+import com.kingdee.hrp.sms.common.pojo.SupplierQualificationModel;
 import com.kingdee.hrp.sms.util.FileOperate;
 import com.kingdee.hrp.sms.util.SessionUtil;
-import com.sun.jersey.api.client.Client;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -52,15 +52,13 @@ public class SupplierController {
             throw new BusinessLogicRunTimeException("缺少参数classId或id");
         }
 
-        Map<String, Object> ret = new HashMap<String, Object>();
+        Map<String, Object> ret = new HashMap<String, Object>(4);
 
         MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
         //得到文件map对象
         Map<String, MultipartFile> files = multipartRequest.getFileMap();
 
-        // 实例化一个jersey
-        Client client = new Client();
-        // 供应商、医院logo按classId来建目录保存-要求比不在文件服务器中先建立好目录，否则不能上传成功
+        // 供应商、医院logo按classId来建目录保存-要求必须在文件服务器中先建立好目录，否则不能上传成功
         String logoPath = filePath + classId + "/";
 
         String fileName = "";
@@ -71,7 +69,7 @@ public class SupplierController {
             MultipartFile file = fileEntry.getValue();
             fileName = file.getOriginalFilename();
 
-            logoUrl = FileOperate.upload(client, file, fileHost, logoPath);
+            logoUrl = FileOperate.upload(file, fileHost, logoPath);
 
             if (!"".equals(logoUrl)) {
                 //上传成功
@@ -97,10 +95,7 @@ public class SupplierController {
     public Boolean addCooperationApply(Long hospital) {
 
         // 供应商
-        Long supplier = SessionUtil.getUserLinkSupplier();
-        if (supplier <= 0) {
-            throw new BusinessLogicRunTimeException("只有供应商能进行此操作!");
-        }
+        Long supplier = SessionUtil.checkSupplier();
 
         return supplierService.addCooperationApply(supplier, hospital);
     }
@@ -111,21 +106,68 @@ public class SupplierController {
      * 返回医院要求的所有资质类型及当前供应商已经提供的资质类型，资质明细
      *
      * @param hospitalId 医院id
+     * @param pageSize   分页大小
+     * @param pageNo     当前页码
      */
     @RequestMapping(value = "getQualificationByHospital")
-    public SupplierQualification getQualificationByHospital(Long hospitalId) {
+    @ResponseBody
+    public SupplierQualificationModel getQualificationByHospital(Long hospitalId,
+            @RequestParam(defaultValue = "10") Integer pageSize,
+            @RequestParam(defaultValue = "1") Integer pageNo) {
 
         // 供应商
-        Long supplier = SessionUtil.getUserLinkSupplier();
-        if (supplier <= 0) {
-            throw new BusinessLogicRunTimeException("只有供应商能进行此操作!");
-        }
+        Long supplier = SessionUtil.checkSupplier();
 
         if (null == hospitalId) {
             throw new BusinessLogicRunTimeException("请指定医院!");
         }
 
-        return supplierService.getQualificationByHospital(supplier, hospitalId);
+        return supplierService.getQualificationByHospital(supplier, hospitalId, pageSize, pageNo);
+
+    }
+
+    /**
+     * 获取供应商对所有合作医院提供的资质
+     * 与getQualificationByHospital的区别是不区分医院，返回所有医院的。不返回类别(因为不同医院类别不同)
+     *
+     * @param pageSize 分页大小
+     * @param pageNo   当前页码
+     * @return SupplierQualificationModel
+     */
+    @RequestMapping(value = "getQualifications")
+    @ResponseBody
+    public SupplierQualificationModel getQualifications(@RequestParam(defaultValue = "10") Integer pageSize,
+            @RequestParam(defaultValue = "1") Integer pageNo) {
+
+        Long supplier = SessionUtil.checkSupplier();
+
+        return supplierService.getQualification(supplier, pageSize, pageNo);
+    }
+
+    /**
+     * 供应商提交一份证件给医院
+     *
+     * @param request               HttpServletRequest (必须上传一个pdf证件附件) 不需要，同步供应商自身维护的证件附件
+     * @param type                  医院要求的证件类别id (t_hospital_supplier_qualification_type)
+     * @param hospital              医院
+     * @param supplierQualificationId 供应商维护的自己的证件信息id (t_supplier_qualification)
+     */
+    public void transferQualification(HttpServletRequest request, Long type, Long hospital,
+            Long supplierQualificationId) {
+
+        Long supplier = SessionUtil.checkSupplier();
+
+        if (null == type || type <= 0) {
+            throw new BusinessLogicRunTimeException("请选择资质类型");
+        }
+        if (null == hospital || hospital <= 0) {
+            throw new BusinessLogicRunTimeException("请选择目标医院");
+        }
+        if (null == supplierQualificationId || supplierQualificationId <= 0) {
+            throw new BusinessLogicRunTimeException("请选择要提交的证件");
+        }
+
+        supplierService.transferQualification(type, hospital, supplierQualificationId);
 
     }
 }

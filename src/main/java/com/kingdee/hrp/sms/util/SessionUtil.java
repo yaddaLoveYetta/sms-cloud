@@ -1,6 +1,7 @@
 package com.kingdee.hrp.sms.util;
 
 import com.kingdee.hrp.sms.common.enums.Constants.UserRoleType;
+import com.kingdee.hrp.sms.common.exception.BusinessLogicRunTimeException;
 import com.kingdee.hrp.sms.common.exception.SessionLostRuntimeException;
 import com.kingdee.hrp.sms.common.model.Role;
 import com.kingdee.hrp.sms.common.model.User;
@@ -223,6 +224,54 @@ public final class SessionUtil {
      */
     public static Long getUserLinkOrg() {
         return getUser().getOrg();
+    }
+
+    /**
+     * 判断当前用户是否是医院类别用户
+     *
+     * @return true if current user is hospital user, false else
+     */
+    public static boolean isHospital() {
+
+        return SessionUtil.getUserLinkHospital() > 0;
+    }
+
+    /**
+     * 判断当前用户是否是医院类别用户,是医院类别用户时返回关联医院id
+     *
+     * @throws BusinessLogicRunTimeException 当前用户非医院类别用户时抛出异常
+     */
+    public static Long checkHospital() {
+
+        if (SessionUtil.getUserLinkHospital() < 0) {
+            throw new BusinessLogicRunTimeException("当前用户非医院类别用户");
+        }
+
+        return getUserLinkHospital();
+    }
+
+    /**
+     * 判断当前用户是否是供应商类别用户
+     *
+     * @return true if current user is supplier user, false else
+     */
+    public static boolean isSupplier() {
+
+        return SessionUtil.getUserLinkSupplier() > 0;
+    }
+
+    /**
+     * 判断当前用户是否是供应商类别用户,是医院类别用户时返回关联供应商id
+     *
+     * @throws BusinessLogicRunTimeException 当前用户非供应商类别用户时抛出异常
+     */
+    public static Long checkSupplier() {
+
+        if (SessionUtil.getUserLinkSupplier() < 0) {
+            throw new BusinessLogicRunTimeException("当前用户非供应商类别用户");
+        }
+
+        return getUserLinkSupplier();
     }
 
 }

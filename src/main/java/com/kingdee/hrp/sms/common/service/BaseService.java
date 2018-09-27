@@ -3,6 +3,7 @@ package com.kingdee.hrp.sms.common.service;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.kingdee.hrp.sms.common.enums.Constants;
+import com.kingdee.hrp.sms.common.exception.BusinessLogicRunTimeException;
 import com.kingdee.hrp.sms.common.model.FormClassEntry;
 import com.kingdee.hrp.sms.common.model.FormField;
 import com.kingdee.hrp.sms.common.pojo.FormTemplate;
@@ -15,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.awt.image.BufferStrategy;
 import java.util.List;
 import java.util.Map;
 
@@ -31,6 +33,50 @@ public abstract class BaseService {
 
     protected <T> T getMapper(Class<T> clazz) {
         return sqlSession.getMapper(clazz);
+    }
+
+    /**
+     * 判断当前用户是否是医院类别用户
+     *
+     * @return true if current user is hospital user, false else
+     */
+    protected boolean isHospital() {
+
+        return SessionUtil.getUserLinkHospital() > 0;
+    }
+
+    /**
+     * 判断当前用户是否是医院类别用户
+     *
+     * @throws BusinessLogicRunTimeException 当前用户非医院类别用户时抛出异常
+     */
+    protected void checkHospital() {
+
+        if (SessionUtil.getUserLinkHospital() < 0) {
+            throw new BusinessLogicRunTimeException("当前用户非医院类别用户");
+        }
+    }
+
+    /**
+     * 判断当前用户是否是供应商类别用户
+     *
+     * @return true if current user is supplier user, false else
+     */
+    protected boolean isSupplier() {
+
+        return SessionUtil.getUserLinkSupplier() > 0;
+    }
+
+    /**
+     * 判断当前用户是否是供应商类别用户
+     *
+     * @throws BusinessLogicRunTimeException 当前用户非供应商类别用户时抛出异常
+     */
+    protected void checkSupplier() {
+
+        if (SessionUtil.getUserLinkSupplier() < 0) {
+            throw new BusinessLogicRunTimeException("当前用户非供应商类别用户");
+        }
     }
 
     /**

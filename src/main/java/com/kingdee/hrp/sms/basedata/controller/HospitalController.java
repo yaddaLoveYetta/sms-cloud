@@ -64,14 +64,12 @@ public class HospitalController {
             throw new BusinessLogicRunTimeException("缺少参数classId或id");
         }
 
-        Map<String, Object> ret = new HashMap<String, Object>();
+        Map<String, Object> ret = new HashMap<>();
 
         MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
         //得到文件map对象
         Map<String, MultipartFile> files = multipartRequest.getFileMap();
 
-        // 实例化一个jersey
-        Client client = new Client();
         // 供应商、医院logo按classId来建目录保存-要求比不在文件服务器中先建立好目录，否则不能上传成功
         String logoPath = filePath + classId + "/";
 
@@ -83,7 +81,7 @@ public class HospitalController {
             MultipartFile file = fileEntry.getValue();
             fileName = file.getOriginalFilename();
 
-            logoUrl = FileOperate.upload(client, file, fileHost, logoPath);
+            logoUrl = FileOperate.upload( file, fileHost, logoPath);
 
             if (!"".equals(logoUrl)) {
                 //上传成功

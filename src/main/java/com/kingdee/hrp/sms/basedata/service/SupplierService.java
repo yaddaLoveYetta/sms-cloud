@@ -1,9 +1,10 @@
 package com.kingdee.hrp.sms.basedata.service;
 
-import com.kingdee.hrp.sms.common.pojo.SupplierQualification;
+import com.kingdee.hrp.sms.common.pojo.SupplierQualificationModel;
 
 /**
- * @author yadda
+ * @author yadda(silenceisok@163.com)
+ * @date 2018/09/26 11:01
  */
 
 public interface SupplierService {
@@ -31,7 +32,28 @@ public interface SupplierService {
      *
      * @param hospital 医院
      * @param supplier 供应商
-     * @return SupplierQualification
+     * @param pageSize 分页大小
+     * @param pageNo   当前页码
+     * @return SupplierQualificationModel
      */
-    SupplierQualification getQualificationByHospital(Long supplier, Long hospital);
+    SupplierQualificationModel getQualificationByHospital(Long supplier, Long hospital, Integer pageSize, Integer pageNo);
+
+    /**
+     * 获取供应商对所有合作医院提供的资质
+     *
+     * @param supplier 供应商
+     * @param pageSize 分页大小
+     * @param pageNo   当前页码
+     * @return SupplierQualificationModel
+     */
+    SupplierQualificationModel getQualification(Long supplier, Integer pageSize, Integer pageNo);
+
+    /**
+     * 供应商提交一份证件给医院(证件信息及证件附件)
+     *
+     * @param type                  医院要求的证件类别id (t_hospital_supplier_qualification_type)
+     * @param hospital              医院
+     * @param supplierQualificationId 供应商维护的自己的证件信息id (t_supplier_qualification)
+     */
+    void transferQualification(Long type, Long hospital, Long supplierQualificationId);
 }
