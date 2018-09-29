@@ -237,10 +237,28 @@ public final class Constants {
          * 物料证件
          */
         MATERIAL_DOCUMENT(1015, "物料证件"),
+
+        /**
+         * 医院供应商资质类别
+         */
+        HOSPITAL_SUPPLIER_QUALIFICATION_TYPE(1016, "医院供应商资质类别"),
+        /**
+         * 医院供应商资质
+         */
+        HOSPITAL_SUPPLIER_QUALIFICATION(1017, "医院供应商资质"),
+        /**
+         * 供应商证件类别
+         */
+        SUPPLIER_QUALIFICATION_TYPE(1018, "供应商证件类别"),
+        /**
+         * 供应商证件
+         */
+        SUPPLIER_QUALIFICATION(1019, "供应商证件"),
+
         /**
          * 供应商物料
          */
-        SUPPLIER_MATERIAL(1016, "供应商物料"),
+        SUPPLIER_MATERIAL(1020, "供应商物料"),
         /**
          * 系统常量
          */
@@ -738,6 +756,38 @@ public final class Constants {
             return UserRoleType.NOT_SUPPORT;
         }
 
+    }
+
+    /**
+     * 各类文件存放路径根目录(业务放可能增加子目录)<br/>
+     * eg:<br/>
+     * 供应商logo图片存放路径 /1013/<br/>
+     * 医院logo图片存放路径 /1012/<br/>
+     * 供应商证件附件存放路径 /supplier/attachment/<br/>
+     * 医院供应商资质附件存放路径/hospital/supplier/attachment/<br/>
+     */
+    public enum FilePath {
+
+        /**
+         * 供应商证件附件存放路径
+         */
+        SUPPLIER_QUALIFICATION_ATTACHMENT("/supplier/attachment/", "供应商证件附件存放路径"),
+        /**
+         * 医院供应商资质附件存放路径
+         */
+        HOSPITAL_SUPPLIER_QUALIFICATION_ATTACHMENT("/hospital/supplier/attachment/", "医院供应商资质附件存放路径");
+
+        private String path;
+        private String desc;
+
+        FilePath(String path, String desc) {
+            this.path = path;
+            this.desc = desc;
+        }
+
+        public String path() {
+            return this.path;
+        }
     }
 
 }

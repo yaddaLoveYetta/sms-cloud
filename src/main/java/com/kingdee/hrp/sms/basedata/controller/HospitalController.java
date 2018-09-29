@@ -34,7 +34,7 @@ public class HospitalController {
     /**
      * 后台图片保存地址
      */
-    @Value("#{propertiesConfig[filePath]}")
+    @Value("#{propertiesConfig[fileRootDir]}")
     private String filePath;
 
     /**

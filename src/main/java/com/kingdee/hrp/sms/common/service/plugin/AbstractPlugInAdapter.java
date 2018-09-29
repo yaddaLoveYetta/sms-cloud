@@ -8,6 +8,7 @@ import com.kingdee.hrp.sms.common.model.FormField;
 import com.kingdee.hrp.sms.common.pojo.Condition;
 import com.kingdee.hrp.sms.common.pojo.FormTemplate;
 import com.kingdee.hrp.sms.common.service.BaseService;
+import com.kingdee.hrp.sms.system.user.service.CurrentUserInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,7 +24,7 @@ import java.util.Map;
  * @author yadda
  * @date 2018-02-27 17:32:12 星期四
  */
-public abstract class AbstractPlugInAdapter extends BaseService implements PlugIn {
+public abstract class AbstractPlugInAdapter extends BaseService implements PlugIn,CurrentUserInfo {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 

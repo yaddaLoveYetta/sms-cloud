@@ -28,6 +28,7 @@ public class SmsPropertyPlaceholderConfigurer extends PropertyPlaceholderConfigu
     @Override
     protected void processProperties(ConfigurableListableBeanFactory beanFactoryToProcess, Properties props) throws BeansException {
         super.processProperties(beanFactoryToProcess, props);
+
         for (Object item : props.keySet()) {
             String key = item.toString();
             properties.put(key, props.getProperty(key));

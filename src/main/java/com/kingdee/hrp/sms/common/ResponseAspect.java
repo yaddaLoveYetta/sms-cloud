@@ -31,6 +31,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.lang.reflect.Type;
+import java.net.SocketTimeoutException;
 import java.util.*;
 
 /**
@@ -56,7 +59,10 @@ public class ResponseAspect {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
-    private static Set<String> TYPES = new HashSet<String>(32);
+    /**
+     * 这些返回类型的方法，返回值进行统一包装成value
+     */
+    private static Set<String> TYPES = new HashSet<>(32);
 
     static {
         TYPES.add("java.lang.Integer");
@@ -93,9 +99,9 @@ public class ResponseAspect {
 
         Signature signature = pjp.getSignature();
 
-/*        if (signature instanceof MethodSignature) {
+        if (signature instanceof MethodSignature) {
             logger.info("signature is MethodSignature");
-        }*/
+        }
 
         String classType = pjp.getTarget().getClass().getName();
         Class<?> clazz = Class.forName(classType);
@@ -120,8 +126,11 @@ public class ResponseAspect {
 
         Object ret = pjp.proceed(pjp.getArgs());
 
+        Method currentMethod = getCurrentMethod(pjp);
+        currentMethod.getAnnotatedReturnType().getType();
+
         // ret统一格式化成json,如果接口返回基本类型或者不能序列化成json类型eg:String,int,boolean...用data做key格式化成json形式
-        ret = warpResult(ret);
+        ret = warpResult(currentMethod, ret);
 
         // 将业务返回值包装成固定的返回类型格式ResultWarp
         ResultWarp result = new ResultWarp(ret);
@@ -135,6 +144,26 @@ public class ResponseAspect {
 
         converter.write(result, MediaType.APPLICATION_JSON, outputMessage);
         shutdownResponse(response);
+    }
+
+    /**
+     * 获取当前执行的方法
+     *
+     * @param pjp ProceedingJoinPoint
+     * @return Method
+     * @throws NoSuchMethodException 没有该方法
+     */
+    private Method getCurrentMethod(ProceedingJoinPoint pjp) throws NoSuchMethodException {
+        Signature sig = pjp.getSignature();
+        MethodSignature msig = null;
+        if (!(sig instanceof MethodSignature)) {
+            throw new IllegalArgumentException("该注解只能用于方法");
+        }
+        msig = (MethodSignature) sig;
+        Object target = pjp.getTarget();
+        Method currentMethod = target.getClass().getMethod(msig.getName(), msig.getParameterTypes());
+
+        return currentMethod;
     }
 
     @AfterThrowing(pointcut = "responseBodyPointCut()", throwing = "throwable")
@@ -172,14 +201,21 @@ public class ResponseAspect {
     /**
      * 对result进行包装，将不能格式化成json{}|[]的对象包装成NoJsonWarp对象
      *
-     * @param result
+     * @param method 当前调用的方法
+     * @param result 方法返回结果
      * @return Object
-     * @Title warpResult
      * @date 2017-09-06 11:55:39 星期三
      */
-    private Object warpResult(Object result) {
+    private Object warpResult(Method method, Object result) {
 
-        if (result == null || Integer.class.equals(result.getClass()) || Long.class.equals(result.getClass()) ||
+        if (Objects.equals(method.getReturnType().getTypeName(), "void")) {
+            // void类型方法
+            result = "";
+        } else if (TYPES.contains(method.getReturnType().getName())) {
+            result = new NoJsonWarp(result);
+        }
+
+/*        if (result == null || Integer.class.equals(result.getClass()) || Long.class.equals(result.getClass()) ||
                 Float.class.equals(result.getClass()) || Double.class.equals(result.getClass())
                 || Date.class.equals(result.getClass()) || Character.class.equals(result.getClass()) ||
                 Byte.class.equals(result.getClass())
@@ -187,7 +223,7 @@ public class ResponseAspect {
                 Boolean.class.equals(result.getClass())) {
 
             result = new NoJsonWarp(result);
-        }
+        }*/
 
         return result;
     }
@@ -318,4 +354,5 @@ public class ResponseAspect {
         sb.append("]");
         return sb.toString();
     }
+
 }

@@ -271,9 +271,9 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
         String sort = "";
 
         // 查询条件
-        Map<String, Object> whereMap = new HashMap<String, Object>();
+        Map<String, Object> whereMap = new HashMap<>(8);
         // 查询条件格式化参数
-        Map<String, Object> whereParams = new HashMap<String, Object>();
+        Map<String, Object> whereParams = new HashMap<>(16);
         // 构建查询脚本
         Map<String, Object> statement = getStatement(classId);
 

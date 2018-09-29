@@ -12,7 +12,7 @@ import java.util.Map;
  * @author yadda<silenceisok@163.com>
  * @since 2018/2/5
  */
-public interface UserService extends Serializable {
+public interface UserService extends UserInfo {
 
     /**
      * 用户注册
@@ -29,30 +29,6 @@ public interface UserService extends Serializable {
      * @return User
      */
     User login(String userName, String password);
-
-    /**
-     * 获取用户的角色
-     *
-     * @param userId
-     * @return
-     */
-    List<Role> getUserRole(Long userId);
-
-    /**
-     * 获取当前用户关联的医院信息
-     *
-     * @param id 当前用户所属医院id
-     * @return Hospital
-     */
-    Hospital getUserLinkHospital(Long id);
-
-    /**
-     * 获取当前用户关联的供应商信息
-     *
-     * @param id 当前用户所属供应商id
-     * @return Supplier
-     */
-    Supplier getUserLinkSupplier(Long id);
 
     /**
      * 用户修改密码

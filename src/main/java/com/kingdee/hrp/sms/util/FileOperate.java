@@ -1,15 +1,19 @@
 package com.kingdee.hrp.sms.util;
 
 import com.kingdee.hrp.sms.common.exception.BusinessLogicRunTimeException;
+import com.kingdee.hrp.sms.common.filter.SmsPropertyPlaceholderConfigurer;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.WebResource;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.*;
-import java.net.MalformedURLException;
+import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
+import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 
 /**
@@ -26,7 +30,7 @@ public final class FileOperate {
      * 上传文件
      *
      * @param serverPath 服务器地址:(http://127.0.0.1:8081/)
-     * @param path       文件路径（不包含服务器地址：eg: file/1012/eee）
+     * @param path       文件全路径（即方法不考虑fileRootDir配置）
      * @return 文件url
      */
     public static String upload(MultipartFile file, String serverPath, String path) {
@@ -41,11 +45,11 @@ public final class FileOperate {
     }
 
     /**
-     * 上传文件
+     * 上传文件到文件服务器
      *
      * @param file       byte[]
      * @param serverPath 服务器地址:(http://127.0.0.1:8081/)
-     * @param path       文件路径（不包含服务器地址：file/）
+     * @param path       文件全路径（即方法不考虑fileRootDir配置）
      * @param extension  文件扩展名
      * @return 文件url
      */
@@ -84,6 +88,61 @@ public final class FileOperate {
     }
 
     /**
+     * 上传文件到文件服务器
+     *
+     * @param file      byte[]
+     * @param path      文件路径（不包含根地址fileRootDir配置）
+     * @param extension 文件扩展名
+     * @return 文件url
+     */
+    public static String upload(byte[] file, String path, String extension) {
+
+        String fileHost = SmsPropertyPlaceholderConfigurer.getContextProperty("fileHost");
+        String fileRootDir = SmsPropertyPlaceholderConfigurer.getContextProperty("fileRootDir");
+        // 文件存放路径等于根路径加上业务设置的路径
+        path = fileRootDir + path;
+
+        return upload(file, fileHost, path, extension);
+    }
+
+    /**
+     * 上传文件到文件服务器
+     *
+     * @param file      File
+     * @param path      文件路径（不包含根地址fileRootDir配置）
+     * @param extension 文件扩展名
+     * @return 文件url
+     */
+    public static String upload(File file, String path, String extension) {
+
+        String fileHost = SmsPropertyPlaceholderConfigurer.getContextProperty("fileHost");
+        String fileRootDir = SmsPropertyPlaceholderConfigurer.getContextProperty("fileRootDir");
+        // 文件存放路径等于根路径加上业务设置的路径
+        path = fileRootDir + path;
+
+        try {
+            return upload(FileUtils.readFileToByteArray(file), fileHost, path, extension);
+        } catch (IOException e) {
+            throw new BusinessLogicRunTimeException(e);
+        }
+    }
+
+    /**
+     * 上传文件到文件服务器
+     *
+     * @param file File
+     * @param path 文件路径（不包含根地址fileRootDir配置）
+     * @return 文件url
+     */
+    public static String upload(File file, String path) {
+
+        String extension = FilenameUtils.getExtension(file.getName());
+
+        return upload(file, path, extension);
+
+    }
+
+    /**
      * 删除文件
      *
      * @param filePath（文件完整地址：http://172.16.5.102:8090/upload/1234.jpg）
@@ -106,7 +165,7 @@ public final class FileOperate {
      * @param fileUrl 文件url链接
      * @return byte[]
      */
-    public static byte[] downloadPicture(String fileUrl) {
+    public static byte[] downloadWebFile(String fileUrl) {
 
         DataInputStream dataInputStream = null;
         ByteArrayOutputStream output = null;

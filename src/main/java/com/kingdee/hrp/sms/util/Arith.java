@@ -1,5 +1,6 @@
 package com.kingdee.hrp.sms.util;
 
+import java.lang.reflect.Method;
 import java.math.BigDecimal;
 
 /**
@@ -9,6 +10,7 @@ import java.math.BigDecimal;
  * @author yadda
  */
 public class Arith {
+
     //默认除法运算精度
     private static final int DEF_DIV_SCALE = 10;
 
@@ -103,7 +105,7 @@ public class Arith {
         return b.divide(one, scale, BigDecimal.ROUND_HALF_UP).doubleValue();
     }
 
-    public static void main(String[] args) {
+/*    public static void main(String[] args) {
         System.out.println(0.05+0.01);
         System.out.println(1.0-0.42);
         System.out.println(4.015*100);
@@ -114,5 +116,31 @@ public class Arith {
         System.out.println(Arith.mul(4.015,100));
         System.out.println(Arith.div(123.3,100));
         System.out.println(Arith.round(Arith.div(123.3,100),2));
+    }*/
+
+    public void test() {
+
+    }
+
+    public int test2() {
+        return 2;
+    }
+    public Integer test3() {
+        return 2;
+    }
+
+    public static void main(String[] args) throws NoSuchMethodException {
+        Method test = Arith.class.getDeclaredMethod("test");
+        Method test2 = Arith.class.getDeclaredMethod("test2");
+        Method test3 = Arith.class.getDeclaredMethod("test3");
+
+        Class<?> returnType = test.getReturnType();
+        Class<?> returnType2 = test2.getReturnType();
+        Class<?> returnType3 = test3.getReturnType();
+
+        System.out.println(returnType);
+        System.out.println(returnType2);
+        System.out.println(returnType3);
+
     }
 };

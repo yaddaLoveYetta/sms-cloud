@@ -261,9 +261,10 @@ public final class SessionUtil {
     }
 
     /**
-     * 判断当前用户是否是供应商类别用户,是医院类别用户时返回关联供应商id
+     * 判断当前用户是否是供应商类别用户,是医院类别用户时返回关联供应商id <br/>
+     * 当前用户非供应商类别用户时抛出异常（当前用户非供应商类别用户）
      *
-     * @throws BusinessLogicRunTimeException 当前用户非供应商类别用户时抛出异常
+     * @throws BusinessLogicRunTimeException when current user is not type supplier
      */
     public static Long checkSupplier() {
 

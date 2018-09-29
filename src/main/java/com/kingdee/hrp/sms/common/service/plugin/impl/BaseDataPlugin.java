@@ -215,8 +215,8 @@ public class BaseDataPlugin extends AbstractPlugInAdapter implements Initializin
 
         List<Condition> ret = new ArrayList<Condition>();
 
-        Constants.UserRoleType userRoleType = getUserRoleType();
-        Long linkOrg = getUserLinkOrg();
+        Constants.UserRoleType userRoleType = getCurrentUserRoleType();
+        Long linkOrg = getCurrentUserLinkOrg();
 
         if (userRoleType == Constants.UserRoleType.SYSTEM) {
             // 系统角色类别放开所有数据查看权限

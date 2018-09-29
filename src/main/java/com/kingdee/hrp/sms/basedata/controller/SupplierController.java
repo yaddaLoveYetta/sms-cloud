@@ -2,11 +2,16 @@ package com.kingdee.hrp.sms.basedata.controller;
 
 import com.kingdee.hrp.sms.basedata.service.SupplierService;
 import com.kingdee.hrp.sms.common.exception.BusinessLogicRunTimeException;
+import com.kingdee.hrp.sms.common.pojo.Qualification;
 import com.kingdee.hrp.sms.common.pojo.SupplierQualificationModel;
 import com.kingdee.hrp.sms.util.FileOperate;
+import com.kingdee.hrp.sms.util.JsonUtil;
+import com.kingdee.hrp.sms.util.RequestUtil;
 import com.kingdee.hrp.sms.util.SessionUtil;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -17,7 +22,10 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -31,7 +39,7 @@ public class SupplierController {
     /**
      * 后台图片保存地址
      */
-    @Value("#{propertiesConfig[filePath]}")
+    @Value("#{propertiesConfig[fileRootDir]}")
     private String filePath;
 
     /**
@@ -70,7 +78,7 @@ public class SupplierController {
             fileName = file.getOriginalFilename();
 
             logoUrl = FileOperate.upload(file, fileHost, logoPath);
-
+            //FileOperate.upload(file.getBytes(), logoPath, FilenameUtils.getExtension(fileName);
             if (!"".equals(logoUrl)) {
                 //上传成功
                 ret.put(fileName, logoUrl);
@@ -147,11 +155,13 @@ public class SupplierController {
     /**
      * 供应商提交一份证件给医院
      *
-     * @param request               HttpServletRequest (必须上传一个pdf证件附件) 不需要，同步供应商自身维护的证件附件
-     * @param type                  医院要求的证件类别id (t_hospital_supplier_qualification_type)
-     * @param hospital              医院
+     * @param request                 HttpServletRequest (必须上传了至少一个pdf证件附件) 不需要，同步供应商自身维护的证件附件
+     * @param type                    医院要求的证件类别id (t_hospital_supplier_qualification_type)
+     * @param hospital                医院
      * @param supplierQualificationId 供应商维护的自己的证件信息id (t_supplier_qualification)
      */
+    @RequestMapping(value = "transferQualification")
+    @ResponseBody
     public void transferQualification(HttpServletRequest request, Long type, Long hospital,
             Long supplierQualificationId) {
 
@@ -168,6 +178,77 @@ public class SupplierController {
         }
 
         supplierService.transferQualification(type, hospital, supplierQualificationId);
+
+    }
+
+    /**
+     * 新增一个证件信息
+     *
+     * @param request       HttpServletRequest (必须上传了至少一个pdf证件附件)
+     * @param qualification 证件信息
+     */
+    @RequestMapping(value = "addQualification")
+    @ResponseBody
+    public void addQualification(HttpServletRequest request, Qualification qualification) throws IOException {
+
+        Long supplier = SessionUtil.checkSupplier();
+
+        // 附件
+        List<File> files = RequestUtil.getFiles(request);
+
+        if (CollectionUtils.isEmpty(files)) {
+            throw new BusinessLogicRunTimeException("请至少提交一个附件");
+        }
+
+        supplierService.addQualification(supplier, qualification, files);
+
+    }
+
+    /**
+     * 新增证件附件
+     *
+     * @param request   HttpServletRequest (必须上传至少一个pdf证件附件)
+     * @param id        证件信息
+     * @param overwrite 替换、追加附件(1:覆盖0:追加，默认0)
+     */
+    @RequestMapping(value = "addQualificationAttachment")
+    @ResponseBody
+    public void addQualificationAttachment(HttpServletRequest request, Long id,
+            @RequestParam(defaultValue = "0") Integer overwrite) {
+
+        Long supplier = SessionUtil.checkSupplier();
+
+        // 附件
+        List<File> files = RequestUtil.getFiles(request);
+
+        if (CollectionUtils.isEmpty(files)) {
+            throw new BusinessLogicRunTimeException("请至少提交一个附件");
+        }
+
+        supplierService.addQualificationAttachment(supplier, id, files, overwrite);
+
+    }
+
+    /**
+     * 删除证件附件(只是删除附件绑定资料，非物理清楚附件文件)
+     *
+     * @param qualificationId 证件信息
+     * @param attachmentIds   附件记录id,多个用逗号分隔
+     */
+    @RequestMapping(value = "delQualificationAttachment")
+    @ResponseBody
+    public void delQualificationAttachment(Long qualificationId,
+            String attachmentIds) {
+
+        Long supplier = SessionUtil.checkSupplier();
+
+        if (!StringUtils.isNotBlank(attachmentIds)) {
+            throw new BusinessLogicRunTimeException("参数错误：必须指定删除的项!");
+        }
+
+        List<Long> ids = JsonUtil.json2Collection(attachmentIds, List.class, Long.class);
+
+        supplierService.delQualificationAttachment(supplier, qualificationId, ids);
 
     }
 }

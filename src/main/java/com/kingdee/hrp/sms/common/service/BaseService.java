@@ -10,13 +10,11 @@ import com.kingdee.hrp.sms.common.pojo.FormTemplate;
 import com.kingdee.hrp.sms.util.SessionUtil;
 import com.kingdee.hrp.sms.util.SnowFlake;
 import org.apache.ibatis.session.SqlSession;
-import org.apache.poi.ss.formula.functions.T;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.awt.image.BufferStrategy;
 import java.util.List;
 import java.util.Map;
 
@@ -26,7 +24,7 @@ import java.util.Map;
 @Service
 public abstract class BaseService {
 
-    private static Logger logger = LoggerFactory.getLogger(BaseService.class);
+    public Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Resource
     protected SqlSession sqlSession;

@@ -13,11 +13,16 @@ import com.kingdee.hrp.sms.common.pojo.QualificationType;
 import com.kingdee.hrp.sms.common.pojo.SupplierQualificationModel;
 import com.kingdee.hrp.sms.common.service.BaseService;
 import com.kingdee.hrp.sms.util.FileOperate;
+import org.apache.commons.io.FileUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
-import java.util.*;
+import java.io.File;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -26,6 +31,7 @@ import java.util.stream.Collectors;
  */
 @Service
 public class SupplierServiceImpl extends BaseService implements SupplierService {
+
     /**
      * 保存医院logo
      *
@@ -193,7 +199,7 @@ public class SupplierServiceImpl extends BaseService implements SupplierService 
         HospitalSupplierQualification hospitalSupplierQualification = new HospitalSupplierQualification();
 
         hospitalSupplierQualification.setHospital(hospital);
-        //  保留下id，附件同步时parent用
+        //  保留下id，附件同步时作为其parent
         Long hospitalSupplierQualificationId = getId();
         hospitalSupplierQualification.setId(hospitalSupplierQualificationId);
         hospitalSupplierQualification.setIssue(supplierQualification.getIssue());
@@ -206,32 +212,165 @@ public class SupplierServiceImpl extends BaseService implements SupplierService 
 
         hospitalSupplierQualificationMapper.insertSelective(hospitalSupplierQualification);
 
-        // 将供应商证件附件同步到医院供应商证件附件(附件路径信息)
-
-        HospitalSupplierQualificationAttachmentMapper hospitalSupplierQualificationAttachmentMapper = getMapper(
-                HospitalSupplierQualificationAttachmentMapper.class);
-
-        List<HospitalSupplierQualificationAttachment> attachments = supplierQualificationAttachments.stream()
+        // 将供应商证件附件同步到医院供应商证件附件(附件信息及附件文件)
+        List<HospitalSupplierQualificationAttachment> attachments = supplierQualificationAttachments.parallelStream()
                 .map(attachment -> {
+
+                    String path = attachment.getPath();
+
+                    // 附件文件复制
+                    String newPath = attachmentCopy(path);
 
                     HospitalSupplierQualificationAttachment hospitalSupplierQualificationAttachment = new HospitalSupplierQualificationAttachment();
 
                     hospitalSupplierQualificationAttachment.setId(getId());
                     hospitalSupplierQualificationAttachment.setParent(hospitalSupplierQualificationId);
-                    hospitalSupplierQualificationAttachment.setPath(attachment.getPath());
+                    hospitalSupplierQualificationAttachment.setPath(newPath);
 
                     return hospitalSupplierQualificationAttachment;
 
                 }).collect(Collectors.toList());
 
+        HospitalSupplierQualificationAttachmentMapper hospitalSupplierQualificationAttachmentMapper = getMapper(
+                HospitalSupplierQualificationAttachmentMapper.class);
+
         hospitalSupplierQualificationAttachmentMapper.batchInsert(attachments);
 
-        // 附件文件复制 TODO
+    }
 
-        supplierQualificationAttachments.stream().map(SupplierQualificationAttachment::getPath).forEach(path -> {
+    /**
+     * 供应商新增一个证件资料
+     *
+     * @param supplier      供应商
+     * @param qualification 证件信息
+     * @param files         证件附件
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void addQualification(Long supplier, Qualification qualification, List<File> files) {
 
-            byte[] file = FileOperate.downloadPicture(path);
-        });
+        SupplierQualificationMapper supplierQualificationMapper = getMapper(SupplierQualificationMapper.class);
+
+        SupplierQualification supplierQualification = new SupplierQualification();
+
+        supplierQualification.setId(getId());
+        supplierQualification.setQualificationType(qualification.getType());
+        supplierQualification.setNumber(qualification.getNumber());
+        supplierQualification.setIssue(qualification.getIssue());
+        supplierQualification.setSupplier(supplier);
+        supplierQualification.setValidityPeriodBegin(qualification.getValidityPeriodBegin());
+        supplierQualification.setValidityPeriodEnd(qualification.getValidityPeriodEnd());
+
+        supplierQualificationMapper.insertSelective(supplierQualification);
+
+        if (!CollectionUtils.isEmpty(files)) {
+            // 保存附件
+            files.forEach(file -> {
+                FileOperate.upload(file, Constants.FilePath.SUPPLIER_QUALIFICATION_ATTACHMENT.path());
+            });
+        }
+
+    }
+
+    /**
+     * 供应商为证件增加附件
+     *
+     * @param supplier        供应商
+     * @param qualificationId 证件id
+     * @param files           附件
+     * @param overwrite       替换、追加附件(1:覆盖0:追加，默认0)
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void addQualificationAttachment(Long supplier, Long qualificationId, List<File> files, Integer overwrite) {
+
+        SupplierQualificationMapper supplierQualificationMapper = getMapper(SupplierQualificationMapper.class);
+        SupplierQualificationExample supplierQualificationExample = new SupplierQualificationExample();
+
+        supplierQualificationExample.createCriteria().andIdEqualTo(qualificationId).andSupplierEqualTo(supplier);
+
+        List<SupplierQualification> supplierQualifications = supplierQualificationMapper
+                .selectByExample(supplierQualificationExample);
+
+        if (CollectionUtils.isEmpty(supplierQualifications)) {
+            throw new BusinessLogicRunTimeException("证件不存在,请查证!");
+        }
+
+        SupplierQualificationAttachmentMapper supplierQualificationAttachmentMapper = getMapper(
+                SupplierQualificationAttachmentMapper.class);
+
+        if (1 == overwrite) {
+            // 替换原来的证件->删除原来的证件
+            SupplierQualificationAttachmentExample supplierQualificationAttachmentExample = new SupplierQualificationAttachmentExample();
+            supplierQualificationAttachmentExample.createCriteria().andParentEqualTo(qualificationId);
+
+            supplierQualificationAttachmentMapper.deleteByExample(supplierQualificationAttachmentExample);
+        }
+
+        if (!CollectionUtils.isEmpty(files)) {
+            // 保存附件
+            files.forEach(file -> {
+                FileOperate.upload(file, Constants.FilePath.SUPPLIER_QUALIFICATION_ATTACHMENT.path());
+            });
+        }
+
+    }
+
+    /**
+     * 供应商删除证件附件<br/>
+     * (只是删除附件绑定资料，非物理清楚附件文件)
+     *
+     * @param supplier        供应商
+     * @param qualificationId 证件id
+     * @param attachmentIds   附件id列表
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void delQualificationAttachment(Long supplier, Long qualificationId, List<Long> attachmentIds) {
+
+        SupplierQualificationMapper supplierQualificationMapper = getMapper(SupplierQualificationMapper.class);
+        SupplierQualificationExample supplierQualificationExample = new SupplierQualificationExample();
+
+        supplierQualificationExample.createCriteria().andIdEqualTo(qualificationId).andSupplierEqualTo(supplier);
+
+        List<SupplierQualification> supplierQualifications = supplierQualificationMapper
+                .selectByExample(supplierQualificationExample);
+
+        if (CollectionUtils.isEmpty(supplierQualifications)) {
+            throw new BusinessLogicRunTimeException("证件不存在,请查证!");
+        }
+
+        SupplierQualificationAttachmentMapper supplierQualificationAttachmentMapper = getMapper(
+                SupplierQualificationAttachmentMapper.class);
+
+        SupplierQualificationAttachmentExample supplierQualificationAttachmentExample = new SupplierQualificationAttachmentExample();
+        supplierQualificationAttachmentExample.createCriteria().andIdIn(attachmentIds);
+        supplierQualificationAttachmentMapper.deleteByExample(supplierQualificationAttachmentExample);
+
+    }
+
+    /**
+     * 将供应商证件附件复制一份给医院
+     *
+     * @param path 供应商证件附件地址
+     * @return 复制生成的医院供应商资质附件路径
+     */
+    private String attachmentCopy(String path) {
+        try {
+
+            File file = FileUtils.toFile(new URL(path));
+
+            if (null == file) {
+                logger.error("证件附件不存在");
+                throw new BusinessLogicRunTimeException("供应商证件附件不正确，请检查!");
+            }
+
+            return FileOperate.upload(file, Constants.FilePath.HOSPITAL_SUPPLIER_QUALIFICATION_ATTACHMENT.path());
+
+        } catch (Exception e) {
+            logger.error("获取供应商证件附件错误", e.getMessage());
+            throw new BusinessLogicRunTimeException(e.getMessage(), e);
+        }
     }
 
     /**
