@@ -1,9 +1,12 @@
 package com.kingdee.hrp.sms.system.user.service;
 
 import com.kingdee.hrp.sms.common.enums.Constants;
+import com.kingdee.hrp.sms.common.model.Role;
 import com.kingdee.hrp.sms.util.SessionUtil;
 
 import java.io.Serializable;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * 当前用户的信息
@@ -37,6 +40,35 @@ public interface CurrentUserInfo extends Serializable {
      */
     default Constants.UserRoleType getCurrentUserRoleType() {
         return SessionUtil.getUserRoleType();
+    }
+
+    /**
+     * 获取当前用户的角色
+     *
+     * @return List<Role>
+     */
+    default List<Role> getCurrentUserRole() {
+        return SessionUtil.getUserRole();
+    }
+
+    /**
+     * 判断当前用户是否有指定角色
+     *
+     * @param id 角色id
+     * @return boolean
+     */
+    default boolean isRole(Long id) {
+        return SessionUtil.getUserRole().stream().anyMatch(t -> Objects.equals(t.getId(), id));
+    }
+
+    /**
+     * 判断当前用户是否有指定角色
+     *
+     * @param role 角色
+     * @return boolean
+     */
+    default boolean isRole(Role role) {
+        return SessionUtil.getUserRole().stream().anyMatch(t -> Objects.equals(t.getId(), role.getId()));
     }
 
 }

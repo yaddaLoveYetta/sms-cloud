@@ -1,3 +1,20 @@
+/*
+ * Copyright (c) 2008-2016 yadda(silenceisok@163.com), All Rights Reserved.
+*/
+/**
+ * Copyright (c) 2008-2016 yadda(silenceisok@163.com), All Rights Reserved.
+*/
+/**
+ * Copyright (c) 2008-2016 yadda(silenceisok@163.com), All Rights Reserved.
+*/
+/**
+ * @(#)util Copyright (c) 2008-2016 yadda(silenceisok@163.com), All Rights Reserved.
+ */
+/*
+* @(#)util
+*
+* Copyright ***版权信息***.
+*/
 package com.kingdee.hrp.sms.util;
 
 import com.kingdee.hrp.sms.common.exception.BusinessLogicRunTimeException;
@@ -10,10 +27,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.ByteArrayOutputStream;
-import java.io.DataInputStream;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
 
 /**
@@ -205,4 +219,130 @@ public final class FileOperate {
 
         }
     }
+
+    private static void readFileByLines() throws Exception {
+        //项目的绝对路径，也就是想修改的文件路径
+        String filePath = "D:\\work\\projects\\sms-cloud\\src\\main\\java\\com\\kingdee\\hrp\\sms\\util";
+        File f = new File(filePath);
+        String content = "/**\n" +
+                " * @(#)" + f.getName() + "\n" +
+                " *\n" +
+                " * Copyright (c) 2008-2016 yadda(silenceisok@163.com), All Rights Reserved.\n" +
+                "*/\n";
+
+        fileTree(f, content);
+    }
+
+    /**
+     * 取出所有的文件及文件夹
+     *
+     * @param f 文件夹对象
+     * @throws Exception
+     */
+    private static void fileTree(File f, String content) throws Exception {
+        File[] t = f.listFiles();
+        for (int i = 0; i < t.length; i++) {
+            if (t[i].isDirectory()) {
+                fileTree(t[i], content);
+            } else {
+                insert(t[i], content);
+            }
+        }
+    }
+
+/*    public static void main(String[] args) {
+        try {
+            readFileByLines();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }*/
+
+    /**
+     * 开始插入内容
+     *
+     * @param f 文件对象
+     * @throws IOException
+     */
+    private static void insert(File f, String content) throws IOException {
+        File temp = File.createTempFile("temp", null);
+        temp.deleteOnExit();
+        RandomAccessFile raf = new RandomAccessFile(f, "rw");
+        FileOutputStream tempOut = new FileOutputStream(temp);
+        FileInputStream tempInput = new FileInputStream(temp);
+        raf.seek(0);
+        byte[] buf = new byte[64];
+        int hasRead = 0;
+        while ((hasRead = raf.read(buf)) > 0) {
+            tempOut.write(buf, 0, hasRead);
+        }
+        raf.seek(0);
+
+        raf.write(content.getBytes());
+        while ((hasRead = tempInput.read(buf)) > 0) {
+            raf.write(buf, 0, hasRead);
+        }
+        raf.close();
+        tempOut.close();
+        tempInput.close();
+    }
+
+    public static void main(String[] args) throws Exception {
+        //java文件所在目录
+        String dir = "D:\\work\\projects\\sms-cloud\\src\\main\\java\\com\\kingdee";
+        File file = new File(dir);
+        addCopyright4Directory(file);
+    }
+
+    private static void addCopyright4Directory(File file) throws Exception {
+        File[] files = file.listFiles();
+        if (files == null || files.length == 0) {
+            return;
+        }
+
+        for (File f : files) {
+            if (f.isFile()) {
+                addCopyright4File(f);
+                System.out.println("文件===" + f.getName());
+            } else {
+                System.out.println("目录==" + f.getName());
+                addCopyright4Directory(f);
+            }
+        }
+    }
+
+    private static void addCopyright4File(File file) throws Exception {
+        String fileName = file.getName();
+        boolean isJava = fileName.endsWith(".java");
+        if (!isJava) {
+            logger.info("This file is not java source file,filaName=" + fileName);
+            return;
+        }
+
+        if (isJava) {
+            // 版权字符串
+
+            String copyright = "/*\n" +
+                    " * Copyright (c) 2008-2016 yadda(silenceisok@163.com), All Rights Reserved.\n" +
+                    "*/\n";
+            //尝试使用了RandomAccessFile.writeUTF，问题是开头字符是“NUL”，没能解决。
+            BufferedReader br = new BufferedReader(new FileReader(file));
+            String line;
+            String content = "";
+            //读取一行，一定要加上“换行符”,Windows下可以直接用“\n”
+            String lineSeperator = "\n";
+            //lineSeperator = System.getProperty("line.separator")
+            while ((line = br.readLine()) != null) {
+                content += line + lineSeperator;
+            }
+            br.close();
+            //把拼接后的字符串写回去
+            FileWriter fileWriter = new FileWriter(file);
+            fileWriter.write(copyright);
+            fileWriter.write(content);
+            fileWriter.close();
+        }
+
+    }
+
 }

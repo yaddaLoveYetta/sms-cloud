@@ -22,57 +22,35 @@
         </div>
         <div class="col-sm-2" id="div-hospital"></div>
         <div id="div-qualification-list" class="table-responsive col-sm-10">
-            <table class="table table-striped table-bordered table-hover">
-                <thead>
-                <tr>
-                    <th class="col-sm-6" style="min-width: 80px;">
-                        主题
-                    </th>
-                    <th class="col-sm-2" style="min-width: 80px;">
-                        发送者
-                    </th>
-                    <th class="col-sm-2" style="min-width: 80px;">
-                        接收时间
-                    </th>
-                    <th class="col-sm-1" style="min-width: 80px;">
-                        状态
-                    </th>
-                    <th class="col-sm-1" style="min-width: 80px;">
-                        操作
-                    </th>
-                </tr>
-                </thead>
-                <tbody id="message-list" class="message-list">
-                <!--
-                    #--message.none.begin--#
-                    <tr> <td colspan="5" class="text-align-center">没有消息哦……</td> </tr>
-                    #--message.none.end--#
-                    #--message.item.begin--#
-                        <tr data-index="{index}" class="">
-                            <td class=" text-align-left">
-                                {topic}
-                            </td>
-                            <td class=" text-align-left">
-                                {sender}
-                            </td>
-                            <td  class=" text-align-left">
-                                {date}
-                            </td>
-                            <td  class=" text-align-center">
-                                {status}
-                            </td>
-                            <td  class=" text-align-center">
-                                #--message.item.operate.begin--#
-                                <button data-index="{index}" id="cooperation-apply" type="button" class="btn btn-primary btn-xs">
-                                    <i class=" iconfont icon-yiduxiaoxi"></i>标记已读
-                                </button>
-                                #--message.item.operate.end--#
-                            </td>
-                        </tr>
-                    #--message.item.end--#
-                -->
-                </tbody>
-            </table>
+            <div class="row">
+                <div class="col-xs-6 col-md-3">
+                    <a href="#" class="thumbnail">
+                        <img src="/wp-content/uploads/2014/06/kittens.jpg" alt="通用的占位符缩略图">
+                    </a>
+                    <div class="caption">
+                        <h3>Bootstrap框架系列教程</h3>
+                        <p>Bootstrap框架是一个优秀的前端框，就算您是一位后端程序员或者你是一位不懂设计的前端人员，你也能依赖于Bootstrap制作做优美的网站...</p>
+                        <p>
+                            <a href="##" class="btn btn-primary">开始学习</a>
+                            <a href="##" class="btn btn-info">正在学习</a>
+                        </p>
+                    </div>
+                </div>
+                <div class="col-xs-6 col-md-3">
+                    <a href="#" class="thumbnail">
+                        <img src="/wp-content/uploads/2014/06/kittens.jpg" alt="通用的占位符缩略图">
+                    </a>
+                    <div class="caption">
+                        <h3>Bootstrap框架系列教程</h3>
+                        <p>Bootstrap框架是一个优秀的前端框，就算您是一位后端程序员或者你是一位不懂设计的前端人员，你也能依赖于Bootstrap制作做优美的网站...</p>
+                        <p>
+                            <a href="##" class="btn btn-primary">开始学习</a>
+                            <a href="##" class="btn btn-info">正在学习</a>
+                        </p>
+                    </div>
+                </div>
+
+            </div>
         </div>
         <!--标准分页控件 -->
         <div id="div-pager-normal" class="container text-right pull-right "></div>
@@ -86,6 +64,7 @@
 <script src="../../config.js"></script>
 
 <!--grunt.js.begin-->
+<script src="../../common-edit/FormAction.js"></script>
 <script src="modules/List.js"></script>
 <script src="modules/Tree.js"></script>
 <script src="modules/Pager.js"></script>

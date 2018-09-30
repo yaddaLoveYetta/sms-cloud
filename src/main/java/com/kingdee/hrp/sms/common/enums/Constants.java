@@ -716,7 +716,11 @@ public final class Constants {
         /**
          * 供应商角色类型
          */
-        SUPPLIER(3, "供应商");
+        SUPPLIER(3, "供应商"),
+        /**
+         * 游客-暂时未设计
+         */
+        GUEST(4, "游客");
 
         private Integer number;
         private String name;
