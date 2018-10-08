@@ -15,13 +15,20 @@
 <body class="iframe">
 
 <div class="container-fluid">
-    <div class="form-group">
-        <div class="search-box">
-            <i class="iconfont icon-chaxun"></i>
-            <input id="txt-simple-search" type="text" placeholder="快速搜索"/>
+    <div class="form-group form-inline">
+        <div class="input-group col-sm-3">
+            <input id="txt-simple-search" type="text" ng-model="selected"
+                   class="form-control input-sm bg-light no-border rounded padder" placeholder="快速搜索医院...">
+            <span class="input-group-btn">
+                <button id="btn-hospital-search" type="button" class="btn-hospital-search btn btn-sm bg-light rounded"><i
+                        class="iconfont icon-chaxun"></i>
+                </button>
+            </span>
         </div>
-        <div class="col-sm-2" id="div-hospital"></div>
-        <div id="div-qualification-list" class="table-responsive col-sm-10">
+    </div>
+    <div class="form-group">
+        <div class="col-sm-3" id="div-hospital"></div>
+        <div id="div-qualification-list" class="table-responsive col-sm-9">
             <div class="row">
                 <div class="col-xs-6 col-md-3">
                     <a href="#" class="thumbnail">
@@ -61,11 +68,12 @@
 <script src="../../../lib/miniquery/miniquery.debug.js"></script>
 <script src="../../../lib/sms/sms.debug.js"></script>
 <script src="../../../lib/bootstrap/bootstrap.js"></script>
-<script src="../../config.js"></script>
+<script src="../../../config.js"></script>
 
 <!--grunt.js.begin-->
 <script src="../../common-edit/FormAction.js"></script>
 <script src="modules/List.js"></script>
+<script src="modules/List/Samples.js"></script>
 <script src="modules/Tree.js"></script>
 <script src="modules/Pager.js"></script>
 <script src="index.js"></script>

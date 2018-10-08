@@ -10,7 +10,7 @@ define("List", function (require, module, exports) {
     var API = SMS.require("API");
     var Iframe = SMS.require('Iframe');
     var dialog = Iframe.getDialog();
-    var div = document.getElementById("div-list");
+    var div = document.getElementById("div-qualification-list");
     // 完整名称为 List/Samples
     var samples = require("/Samples")(div);
 

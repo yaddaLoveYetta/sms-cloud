@@ -1,0 +1,37 @@
+.no-border, .no-borders {
+    border-color: transparent;
+    border-width: 0;
+}
+
+.bg-light {
+    color: #58666e;
+    background-color: #edf1f2;
+}
+
+.btn {
+    font-weight: 500;
+    border-radius: 2px;
+    outline: 0 !important;
+}
+
+.rounded {
+    border-radius: 500px;
+}
+
+.form-control, .form-control:focus {
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+
+.btn-hospital-search .iconfont {
+    font-size: 12px !important;
+}
+
+.input-group[class*="col-"] {
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
+.container-fluid {
+    padding-top: 10px;
+}

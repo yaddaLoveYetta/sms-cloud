@@ -9,6 +9,7 @@ define('Tree', function (require, module, exports) {
     var $ = require("$");
     var MiniQuery = require("MiniQuery");
     var SMS = require("SMS");
+    var API = SMS.require("API");
     var emitter = MiniQuery.Event.create();
 
     var treeView;
@@ -41,7 +42,7 @@ define('Tree', function (require, module, exports) {
             delay: 200
         });
 
-        var api = new API('template/getFormTemplate');
+        var api = new API('template/getItems');
 
         api.get({
             classId: 1008
@@ -73,26 +74,27 @@ define('Tree', function (require, module, exports) {
         $.Array.each(data, function (item, index) {
 
             hospitalNodes.push({
-                text: item.name,
-                icon: "iconfont icon-noread",
-                nodeid: index++,
+                text: item.hospital_DspName,
+                icon: "iconfont icon-yiyuan1",
+                nodeid: ++index,
                 id: item.id
             });
         });
 
         // 所有
-        return {
+        return [{
             text: "所有医院",
+            icon: "iconfont icon-yy",
             nodeid: "0",
             nodes: hospitalNodes
-        };
+        }];
     }
 
     function render() {
 
         load({}, function (data) {
 
-            var treeData = buildHospitalTree(data);
+            var treeData = buildHospitalTree(data.list);
 
             SMS.use('TreeView', function (TreeView) {
 

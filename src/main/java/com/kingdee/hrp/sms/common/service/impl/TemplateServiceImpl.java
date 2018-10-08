@@ -154,7 +154,9 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
         Constants.UserRoleType userRoleType = SessionUtil.getUserRoleType();
 
         // 按钮可用性-跟FormFields 模板中display字段配置规则一致
-        int ownerType = userRoleType == Constants.UserRoleType.SYSTEM ? 1 : userRoleType == Constants.UserRoleType.HOSPITAL ? 2 : 4;
+        int ownerType = userRoleType == Constants.UserRoleType.SYSTEM ?
+                1 :
+                userRoleType == Constants.UserRoleType.HOSPITAL ? 2 : 4;
 
         // 按钮显示性(根据用户角色类别确定)
         int display = getCurrentDisplayMask(operateType);
@@ -1802,7 +1804,11 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
             case WHETHER:
                 // boolean b = value.equals("是") ? true : false;
                 // 此类字段数据库中一般要求用bit类型,即非0即1
-                value = "是".equals(value) ? "1" : "否".equals(value) ? "0" : "2";
+                // 用户手工过滤时输入是/否,代码过滤时直接用0,1
+                if (!value.getClass().equals(Integer.class)) {
+                    value = "是".equals(value) ? 1 : "否".equals(value) ? 0 : 2;
+                }
+
                 break;
             case MONEY:
                 break;
