@@ -14,26 +14,6 @@ define('Tree', function (require, module, exports) {
 
     var treeView;
     var div = document.getElementById("div-hospital");
-    var treeData = [
-        {
-            text: "消息类别",
-            nodeid: "0",
-            nodes: [
-                {
-                    text: "未处理",
-                    type: 0,
-                    icon: "iconfont icon-noread",
-                    nodeid: "1"
-                },
-                {
-                    text: "已处理",
-                    type: 1,
-                    icon: "iconfont icon-yiduxiaoxi",
-                    nodeid: "2"
-                }
-            ]
-        }
-    ];
 
     function load(params, fn) {
 
@@ -77,6 +57,7 @@ define('Tree', function (require, module, exports) {
                 text: item.hospital_DspName,
                 icon: "iconfont icon-yiyuan1",
                 nodeid: ++index,
+                hospital: item.hospital,
                 id: item.id
             });
         });
@@ -86,6 +67,8 @@ define('Tree', function (require, module, exports) {
             text: "所有医院",
             icon: "iconfont icon-yy",
             nodeid: "0",
+            hospital: 0,
+            id: 0,
             nodes: hospitalNodes
         }];
     }
@@ -108,7 +91,7 @@ define('Tree', function (require, module, exports) {
                 });
 
                 treeView.on('nodeSelected', function (event, data) {
-                    emitter.fire("change", [data.id]);
+                    data.hospital > 0 && emitter.fire("change", [data.hospital]);
                 });
 
                 // 初始化默认选中第一个医院

@@ -8,12 +8,6 @@
     background-color: #edf1f2;
 }
 
-.btn {
-    font-weight: 500;
-    border-radius: 2px;
-    outline: 0 !important;
-}
-
 .rounded {
     border-radius: 500px;
 }
@@ -32,6 +26,14 @@
     padding-left: 15px;
 }
 
-.container-fluid {
+.iframe > .container-fluid {
     padding-top: 10px;
+}
+
+.container-fluid.options {
+    margin-bottom: 10px;
+}
+
+.radio-inline + .radio-inline, .checkbox-inline + .checkbox-inline {
+    margin-left: 0px !important;
 }

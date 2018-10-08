@@ -122,7 +122,7 @@ public class SupplierServiceImpl extends BaseService implements SupplierService 
      */
     @Override
     public SupplierQualificationModel getQualificationByHospital(Long supplier, Long hospital, Integer pageSize,
-            Integer pageNo) {
+                                                                 Integer pageNo) {
 
         // 医院对供应商的资质需求类别
         List<HospitalSupplierQualificationType> hospitalSupplierQualificationTypes = getHospitalSupplierQualificationTypes(
@@ -384,7 +384,7 @@ public class SupplierServiceImpl extends BaseService implements SupplierService 
      * @return PageInfo<HospitalSupplierQualification>
      */
     private PageInfo<HospitalSupplierQualification> getHospitalSupplierQualificationPageInfo(Long supplier,
-            Long hospital, Integer pageSize, Integer pageNo) {
+                                                                                             Long hospital, Integer pageSize, Integer pageNo) {
 
         HospitalSupplierQualificationMapper hospitalSupplierQualificationMapper = getMapper(
                 HospitalSupplierQualificationMapper.class);
@@ -416,7 +416,7 @@ public class SupplierServiceImpl extends BaseService implements SupplierService 
      * @return PageInfo<HospitalSupplierQualification>
      */
     private PageInfo<HospitalSupplierQualification> getSupplierQualificationPageInfo(Long supplier,
-            Integer pageSize, Integer pageNo) {
+                                                                                     Integer pageSize, Integer pageNo) {
 
         return getHospitalSupplierQualificationPageInfo(supplier, null, pageSize, pageNo);
     }
@@ -480,13 +480,16 @@ public class SupplierServiceImpl extends BaseService implements SupplierService 
             });
         }
 
-        hospitalSupplierQualifications.forEach(item -> {
+        hospitalSupplierQualifications.forEach((HospitalSupplierQualification item) -> {
 
             Qualification qualification = new Qualification();
 
             qualification.setIssue(item.getIssue()).setNumber(item.getNumber()).setType(item.getQualificationType())
                     .setValidityPeriodBegin(item.getValidityPeriodBegin())
                     .setValidityPeriodEnd(item.getValidityPeriodEnd());
+
+            // 类型名称
+            hospitalSupplierQualificationTypes.stream().filter(type -> type.getId() == item.getQualificationType().intValue()).findFirst().ifPresent(hospitalSupplierQualificationType -> qualification.setTypeName(hospitalSupplierQualificationType.getName()));
 
             supplierQualification.getDetail().add(qualification);
 

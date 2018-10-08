@@ -10,7 +10,7 @@ define("List", function (require, module, exports) {
     var API = SMS.require("API");
     var Iframe = SMS.require('Iframe');
     var dialog = Iframe.getDialog();
-    var div = document.getElementById("div-qualification-list");
+    var div = document.getElementById("div-qualification-info");
     // 完整名称为 List/Samples
     var samples = require("/Samples")(div);
 
@@ -28,7 +28,7 @@ define("List", function (require, module, exports) {
 
         SMS.Tips.loading("数据加载中...");
 
-        var api = new API('template/getFormTemplate');
+        var api = new API('supplier/getQualificationByHospital');
 
         api.post({
             hospital: config.hospital,
@@ -64,10 +64,30 @@ define("List", function (require, module, exports) {
             pageSize: config.pageSize
         }, function (data, total) {
             list = data;
-            primaryKey = list.primaryKey;
-            var headItems = data.head.items;
-            var bodyItems = data.body.items;
-            div.innerHTML = $.String.format();
+
+            div.innerHTML = $.String.format(samples["all"], {
+
+                'typeCaption': samples["typeCaption"],
+                'typeList': $.String.format(samples["typeList"], {
+                    'typeListItem': $.Array.keep(data.types, function (type, index) {
+                        return $.String.format(samples["typeListItem"], {
+                            'checked': type.isExist ? 'checked' : '',
+                            'name': type.name
+                        });
+                    }).join("")
+                }),
+                'qualificationList': $.String.format(samples["qualificationList"], {
+                    'qualificationListItem': $.Array.keep(data.detail, function (item, index) {
+                        return $.String.format(samples["qualificationListItem"], {
+                            'src': '../../../css/img/file.png',
+                            'typeName': item.typeName,
+                            'number': item.number,
+                            'issue': item.issue,
+                            'validityPeriod': item.validityPeriodBegin + ' -- ' + item.validityPeriodEnd
+                        });
+                    }).join("")
+                })
+            });
 
             bindHover();
 

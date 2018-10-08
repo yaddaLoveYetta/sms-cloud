@@ -113,24 +113,24 @@ public class SupplierController {
      * <p>
      * 返回医院要求的所有资质类型及当前供应商已经提供的资质类型，资质明细
      *
-     * @param hospitalId 医院id
+     * @param hospital 医院id
      * @param pageSize   分页大小
      * @param pageNo     当前页码
      */
     @RequestMapping(value = "getQualificationByHospital")
     @ResponseBody
-    public SupplierQualificationModel getQualificationByHospital(Long hospitalId,
+    public SupplierQualificationModel getQualificationByHospital(Long hospital,
             @RequestParam(defaultValue = "10") Integer pageSize,
             @RequestParam(defaultValue = "1") Integer pageNo) {
 
         // 供应商
         Long supplier = SessionUtil.checkSupplier();
 
-        if (null == hospitalId) {
+        if (null == hospital) {
             throw new BusinessLogicRunTimeException("请指定医院!");
         }
 
-        return supplierService.getQualificationByHospital(supplier, hospitalId, pageSize, pageNo);
+        return supplierService.getQualificationByHospital(supplier, hospital, pageSize, pageNo);
 
     }
 

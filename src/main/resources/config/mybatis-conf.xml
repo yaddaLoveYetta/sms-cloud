@@ -90,6 +90,15 @@
         <mapper resource="mapper/generate/SystemSettingMapper.xml"/>
         <mapper resource="mapper/generate/PurchaseOrderMapper.xml"/>
         <mapper resource="mapper/generate/PurchaseOrderEntryMapper.xml"/>
+        <mapper resource="mapper/generate/HospitalSupplierQualificationAttachmentMapper.xml"/>
+        <mapper resource="mapper/generate/HospitalSupplierQualificationMapper.xml"/>
+        <mapper resource="mapper/generate/HospitalSupplierQualificationTypeMapper.xml"/>
+        <mapper resource="mapper/generate/MaterialDocumentMapper.xml"/>
+        <mapper resource="mapper/generate/MaterialDocumentTypeMapper.xml"/>
+        <mapper resource="mapper/generate/SupplierQualificationAttachmentMapper.xml"/>
+        <mapper resource="mapper/generate/SupplierQualificationMapper.xml"/>
+        <mapper resource="mapper/generate/SupplierQualificationTypeMapper.xml"/>
+        <mapper resource="mapper/generate/SupplierTypeMapper.xml"/>
 
         <!-- =============================== 生成工具生成Mapper ========================end==== -->
 

@@ -1,5 +1,6 @@
 package com.kingdee.hrp.sms.common.pojo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -24,16 +25,22 @@ public class Qualification {
      */
     private Long type;
     /**
+     * 证件类型名称
+     */
+    private String typeName;
+    /**
      * 发证机关
      */
     private String issue;
     /**
      * 证件有效期开始
      */
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date validityPeriodBegin;
     /**
      * 证件有效期结束
      */
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date validityPeriodEnd;
 
     public Qualification() {

@@ -20,7 +20,8 @@
             <input id="txt-simple-search" type="text" ng-model="selected"
                    class="form-control input-sm bg-light no-border rounded padder" placeholder="快速搜索医院...">
             <span class="input-group-btn">
-                <button id="btn-hospital-search" type="button" class="btn-hospital-search btn btn-sm bg-light rounded"><i
+                <button id="btn-hospital-search" type="button"
+                        class="btn-hospital-search btn btn-sm bg-light rounded"><i
                         class="iconfont icon-chaxun"></i>
                 </button>
             </span>
@@ -28,35 +29,52 @@
     </div>
     <div class="form-group">
         <div class="col-sm-3" id="div-hospital"></div>
-        <div id="div-qualification-list" class="table-responsive col-sm-9">
-            <div class="row">
-                <div class="col-xs-6 col-md-3">
-                    <a href="#" class="thumbnail">
-                        <img src="/wp-content/uploads/2014/06/kittens.jpg" alt="通用的占位符缩略图">
-                    </a>
-                    <div class="caption">
-                        <h3>Bootstrap框架系列教程</h3>
-                        <p>Bootstrap框架是一个优秀的前端框，就算您是一位后端程序员或者你是一位不懂设计的前端人员，你也能依赖于Bootstrap制作做优美的网站...</p>
-                        <p>
-                            <a href="##" class="btn btn-primary">开始学习</a>
-                            <a href="##" class="btn btn-info">正在学习</a>
-                        </p>
-                    </div>
-                </div>
-                <div class="col-xs-6 col-md-3">
-                    <a href="#" class="thumbnail">
-                        <img src="/wp-content/uploads/2014/06/kittens.jpg" alt="通用的占位符缩略图">
-                    </a>
-                    <div class="caption">
-                        <h3>Bootstrap框架系列教程</h3>
-                        <p>Bootstrap框架是一个优秀的前端框，就算您是一位后端程序员或者你是一位不懂设计的前端人员，你也能依赖于Bootstrap制作做优美的网站...</p>
-                        <p>
-                            <a href="##" class="btn btn-primary">开始学习</a>
-                            <a href="##" class="btn btn-info">正在学习</a>
-                        </p>
-                    </div>
-                </div>
+        <div id="div-qualification-container" class="table-responsive col-sm-9">
+            <!--按钮区-->
+            <div class="container-fluid options">
+                <div id="div-button-list" class="btn-box"></div>
+            </div>
+            <!--医院对供应商的资质需求类别及已提供的证件列表 -->
 
+            <div id="div-qualification-info">
+                <!--
+                #--type.caption.begin--#
+                <div class="type-caption">
+                    <p>该医院要求提供的证件类型(打钩表示已经提供)</p>
+                </div>
+                #--type.caption.end--#
+                #--type.list.begin--#
+                <div id="div-qualification-type-list" class="container-fluid row">
+                    #--type.list.item.begin--#
+                    <div class="checkbox-inline col-xs-6 col-md-3">
+                        <label>
+                            <input type="checkbox" disabled="disabled" checked="{checked}">{name}
+                        </label>
+                    </div>
+                    #--type.list.item.end--#
+                </div>
+                #--type.list.end--#
+                #--qualification.list.begin--#
+                <div id="div-qualification-list" class="row">
+                    #--qualification.list.item.begin--#
+                    <div class="col-xs-6 col-md-3 qualification-item">
+                        <a href="#" class="thumbnail">
+                            <img src="{src}" alt="通用的占位符缩略图">
+                        </a>
+                        <div class="caption">
+                            <h3>{typeName}</h3>
+                            <p>{number}</p>
+                            <p>{issue}</p>
+                            <p>{validityPeriod}</p>
+                            <p>
+                                <a href="##" class="btn btn-info">查看附件</a>
+                            </p>
+                        </div>
+                    </div>
+                    #--qualification.list.item.end--#
+                </div>
+                #--qualification.list.end--#
+                -->
             </div>
         </div>
         <!--标准分页控件 -->
