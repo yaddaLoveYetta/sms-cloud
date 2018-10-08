@@ -79,6 +79,7 @@ define("List", function (require, module, exports) {
                 'qualificationList': $.String.format(samples["qualificationList"], {
                     'qualificationListItem': $.Array.keep(data.detail, function (item, index) {
                         return $.String.format(samples["qualificationListItem"], {
+                            'index': index,
                             'src': '../../../css/img/file.png',
                             'typeName': item.typeName,
                             'number': item.number,
