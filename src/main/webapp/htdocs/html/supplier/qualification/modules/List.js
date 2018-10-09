@@ -14,15 +14,22 @@ define("List", function (require, module, exports) {
     // 完整名称为 List/Samples
     var samples = require("/Samples")(div);
 
-    var primaryKey = "";
     var list = {};
     var hasBind = false;
     var emitter = MiniQuery.Event.create();
-    var index$selected = {};
     // 记录选中的索引
-    var classId;
+    var index$selected = {};
 
     var tid = null;
+
+    // 附件展示时候的图片
+    var src = {
+        'file': '../../../css/img/file.png',
+        'png': '../../../css/img/picture.png',
+        'jpg': '../../../css/img/picture.png',
+        'jpeg': '../../../css/img/picture.png',
+        'excel': '../../../css/img/excel.png'
+    };
 
     function load(config, fn) {
 
@@ -63,7 +70,8 @@ define("List", function (require, module, exports) {
             pageNo: config.pageNo,
             pageSize: config.pageSize
         }, function (data, total) {
-            list = data;
+
+            list = data.detail;
 
             div.innerHTML = $.String.format(samples["all"], {
 
@@ -80,7 +88,8 @@ define("List", function (require, module, exports) {
                     'qualificationListItem': $.Array.keep(data.detail, function (item, index) {
                         return $.String.format(samples["qualificationListItem"], {
                             'index': index,
-                            'src': '../../../css/img/file.png',
+                            'src': getSrc(item.attachments),
+                            'title': item.attachments.length + '个附件，点击查看',
                             'typeName': item.typeName,
                             'number': item.number,
                             'issue': item.issue,
@@ -101,6 +110,17 @@ define("List", function (require, module, exports) {
 
             emitter.fire("renderDone", []);
         });
+
+    }
+
+    function getSrc(attachments) {
+
+
+        if (!attachments || attachments.length === 0) {
+            return src.file;
+        }
+
+        return src[attachments[0].path.toLowerCase().split('.').splice(-1)] || src.file;
 
     }
 
@@ -133,6 +153,15 @@ define("List", function (require, module, exports) {
                 event.stopPropagation();
             });
         }
+
+        $('#div-qualification-list').delegate("a['thumbnail']", 'click', function (event) {
+
+            var a = this;
+            var index = a.parentNode.getAttribute("data-index");
+
+
+            console.log(list[index]);
+        });
 
         $(div).delegate("td[data-index]", "click", function (event) {
             var td = this;
@@ -236,10 +265,6 @@ define("List", function (require, module, exports) {
         return a;
     }
 
-    function send(classId, list, fn) {
-        Operation.send(classId, list, fn);
-    }
-
     function checkExpired() {
 
         var headItems = list.head.items;
@@ -271,7 +296,6 @@ define("List", function (require, module, exports) {
         load: load,
         render: render,
         getSelectedItems: getSelectedItems,
-        send: send,
         checkExpired: checkExpired,
         on: emitter.on.bind(emitter)
 

@@ -1,11 +1,13 @@
 package com.kingdee.hrp.sms.common.pojo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.kingdee.hrp.sms.common.model.HospitalSupplierQualificationAttachment;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * 供应商资质对象
@@ -42,6 +44,11 @@ public class Qualification {
      */
     @JsonFormat(pattern = "yyyy-MM-dd")
     private Date validityPeriodEnd;
+
+    /**
+     * 附件
+     */
+    private List<HospitalSupplierQualificationAttachment> attachments;
 
     public Qualification() {
     }

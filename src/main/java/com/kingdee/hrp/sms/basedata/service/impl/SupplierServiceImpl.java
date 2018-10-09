@@ -443,7 +443,7 @@ public class SupplierServiceImpl extends BaseService implements SupplierService 
      *
      * @param hospitalSupplierQualificationTypes 医院要求的证件类别
      * @param pageInfo                           供应商已经提供的证件明细
-     * @return SupplierQualificationModel<br/>
+     * @return SupplierQualificationModel<br>
      * hospitalSupplierQualificationTypes无数据时返回null
      */
     private SupplierQualificationModel assembleQualification(
@@ -488,8 +488,16 @@ public class SupplierServiceImpl extends BaseService implements SupplierService 
                     .setValidityPeriodBegin(item.getValidityPeriodBegin())
                     .setValidityPeriodEnd(item.getValidityPeriodEnd());
 
-            // 类型名称
+            // 类型名称--从类型里面过滤拿
             hospitalSupplierQualificationTypes.stream().filter(type -> type.getId() == item.getQualificationType().intValue()).findFirst().ifPresent(hospitalSupplierQualificationType -> qualification.setTypeName(hospitalSupplierQualificationType.getName()));
+
+            // 附件
+            HospitalSupplierQualificationAttachmentMapper mapper=getMapper(HospitalSupplierQualificationAttachmentMapper.class);
+            HospitalSupplierQualificationAttachmentExample example=new HospitalSupplierQualificationAttachmentExample();
+            example.createCriteria().andParentEqualTo(item.getId());
+            List<HospitalSupplierQualificationAttachment> attachments = mapper.selectByExample(example);
+
+            qualification.setAttachments(attachments);
 
             supplierQualification.getDetail().add(qualification);
 
