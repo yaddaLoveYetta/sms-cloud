@@ -8,7 +8,7 @@
     var SMS = require('SMS');
     var API = SMS.require('API');
     var Iframe = SMS.require('Iframe');
-    var bl = require('ButtonList');
+    var BL = SMS.require('ButtonList');
 
     var Iframes = require('Iframes');
     var Header = require('Header');
@@ -42,110 +42,104 @@
     function arrangeShowItems(items) {
 
         var list = [];
-        var item;
-        var entryList;
-        var entryItem;
-        var fileName;
 
-        var api = new API("file/download");
-        var url = api.getUrl();
+        $.Array.each(items, function (item, index) {
 
-        for (var i = 0; i < items.length; i++) {
-            item = items[i];
-            entryList = item.entry['1'];
-            for (var j = 0; j < entryList.length; j++) {
-                entryItem = entryList[j];
-                fileName = entryItem.url;
+            $.Array.each(item.attachments, function (attachment, index) {
 
-                url = $.Url.addQueryString(url, {
-                    classId: classId,
-                    itemId: item.id,
-                    fileName: fileName,
-                });
+                var fileName = attachment.path;
 
                 if (fileName && $.String.endsWith(fileName, '.pdf', true)) {
                     // pdf
                     list.push({
-                        'id': item.id || '',
-                        'idNumber': item.idNumber || '',
+                        'id': attachment.id || '',
+                        'parent': attachment.parent,
+                        'number': item.number || '',
                         'name': item.name || '',
-                        'type': item.type_DspName || '',
-                        'beginDate': item.beginDate || '',
-                        'endDate': item.endDate || '',
-                        'entryId': entryItem.entryId,
-                        'parent': entryItem.parent,
-                        'fileName': entryItem.url,
-                        'check': entryItem.check,
-                        'url': url,
+                        'type': item.type || '',
+                        'typeName': item.typeName,
+                        'beginDate': item.validityPeriodBegin || '',
+                        'endDate': item.validityPeriodEnd || '',
+                        'check': item.check,
                         'src': "../../../lib/pdfjs/web/viewer.html?file=" + encodeURIComponent(url),
                     });
                 } else if (fileName && ( $.String.endsWith(fileName, '.jpg', true) || $.String.endsWith(fileName, '.jpeg', true) || $.String.endsWith(fileName, '.png', true) || $.String.endsWith(fileName, '.gif', true)  )) {
                     // pic
                     list.push({
                         'id': item.id || '',
-                        'idNumber': item.idNumber || '',
+                        'parent': item.parent,
+                        'number': item.number || '',
                         'name': item.name || '',
-                        'type': item.type_DspName || '',
-                        'beginDate': item.beginDate || '',
-                        'endDate': item.endDate || '',
-                        'entryId': entryItem.entryId,
-                        'parent': entryItem.parent,
-                        'fileName': entryItem.url,
-                        'check': entryItem.check,
-                        'url': url,
-                        'src': "picture-view/index.html?file=" + encodeURIComponent(url),
+                        'type': item.type || '',
+                        'typeName': item.typeName,
+                        'beginDate': item.validityPeriodBegin || '',
+                        'endDate': item.validityPeriodEnd || '',
+                        'check': item.check,
+                        'src': "picture-view/index.html?file=" + encodeURIComponent(fileName),
                     });
                 }
 
-            }
-        }
+            });
 
+        });
         return list;
     }
 
     var blConfig = {
-        'items': [
+        container: '#div-button-list',
+        fields: {
+            text: 'text',
+            child: 'items',
+            callback: 'click',
+            route: 'name'
+        },
+        textKey: 'text',
+        routeKey: 'name',
+        iconKey: 'icon',
+        autoClose: true,
+        items: [
             {
                 text: '通过',
                 name: 'check',
-                icon: '../../../css/main/img/check.png',
+                icon: 'icon-Success',
             },
             {
                 text: '不通过',
                 name: 'uncheck',
-                icon: '../../../css/main/img/uncheck.png',
+                icon: 'icon-jujue',
             },
             {
                 text: '上一个',
                 name: 'previous',
-                icon: '../../../css/main/img/previous.png',
+                icon: 'icon-shangyige',
             },
             {
                 text: '下一个',
                 name: 'next',
-                icon: '../../../css/main/img/next.png',
+                icon: 'icon-xiayige',
             }, {
                 text: '显示未通过',
                 name: 'showUnCheck',
-                icon: '../../../css/main/img/previous.png',
+                icon: 'icon-jujue',
                 items: [
                     {
                         text: '显示已通过',
                         name: 'showCheck',
-                        icon: '../../../css/main/img/check.png',
+                        icon: 'icon-Success',
                     }, {
                         text: '显示全部',
                         name: 'showAll',
-                        icon: '../../../css/main/img/check.png',
+                        icon: 'icon-icon-1',
                     }
                 ],
             }
         ]
     };
 
-    var ButtonList = bl.create(blConfig);
+    var ButtonList = new BL(blConfig);
 
     ButtonList.render();
+
 
     Iframes.render();
 
@@ -227,7 +221,7 @@
         },
         'showAll': function (item, index) {
             // 显示全部
-            showItems =items
+            showItems = items
             Iframes.clear();
             Header.render(showItems[0]);
             Iframes.add(showItems[0]);

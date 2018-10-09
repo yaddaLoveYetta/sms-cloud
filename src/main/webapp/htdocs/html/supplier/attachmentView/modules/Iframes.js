@@ -89,6 +89,7 @@ define('Iframes', function (require, module, exports) {
             ht = Math.min(minHeight, ht);
 
             iframe.style.height = ht + 'px';
+            iframe.style.width = '100%';
         }
 
         function start(iframe) {

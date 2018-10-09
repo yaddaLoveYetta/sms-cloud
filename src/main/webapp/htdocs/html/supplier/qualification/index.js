@@ -265,6 +265,26 @@
         });
     }
 
+    /**
+     * 获取有可显示附件的记录
+     * @param items
+     * @return {Array}
+     */
+    function getShowItems(items) {
+
+        var showItems = [];
+
+        $.Array.each(items.attachments, function (item, index) {
+            var url = item.path;
+            if (url && ( $.String.endsWith(url, '.pdf', true) || $.String.endsWith(url, '.jpg', true) || $.String.endsWith(url, '.jpeg', true) || $.String.endsWith(url, '.png', true) || $.String.endsWith(url, '.gif', true)  )) {
+                showItems.push(items);
+                return false;
+            }
+        });
+
+        return showItems;
+    }
+
     List.on({
         'row.item.click': function (data, event) {
             // 子表行操作
@@ -334,6 +354,43 @@
             if (classId == 3010 || classId == 3020) {
                 List.checkExpired(classId);
             }
+        },
+        'preview': function (item, index) {
+
+            //  判断列表中有无可预览的附件
+            var showItems = getShowItems(item);
+
+            if (showItems.length === 0) {
+                SMS.Tips.error('列表没有可预览的附件!', 1000);
+                return;
+            }
+
+            // 附件预览
+            SMS.use('Dialog', function (Dialog) {
+
+                var dialog = new Dialog({
+                    title: '附件预览',
+                    width: 900,
+                    height: 550,
+                    url: $.Url.setQueryString('html/supplier/attachmentView/index.html'),
+                    data: {
+                        'showItems': showItems
+                    },
+                    button: []
+                });
+
+                //默认关闭行为为不提交
+                dialog.isSubmit = false;
+
+                dialog.showModal();
+
+                dialog.on({
+                    remove: function () {
+                        refresh();
+                    }
+                });
+
+            });
         }
     });
 

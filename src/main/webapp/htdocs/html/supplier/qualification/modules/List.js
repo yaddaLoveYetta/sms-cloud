@@ -86,6 +86,7 @@ define("List", function (require, module, exports) {
                 }),
                 'qualificationList': $.String.format(samples["qualificationList"], {
                     'qualificationListItem': $.Array.keep(data.detail, function (item, index) {
+
                         return $.String.format(samples["qualificationListItem"], {
                             'index': index,
                             'src': getSrc(item.attachments),
@@ -115,6 +116,7 @@ define("List", function (require, module, exports) {
 
     function getSrc(attachments) {
 
+        //return attachments[0].path;
 
         if (!attachments || attachments.length === 0) {
             return src.file;
@@ -126,105 +128,17 @@ define("List", function (require, module, exports) {
 
     function bindEvents(multiSelect) {
 
-        if (multiSelect) {
-            $(div).delegate('[data-check="all"]', "click", function (event) {
-                var chk = this;
-                var checked = chk.checked;
-                $('[data-check="item"]').each(function () {
-                    var chk = this;
-                    check(chk, checked);
-                });
-            }).delegate('[data-check="item"]', "click", function (event) {
-                var chk = this;
-                check(chk);
-                event.stopPropagation();
-            });
-        } else {
-            $('[data-check="all"]').hide();
-            $(div).delegate("[data-check=item]", "click", function (event) {
-                // var item = this;
-                var item = this;
-                var checked = item.checked;
-                $('[data-check="item"]').each(function () {
-                    var item = this;
-                    check(item, false);
-                });
-                check(item, checked);
-                event.stopPropagation();
-            });
-        }
-
-        $('#div-qualification-list').delegate("a['thumbnail']", 'click', function (event) {
+        $('#div-qualification-list').delegate("a.thumbnail", 'click', function (event) {
 
             var a = this;
             var index = a.parentNode.getAttribute("data-index");
 
-
             console.log(list[index]);
+
+            emitter.fire("preview" , [list[index],index]);
+
+            event.stopPropagation();
         });
-
-        $(div).delegate("td[data-index]", "click", function (event) {
-            var td = this;
-
-            if (td.getAttribute("child-index")) {
-                // 子表列单击
-                //td = td.parentNode.parentNode.parentNode.parentNode; // 转换成主表列
-                return; // 不触发,猫婆触发上级td事件
-            }
-
-            var tr = td.parentNode;
-            var index = +td.getAttribute("data-index");
-            // 列号
-            var no = +tr.getAttribute("data-index");
-            // 行号
-            var headItems = list.head.items;
-            var bodyItems = list.body.items;
-            var field = headItems[index];
-            var item = bodyItems[no];
-            var args = [{
-                row: no,
-                cell: index,
-                head: field,
-                body: item,
-                item: item.items[index]
-            }, event];
-            emitter.fire("click:" + no + "-" + index, args);
-            emitter.fire("click:" + field.key, args);
-            emitter.fire("cell.click", args);
-        });
-        $(div).delegate("tr[data-index]", "click", function (event) {
-            var tr = this;
-
-            if (tr.getAttribute("child-index")) {
-                // 子表列单击
-                // tr = tr.parentNode.parentNode.parentNode.parentNode; // 转换成主表行
-                return; // 不触发,猫婆触发上级tr事件
-            }
-
-            var no = +tr.getAttribute("data-index");
-            // 行号
-            var bodyItems = list.body.items;
-            var args = [{
-                row: no,
-                body: bodyItems[no]
-            }, event];
-            emitter.fire("click:" + no, args);
-            emitter.fire("row.click", args);
-            var chk = $(tr).find("[data-check=item]")[0];
-            var checked = !chk.checked;
-            chk.checked = checked;
-            if (!multiSelect) {
-                $(tr).siblings().removeClass("selected");
-                $(tr).siblings().each(function () {
-                    var sibCk = $(this).find("[data-check=item]")[0];
-                    sibCk.checked = false;
-                });
-                index$selected = {};
-            }
-            check(chk, checked);
-        });
-
-
     }
 
     function bindHover() {

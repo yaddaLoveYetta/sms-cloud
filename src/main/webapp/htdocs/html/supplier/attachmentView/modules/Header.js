@@ -19,9 +19,8 @@ define('Header', function (require, module, exports) {
         var html;
         if (item) {
             html = $.String.format(sample, {
-                'idNumber': item.idNumber, //
-                'name': item.name,
-                'type': item.type,
+                'number': item.number,
+                'typeName': item.typeName,
                 'beginDate': item.beginDate,
                 'endDate': item.endDate,
                 'check': !!item.check ? 'correct.png' : item.check == 0 ? 'wrong.png' : 'unknow.png',
