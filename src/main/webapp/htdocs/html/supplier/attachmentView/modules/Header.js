@@ -9,6 +9,8 @@ define('Header', function (require, module, exports) {
     var MiniQuery = require('MiniQuery');
     var SMS = require('SMS');
 
+    var emitter = MiniQuery.Event.create();
+
 
     var div = document.getElementById('div-head-content');
     var sample = $.String.between(div.innerHTML, '<!--', '-->');
@@ -30,10 +32,13 @@ define('Header', function (require, module, exports) {
         }
 
         $(div).html(html);
+
+        emitter.fire("done", [item]);
     }
 
     return {
-        'render': render
+        'render': render,
+        on: emitter.on.bind(emitter)
     }
 
 });

@@ -104,10 +104,8 @@ define("List", function (require, module, exports) {
                 })
             });
 
-            bindHover();
-
             if (!hasBind) {
-                bindEvents(config.multiSelect);
+                bindEvents();
                 hasBind = true;
             }
 
@@ -130,9 +128,9 @@ define("List", function (require, module, exports) {
 
     }
 
-    function bindEvents(multiSelect) {
+    function bindEvents() {
 
-        $('#div-qualification-list').delegate("a.thumbnail", 'click', function (event) {
+        $(div).delegate("a.thumbnail", 'click', function (event) {
 
             var a = this;
             var index = a.parentNode.getAttribute("data-index");
@@ -143,23 +141,6 @@ define("List", function (require, module, exports) {
 
             event.stopPropagation();
         });
-    }
-
-    function bindHover() {
-        $('.data-table table tbody tr td a').hover(function () {
-            if ($(this).siblings().length > 0) {
-                return;
-            }
-            $(this).after(samples["item.pop.menu"])
-
-        }, function () {
-            clearTimeout(tid);
-            var a = this;
-            tid = setTimeout(function () {
-                $(a).siblings().remove();
-            }, 3000);
-
-        })
     }
 
     function check(chk, checked) {

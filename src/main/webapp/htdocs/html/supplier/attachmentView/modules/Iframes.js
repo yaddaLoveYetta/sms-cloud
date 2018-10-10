@@ -27,11 +27,11 @@ define('Iframes', function (require, module, exports) {
     function findIndexById(id) {
 
         if (typeof id == 'object') { //此时传进来的 id 是 item
-            id = id.entryId;
+            id = id.id;
         }
 
         return $.Array.findIndex(list, function (item, index) {
-            return item.entryId === id;
+            return item.id === id;
         });
     }
 
@@ -51,7 +51,7 @@ define('Iframes', function (require, module, exports) {
     //生成 iframe 的 id
     function getIframeId(item) {
 
-        var id = prefix + item.entryId + '-';
+        var id = prefix + item.id + '-';
         return id;
     }
 
@@ -84,7 +84,7 @@ define('Iframes', function (require, module, exports) {
             }
 
             var ht = body.offsetHeight;
-            ht = ht + 50;
+            //ht = ht + 50;
             //ht = Math.max(minHeight, ht);
             ht = Math.min(minHeight, ht);
 
@@ -160,9 +160,9 @@ define('Iframes', function (require, module, exports) {
         var url = MiniQuery.Url.randomQueryString(item.src);
         //填充
         var html = $.String.format(sample, {
-            'sn': item.entryId, //
+            'sn': item.id, //
             'id': getIframeId(item),
-            'index': lastIndex(),
+            'index': lastIndex()
         });
 
         $(div).append(html); //创建 iframe 的 DOM 节点

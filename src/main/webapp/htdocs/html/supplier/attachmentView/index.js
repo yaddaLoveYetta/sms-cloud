@@ -66,8 +66,8 @@
                 } else if (fileName && ( $.String.endsWith(fileName, '.jpg', true) || $.String.endsWith(fileName, '.jpeg', true) || $.String.endsWith(fileName, '.png', true) || $.String.endsWith(fileName, '.gif', true)  )) {
                     // pic
                     list.push({
-                        'id': item.id || '',
-                        'parent': item.parent,
+                        'id': attachment.id || '',
+                        'parent': attachment.parent,
                         'number': item.number || '',
                         'name': item.name || '',
                         'type': item.type || '',
@@ -106,17 +106,17 @@
             {
                 text: '不通过',
                 name: 'uncheck',
-                icon: 'icon-jujue',
+                icon: 'icon-jujue'
             },
             {
                 text: '上一个',
                 name: 'previous',
-                icon: 'icon-shangyige',
+                icon: 'icon-shangyige'
             },
             {
                 text: '下一个',
                 name: 'next',
-                icon: 'icon-xiayige',
+                icon: 'icon-xiayige'
             }, {
                 text: '显示未通过',
                 name: 'showUnCheck',
@@ -125,13 +125,13 @@
                     {
                         text: '显示已通过',
                         name: 'showCheck',
-                        icon: 'icon-Success',
+                        icon: 'icon-Success'
                     }, {
                         text: '显示全部',
                         name: 'showAll',
-                        icon: 'icon-icon-1',
+                        icon: 'icon-icon-1'
                     }
-                ],
+                ]
             }
         ]
     };
@@ -140,18 +140,17 @@
 
     ButtonList.render();
 
-
     Iframes.render();
 
     ButtonList.on('click', {
         'previous': function () {
             var item = getItem(-1);
-            Iframes.add(item);
+            //Iframes.add(item);
             Header.render(item);
         },
         'next': function () {
             var item = getItem(1);
-            Iframes.add(item);
+            //Iframes.add(item);
             Header.render(item);
         },
         'check': function () {
@@ -171,7 +170,7 @@
                     if (item_next === item) {
                         return;
                     }
-                    Iframes.add(item_next);
+                    //Iframes.add(item_next);
                     Header.render(item_next);
                 }, 500)
             });
@@ -194,7 +193,7 @@
                     if (item_next === item) {
                         return;
                     }
-                    Iframes.add(item_next);
+                    //Iframes.add(item_next);
                     Header.render(item_next);
                 }, 500)
 
@@ -248,7 +247,11 @@
     }
 
     Header.render(showItems[0]);
-    Iframes.add(showItems[0]); // 默认显示第一个附件
+
+    Header.on('done',function (item) {
+        Iframes.add(item); // 默认显示第一个附件
+    });
+
 
 
 })();
