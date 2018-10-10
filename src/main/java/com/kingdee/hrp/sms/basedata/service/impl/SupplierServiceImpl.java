@@ -122,7 +122,7 @@ public class SupplierServiceImpl extends BaseService implements SupplierService 
      */
     @Override
     public SupplierQualificationModel getQualificationByHospital(Long supplier, Long hospital, Integer pageSize,
-                                                                 Integer pageNo) {
+            Integer pageNo) {
 
         // 医院对供应商的资质需求类别
         List<HospitalSupplierQualificationType> hospitalSupplierQualificationTypes = getHospitalSupplierQualificationTypes(
@@ -384,7 +384,7 @@ public class SupplierServiceImpl extends BaseService implements SupplierService 
      * @return PageInfo<HospitalSupplierQualification>
      */
     private PageInfo<HospitalSupplierQualification> getHospitalSupplierQualificationPageInfo(Long supplier,
-                                                                                             Long hospital, Integer pageSize, Integer pageNo) {
+            Long hospital, Integer pageSize, Integer pageNo) {
 
         HospitalSupplierQualificationMapper hospitalSupplierQualificationMapper = getMapper(
                 HospitalSupplierQualificationMapper.class);
@@ -416,7 +416,7 @@ public class SupplierServiceImpl extends BaseService implements SupplierService 
      * @return PageInfo<HospitalSupplierQualification>
      */
     private PageInfo<HospitalSupplierQualification> getSupplierQualificationPageInfo(Long supplier,
-                                                                                     Integer pageSize, Integer pageNo) {
+            Integer pageSize, Integer pageNo) {
 
         return getHospitalSupplierQualificationPageInfo(supplier, null, pageSize, pageNo);
     }
@@ -436,6 +436,30 @@ public class SupplierServiceImpl extends BaseService implements SupplierService 
 
         return hospitalSupplierQualificationTypeMapper
                 .selectByExample(hospitalSupplierQualificationTypeExample);
+    }
+
+    /**
+     * 指定医院指定类别的资质类别信息
+     *
+     * @param hospital 医院
+     * @return List<HospitalSupplierQualificationType>
+     */
+    private HospitalSupplierQualificationType getHospitalSupplierQualificationTypes(Long hospital, Long type) {
+
+        HospitalSupplierQualificationTypeMapper hospitalSupplierQualificationTypeMapper = getMapper(
+                HospitalSupplierQualificationTypeMapper.class);
+        HospitalSupplierQualificationTypeExample hospitalSupplierQualificationTypeExample = new HospitalSupplierQualificationTypeExample();
+        hospitalSupplierQualificationTypeExample.createCriteria().andHospitalEqualTo(hospital).andIdEqualTo(type);
+
+        List<HospitalSupplierQualificationType> types = hospitalSupplierQualificationTypeMapper
+                .selectByExample(hospitalSupplierQualificationTypeExample);
+
+        if (!CollectionUtils.isEmpty(types)) {
+            // 只可能是一个
+            return types.get(0);
+        }
+        // 理论上不可能执行到此(有且仅有一个)
+        return null;
     }
 
     /**
@@ -488,12 +512,28 @@ public class SupplierServiceImpl extends BaseService implements SupplierService 
                     .setValidityPeriodBegin(item.getValidityPeriodBegin())
                     .setValidityPeriodEnd(item.getValidityPeriodEnd());
 
-            // 类型名称--从类型里面过滤拿
-            hospitalSupplierQualificationTypes.stream().filter(type -> type.getId() == item.getQualificationType().intValue()).findFirst().ifPresent(hospitalSupplierQualificationType -> qualification.setTypeName(hospitalSupplierQualificationType.getName()));
+            // 类型名称
+            if (CollectionUtils.isEmpty(hospitalSupplierQualificationTypes)) {
+                // 不区分医院获取证件信息时不能从类型里面拿，因为此时不会获取证件类别信息
+                HospitalSupplierQualificationType hospitalSupplierQualificationType = getHospitalSupplierQualificationTypes(
+                        item.getHospital(), item.getQualificationType());
+
+                if (null != hospitalSupplierQualificationType) {
+                    qualification.setTypeName(hospitalSupplierQualificationType.getName());
+                }
+
+            } else {
+                // 指定医院获取证件信息时从类型里面过滤拿
+                hospitalSupplierQualificationTypes.stream()
+                        .filter(type -> type.getId() == item.getQualificationType().intValue()).findFirst().ifPresent(
+                        hospitalSupplierQualificationType -> qualification
+                                .setTypeName(hospitalSupplierQualificationType.getName()));
+            }
 
             // 附件
-            HospitalSupplierQualificationAttachmentMapper mapper=getMapper(HospitalSupplierQualificationAttachmentMapper.class);
-            HospitalSupplierQualificationAttachmentExample example=new HospitalSupplierQualificationAttachmentExample();
+            HospitalSupplierQualificationAttachmentMapper mapper = getMapper(
+                    HospitalSupplierQualificationAttachmentMapper.class);
+            HospitalSupplierQualificationAttachmentExample example = new HospitalSupplierQualificationAttachmentExample();
             example.createCriteria().andParentEqualTo(item.getId());
             List<HospitalSupplierQualificationAttachment> attachments = mapper.selectByExample(example);
 

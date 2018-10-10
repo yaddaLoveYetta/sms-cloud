@@ -182,7 +182,7 @@ public class SupplierController {
     }
 
     /**
-     * 新增一个证件信息
+     * 供应商新增一个证件信息
      *
      * @param request       HttpServletRequest (必须上传了至少一个pdf证件附件)
      * @param qualification 证件信息

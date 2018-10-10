@@ -91,7 +91,7 @@ define('Tree', function (require, module, exports) {
                 });
 
                 treeView.on('nodeSelected', function (event, data) {
-                    data.hospital > 0 && emitter.fire("change", [data.hospital]);
+                    emitter.fire("change", [data.hospital]);
                 });
 
                 // 初始化默认选中第一个医院

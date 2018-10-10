@@ -1,5 +1,4 @@
-﻿﻿
-/**
+﻿/**
  * List 模块
  *
  */
@@ -36,6 +35,11 @@ define("List", function (require, module, exports) {
         SMS.Tips.loading("数据加载中...");
 
         var api = new API('supplier/getQualificationByHospital');
+
+        if (config.hospital === 0) {
+            // 没指定医院获取所有医院证件信息
+            api = new API('supplier/getQualifications');
+        }
 
         api.post({
             hospital: config.hospital,
@@ -75,8 +79,8 @@ define("List", function (require, module, exports) {
 
             div.innerHTML = $.String.format(samples["all"], {
 
-                'typeCaption': samples["typeCaption"],
-                'typeList': $.String.format(samples["typeList"], {
+                'typeCaption': config.hospital === 0 ? '' : samples["typeCaption"],
+                'typeList': config.hospital === 0 ? '' : $.String.format(samples["typeList"], {
                     'typeListItem': $.Array.keep(data.types, function (type, index) {
                         return $.String.format(samples["typeListItem"], {
                             'checked': type.isExist ? 'checked' : '',
@@ -135,7 +139,7 @@ define("List", function (require, module, exports) {
 
             console.log(list[index]);
 
-            emitter.fire("preview" , [list[index],index]);
+            emitter.fire("preview", [list[index], index]);
 
             event.stopPropagation();
         });

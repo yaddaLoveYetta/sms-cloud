@@ -20,7 +20,8 @@
     var txtSimpleSearch = document.getElementById('txt-simple-search');
     var txtItemSearch = document.getElementById('txt-item-search');
     var conditions = {};
-
+    // 当前查看的医院
+    var currentHospital = 0;
     //检查登录
     if (!SMS.Login.check(true)) {
         return;
@@ -61,41 +62,6 @@
 
         //支持二级事件，二级事件对应 item 中的 name
         ButtonList.on('click', {
-            // 查看详情
-            'view': function (item, index) {
-
-                var list = List.getSelectedItems();
-
-                if (list.length === 0) {
-                    SMS.Tips.error('请选择要操作的项', 1000);
-                    return;
-                }
-
-                if (list.length > 1) {
-                    SMS.Tips.error('一次只能对一条记录进行操作', 1000);
-                    return;
-                }
-
-                var metaData = List.getMetaData();
-                //var url = require("UrlMapping")(classId);
-                var url = item.info.url;
-                var name = metaData.formClass.name || '';
-
-                if (!url) {
-                    return;
-                }
-
-                Iframe.open({
-                    id: classId + '-view-' + list[0].primaryValue,
-                    name: '查看详情-' + name,
-                    url: url,
-                    query: {
-                        'id': list[0].primaryValue,
-                        'classId': classId,
-                        'operate': 0
-                    }
-                });
-            },
             // 刷新
             'refresh': function (item, index) {
                 refresh();
@@ -142,37 +108,17 @@
             // 供应商合作医院-查看医院详细信息
             'view-hospital': function (item, index) {
 
-                if (classId !== 3001) {
-                    return;
-                }
-
-                var list = List.getSelectedItems();
-
-                if (list.length === 0) {
-                    SMS.Tips.error('请选择要操作的项', 1000);
-                    return;
-                }
-
-                if (list.length > 1) {
-                    SMS.Tips.error('一次只能对一条记录进行操作', 1000);
-                    return;
-                }
-
-                //var url = require("UrlMapping")(1012);
-                var url = item.info.url;
-                var name = list[0].data.hospital_DspName || '';
-
-                if (!url) {
-                    // 没有配置编辑页面或不需要编辑功能
+                if (currentHospital === 0) {
+                    SMS.Tips.error('请选择医院', 1000);
                     return;
                 }
 
                 Iframe.open({
-                    id: classId + '-view-hospital-' + list[0].primaryValue,
-                    name: '医院资料-' + name,
-                    url: url,
+                    id: '-view-hospital-' + currentHospital,
+                    name: '医院资料',
+                    url: './html/bill-ext/hospital/index.html',
                     query: {
-                        'id': list[0].data.hospital,
+                        'id': currentHospital,
                         'classId': 1012,
                         'operate': 0
                     }
@@ -239,30 +185,32 @@
 
     function refresh() {
 
-        var conditions = getCondition();
+        if (currentHospital === 0) {
+            return;
+        }
 
         List.render({
-            classId: classId,
-            pageNo: 1,
-            pageSize: defaults.pageSize,
-            conditions: conditions,
-            multiSelect: defaults.multiSelect
-        }, function (total, pageSize) {
+                hospital: currentHospital,
+                pageNo: defaults.pageNo,
+                pageSize: defaults.pageSize
+            }, function (total, pageSize) {
 
-            Pager.render({
-                size: pageSize,
-                total: total,
-                change: function (no) {
-                    List.render({
-                        classId: classId,
-                        pageNo: no,
-                        pageSize: defaults.pageSize,
-                        conditions: conditions,
-                        multiSelect: defaults.multiSelect
-                    });
-                }
-            });
-        });
+                Pager.render({
+                    size: pageSize,
+                    sizes: defaults.sizes,
+                    total: total,
+                    change: function (no, pageSize) {
+                        defaults.pageSize = pageSize;
+                        List.render({
+                            type: hospital,
+                            pageNo: no,
+                            pageSize: defaults.pageSize
+                        });
+                    }
+                });
+
+            }
+        );
     }
 
     /**
@@ -286,75 +234,6 @@
     }
 
     List.on({
-        'row.item.click': function (data, event) {
-            // 子表行操作
-            console.log(data);
-
-            var type = data.operate;
-
-            if (type == 0) {
-                // 预览
-                var api = new API("file/preview");
-                var url = api.getUrl();
-                url = $.Url.addQueryString(url, {
-                    classId: classId,
-                    itemId: data.itemId,
-                    fileName: data.fileName,
-                })
-
-                data.control.href = url;
-                data.control.click();
-                data.control.href = "#";
-            }
-            else if (type == 1) {
-                // 下载子表行附件
-
-                var api = new API("file/download");
-                var url = api.getUrl();
-                url = $.Url.addQueryString(url, {
-                    classId: classId,
-                    itemId: data.itemId,
-                    fileName: data.fileName,
-                })
-
-                data.control.href = url;
-                data.control.click();
-                data.control.href = "#";
-
-            } else if (type == 2) {
-
-                //删除子表行
-                var primaryKey = data.body.items[data.col].value[data.entryRow].primaryKey;
-
-                var obj = {};
-                obj[primaryKey] = data.body.items[data.col].value[data.entryRow].primaryValue;
-
-                var para = {
-                    classId: classId,
-                    itemId: data.body.primaryValue,
-                    data: {
-                        entry: {
-                            "1": [
-                                {
-                                    flag: 0,// 删除改行
-                                    data: obj
-                                }
-                            ],
-                        }
-                    }
-                };
-
-                List.edit(para, function () {
-                    refresh();
-                });
-            }
-
-        },
-        'renderDone': function () {
-            if (classId == 3010 || classId == 3020) {
-                List.checkExpired(classId);
-            }
-        },
         'preview': function (item, index) {
 
             //  判断列表中有无可预览的附件
@@ -395,6 +274,8 @@
     });
 
     Tree.on('change', function (hospital) {
+
+        currentHospital = hospital;
 
         List.render({
                 hospital: hospital,
