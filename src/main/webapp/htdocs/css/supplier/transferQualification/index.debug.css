@@ -1,0 +1,12 @@
+.div-head-container {
+    margin-top: 20px;
+}
+
+.form-control-feedback {
+    right: 15px !important;
+    pointer-events: auto !important;
+}
+
+.error-msg {
+    color: #ea542a;
+}

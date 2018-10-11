@@ -71,9 +71,9 @@
                 SMS.use('Dialog', function (Dialog) {
 
                     var dialog = new Dialog({
-                        title: '发送证件到医院',
-                        width: 500,
-                        height: 300,
+                        title: '发送证件给医院',
+                        width: 400,
+                        height: 230,
                         url: $.Url.setQueryString('html/supplier/transferQualification/index.html'),
                         data: {
                             node: currentNode

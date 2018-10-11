@@ -40,13 +40,7 @@
 
     var ButtonList;
 
-    FormAction.create({
-        'classId': classId,
-        'type': operate,
-        'textKey': 'textModify',
-        'routeKey': 'nameModify',
-        'iconKey': 'iconModify'
-    }, function (config) {
+    FormAction.create({'classId': classId, 'type': operate}, function (config) {
 
         if (operate === 0) {
             // 查看详情时不要工具栏

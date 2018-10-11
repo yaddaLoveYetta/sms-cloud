@@ -361,7 +361,7 @@ define('Edit', function (require, module, exports) {
                     //F7选择框
                     var selector = emitter.fire('selectorGet', [field, key]);
 
-                    var selectorId = selector && selector[0].getData()[0]['ID'];
+                    var selectorId = selector && selector[0].getData()[0]['id'];
 
                     if (!selectorId) {
                         if (Operator.isMustInputFiled(metaData, key, operate)) {

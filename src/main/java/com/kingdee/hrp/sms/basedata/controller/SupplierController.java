@@ -118,7 +118,7 @@ public class SupplierController {
      * @param pageSize 分页大小
      * @param pageNo   当前页码
      */
-    @RequestMapping(value = "getQualificationByHospital")
+    @RequestMapping(value = "getHospitalSupplierQualificationsByHospital")
     @ResponseBody
     public SupplierQualificationModel getHospitalSupplierQualificationsByHospital(Long hospital,
             @RequestParam(defaultValue = "10") Integer pageSize,
@@ -143,7 +143,7 @@ public class SupplierController {
      * @param pageNo   当前页码
      * @return SupplierQualificationModel
      */
-    @RequestMapping(value = "getQualifications")
+    @RequestMapping(value = "getHospitalSupplierQualifications")
     @ResponseBody
     public SupplierQualificationModel getHospitalSupplierQualifications(
             @RequestParam(defaultValue = "10") Integer pageSize,
