@@ -121,7 +121,8 @@ public class SupplierServiceImpl extends BaseService implements SupplierService 
      * @return SupplierQualificationModel
      */
     @Override
-    public SupplierQualificationModel getQualificationByHospital(Long supplier, Long hospital, Integer pageSize,
+    public SupplierQualificationModel getHospitalSupplierQualificationsByHospital(Long supplier, Long hospital,
+            Integer pageSize,
             Integer pageNo) {
 
         // 医院对供应商的资质需求类别
@@ -148,7 +149,8 @@ public class SupplierServiceImpl extends BaseService implements SupplierService 
      * @return SupplierQualificationModel
      */
     @Override
-    public SupplierQualificationModel getQualification(Long supplier, Integer pageSize, Integer pageNo) {
+    public SupplierQualificationModel getHospitalSupplierQualifications(Long supplier, Integer pageSize,
+            Integer pageNo) {
 
         // 本供应商已经提供了的证件--分页
         PageInfo<HospitalSupplierQualification> pageInfo = getSupplierQualificationPageInfo(supplier, pageSize, pageNo);
@@ -347,6 +349,24 @@ public class SupplierServiceImpl extends BaseService implements SupplierService 
         supplierQualificationAttachmentExample.createCriteria().andIdIn(attachmentIds);
         supplierQualificationAttachmentMapper.deleteByExample(supplierQualificationAttachmentExample);
 
+    }
+
+    /**
+     * 供应商资质获取附件列表
+     *
+     * @param supplier        供应商
+     * @param qualificationId 证件
+     * @return 附件列表
+     */
+    @Override
+    public List<SupplierQualificationAttachment> getQualificationAttachment(Long supplier, Long qualificationId) {
+
+        SupplierQualificationAttachmentMapper mapper = getMapper(SupplierQualificationAttachmentMapper.class);
+        SupplierQualificationAttachmentExample example=new SupplierQualificationAttachmentExample();
+
+        example.createCriteria().andParentEqualTo(qualificationId);
+
+        return mapper.selectByExample(example);
     }
 
     /**

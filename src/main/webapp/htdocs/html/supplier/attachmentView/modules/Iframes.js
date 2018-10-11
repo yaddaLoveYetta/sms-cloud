@@ -71,6 +71,10 @@ define('Iframes', function (require, module, exports) {
 
         function setHeight(iframe) {
 
+            // 可能iframe加载后页面还有未加载的元素，重新计算
+             iframeTop = $(div).offset().top;
+             minHeight = clientHeight - iframeTop - footerHeight;
+
             current = iframe;
 
             var body;
@@ -84,12 +88,11 @@ define('Iframes', function (require, module, exports) {
             }
 
             var ht = body.offsetHeight;
-            //ht = ht + 50;
-            //ht = Math.max(minHeight, ht);
+
             ht = Math.min(minHeight, ht);
 
             iframe.style.height = ht + 'px';
-            iframe.style.width = '100%';
+            //iframe.style.width = '100%';
         }
 
         function start(iframe) {
@@ -120,7 +123,8 @@ define('Iframes', function (require, module, exports) {
         // adaptHeight = 
         return function (iframe) {
 
-            if (typeof iframe == 'number') { //传进来的 iframe 是一个 index
+            if (typeof iframe == 'number') {
+                //传进来的 iframe 是一个 index
                 iframe = getIframe(iframe);
             }
 
@@ -156,23 +160,24 @@ define('Iframes', function (require, module, exports) {
 
         list.push(item);
 
-        //var url = $.Url.randomQueryString(item.url); //增加一个随机 key，以确保缓存失效
+        //增加一个随机 key，以确保缓存失效
+        //var url = $.Url.randomQueryString(item.url);
         var url = MiniQuery.Url.randomQueryString(item.src);
         //填充
         var html = $.String.format(sample, {
-            'sn': item.id, //
+            'sn': item.id,
             'id': getIframeId(item),
             'index': lastIndex()
         });
 
-        $(div).append(html); //创建 iframe 的 DOM 节点
+        //创建 iframe 的 DOM 节点
+        $(div).append(html);
 
         //先绑定事件，再设置 src 属性来加载页面
         var iframe = getIframe(item);
         $(iframe).on('load', function () {
             adaptHeight(this);
             emitter.fire('load', [item]);
-
         }).attr('src', url);
 
         active(lastIndex());

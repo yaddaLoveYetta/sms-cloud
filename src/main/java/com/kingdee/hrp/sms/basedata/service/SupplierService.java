@@ -1,5 +1,6 @@
 package com.kingdee.hrp.sms.basedata.service;
 
+import com.kingdee.hrp.sms.common.model.SupplierQualificationAttachment;
 import com.kingdee.hrp.sms.common.pojo.Qualification;
 import com.kingdee.hrp.sms.common.pojo.SupplierQualificationModel;
 
@@ -40,7 +41,8 @@ public interface SupplierService {
      * @param pageNo   当前页码
      * @return SupplierQualificationModel
      */
-    SupplierQualificationModel getQualificationByHospital(Long supplier, Long hospital, Integer pageSize,
+    SupplierQualificationModel getHospitalSupplierQualificationsByHospital(Long supplier, Long hospital,
+            Integer pageSize,
             Integer pageNo);
 
     /**
@@ -51,7 +53,7 @@ public interface SupplierService {
      * @param pageNo   当前页码
      * @return SupplierQualificationModel
      */
-    SupplierQualificationModel getQualification(Long supplier, Integer pageSize, Integer pageNo);
+    SupplierQualificationModel getHospitalSupplierQualifications(Long supplier, Integer pageSize, Integer pageNo);
 
     /**
      * 供应商提交一份证件给医院(证件信息及证件附件)
@@ -74,18 +76,28 @@ public interface SupplierService {
     /**
      * 供应商为证件增加附件
      *
-     * @param supplier  供应商
-     * @param qualificationId        证件id
-     * @param files     附件
-     * @param overwrite 替换、追加附件(1:覆盖0:追加，默认0)
+     * @param supplier        供应商
+     * @param qualificationId 证件id
+     * @param files           附件
+     * @param overwrite       替换、追加附件(1:覆盖0:追加，默认0)
      */
     void addQualificationAttachment(Long supplier, Long qualificationId, List<File> files, Integer overwrite);
 
     /**
      * 供应商删除证件附件
-     *  @param supplier        供应商
+     *
+     * @param supplier        供应商
      * @param qualificationId 证件id
-     * @param attachmentIds    附件id列表
+     * @param attachmentIds   附件id列表
      */
     void delQualificationAttachment(Long supplier, Long qualificationId, List<Long> attachmentIds);
+
+    /**
+     * 供应商资质获取附件列表
+     *
+     * @param supplier        供应商
+     * @param qualificationId 证件
+     * @return 附件列表
+     */
+    List<SupplierQualificationAttachment> getQualificationAttachment(Long supplier, Long qualificationId);
 }

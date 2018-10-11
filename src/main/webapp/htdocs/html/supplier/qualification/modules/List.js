@@ -34,11 +34,11 @@ define("List", function (require, module, exports) {
 
         SMS.Tips.loading("数据加载中...");
 
-        var api = new API('supplier/getQualificationByHospital');
+        var api = new API('supplier/getHospitalSupplierQualificationsByHospital');
 
         if (config.hospital === 0) {
             // 没指定医院获取所有医院证件信息
-            api = new API('supplier/getQualifications');
+            api = new API('supplier/getHospitalSupplierQualifications');
         }
 
         api.post({

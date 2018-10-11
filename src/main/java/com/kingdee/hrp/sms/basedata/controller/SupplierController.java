@@ -2,6 +2,7 @@ package com.kingdee.hrp.sms.basedata.controller;
 
 import com.kingdee.hrp.sms.basedata.service.SupplierService;
 import com.kingdee.hrp.sms.common.exception.BusinessLogicRunTimeException;
+import com.kingdee.hrp.sms.common.model.SupplierQualificationAttachment;
 import com.kingdee.hrp.sms.common.pojo.Qualification;
 import com.kingdee.hrp.sms.common.pojo.SupplierQualificationModel;
 import com.kingdee.hrp.sms.util.FileOperate;
@@ -114,12 +115,12 @@ public class SupplierController {
      * 返回医院要求的所有资质类型及当前供应商已经提供的资质类型，资质明细
      *
      * @param hospital 医院id
-     * @param pageSize   分页大小
-     * @param pageNo     当前页码
+     * @param pageSize 分页大小
+     * @param pageNo   当前页码
      */
     @RequestMapping(value = "getQualificationByHospital")
     @ResponseBody
-    public SupplierQualificationModel getQualificationByHospital(Long hospital,
+    public SupplierQualificationModel getHospitalSupplierQualificationsByHospital(Long hospital,
             @RequestParam(defaultValue = "10") Integer pageSize,
             @RequestParam(defaultValue = "1") Integer pageNo) {
 
@@ -130,7 +131,7 @@ public class SupplierController {
             throw new BusinessLogicRunTimeException("请指定医院!");
         }
 
-        return supplierService.getQualificationByHospital(supplier, hospital, pageSize, pageNo);
+        return supplierService.getHospitalSupplierQualificationsByHospital(supplier, hospital, pageSize, pageNo);
 
     }
 
@@ -144,12 +145,13 @@ public class SupplierController {
      */
     @RequestMapping(value = "getQualifications")
     @ResponseBody
-    public SupplierQualificationModel getQualifications(@RequestParam(defaultValue = "10") Integer pageSize,
+    public SupplierQualificationModel getHospitalSupplierQualifications(
+            @RequestParam(defaultValue = "10") Integer pageSize,
             @RequestParam(defaultValue = "1") Integer pageNo) {
 
         Long supplier = SessionUtil.checkSupplier();
 
-        return supplierService.getQualification(supplier, pageSize, pageNo);
+        return supplierService.getHospitalSupplierQualifications(supplier, pageSize, pageNo);
     }
 
     /**
@@ -249,6 +251,24 @@ public class SupplierController {
         List<Long> ids = JsonUtil.json2Collection(attachmentIds, List.class, Long.class);
 
         supplierService.delQualificationAttachment(supplier, qualificationId, ids);
+
+    }
+
+    /**
+     * 供应商资质获取附件列表
+     *
+     * @param qualificationId 证件
+     * @return 附件列表
+     */
+    public List<SupplierQualificationAttachment> getQualificationAttachment(Long qualificationId) {
+
+        Long supplier = SessionUtil.checkSupplier();
+
+        if (null == qualificationId) {
+            throw new BusinessLogicRunTimeException("参数错误：必须指定证件查看附件!");
+        }
+
+        return supplierService.getQualificationAttachment(supplier, qualificationId);
 
     }
 }

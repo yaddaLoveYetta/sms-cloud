@@ -7,7 +7,6 @@
     var MiniQuery = require('MiniQuery');
     var SMS = require('SMS');
     var Iframe = SMS.require('Iframe');
-    var API = SMS.require('API');
     var MessageBox = SMS.require('MessageBox');
     var BL = SMS.require('ButtonList');
 
@@ -21,7 +20,7 @@
     var txtItemSearch = document.getElementById('txt-item-search');
     var conditions = {};
     // 当前查看的医院
-    var currentHospital = 0;
+    var currentNode = 0;
     //检查登录
     if (!SMS.Login.check(true)) {
         return;
@@ -53,11 +52,6 @@
 
         var ButtonList = new BL(config);
 
-        // 总事件，最后触发
-        ButtonList.on('click', function (item, index) {
-            //console.dir(item);
-        });
-
         ButtonList.render();
 
         //支持二级事件，二级事件对应 item 中的 name
@@ -68,57 +62,119 @@
             },
             // 提交证件给医院
             'transfer': function (item, index) {
-                // 发送到HRP
-                if (!(classId == 1005 || classId == 1007 || classId == 1023)) {
-                    //目前基础资料只有供应商-供应商资质类别-物料证件类别可同步回HRP
-                    return;
-                }
-                var list = List.getSelectedItems();
-
-                if (list.length == 0) {
-                    SMS.Tips.error('请选择要操作的项', 1500);
+                // 发送一个证件给医院
+                if (currentNode.hospital === 0) {
+                    SMS.Tips.error('请选择医院', 1000);
                     return;
                 }
 
-                if (list.length > 1) {
-                    SMS.Tips.error('一次只能对一条记录进行操作');
-                    return;
-                }
+                SMS.use('Dialog', function (Dialog) {
 
-                if (list[0].data.review === 0) {
-                    SMS.Tips.error('该记录未审核，不可发送', 1500);
-                    return;
-                }
+                    var dialog = new Dialog({
+                        title: '发送证件到医院',
+                        width: 500,
+                        height: 300,
+                        url: $.Url.setQueryString('html/supplier/transferQualification/index.html'),
+                        data: {
+                            node: currentNode
+                        },
+                        button: [{
+                            value: '确定',
+                            className: 'sms-submit-btn',
+                            callback: function () {
 
-                if (list[0].data.syncStatus === 1) {
-                    SMS.Tips.error('该记录已发送到医院', 1500);
-                    return;
-                }
+                                dialog.__dispatchEvent('get');
+                                var data = dialog.getData();
 
-                MessageBox.confirm('确定要将该记录发送给医院?', function (result) {
-                    if (result) {
-                        List.send(classId, list, item.info.apiUrl, function () {
-                            SMS.Tips.success('发送成功', 2000);
+                                var type = data.type;
+                                var hospital = data.hospital;
+                                var supplierQualificationId = data.supplierQualificationId;
+
+                                if (type > 0 && hospital > 0 && supplierQualificationId > 0) {
+
+                                    dialog.find('[data-id="确定"]').attr('disabled', true);
+
+                                    transferQualification({
+                                        type: type,
+                                        hospital: hospital,
+                                        supplierQualificationId: supplierQualificationId
+                                    }, function (data) {
+                                        dialog.find('[data-id="确定"]').attr('disabled', false);
+                                        dialog.setData(data);
+                                        dialog.__dispatchEvent('serverBack');
+                                    });
+                                }
+                                return false;
+
+                            }
+                        }, {
+                            value: '关闭',
+                            className: 'sms-cancel-btn'
+                        }]
+                    });
+
+                    //默认关闭行为为不提交
+                    dialog.isSubmit = false;
+
+                    dialog.showModal();
+
+                    dialog.on({
+                        remove: function () {
                             refresh();
-                        });
-                    }
+                        }
+                    });
+
                 });
+
+                function transferQualification(config, fn) {
+
+                    var api = new API('supplier/transferQualification');
+
+                    api.post({
+                        type: config.type,
+                        hospital: config.hospital,
+                        supplierQualificationId: config.supplierQualificationId
+                    });
+
+                    api.on({
+                        'success': function (data, json) {
+                            fn && fn({
+                                result: true,
+                                msg: '向医院发送证件成功！'
+                            });
+                        },
+
+                        'fail': function (code, msg, json) {
+                            fn && fn({
+                                result: false,
+                                msg: msg
+                            });
+                        },
+
+                        'error': function () {
+                            fn && fn({
+                                result: false,
+                                msg: '网络繁忙，请稍候再试'
+                            });
+                        }
+                    });
+                }
 
             },
             // 供应商合作医院-查看医院详细信息
             'view-hospital': function (item, index) {
 
-                if (currentHospital === 0) {
+                if (currentNode.hospital === 0) {
                     SMS.Tips.error('请选择医院', 1000);
                     return;
                 }
 
                 Iframe.open({
-                    id: '-view-hospital-' + currentHospital,
+                    id: '-view-hospital-' + currentNode.hospital,
                     name: '医院资料',
                     url: './html/bill-ext/hospital/index.html',
                     query: {
-                        'id': currentHospital,
+                        'id': currentNode.hospital,
                         'classId': 1012,
                         'operate': 0
                     }
@@ -185,12 +241,12 @@
 
     function refresh() {
 
-        if (currentHospital === 0) {
+        if (currentNode === 0) {
             return;
         }
 
         List.render({
-                hospital: currentHospital,
+                hospital: currentNode,
                 pageNo: defaults.pageNo,
                 pageSize: defaults.pageSize
             }, function (total, pageSize) {
@@ -273,12 +329,12 @@
         }
     });
 
-    Tree.on('change', function (hospital) {
+    Tree.on('change', function (node) {
 
-        currentHospital = hospital;
+        currentNode = node;
 
         List.render({
-                hospital: hospital,
+                hospital: node.hospital,
                 pageNo: defaults.pageNo,
                 pageSize: defaults.pageSize
             }, function (total, pageSize) {

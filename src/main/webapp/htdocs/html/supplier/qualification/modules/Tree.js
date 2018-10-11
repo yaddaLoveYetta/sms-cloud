@@ -1,5 +1,5 @@
 /**
- * @Title:
+ * @Title: 供应商合作医院
  * @author: yadda(silenceisok@163.com)
  * @date: 2018/4/25 10:25
  */
@@ -90,8 +90,8 @@ define('Tree', function (require, module, exports) {
                     }
                 });
 
-                treeView.on('nodeSelected', function (event, data) {
-                    emitter.fire("change", [data.hospital]);
+                treeView.on('nodeSelected', function (event, node) {
+                    emitter.fire("change", [node]);
                 });
 
                 // 初始化默认选中第一个医院
