@@ -1,6 +1,10 @@
 package com.kingdee.hrp.sms.basedata.service;
 
 import com.kingdee.hrp.sms.common.enums.Constants;
+import com.kingdee.hrp.sms.common.pojo.QualificationType;
+import com.kingdee.hrp.sms.common.pojo.SupplierQualificationModel;
+
+import java.util.List;
 
 /**
  * 医院相关功能接口
@@ -27,4 +31,35 @@ public interface HospitalService {
      * @param cooperationApplyStatus 操作类型
      */
     void processCooperationApply(Long id, Long hrpSupplier, Constants.CooperationApplyStatus cooperationApplyStatus);
+
+    /**
+     * 获取医院对供应商的所有资质需求类别
+     *
+     * @param hospital 医院
+     * @return List<QualificationType>
+     */
+    List<QualificationType> getQualificationTypes(Long hospital);
+
+    /**
+     * 获取指定供应商已提供的证件明细
+     *
+     * @param hospital 医院
+     * @param supplier 供应商
+     * @param pageSize 分页大小
+     * @param pageNo   当前页码
+     * @return SupplierQualificationModel
+     */
+    SupplierQualificationModel getSupplierQualificationsBySupplier(Long hospital, Long supplier,
+            Integer pageSize,
+            Integer pageNo);
+
+    /**
+     * 获取所有供应商已提供的证件明细
+     *
+     * @param hospital 医院
+     * @param pageSize 分页大小
+     * @param pageNo   当前页码
+     * @return SupplierQualificationModel
+     */
+    SupplierQualificationModel getSupplierQualifications(Long hospital, Integer pageSize, Integer pageNo);
 }

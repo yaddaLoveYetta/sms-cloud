@@ -1,15 +1,15 @@
 package com.kingdee.hrp.sms.basedata.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.google.common.primitives.Longs;
 import com.kingdee.hrp.sms.basedata.service.HospitalService;
-import com.kingdee.hrp.sms.common.dao.generate.CooperationApplyMapper;
-import com.kingdee.hrp.sms.common.dao.generate.HospitalMapper;
-import com.kingdee.hrp.sms.common.dao.generate.PartnerMapper;
+import com.kingdee.hrp.sms.common.dao.generate.*;
 import com.kingdee.hrp.sms.common.enums.Constants;
 import com.kingdee.hrp.sms.common.exception.BusinessLogicRunTimeException;
-import com.kingdee.hrp.sms.common.model.CooperationApply;
-import com.kingdee.hrp.sms.common.model.Hospital;
-import com.kingdee.hrp.sms.common.model.Message;
-import com.kingdee.hrp.sms.common.model.Partner;
+import com.kingdee.hrp.sms.common.model.*;
+import com.kingdee.hrp.sms.common.pojo.QualificationType;
+import com.kingdee.hrp.sms.common.pojo.SupplierQualificationModel;
 import com.kingdee.hrp.sms.common.service.BaseService;
 import com.kingdee.hrp.sms.common.service.MessageService;
 import com.kingdee.hrp.sms.util.Environ;
@@ -18,8 +18,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 医院相关功能操作
@@ -105,6 +109,106 @@ public class HospitalServiceImpl extends BaseService implements HospitalService 
             generatePartner(hrpSupplier, cooperationApply);
         }
 
+    }
+
+    /**
+     * 获取医院对供应商的所有资质需求类别
+     *
+     * @param hospital 医院
+     * @return List<QualificationType>
+     */
+    @Override
+    public List<QualificationType> getQualificationTypes(Long hospital) {
+
+        List<QualificationType> qualificationTypes = new ArrayList<>();
+
+        HospitalSupplierQualificationTypeMapper hospitalSupplierQualificationTypeMapper = getMapper(
+                HospitalSupplierQualificationTypeMapper.class);
+        HospitalSupplierQualificationTypeExample hospitalSupplierQualificationTypeExample = new HospitalSupplierQualificationTypeExample();
+        hospitalSupplierQualificationTypeExample.createCriteria().andHospitalEqualTo(hospital);
+
+        List<HospitalSupplierQualificationType> hospitalSupplierQualificationTypes = hospitalSupplierQualificationTypeMapper
+                .selectByExample(hospitalSupplierQualificationTypeExample);
+
+        if (!CollectionUtils.isEmpty(hospitalSupplierQualificationTypes)) {
+
+            qualificationTypes = hospitalSupplierQualificationTypes.stream().map(type -> {
+                QualificationType qualificationType = new QualificationType();
+                qualificationType.setName(type.getName()).setIsExist(false).setIsMust(type.getIsMust());
+
+                return qualificationType;
+            }).collect(Collectors.toList());
+
+        }
+        return qualificationTypes;
+    }
+
+    /**
+     * 获取指定供应商已提供的证件明细
+     *
+     * @param hospital 医院
+     * @param supplier 供应商
+     * @param pageSize 分页大小
+     * @param pageNo   当前页码
+     * @return SupplierQualificationModel
+     */
+    @Override
+    public SupplierQualificationModel getSupplierQualificationsBySupplier(Long hospital, Long supplier,
+            Integer pageSize, Integer pageNo) {
+
+        List<QualificationType> QualificationTypes = getQualificationTypes(hospital);
+
+        PageInfo<HospitalSupplierQualification> pageInfo = getSupplierQualificationPageInfo(
+                hospital, supplier, pageSize, pageNo);
+
+        return null;
+    }
+
+    /**
+     * 获取所有供应商已提供的证件明细
+     *
+     * @param hospital 医院
+     * @param pageSize 分页大小
+     * @param pageNo   当前页码
+     * @return SupplierQualificationModel
+     */
+    @Override
+    public SupplierQualificationModel getSupplierQualifications(Long hospital, Integer pageSize, Integer pageNo) {
+        return null;
+    }
+
+    /**
+     * 指定供应商已经提供了的证件,
+     * 如果没有指定供应商则查询医院所有供应商已经提供的证件
+     *
+     * @param hospital 医院
+     * @param supplier 供应商
+     * @param pageSize 分页大小
+     * @param pageNo   当前页码
+     * @return PageInfo<HospitalSupplierQualification>
+     */
+    private PageInfo<HospitalSupplierQualification> getSupplierQualificationPageInfo(Long hospital, Long supplier,
+            Integer pageSize, Integer pageNo) {
+
+        HospitalSupplierQualificationMapper hospitalSupplierQualificationMapper = getMapper(
+                HospitalSupplierQualificationMapper.class);
+
+        HospitalSupplierQualificationExample hospitalSupplierQualificationExample = new HospitalSupplierQualificationExample();
+        HospitalSupplierQualificationExample.Criteria criteria = hospitalSupplierQualificationExample.createCriteria();
+
+        criteria.andHospitalEqualTo(hospital);
+
+        if (null != supplier) {
+            // 指定供应商，表示查询特定供应商已经提供的证件
+            criteria.andSupplierEqualTo(supplier);
+        }
+
+        PageHelper.startPage(pageNo, pageSize, true);
+
+        List<HospitalSupplierQualification> hospitalSupplierQualifications = hospitalSupplierQualificationMapper
+                .selectByExample(hospitalSupplierQualificationExample);
+
+        return new PageInfo<>(hospitalSupplierQualifications);
     }
 
     /**

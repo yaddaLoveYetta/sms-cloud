@@ -763,6 +763,49 @@ public final class Constants {
     }
 
     /**
+     * 医院对供应商提交的证件的处理状态
+     * <p>
+     * 值跟t_assistance表 type=48一致
+     */
+    public enum AttachmentStatus {
+
+        /**
+         * 未处理
+         */
+        UN_PROCESSED(1, "未处理"),
+        /**
+         * 审核通过
+         */
+        CHECK_SUCCESS(2, "审核通过"),
+        /**
+         * 审核不通过
+         */
+        CHECK_FAIL(3, "审核不通过");
+
+        private static Logger logger = LoggerFactory.getLogger(MessageType.class);
+
+        private int number;
+        private String name;
+
+        AttachmentStatus(int number, String name) {
+            this.number = number;
+            this.name = name;
+        }
+
+        public static AttachmentStatus getAttachmentStatus(int number) {
+
+            for (AttachmentStatus d : AttachmentStatus.values()) {
+                if (d.number == number) {
+                    return d;
+                }
+            }
+            logger.error("AttachmentStatus不存状态值:" + number);
+            throw new BusinessLogicRunTimeException("AttachmentStatus不存状态值:" + number);
+        }
+
+    }
+
+    /**
      * 各类文件存放路径根目录(业务放可能增加子目录)<br/>
      * eg:<br/>
      * 供应商logo图片存放路径 /1013/<br/>

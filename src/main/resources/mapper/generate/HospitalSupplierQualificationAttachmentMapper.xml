@@ -5,6 +5,7 @@
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="parent" jdbcType="BIGINT" property="parent" />
     <result column="path" jdbcType="VARCHAR" property="path" />
+    <result column="status" jdbcType="TINYINT" property="status" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -65,7 +66,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, parent, `path`
+    id, parent, `path`, `status`
   </sql>
   <select id="selectByExample" parameterType="com.kingdee.hrp.sms.common.model.HospitalSupplierQualificationAttachmentExample" resultMap="BaseResultMap">
     select
@@ -98,10 +99,10 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.kingdee.hrp.sms.common.model.HospitalSupplierQualificationAttachment">
-    insert into t_hospital_supplier_qualification_attachment (id, parent, `path`
-      )
-    values (#{id,jdbcType=BIGINT}, #{parent,jdbcType=BIGINT}, #{path,jdbcType=VARCHAR}
-      )
+    insert into t_hospital_supplier_qualification_attachment (id, parent, `path`, 
+      `status`)
+    values (#{id,jdbcType=BIGINT}, #{parent,jdbcType=BIGINT}, #{path,jdbcType=VARCHAR}, 
+      #{status,jdbcType=TINYINT})
   </insert>
   <insert id="insertSelective" parameterType="com.kingdee.hrp.sms.common.model.HospitalSupplierQualificationAttachment">
     insert into t_hospital_supplier_qualification_attachment
@@ -115,6 +116,9 @@
       <if test="path != null">
         `path`,
       </if>
+      <if test="status != null">
+        `status`,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -125,6 +129,9 @@
       </if>
       <if test="path != null">
         #{path,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=TINYINT},
       </if>
     </trim>
   </insert>
@@ -146,6 +153,9 @@
       <if test="record.path != null">
         `path` = #{record.path,jdbcType=VARCHAR},
       </if>
+      <if test="record.status != null">
+        `status` = #{record.status,jdbcType=TINYINT},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -155,7 +165,8 @@
     update t_hospital_supplier_qualification_attachment
     set id = #{record.id,jdbcType=BIGINT},
       parent = #{record.parent,jdbcType=BIGINT},
-      `path` = #{record.path,jdbcType=VARCHAR}
+      `path` = #{record.path,jdbcType=VARCHAR},
+      `status` = #{record.status,jdbcType=TINYINT}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -169,13 +180,17 @@
       <if test="path != null">
         `path` = #{path,jdbcType=VARCHAR},
       </if>
+      <if test="status != null">
+        `status` = #{status,jdbcType=TINYINT},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.kingdee.hrp.sms.common.model.HospitalSupplierQualificationAttachment">
     update t_hospital_supplier_qualification_attachment
     set parent = #{parent,jdbcType=BIGINT},
-      `path` = #{path,jdbcType=VARCHAR}
+      `path` = #{path,jdbcType=VARCHAR},
+      `status` = #{status,jdbcType=TINYINT}
     where id = #{id,jdbcType=BIGINT}
   </update>
   <insert id="batchInsert" parameterType="map">
@@ -185,11 +200,11 @@
       @project https://github.com/itfsw/mybatis-generator-plugin
     -->
     insert into t_hospital_supplier_qualification_attachment
-    (id, parent, `path`)
+    (id, parent, `path`, `status`)
     values
     <foreach collection="list" item="item" separator=",">
-      (#{item.id,jdbcType=BIGINT}, #{item.parent,jdbcType=BIGINT}, #{item.path,jdbcType=VARCHAR}
-        )
+      (#{item.id,jdbcType=BIGINT}, #{item.parent,jdbcType=BIGINT}, #{item.path,jdbcType=VARCHAR}, 
+        #{item.status,jdbcType=TINYINT})
     </foreach>
   </insert>
   <insert id="batchInsertSelective" parameterType="map">
@@ -215,6 +230,9 @@
         </if>
         <if test="'path'.toString() == column.value">
           #{item.path,jdbcType=VARCHAR}
+        </if>
+        <if test="'status'.toString() == column.value">
+          #{item.status,jdbcType=TINYINT}
         </if>
       </foreach>
       )

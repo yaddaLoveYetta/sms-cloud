@@ -25,7 +25,7 @@ define('Header', function (require, module, exports) {
                 'typeName': item.typeName,
                 'beginDate': item.beginDate,
                 'endDate': item.endDate,
-                'check': !!item.check ? 'correct.png' : item.check == 0 ? 'wrong.png' : 'unknow.png',
+                'check': item.status === 2 ? 'correct.png' : item.check === 3 ? 'wrong.png' : 'unknow.png'
             });
         } else {
             html = 'none item';
