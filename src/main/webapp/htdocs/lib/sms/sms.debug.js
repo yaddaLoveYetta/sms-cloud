@@ -6667,6 +6667,9 @@
             },
             selectNode: function () {
                 return invoke(this, 'selectNode', arguments);
+            },
+            search:function(){
+                return invoke(this, 'search', arguments);
             }
         };
 

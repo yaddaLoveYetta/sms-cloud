@@ -523,7 +523,7 @@
             // 供应商合作医院-查看医院详细信息
             'view-hospital': function (item, index) {
 
-                if (classId !== 3001) {
+                if (classId !== 3001 && classId !== 1008) {
                     return;
                 }
 
@@ -539,7 +539,6 @@
                     return;
                 }
 
-                //var url = require("UrlMapping")(1012);
                 var url = item.info.url;
                 var name = list[0].data.hospital_DspName || '';
 

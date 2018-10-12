@@ -17,7 +17,6 @@
 
     var classId = 9001;
     var txtSimpleSearch = document.getElementById('txt-simple-search');
-    var txtItemSearch = document.getElementById('txt-item-search');
     var conditions = {};
     // 当前查看的医院
     var currentNode = 0;
@@ -35,16 +34,34 @@
         multiSelect: true
     };
 
-    $(txtSimpleSearch).bind('keypress', function (event) {
-        if (event.keyCode === 13) {
-            refresh();
-        }
-    });
+    $(txtSimpleSearch).bind('keyup', function (event) {
 
-    $(txtItemSearch).bind('keypress', function (event) {
-        if (event.keyCode === 13) {
-            Tree.render(treeClassId, $(txtItemSearch).val());
+        var keyWorld = $(this).val();
+
+        if ($.trim(keyWorld) === "") {
+            return;
         }
+
+        var options = {
+            ignoreCase: true,    // case insensitive 忽略大小写
+            exactMatch: false,   // like or equals 准确匹配
+            revealResults: false // reveal matching nodes 显示结果
+        };
+
+        var result = Tree.search(keyWorld, options);
+        console.log(result);
+
+        if (result && result.length === 1) {
+            Tree.selectNode(result[0], {silent: false});
+        }
+
+        if (result && result.length > 1) {
+            // 多于一个结果时去掉“所有医院”(如果有)后选择第一个匹配的
+            var node = result[0].hospital === 0 ? result[1] : result[0];
+            Tree.selectNode(node, {silent: false});
+        }
+
+
     });
 
     // 必须指明获取功能按钮的场景 0:查看(列表)1:(新增)2:(编辑)
@@ -184,69 +201,15 @@
         });
     });
 
-    function getCondition() {
-
-        conditions = {};
-
-        var keyWorld = $(txtSimpleSearch).val()
-
-        if ($.trim(keyWorld) !== "") {
-            conditions['name'] = {
-                'andOr': 'AND',
-                'leftParenTheses': '((',
-                'fieldKey': 'name',
-                'logicOperator': 'like',
-                'value': keyWorld,
-                'rightParenTheses': ')'
-            };
-            conditions['number'] = {
-                'andOr': 'OR',
-                'leftParenTheses': '(',
-                'fieldKey': 'number',
-                'logicOperator': 'like',
-                'value': keyWorld,
-                'rightParenTheses': '))'
-            };
-        }
-
-        if (treeFilter) {
-
-            if (treeClassId === 1005) {
-                // 供应商
-                conditions['id'] = {
-                    'andOr': 'AND',
-                    'leftParenTheses': '(',
-                    'fieldKey': 'supplier',
-                    'logicOperator': '=',
-                    'value': treeFilter.id,
-                    'rightParenTheses': ')',
-                    'needConvert': false,
-                };
-            } else if (treeClassId === 3030) {
-                // 中标库
-                conditions['id'] = {
-                    'andOr': 'AND',
-                    'leftParenTheses': '(',
-                    'fieldKey': 'material',
-                    'logicOperator': '=',
-                    'value': treeFilter.id,
-                    'rightParenTheses': ')',
-                    'needConvert': false,
-                };
-            }
-        }
-
-        return conditions;
-    }
 
     function refresh() {
 
-        if (currentNode === 0) {
+        if (currentNode.hospital === 0) {
             return;
         }
 
         List.render({
-                hospital: currentNode,
+                hospital: currentNode.hospital,
                 pageNo: defaults.pageNo,
                 pageSize: defaults.pageSize
             }, function (total, pageSize) {
@@ -258,7 +221,7 @@
                     change: function (no, pageSize) {
                         defaults.pageSize = pageSize;
                         List.render({
-                            type: hospital,
+                            hospital: currentNode.hospital,
                             pageNo: no,
                             pageSize: defaults.pageSize
                         });

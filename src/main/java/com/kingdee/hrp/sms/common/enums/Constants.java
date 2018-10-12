@@ -702,10 +702,6 @@ public final class Constants {
     public enum UserRoleType {
 
         /**
-         * 不支持的用户类别
-         */
-        NOT_SUPPORT(0, "不支持的类别"),
-        /**
          * 系统管理员角色类型
          */
         SYSTEM(1, "系统管理员"),
@@ -721,6 +717,8 @@ public final class Constants {
          * 游客-暂时未设计
          */
         GUEST(4, "游客");
+
+        private static Logger logger = LoggerFactory.getLogger(MessageType.class);
 
         private Integer number;
         private String name;
@@ -757,7 +755,8 @@ public final class Constants {
                     return userRoleTypeEnum;
                 }
             }
-            return UserRoleType.NOT_SUPPORT;
+            logger.error("UserRoleType不存值:" + number);
+            return null;
         }
 
     }

@@ -59,7 +59,6 @@ define('List/Samples', function (require, module, exports) {
         return samples;
     }
 
-
     return get;
 
 });

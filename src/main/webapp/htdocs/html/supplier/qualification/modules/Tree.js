@@ -86,7 +86,8 @@ define('Tree', function (require, module, exports) {
                     config: {
                         data: treeData,
                         showCheckbox: false,
-                        showIcon: true
+                        showIcon: true,
+                        highlightSearchResults: false // 搜索结果不高亮显示
                     }
                 });
 
@@ -101,8 +102,18 @@ define('Tree', function (require, module, exports) {
 
     }
 
+    function search(keyWorld, options) {
+        return treeView.search(keyWorld, options);
+    }
+
+    function selectNode(node, options) {
+        treeView.selectNode(node, options);
+    }
+
     return {
         render: render,
+        search: search,
+        selectNode: selectNode,
         on: emitter.on.bind(emitter)
     }
 

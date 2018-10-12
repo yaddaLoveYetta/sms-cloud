@@ -81,6 +81,10 @@ define('Iframes', function (require, module, exports) {
         function setHeight(iframe) {
 
             current = iframe;
+            // fixed chrome iframe切换后滚动条消失bug,人为变动iframe高度时滚动条出现
+            iframe.style.height = minHeight - 1 + 'px';
+            iframe.scrollWidth;
+            iframe.scrollHeight;
             iframe.style.height = minHeight + 'px';
         }
 

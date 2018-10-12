@@ -49,7 +49,7 @@ public class UserServiceImpl extends BaseService implements UserService {
      * @param registerModel 用户注册信息
      */
     @Override
-    @Transactional(rollbackFor = { Exception.class })
+    @Transactional(rollbackFor = {Exception.class})
     public void register(RegisterModel registerModel) throws IOException {
 
         // 1:参数校验
@@ -172,7 +172,7 @@ public class UserServiceImpl extends BaseService implements UserService {
     }
 
     @Override
-    @Transactional(rollbackFor = { Exception.class })
+    @Transactional(rollbackFor = {Exception.class})
     public Boolean editPwd(Long userId, String oldPwd, String newPwd) {
 
         User user = null;
@@ -404,7 +404,7 @@ public class UserServiceImpl extends BaseService implements UserService {
      * @return list
      */
     private List<Map<String, Object>> toTree(List<Menu> menus, List<FormAction> formActions,
-            Map<Integer, AccessControl> accessControlsMap, int parentId, Role role) {
+                                             Map<Integer, AccessControl> accessControlsMap, int parentId, Role role) {
 
         List<Map<String, Object>> ret = new ArrayList<>();
 
@@ -503,7 +503,7 @@ public class UserServiceImpl extends BaseService implements UserService {
      */
     @Override
     public Map<String, Object> getMessage(Integer userRoleType, Long org, Integer type, Integer pageSize,
-            Integer pageNo) {
+                                          Integer pageNo) {
 
         Map<String, Object> ret = new HashMap<>(16);
 
@@ -658,10 +658,12 @@ public class UserServiceImpl extends BaseService implements UserService {
      */
     private void validateRegisterModel(RegisterModel registerModel) {
 
-        if (Constants.UserRoleType.getUserRoleType(registerModel.getUserType()) == Constants.UserRoleType.NOT_SUPPORT) {
+        if (null == Constants.UserRoleType.getUserRoleType(registerModel.getUserType())) {
             logger.error("缺少或错误的注册用户类别");
             throw new BusinessLogicRunTimeException("缺少或错误的注册用户类别");
         }
+
+        Constants.UserRoleType.getUserRoleType(registerModel.getUserType());
 
         if (StringUtils.isBlank(registerModel.getUserName())) {
             logger.error("缺少用户名");

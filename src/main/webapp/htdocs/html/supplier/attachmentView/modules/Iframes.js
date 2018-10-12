@@ -38,7 +38,7 @@ define('Iframes', function (require, module, exports) {
 
     function getIframe(item) {
 
-        if (typeof item == 'number') {
+        if (typeof item === 'number') {
             var index = item;
             item = list[index];
         }
@@ -72,8 +72,8 @@ define('Iframes', function (require, module, exports) {
         function setHeight(iframe) {
 
             // 可能iframe加载后页面还有未加载的元素，重新计算
-             iframeTop = $(div).offset().top;
-             minHeight = clientHeight - iframeTop - footerHeight;
+            iframeTop = $(div).offset().top;
+            minHeight = clientHeight - iframeTop - footerHeight;
 
             current = iframe;
 
@@ -91,8 +91,11 @@ define('Iframes', function (require, module, exports) {
 
             ht = Math.min(minHeight, ht);
 
+            // fixed chrome iframe切换后滚动条消失bug,人为变动iframe高度时滚动条出现
+            iframe.style.height = ht - 1 + 'px';
+            iframe.scrollWidth;
+            iframe.scrollHeight;
             iframe.style.height = ht + 'px';
-            //iframe.style.width = '100%';
         }
 
         function start(iframe) {
@@ -123,7 +126,7 @@ define('Iframes', function (require, module, exports) {
         // adaptHeight = 
         return function (iframe) {
 
-            if (typeof iframe == 'number') {
+            if (typeof iframe === 'number') {
                 //传进来的 iframe 是一个 index
                 iframe = getIframe(iframe);
             }
@@ -221,7 +224,7 @@ define('Iframes', function (require, module, exports) {
         }
 
         var activedIndex = tabs.getActivedIndex();
-        if (index == activedIndex) { //要激活的项之前已经激活了， 不需要重复操作
+        if (index === activedIndex) { //要激活的项之前已经激活了， 不需要重复操作
             return;
         }
 

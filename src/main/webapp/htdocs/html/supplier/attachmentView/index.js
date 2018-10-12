@@ -4,7 +4,6 @@
 ;(function () {
 
     var $ = require('$');
-    var MiniQuery = require('MiniQuery');
     var SMS = require('SMS');
     var API = SMS.require('API');
     var Iframe = SMS.require('Iframe');
@@ -14,19 +13,19 @@
     var Header = require('Header');
     var Operation = require('Operation');
 
-    var activedIndex = 0; // 当前显示的附件下标
+    // 当前显示的附件下标
+    var activedIndex = 0;
+    // all items
+    var items = [];
+    // current show items
+    var showItems = [];
 
     var dialog = Iframe.getDialog();
-
-    var classId;
-    var items = []; // all items
-    var showItems = []; // current show items
 
     if (dialog) {
 
         var data = dialog.getData() || {};
         items = data.showItems;
-        classId = data.classId;
         console.log(items);
     }
 
@@ -145,60 +144,11 @@
     ButtonList.on('click', {
         'previous': function () {
             var item = getItem(-1);
-            //Iframes.add(item);
             Header.render(item);
         },
         'next': function () {
             var item = getItem(1);
-            //Iframes.add(item);
             Header.render(item);
-        },
-        'check': function () {
-            var item = getItem();
-            Operation.check({
-                'classId': classId,
-                'id': item.id,
-                'entryId': item.entryId,
-                'type': 1,
-            }, function () {
-                item.check = 1;
-                Header.render(item);
-                SMS.Tips.success('操作成功！', 500);
-
-                setTimeout(function () {
-                    var item_next = getItem(1);
-                    if (item_next === item) {
-                        return;
-                    }
-                    //Iframes.add(item_next);
-                    Header.render(item_next);
-                }, 500)
-            });
-
-        },
-        'uncheck': function () {
-            var item = getItem();
-            Operation.check({
-                'classId': classId,
-                'id': item.id,
-                'entryId': item.entryId,
-                'type': 0,
-            }, function () {
-                item.check = 0;
-                Header.render(item);
-                SMS.Tips.success('操作成功！', 500);
-
-                setTimeout(function () {
-                    var item_next = getItem(1);
-                    if (item_next === item) {
-                        return;
-                    }
-                    //Iframes.add(item_next);
-                    Header.render(item_next);
-                }, 500)
-
-            });
-
         },
         'showUnCheck': function (item, index) {
             // 显示未通过审核的证件
@@ -246,12 +196,11 @@
         return showItems[activedIndex];
     }
 
-    Header.render(showItems[0]);
-
     Header.on('done',function (item) {
-        Iframes.add(item); // 默认显示第一个附件
+        Iframes.add(item);
     });
 
-
+    // 默认显示第一个附件
+    Header.render(showItems[0]);
 
 })();

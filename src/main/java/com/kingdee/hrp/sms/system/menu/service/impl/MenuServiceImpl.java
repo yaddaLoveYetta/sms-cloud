@@ -52,9 +52,6 @@ public class MenuServiceImpl extends BaseService implements MenuService {
 
         List<Menu> menus = menuMapper.selectByExample(example);
 
-        // 用户角色类别
-        Constants.UserRoleType userRoleType = SessionUtil.getUserRoleType();
-
         // 查询t_form_action 用于检验用户类别是否拥有menu的查看权（没有查看权限菜单不显示）
         FormActionMapper formActionMapper = sqlSession.getMapper(FormActionMapper.class);
 
@@ -68,6 +65,8 @@ public class MenuServiceImpl extends BaseService implements MenuService {
         UserService userService = Environ.getBean(UserService.class);
         Map<Integer, Integer> roleAccessControl = userService.getAccessControl();
 
+        // 用户角色类别比较
+        Integer roleMask = getRoleMask();
 
         // 迭代过滤菜单项
         menus = menus.stream().filter(menu -> {
@@ -75,8 +74,8 @@ public class MenuServiceImpl extends BaseService implements MenuService {
             Integer formActionId = menu.getFormActionId();
 
 
-            // for test
-            if (userRoleType == Constants.UserRoleType.SYSTEM) {
+            // 系统用户全放开查看-for test-
+            if (roleMask == 1) {
                 return true;
             }
 
@@ -93,7 +92,7 @@ public class MenuServiceImpl extends BaseService implements MenuService {
 
             // 是否这个用户类别可见的菜单，每个菜单配置一个查看权限
             Optional<FormAction> formActionOptional = formActions.stream().filter(formAction -> formActionId == formAction.getClassId().intValue() &&
-                    ((userRoleType.getNumber() & formAction.getOwnerType()) == userRoleType.getNumber())).findFirst();
+                    ((roleMask & formAction.getOwnerType()) == roleMask)).findFirst();
 
             if (!formActionOptional.isPresent()) {
                 // 该菜单未配置查看权限或菜单非该用户类别可见
@@ -113,6 +112,26 @@ public class MenuServiceImpl extends BaseService implements MenuService {
         return ret.stream().filter(menu -> menu.getParentId() != 0 || ret.stream().anyMatch(item -> item.getParentId().equals(menu.getId())))
                 .collect(Collectors.toList());
 
+    }
+
+    /**
+     * 枚举定义的用户角色类别是自然数1,2,3,4与 t_form_action表own_type字段使用的二进制位区别用户类别不同，
+     * 这里做一个转换
+     *
+     * @return Integer
+     */
+    private Integer getRoleMask() {
+
+        Constants.UserRoleType userRoleType = SessionUtil.getUserRoleType();
+
+        if (SessionUtil.getUserRoleType() == Constants.UserRoleType.SYSTEM) {
+            return 1;
+        } else if (SessionUtil.getUserRoleType() == Constants.UserRoleType.HOSPITAL) {
+            return 2;
+        } else if (SessionUtil.getUserRoleType() == Constants.UserRoleType.SUPPLIER) {
+            return 4;
+        }
+        return 0;
     }
 
 }

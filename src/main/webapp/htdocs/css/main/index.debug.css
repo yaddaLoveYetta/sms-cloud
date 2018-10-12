@@ -5427,6 +5427,7 @@ a.text-#000000:hover {
     border: none;
     width: 100%;
     display: none;
+    overflow: auto;
 }
 
 .iframes .actived {
