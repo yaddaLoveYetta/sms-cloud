@@ -123,6 +123,9 @@
 
                 FileUpload.render('#item-image-select', {
                     uploadUrl: api.getUrl(),// 上传请求路径
+                    dropZoneEnabled: false,//是否显示拖拽区域
+                    showPreview: false,
+                    showCaption: false,
                     uploadExtraData: function (previewId, index) {
                         //额外参数 返回json数组
                         return {

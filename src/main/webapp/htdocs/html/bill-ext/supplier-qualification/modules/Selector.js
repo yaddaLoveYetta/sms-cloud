@@ -15,37 +15,20 @@ define('Selector', function (require, module, exports) {
     function render() {
 
         // 归属医院
-        var orgConfig = {
-            targetType: 1, //跳转方案
-            classId: 1004,
-            destClassId: 1005,
-            fieldKey:'org',
+        var qualification_typeConfig = {
+            targetType: 1,
+            classId: 1018,
+            destClassId: 1019,
+            fieldKey: 'qualification_type',
             hasBreadcrumbs: true,
-            container: document.getElementById('org'),
-            title: '归属医院',
+            container: document.getElementById('qualification_type'),
+            title: '证件类别',
             defaults: {
                 pageSize: 8
             }
         };
 
-        selectors['org'] = DataSelector.create(orgConfig);
-
-        // 供应商类别
-        var typeConfig = {
-            targetType: 1, //跳转方案
-            classID: 1004,
-            destClassId: 1005,
-            fieldKey:'type',
-            hasBreadcrumbs: true,
-            container: document.getElementById('type'),
-            title: '供应商类别',
-            defaults: {
-                pageSize: 8
-            }
-        };
-
-        selectors['type'] = DataSelector.create(typeConfig);
-
+        selectors['qualification_type'] = DataSelector.create(qualification_typeConfig);
 
         //设置 静态变量 用于联动操作
         DataSelector.DataSelectors = selectors;

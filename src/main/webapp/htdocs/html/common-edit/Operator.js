@@ -57,7 +57,7 @@ define('Operator', function (require, module, exports) {
 
         if ($.Object.isPlain(classId)) {
             // 重载
-            config = classId;
+            var config = classId;
             classId = config.classId;
         }
 

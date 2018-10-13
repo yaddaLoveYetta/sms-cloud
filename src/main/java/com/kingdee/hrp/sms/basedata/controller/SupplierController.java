@@ -13,10 +13,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.CollectionUtils;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
@@ -55,7 +52,7 @@ public class SupplierController {
     @ResponseBody
     @RequestMapping(value = "changeLogo", method = RequestMethod.POST)
     public Map<String, Object> changeLogo(HttpServletRequest request, HttpServletResponse response, Integer classId,
-            Long id) {
+                                          Long id) {
 
         if (classId == null || id == null) {
             throw new BusinessLogicRunTimeException("缺少参数classId或id");
@@ -121,8 +118,8 @@ public class SupplierController {
     @RequestMapping(value = "getHospitalSupplierQualificationsByHospital")
     @ResponseBody
     public SupplierQualificationModel getHospitalSupplierQualificationsByHospital(Long hospital,
-            @RequestParam(defaultValue = "10") Integer pageSize,
-            @RequestParam(defaultValue = "1") Integer pageNo) {
+                                                                                  @RequestParam(defaultValue = "10") Integer pageSize,
+                                                                                  @RequestParam(defaultValue = "1") Integer pageNo) {
 
         // 供应商
         Long supplier = SessionUtil.checkSupplier();
@@ -165,7 +162,7 @@ public class SupplierController {
     @RequestMapping(value = "transferQualification")
     @ResponseBody
     public void transferQualification(HttpServletRequest request, Long type, Long hospital,
-            Long supplierQualificationId) {
+                                      Long supplierQualificationId) {
 
         Long supplier = SessionUtil.checkSupplier();
 
@@ -216,7 +213,7 @@ public class SupplierController {
     @RequestMapping(value = "addQualificationAttachment")
     @ResponseBody
     public void addQualificationAttachment(HttpServletRequest request, Long id,
-            @RequestParam(defaultValue = "0") Integer overwrite) {
+                                           @RequestParam(defaultValue = "0") Integer overwrite) throws IOException {
 
         Long supplier = SessionUtil.checkSupplier();
 
@@ -240,7 +237,7 @@ public class SupplierController {
     @RequestMapping(value = "delQualificationAttachment")
     @ResponseBody
     public void delQualificationAttachment(Long qualificationId,
-            String attachmentIds) {
+                                           String attachmentIds) {
 
         Long supplier = SessionUtil.checkSupplier();
 

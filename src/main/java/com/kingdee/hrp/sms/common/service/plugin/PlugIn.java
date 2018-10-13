@@ -1,10 +1,8 @@
 package com.kingdee.hrp.sms.common.service.plugin;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.kingdee.hrp.sms.common.enums.Constants;
 import com.kingdee.hrp.sms.common.pojo.Condition;
 import com.kingdee.hrp.sms.common.pojo.FormTemplate;
-import com.kingdee.hrp.sms.util.SessionUtil;
 
 import java.util.List;
 import java.util.Map;
@@ -62,7 +60,8 @@ public interface PlugIn {
     boolean support(Integer classId);
 
     /**
-     * 基础资料新增前操作
+     * 基础资料新增前操作<br/>
+     * 通常可以在此方法中补充那些不需要前端输入但又是业务必须的字段数据，如新增资料的归属组织
      *
      * @param classId      业务类型
      * @param formTemplate 单据模板
@@ -105,7 +104,7 @@ public interface PlugIn {
      * @date 2017-07-12 09:05:42 星期三
      */
     PlugInRet beforeEntryModify(int classId, String primaryId, String entryId, FormTemplate formTemplate,
-            JsonNode data);
+                                JsonNode data);
 
     /**
      * 单据修改后操作
@@ -213,5 +212,5 @@ public interface PlugIn {
      * @return 审核状态字段key
      */
     String checkFieldKey(Integer classId);
-    
+
 }

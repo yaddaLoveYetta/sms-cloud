@@ -25,7 +25,7 @@
 
         var node = data.node;
 
-        if (node.hospital) {
+        if (node.hospital > 0) {
             // 医院从证件维护携带
             Selector.set('hospital', [
                 {

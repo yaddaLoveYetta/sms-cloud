@@ -122,8 +122,8 @@ public class SupplierServiceImpl extends BaseService implements SupplierService 
      */
     @Override
     public SupplierQualificationModel getHospitalSupplierQualificationsByHospital(Long supplier, Long hospital,
-            Integer pageSize,
-            Integer pageNo) {
+                                                                                  Integer pageSize,
+                                                                                  Integer pageNo) {
 
         // 医院对供应商的资质需求类别
         List<HospitalSupplierQualificationType> hospitalSupplierQualificationTypes = getHospitalSupplierQualificationTypes(
@@ -150,7 +150,7 @@ public class SupplierServiceImpl extends BaseService implements SupplierService 
      */
     @Override
     public SupplierQualificationModel getHospitalSupplierQualifications(Long supplier, Integer pageSize,
-            Integer pageNo) {
+                                                                        Integer pageNo) {
 
         // 本供应商已经提供了的证件--分页
         PageInfo<HospitalSupplierQualification> pageInfo = getSupplierQualificationPageInfo(supplier, pageSize, pageNo);
@@ -262,6 +262,7 @@ public class SupplierServiceImpl extends BaseService implements SupplierService 
         supplierQualification.setSupplier(supplier);
         supplierQualification.setValidityPeriodBegin(qualification.getValidityPeriodBegin());
         supplierQualification.setValidityPeriodEnd(qualification.getValidityPeriodEnd());
+        supplierQualification.setRemark(qualification.getRemark());
 
         supplierQualificationMapper.insertSelective(supplierQualification);
 
@@ -362,7 +363,7 @@ public class SupplierServiceImpl extends BaseService implements SupplierService 
     public List<SupplierQualificationAttachment> getQualificationAttachment(Long supplier, Long qualificationId) {
 
         SupplierQualificationAttachmentMapper mapper = getMapper(SupplierQualificationAttachmentMapper.class);
-        SupplierQualificationAttachmentExample example=new SupplierQualificationAttachmentExample();
+        SupplierQualificationAttachmentExample example = new SupplierQualificationAttachmentExample();
 
         example.createCriteria().andParentEqualTo(qualificationId);
 
@@ -404,7 +405,7 @@ public class SupplierServiceImpl extends BaseService implements SupplierService 
      * @return PageInfo<HospitalSupplierQualification>
      */
     private PageInfo<HospitalSupplierQualification> getHospitalSupplierQualificationPageInfo(Long supplier,
-            Long hospital, Integer pageSize, Integer pageNo) {
+                                                                                             Long hospital, Integer pageSize, Integer pageNo) {
 
         HospitalSupplierQualificationMapper hospitalSupplierQualificationMapper = getMapper(
                 HospitalSupplierQualificationMapper.class);
@@ -436,7 +437,7 @@ public class SupplierServiceImpl extends BaseService implements SupplierService 
      * @return PageInfo<HospitalSupplierQualification>
      */
     private PageInfo<HospitalSupplierQualification> getSupplierQualificationPageInfo(Long supplier,
-            Integer pageSize, Integer pageNo) {
+                                                                                     Integer pageSize, Integer pageNo) {
 
         return getHospitalSupplierQualificationPageInfo(supplier, null, pageSize, pageNo);
     }
@@ -530,7 +531,7 @@ public class SupplierServiceImpl extends BaseService implements SupplierService 
 
             qualification.setIssue(item.getIssue()).setNumber(item.getNumber()).setType(item.getQualificationType())
                     .setValidityPeriodBegin(item.getValidityPeriodBegin())
-                    .setValidityPeriodEnd(item.getValidityPeriodEnd());
+                    .setValidityPeriodEnd(item.getValidityPeriodEnd()).setRemark(item.getRemark());
 
             // 类型名称
             if (CollectionUtils.isEmpty(hospitalSupplierQualificationTypes)) {

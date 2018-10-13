@@ -1,6 +1,5 @@
 package com.kingdee.hrp.sms.util;
 
-import com.kingdee.hrp.sms.common.exception.BusinessLogicRunTimeException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.multipart.MultipartFile;
@@ -8,6 +7,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -25,7 +25,7 @@ public final class RequestUtil {
      * @param request HttpServletRequest
      * @return List<File>
      */
-    public static List<File> getFiles(HttpServletRequest request) {
+    public static List<File> getFiles(HttpServletRequest request) throws IOException {
 
         List<File> files = new ArrayList<>();
 
@@ -41,7 +41,9 @@ public final class RequestUtil {
                 MultipartFile multipartFile = fileEntry.getValue();
 
                 File tmpFile = new File(System.getProperty("java.io.tmpdir") + System.getProperty("file.separator") +
-                        multipartFile.getName());
+                        multipartFile.getOriginalFilename());
+
+                multipartFile.transferTo(tmpFile);
 
                 files.add(tmpFile);
 

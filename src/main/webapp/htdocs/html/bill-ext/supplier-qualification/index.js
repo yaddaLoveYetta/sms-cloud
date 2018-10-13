@@ -15,6 +15,7 @@
     var BL = SMS.require('ButtonList');
 
     var FormAction = require('FormAction');
+    var FileUpload = require('FileUpload');
     var DatetimePicker = require('DatetimePicker');
     var Selector = require('Selector');
     var NumberField = require('NumberField');
@@ -38,6 +39,10 @@
     var roleType = Number((user.roles && user.roles[0] && user.roles[0]['type']) || -1);
 
     var ButtonList;
+    // 附件
+    var attachment;
+
+    var formData;
 
     FormAction.create({'classId': classId, 'type': operate}, function (config) {
 
@@ -57,11 +62,34 @@
 
         // 自定义事件
         ButtonList.on('click', {
+
             'save': function (item, index) {
-                // 修改时保存
-                Edit.save(function (ret) {
-                    SMS.Tips.success("保存成功!", 1500);
+
+                Edit.getHeadData(function (headData) {
+
+                    Edit.showHeadValidInfo(headData.successData, headData.errorData);
+
+                    if (headData.errorData) {
+                        return;
+                    }
+
+                    formData = {
+
+                        id: id, // 新增时id=0
+                        number: headData.successData.number,
+                        issue: headData.successData.issue,
+                        type: headData.successData.qualification_type,
+                        validityPeriodBegin: headData.successData.validity_period_begin,
+                        validityPeriodEnd: headData.successData.validity_period_end
+
+                    };
+
+                    attachment.upload();
+
                 });
+
+                // 修改时保存
+
             },
             'refresh': function (item, index) {
                 // 刷新
@@ -71,7 +99,6 @@
     });
 
     DatetimePicker.render();
-    NumberField.render();
     Selector.render();
     Edit.render(operate, classId, id);
 
@@ -96,51 +123,44 @@
         },
         'afterFill': function (classId, metaData, data) {
 
-            // 渲染地址选择器
-            Address.create({
-                'id': 'address-picker',
-                'province': data.province || -1,
-                'city': data.city || -1,
-                'district': data.district || -1
-            });
-            Address.showHeadValidInfo(false);
-
-            if (operate === 0) {
-                Address.lock();
-            }
         },
-        'afterFieldLock':function (metaData, itemData) {
-/*            if (operate === 0) {
-                Address.lock();
-            }*/
+        'afterFieldLock': function (metaData, itemData) {
+            /*            if (operate === 0) {
+                            Address.lock();
+                        }*/
         },
         'afterInitPage': function (metaData) {
 
-            if (operate === 1 && user.roles && user.roles[0] && user.roles[0]['type'] === 2) {
-                // 新增
-                var org = Selector.get('org');
-                var initData = [{
-                    ID: user.org.id,
-                    number: user.org.number || '',
-                    name: user.org.name || ''
-                }];
-                org.setData(initData);
+            if (operate === 1 && user.roles && user.roles[0] && user.roles[0]['type'] === 3) {
+
+                var api = new API("supplier/addQualification");
+
+                // 新增-初始化附件上传控件
+                SMS.use('FileInput', function (FileInput) {
+
+                    attachment = new FileInput('#attachment', {
+                        uploadUrl: api.getUrl(),// 上传请求路径
+                        uploadAsync: false,
+                        layoutTemplates: {
+                            // actionDelete:'', //去除上传预览的缩略图中的删除图标
+                            actionUpload: '',//去除上传预览缩略图中的上传图片；
+                            //actionZoom:''   //去除上传预览缩略图中的查看详情预览的缩略图标。
+                        },
+                        allowedFileExtensions: ['jpg', 'gif', 'png', 'doc', 'docx', 'pdf', 'ppt', 'pptx', 'txt'],//接收的文件后缀
+                        uploadExtraData: function () {
+                            return formData;
+                        }
+                    });
+
+                    attachment.on('fileuploaderror', function (event, data, msg) {
+                        SMS.Tips.error(msg);
+                    });
+                });
             }
 
         },
-        'beforeSave': function (metaData, headData) {
-            var address = Address.getSelectedItems();
-            if (address.length !== 3) {
-                Address.showHeadValidInfo(true);
-                return false;
-            } else {
-                Address.showHeadValidInfo(false);
-                headData.successData['province'] = address[0][0] || -1;
-                headData.successData['city'] = address[1][0] || -1;
-                headData.successData['district'] = address[2][0] || -1;
-                return true;
-            }
 
+        'beforeSave': function (metaData, headData) {
         }
     });
 

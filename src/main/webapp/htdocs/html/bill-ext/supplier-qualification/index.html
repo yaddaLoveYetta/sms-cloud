@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>供应商证件信息</title>
+
+    <link rel="stylesheet" href="../../../css/global.debug.css" type="text/css">
+    <link rel="stylesheet" href="../../../css/bootstrap.css" type="text/css">
+    <link rel="stylesheet" href="../../../css/iconfont/iconfont.css">
+
+    <!--grunt.css.begin-->
+    <link rel="stylesheet" href="../../../css/bill/index.debug.css">
+    <link rel="stylesheet" href="../../../css/bill-ext/supplier-qualification/index.debug.css">
+    <!--grunt.css.end-->
+
+</head>
+<body>
+
+<!--按钮区-->
+<div class="container-fluid options ">
+    <div id="div-button-list" class="btn-box">
+    </div>
+</div>
+<!--主显示区-->
+<div id="div-head-content" class="container-fluid head-content">
+
+    <div class="col-sm-5">
+
+        <div class="row form-group">
+
+            <label class="col-sm-4 ">
+                <span class="must-mark">*</span>
+                证件类型</label>
+            <div class="col-sm-7 " id="qualification_type">
+            </div>
+
+        </div>
+
+        <div class="row form-group">
+
+
+            <label class="col-sm-4 ">
+                <span class="must-mark">*</span>
+                证件编号</label>
+            <div class="col-sm-7">
+                <input id="number" type="text" class="form-control" placeholder="请输入证件编号">
+                <span id="number-msg" class="error-msg msg"></span>
+            </div>
+
+
+        </div>
+
+        <div class="row form-group">
+
+
+            <label class="col-sm-4 ">
+                <span class="must-mark">*</span>
+                发证机关</label>
+            <div class="col-sm-7">
+                <input id="issue" type="text" class="form-control" placeholder="请输入发证机关">
+                <span id="issue-msg" class="error-msg msg"></span>
+            </div>
+
+
+        </div>
+
+        <div class="row form-group">
+
+
+            <label class="col-sm-4 ">
+                <span class="must-mark">*</span>
+                有效期开始</label>
+            <div class=" col-sm-6">
+                <span class="iconfont icon-riqixuanze form-control-feedback"></span>
+                <input id="validity_period_begin" type="text" class="form-control" placeholder="点击选择有效期开始">
+                <span id="validity_period_begin-msg" class="error-msg msg"></span>
+            </div>
+
+
+        </div>
+
+        <div class="row form-group">
+
+
+            <label class="col-sm-4 ">
+                <span class="must-mark">*</span>
+                有效期结束</label>
+            <div class=" col-sm-6">
+                <span class="iconfont icon-riqixuanze form-control-feedback"></span>
+                <input id="validity_period_end" type="text" class="form-control" placeholder="点击选择有效期结束">
+                <span id="validity_period_end-msg" class="error-msg msg"></span>
+            </div>
+
+
+        </div>
+
+        <div class="row form-group">
+
+
+            <label class="col-sm-4 ">
+                备注</label>
+            <div class="col-sm-7">
+                <textarea id="remark" class="form-control" placeholder="请输入备注"></textarea>
+                <span id="remark-msg" class="error-msg msg"></span>
+            </div>
+
+
+        </div>
+    </div>
+
+    <div class="col-sm-6">
+        <div class="modal-header">
+            <h4 class="modal-title" id="myModalLabel">请选择证件附件文件</h4>
+        </div>
+        <div class="modal-body">
+            <input id="attachment" type="file" multiple data-msg-placeholder="选择证件附件...">
+        </div>
+
+    </div>
+</div>
+
+<script src="../../../lib/jquery/jquery-1.11.1.debug.js"></script>
+<script src="../../../lib/miniquery/miniquery.debug.js"></script>
+<script src="../../../lib/sms/sms.debug.js"></script>
+<script src="../../../lib/bootstrap/bootstrap.js"></script>
+<script src="../../../config.js"></script>
+
+<!--grunt.js.begin-->
+<script src="../../selector/module/DataSelector.js"></script>
+<script src="../../common-edit/Validate.js"></script>
+<script src="../../common-edit/FormAction.js"></script>
+<script src="../../common-edit/Operator.js"></script>
+<script src="../../common-edit/Edit.js"></script>
+<script src="../../common-edit/FileUpload.js"></script>
+
+<script src="modules/DatetimePicker.js"></script>
+<script src="modules/Selector.js"></script>
+<script src="index.js"></script>
+<!--grunt.js.end-->
+
+</body>
+</html>

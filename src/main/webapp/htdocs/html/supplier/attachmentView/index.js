@@ -1,5 +1,5 @@
 /**
- * Created by yadda on 2017/9/18.
+ * Created by yadda on 2018/9/18.
  */
 ;(function () {
 
@@ -97,16 +97,6 @@
         iconKey: 'icon',
         autoClose: true,
         items: [
-            {
-                text: '通过',
-                name: 'check',
-                icon: 'icon-Success',
-            },
-            {
-                text: '不通过',
-                name: 'uncheck',
-                icon: 'icon-jujue'
-            },
             {
                 text: '上一个',
                 name: 'previous',

@@ -80,10 +80,10 @@
             // 提交证件给医院
             'transfer': function (item, index) {
                 // 发送一个证件给医院
-                if (currentNode.hospital === 0) {
+                /*if (currentNode.hospital === 0) {
                     SMS.Tips.error('请选择医院', 1000);
                     return;
-                }
+                }*/
 
                 SMS.use('Dialog', function (Dialog) {
 

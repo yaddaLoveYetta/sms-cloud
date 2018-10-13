@@ -85,10 +85,10 @@ public class MenuServiceImpl extends BaseService implements MenuService {
             }
 
             // for test
-            if (null == formActionId || formActionId == 0) {
+/*            if (null == formActionId || formActionId == 0) {
                 // 没有配置formActionId的菜单认为是不需要控制，如一级菜单 for test
                 return true;
-            }
+            }*/
 
             // 是否这个用户类别可见的菜单，每个菜单配置一个查看权限
             Optional<FormAction> formActionOptional = formActions.stream().filter(formAction -> formActionId == formAction.getClassId().intValue() &&

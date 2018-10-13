@@ -139,7 +139,8 @@ define('Edit', function (require, module, exports) {
             var field = fields[key];
 
             var element = Operator.get$Element(key);
-            if (!element) {
+
+            if (element.length === 0) {
                 continue;
             }
 
@@ -192,7 +193,7 @@ define('Edit', function (require, module, exports) {
             var value = itemData[key] || '';
 
             if (!element) {
-                // TODO: 按key未找到控件，跳过此字段赋值
+                // 按key未找到控件，跳过此字段赋值
                 continue;
             }
 
@@ -488,6 +489,8 @@ define('Edit', function (require, module, exports) {
     return {
         render: render,
         save: save,
+        getHeadData: getHeadData,
+        showHeadValidInfo: showHeadValidInfo,
         on: emitter.on.bind(emitter)
     };
 

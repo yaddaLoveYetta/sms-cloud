@@ -143,7 +143,6 @@
             'add': function (item, index) {
 
                 var metaData = List.getMetaData();
-                //var url = require("UrlMapping")(classId);
                 var url = item.info.url;
                 var name = metaData.formClass.name || '';
 
