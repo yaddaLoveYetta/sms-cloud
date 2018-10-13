@@ -309,7 +309,7 @@
                     change: function (no, pageSize) {
                         defaults.pageSize = pageSize;
                         List.render({
-                            type: hospital,
+                            hospital: node.hospital,
                             pageNo: no,
                             pageSize: defaults.pageSize
                         });
