@@ -242,20 +242,21 @@ public class SupplierServiceImpl extends BaseService implements SupplierService 
 
     /**
      * 供应商新增一个证件资料
-     *
-     * @param supplier      供应商
+     *  @param supplier      供应商
      * @param qualification 证件信息
      * @param files         证件附件
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void addQualification(Long supplier, Qualification qualification, List<File> files) {
+    public Long addQualification(Long supplier, Qualification qualification, List<File> files) {
 
         SupplierQualificationMapper supplierQualificationMapper = getMapper(SupplierQualificationMapper.class);
 
         SupplierQualification supplierQualification = new SupplierQualification();
 
-        supplierQualification.setId(getId());
+        Long supplierQualificationId = getId();
+
+        supplierQualification.setId(supplierQualificationId);
         supplierQualification.setQualificationType(qualification.getType());
         supplierQualification.setNumber(qualification.getNumber());
         supplierQualification.setIssue(qualification.getIssue());
@@ -266,12 +267,33 @@ public class SupplierServiceImpl extends BaseService implements SupplierService 
 
         supplierQualificationMapper.insertSelective(supplierQualification);
 
+
         if (!CollectionUtils.isEmpty(files)) {
+            // 记录附件保存后的路径
+            List<SupplierQualificationAttachment> attachments = new ArrayList<>();
             // 保存附件
             files.forEach(file -> {
-                FileOperate.upload(file, Constants.FilePath.SUPPLIER_QUALIFICATION_ATTACHMENT.path());
+                // 保存附件到文件服务器，接收保存全路径
+                String uploadPath = FileOperate.upload(file, Constants.FilePath.SUPPLIER_QUALIFICATION_ATTACHMENT.path());
+
+                SupplierQualificationAttachment attachment = new SupplierQualificationAttachment();
+
+                attachment.setId(getId());
+                attachment.setParent(supplierQualificationId);
+                attachment.setPath(uploadPath);
+
+                attachments.add(attachment);
             });
+
+            if (!CollectionUtils.isEmpty(attachments)) {
+                // 保存附件信息
+                SupplierQualificationAttachmentMapper attachmentMapper = getMapper(SupplierQualificationAttachmentMapper.class);
+                attachmentMapper.batchInsert(attachments);
+            }
+
         }
+
+        return supplierQualificationId;
 
     }
 

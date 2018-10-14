@@ -120,7 +120,6 @@
                 }
 
                 var metaData = List.getMetaData();
-                //var url = require("UrlMapping")(classId);
                 var url = item.info.url;
                 var name = metaData.formClass.name || '';
 
@@ -808,8 +807,11 @@
             }
 
             var metaData = List.getMetaData();
-            var url = require("UrlMapping")(classId);
             var name = metaData.formClass.name || '';
+
+            // 触发查看事件
+            var item = ButtonList.getItem('view');
+            var url = item.info.url;
 
             if (!url) {
                 // 没有配置编辑页面或不需要编辑功能

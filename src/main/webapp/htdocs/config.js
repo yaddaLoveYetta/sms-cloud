@@ -287,7 +287,7 @@
         FileInput:{
             language: 'zh', //设置语言
             theme: "explorer", //主题
-            uploadUrl: "", //上传的地址
+            //uploadUrl: "", //上传的地址
             allowedFileExtensions: ['jpg', 'gif', 'png', 'jpeg', 'pdf'],//允许上传的文件后缀
             maxFilesNum : 5,//上传最大的文件数量
             //uploadExtraData:{"id": 1, "fileName":'123.mp3'},
@@ -303,13 +303,23 @@
             //minImageHeight: 50,//图片的最小高度
             //maxImageWidth: 1000,//图片的最大宽度
             //maxImageHeight: 1000,//图片的最大高度
-            maxFileSize: 0,//单位为kb，如果为0表示不限制文件大小
+            maxFileSize: 10000,//单位为kb，如果为0表示不限制文件大小
             //minFileCount: 0,
             maxFileCount: 5, //表示允许同时上传的最大文件个数
             enctype: 'multipart/form-data',
             validateInitialCount:true,
             //previewFileIcon: "<i class='glyphicon glyphicon-king'></i>",
             msgFilesTooMany: "选择上传的文件数量({n}) 超过允许的最大数值{m}！",
+            messages: {
+                acceptFileTypes: '文件类型不匹配,仅支持:jpg,gif,png,jpeg,pdf',
+                maxFileSize: '文件过大(限制10M)',
+                minFileSize: '文件过小'
+            },
+            fileActionSettings:{
+                showUpload: true,
+                showRemove: true,
+                showZoom:true
+            }
         }
 
     });

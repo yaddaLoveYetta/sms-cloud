@@ -188,7 +188,7 @@ public class SupplierController {
      */
     @RequestMapping(value = "addQualification")
     @ResponseBody
-    public void addQualification(HttpServletRequest request, Qualification qualification) throws IOException {
+    public Long addQualification(HttpServletRequest request, Qualification qualification) throws IOException {
 
         Long supplier = SessionUtil.checkSupplier();
 
@@ -199,7 +199,7 @@ public class SupplierController {
             throw new BusinessLogicRunTimeException("请至少提交一个附件");
         }
 
-        supplierService.addQualification(supplier, qualification, files);
+        return supplierService.addQualification(supplier, qualification, files);
 
     }
 

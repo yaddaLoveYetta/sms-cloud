@@ -499,7 +499,7 @@
         #--ul.begin--#
 
         #--item.begin--#
-        <button data-index="{index}" type="button" class="btn btn-primary">
+        <button data-index="{index}" data-name="{name}" type="button" class="btn btn-primary">
             <i class=" iconfont {icon}"></i>
             {text}
         </button>
@@ -507,7 +507,7 @@
 
         #--group.begin--#
         <div class="btn-group">
-            <button data-index="{index}" type="button" class="btn btn-primary">
+            <button data-index="{index}" data-name="{name}" type="button" class="btn btn-primary">
                 <i class=" iconfont {icon}"></i>
                 {text}
             </button>
@@ -519,7 +519,7 @@
             <ul class="dropdown-menu">
                 #--group.item.begin--#
 
-                <li data-index="{index}" data-no="{no}">
+                <li data-index="{index}" data-name="{name}" data-no="{no}">
                     <a href="javascript:">
                         <i class=" iconfont {icon}"></i>
                         {text}

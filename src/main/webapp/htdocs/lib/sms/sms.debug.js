@@ -2436,6 +2436,7 @@
                 var textKey = meta.textKey;
                 var iconKey = meta.iconKey;
                 var childKey = meta.childKey;
+                var routeKey = meta.routeKey;
                 var list = meta.list;
 
                 var html = $.String.format(samples['ul'], {
@@ -2449,6 +2450,7 @@
                             return $.String.format(samples['item'], {
                                 'index': no,
                                 'text': item[textKey],
+                                'name': item[routeKey],
                                 'icon': item[iconKey] || 'icon-jibenziliao1'
                             });
                         }
@@ -2457,6 +2459,7 @@
                         return $.String.format(samples['group'], {
                             'index': no,
                             'text': item[textKey],
+                            'name': item[routeKey],
                             'icon': item[iconKey] || 'icon-jibenziliao1',
                             /*  'ol-id': meta.olId,
                               'span-id': meta.spanId,
@@ -2468,6 +2471,7 @@
                                     'no': no,
                                     'index': index,
                                     'text': item[textKey],
+                                    'name': item[routeKey],
                                     'icon': item[iconKey] || 'icon-jibenziliao1',
                                     'item.separator': index === 0 ? '' : $.String.format(samples['group.item.separator'], {})
                                 });
@@ -2521,6 +2525,61 @@
              */
             destroy: function () {
                 mapper.remove(this);
+            },
+
+            trigger: function (name) {
+
+                var meta = mapper.get(this);
+                var list = meta.list;
+                var routeKey = meta.routeKey;
+                var callbackKey = meta.callbackKey;
+                var $container = $(meta.container);
+                var emitter = meta.emitter;
+
+                var $targetButtons = $container.find('[data-name=' + name + ']');
+
+                if ($targetButtons.length === 0 || $targetButtons.length > 1) {
+                    console.log('uncertainty button selected...');
+                    return;
+                }
+
+                var targetButton = $targetButtons[0];
+
+
+                var index = +targetButton.getAttribute('data-index');
+                var item = list[index];
+
+                var args = [item, index];
+
+                var fn = item[callbackKey];
+                if (fn) {
+                    fn.apply(null, args);
+                }
+
+                if (routeKey && (routeKey in item)) {
+                    emitter.fire('click:' + item[routeKey], args);
+                }
+
+            },
+
+            getItem:function (name) {
+
+                var meta = mapper.get(this);
+                var list = meta.list;
+                var $container = $(meta.container);
+
+                var $targetButtons = $container.find('[data-name=' + name + ']');
+
+                if ($targetButtons.length === 0 || $targetButtons.length > 1) {
+                    console.log('uncertainty button selected...');
+                    return;
+                }
+
+                var targetButton = $targetButtons[0];
+
+                var index = +targetButton.getAttribute('data-index');
+                return list[index];
+
             },
 
             /**
@@ -4533,6 +4592,17 @@
         }
 
         /**
+         * 获取当前已登录的用户的角色类别。 如果不存在，则返回 null。
+         */
+        function getUserRoleType() {
+            var user = $.SessionStorage.get(key);
+            if (!user) {
+                return null;
+            }
+            return user.roles && user.roles[0] && user.roles[0]['type'] || null;
+        }
+
+        /**
          * 获取最近曾经登录过的用户信息。 如果不存在，则返回 null。
          */
         function getLast() {
@@ -4610,6 +4680,7 @@
             check: check,
             get: get,
             getLast: getLast,
+            getUserRoleType: getUserRoleType,
             show: show,
             login: login,
             logout: logout,
@@ -6668,7 +6739,7 @@
             selectNode: function () {
                 return invoke(this, 'selectNode', arguments);
             },
-            search:function(){
+            search: function () {
                 return invoke(this, 'search', arguments);
             }
         };
@@ -6778,6 +6849,12 @@
             enable: function () {
                 return invoke(this, 'enable', arguments);
             },
+            lock: function () {
+                return invoke(this, 'lock', arguments);
+            },
+            unlock: function () {
+                return invoke(this, 'unlock', arguments);
+            },
             upload: function () {
                 return invoke(this, 'upload', arguments);
             },
@@ -6792,6 +6869,9 @@
             },
             destroy: function () {
                 return invoke(this, 'destroy', arguments);
+            },
+            getFilesCount: function () {
+                return invoke(this, 'getFilesCount', arguments);
             },
             render: function () {
                 var meta = mapper.get(this);
@@ -7166,7 +7246,7 @@
                                 //cfg.grid.setCell(row, idModel.name, data[0].id);
                                 cfg.grid.setCell(row, idModel.name, data[0].all[field.srcField]);
                             }
-                            
+
                             /*                            // 显示的名称
                                                         idModel = cfg.grid.getColProp(field.key + '_DspName');
                                                         if (idModel.name) {

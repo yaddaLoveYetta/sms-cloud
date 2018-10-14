@@ -66,12 +66,11 @@ public interface SupplierService {
 
     /**
      * 供应商新增一个证件资料
-     *
-     * @param supplier      供应商
+     *  @param supplier      供应商
      * @param qualification 证件信息
      * @param files         证件附件
      */
-    void addQualification(Long supplier, Qualification qualification, List<File> files);
+    Long addQualification(Long supplier, Qualification qualification, List<File> files);
 
     /**
      * 供应商为证件增加附件

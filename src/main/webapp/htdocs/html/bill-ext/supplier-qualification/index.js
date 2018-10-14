@@ -24,6 +24,7 @@
 
 
     var user = SMS.Login.get();
+    var userRoleType = SMS.Login.getUserRoleType();
     //检查登录状态
     if (!SMS.Login.check(true)) {
         return;
@@ -84,6 +85,11 @@
 
                     };
 
+                    if (attachment.getFilesCount() === 0) {
+                        SMS.Tips.error('请选择证件附件文件', 1000);
+                        return;
+                    }
+
                     attachment.upload();
 
                 });
@@ -123,6 +129,52 @@
         },
         'afterFill': function (classId, metaData, data) {
 
+            if (operate === 1) {
+                // 新增
+                return;
+            }
+
+            if (attachment) {
+                attachment.destroy();
+            }
+
+            var option = buildFileInputInitOption(operate);
+
+            var attachments = data.entry && data.entry[1];
+
+            if (attachments) {
+                var initialPreview = [];
+                var initialPreviewConfig = [];
+                $.Array.each(attachments, function (item, index) {
+
+                    if(item.path.indexOf(".txt")>0){// 非图片类型的展示
+                        //initialPreview.push("<div class='file-preview-other-frame'><div class='file-preview-other'></div></div>");
+                    }else{// 图片类型
+                        initialPreview.push("<img src='" + item.path + "' class='file-preview-image img-responsive'>");
+                    }
+
+                    initialPreview.push("<img src='" + item.path + "' class='file-preview-image img-responsive'>");
+                    initialPreviewConfig.push({
+                        caption: data.qualification_type_DspName, // 展示的文件名
+                        url: 'supplier/delQualificationAttachment', // 删除url
+                        key: item.id, // 删除是Ajax向后台传递的参数
+                        extra: {id: item.id}
+                    });
+                });
+
+                option.initialPreview = initialPreview;
+                option.initialPreviewConfig = initialPreviewConfig;
+            }
+
+            // 查看时预览附件
+            SMS.use('FileInput', function (FileInput) {
+
+                attachment = new FileInput('#attachment', option);
+
+                attachment.lock();
+
+            });
+
         },
         'afterFieldLock': function (metaData, itemData) {
             /*            if (operate === 0) {
@@ -131,37 +183,124 @@
         },
         'afterInitPage': function (metaData) {
 
-            if (operate === 1 && user.roles && user.roles[0] && user.roles[0]['type'] === 3) {
-
-                var api = new API("supplier/addQualification");
+            if (operate === 1) {
 
                 // 新增-初始化附件上传控件
+                var option = buildFileInputInitOption(operate);
+
                 SMS.use('FileInput', function (FileInput) {
 
-                    attachment = new FileInput('#attachment', {
-                        uploadUrl: api.getUrl(),// 上传请求路径
-                        uploadAsync: false,
-                        layoutTemplates: {
-                            // actionDelete:'', //去除上传预览的缩略图中的删除图标
-                            actionUpload: '',//去除上传预览缩略图中的上传图片；
-                            //actionZoom:''   //去除上传预览缩略图中的查看详情预览的缩略图标。
-                        },
-                        allowedFileExtensions: ['jpg', 'gif', 'png', 'doc', 'docx', 'pdf', 'ppt', 'pptx', 'txt'],//接收的文件后缀
-                        uploadExtraData: function () {
-                            return formData;
+                    attachment = new FileInput('#attachment', option);
+
+                    attachment.on('filebatchpreupload', function (event, data) {
+
+                        if (data.filescount === 0) {
+                            return {
+                                result: false,
+                                message: "请选择:请至少选择一个附件", // 验证错误信息在上传前要显示。如果设置了这个设置，插件会在调用时自动中止上传，并将其显示为错误消息。您可以使用此属性来读取文件并执行自己的自定义验证
+                                data: {} // any other data to send that can be referred in `filecustomerror`
+                            }
+                        }
+                        console.log(data);
+
+                    });
+
+                    attachment.on('filebatchuploadsuccess', function (event, data) {
+
+                        var response = data.response;
+                        if (response.code !== 200) {
+                            // 上传失败
+                            SMS.Tips.error(response.msg);
+
+                            return;
+                        }
+                        // 新增成功返回新增证件id
+                        id = response.data.value;
+                        // 新增成功变修改模式
+                        operate = 2;
+                        Edit.render(operate, classId, id);
+
+                        //attachment.reset(); //重置上传控件（清空已上传文件）
+                    });
+
+                    // uploadAsync set to false
+                    attachment.on('filebatchuploaderror', function (event, data, msg) {
+
+                        /*        var form = data.form;
+                                var files = data.files;
+                                var extra = data.extra;
+                                var response = data.response;
+                                var reader = data.reader;*/
+
+                        SMS.Tips.error(msg);
+                    });
+
+                    attachment.on('filebatchuploadcomplete', function (event, files, extra) {
+                        //layer.msg('上传失败', {icon: 0});//弹框提示
+                        //return false;
+                    });
+
+                    attachment.on("fileuploaddone", function (e, data) {
+                        // 上传完成时调用
+                        if (data.result.returnState === "ERROR") {
+                            alert("上传失败")
+                            return;
                         }
                     });
 
-                    attachment.on('fileuploaderror', function (event, data, msg) {
-                        SMS.Tips.error(msg);
-                    });
                 });
             }
 
         },
-
         'beforeSave': function (metaData, headData) {
         }
     });
+
+    function buildFileInputInitOption(operateType) {
+
+        var option = {
+            uploadAsync: false,
+            allowedFileExtensions: ['jpg', 'jpeg', 'gif', 'png', 'pdf'],//接收的文件后缀
+            uploadExtraData: function () {
+                return formData;
+            }
+        };
+
+        if (operateType === 0) {
+            // 查看
+            option.fileActionSettings = {
+                showUpload: false,
+                showRemove: false,
+                showZoom: false
+            }
+        }
+
+        if (operateType === 1) {
+            // 新增
+            var api = new API("supplier/addQualification");
+            // 上传请求路径
+            option.uploadUrl = api.getUrl();
+            option.fileActionSettings = {
+                showUpload: false,
+                showRemove: true,
+                showZoom: true
+            }
+        }
+
+        if (operateType === 2) {
+            // 修改
+
+            api = new API("supplier/editQualification");
+            // 上传请求路径
+            option.uploadUrl = api.getUrl();
+            option.fileActionSettings = {
+                showUpload: false,
+                showRemove: true,
+                showZoom: true
+            }
+        }
+
+        return option;
+    }
 
 })(jQuery, MiniQuery, SMS);
