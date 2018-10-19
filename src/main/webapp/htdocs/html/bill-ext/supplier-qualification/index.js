@@ -1,5 +1,5 @@
 /**
- * 单据详情/新增/编辑页面控制器
+ * 供应商证件详情/新增/编辑页面控制器
  * @author : yadda(silenceisok@163.com)
  * @date : 2018/3/11 11:25
  */
@@ -15,11 +15,9 @@
     var BL = SMS.require('ButtonList');
 
     var FormAction = require('FormAction');
-    var FileUpload = require('FileUpload');
     var DatetimePicker = require('DatetimePicker');
     var Selector = require('Selector');
     var NumberField = require('NumberField');
-    var Address = require('Address');
     var Edit = require('Edit');
 
 
@@ -42,7 +40,7 @@
     var ButtonList;
     // 附件
     var attachment;
-
+    // 新增修改时提交接口的证件信息对象
     var formData;
 
     FormAction.create({'classId': classId, 'type': operate}, function (config) {

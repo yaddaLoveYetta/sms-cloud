@@ -1917,6 +1917,8 @@ public class TemplateServiceImpl extends BaseService implements TemplateService 
 
         String where = sbWhere.toString().trim();
 
+        // 校验左右括号是否匹配 TODO
+
         if (!"".equals(where)) {
 
             whereStructure = String.format(whereStructure, where);

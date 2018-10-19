@@ -7854,6 +7854,7 @@
 
     // 设置 MiniQuery 对外挂靠的别名
     var MiniQuery = require('MiniQuery');
+    // 将MiniQuery挂靠到$下，这样就可以通过$.xxx引用到MiniQuery功能
     MiniQuery.use('$');
 
     // 设置对外暴露的模块
@@ -7931,18 +7932,14 @@
 
         // crypto
         'MD5': require('MD5'),
-
-
         'Cache': require('Cache'),
         'Debug': require('Debug'),
         'File': require('File'),
         'Url': require('Url'),
         // 'Seajs': require('Seajs'),
-
         // api
         'Proxy': require('Proxy'),
         'API': require('API'),
-
         // ui
         'Pages': require('Pages'),
         'CascadePicker': require('CascadePicker'),

@@ -52,7 +52,7 @@ public class SupplierController {
     @ResponseBody
     @RequestMapping(value = "changeLogo", method = RequestMethod.POST)
     public Map<String, Object> changeLogo(HttpServletRequest request, HttpServletResponse response, Integer classId,
-                                          Long id) {
+            Long id) {
 
         if (classId == null || id == null) {
             throw new BusinessLogicRunTimeException("缺少参数classId或id");
@@ -118,8 +118,8 @@ public class SupplierController {
     @RequestMapping(value = "getHospitalSupplierQualificationsByHospital")
     @ResponseBody
     public SupplierQualificationModel getHospitalSupplierQualificationsByHospital(Long hospital,
-                                                                                  @RequestParam(defaultValue = "10") Integer pageSize,
-                                                                                  @RequestParam(defaultValue = "1") Integer pageNo) {
+            @RequestParam(defaultValue = "10") Integer pageSize,
+            @RequestParam(defaultValue = "1") Integer pageNo) {
 
         // 供应商
         Long supplier = SessionUtil.checkSupplier();
@@ -162,7 +162,7 @@ public class SupplierController {
     @RequestMapping(value = "transferQualification")
     @ResponseBody
     public void transferQualification(HttpServletRequest request, Long type, Long hospital,
-                                      Long supplierQualificationId) {
+            Long supplierQualificationId) {
 
         Long supplier = SessionUtil.checkSupplier();
 
@@ -204,6 +204,21 @@ public class SupplierController {
     }
 
     /**
+     * 供应商证件编辑，只编辑证件信息，证件附件独立的接口增加/删除
+     *
+     * @param qualification 证件信息
+     */
+    @RequestMapping(value = "editQualification")
+    @ResponseBody
+    public void editQualification(Qualification qualification) {
+
+        Long supplier = SessionUtil.checkSupplier();
+
+        supplierService.editQualification(qualification);
+
+    }
+
+    /**
      * 新增证件附件
      *
      * @param request   HttpServletRequest (必须上传至少一个pdf证件附件)
@@ -213,7 +228,7 @@ public class SupplierController {
     @RequestMapping(value = "addQualificationAttachment")
     @ResponseBody
     public void addQualificationAttachment(HttpServletRequest request, Long id,
-                                           @RequestParam(defaultValue = "0") Integer overwrite) throws IOException {
+            @RequestParam(defaultValue = "0") Integer overwrite) throws IOException {
 
         Long supplier = SessionUtil.checkSupplier();
 
@@ -237,7 +252,7 @@ public class SupplierController {
     @RequestMapping(value = "delQualificationAttachment")
     @ResponseBody
     public void delQualificationAttachment(Long qualificationId,
-                                           String attachmentIds) {
+            String attachmentIds) {
 
         Long supplier = SessionUtil.checkSupplier();
 

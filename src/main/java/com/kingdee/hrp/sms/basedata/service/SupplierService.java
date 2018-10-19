@@ -66,7 +66,8 @@ public interface SupplierService {
 
     /**
      * 供应商新增一个证件资料
-     *  @param supplier      供应商
+     *
+     * @param supplier      供应商
      * @param qualification 证件信息
      * @param files         证件附件
      */
@@ -99,4 +100,11 @@ public interface SupplierService {
      * @return 附件列表
      */
     List<SupplierQualificationAttachment> getQualificationAttachment(Long supplier, Long qualificationId);
+
+    /**
+     * 供应商编辑证件资料
+     *
+     * @param qualification 证件信息
+     */
+    void editQualification(Qualification qualification);
 }

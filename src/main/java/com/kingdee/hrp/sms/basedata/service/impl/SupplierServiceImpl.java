@@ -122,8 +122,8 @@ public class SupplierServiceImpl extends BaseService implements SupplierService 
      */
     @Override
     public SupplierQualificationModel getHospitalSupplierQualificationsByHospital(Long supplier, Long hospital,
-                                                                                  Integer pageSize,
-                                                                                  Integer pageNo) {
+            Integer pageSize,
+            Integer pageNo) {
 
         // 医院对供应商的资质需求类别
         List<HospitalSupplierQualificationType> hospitalSupplierQualificationTypes = getHospitalSupplierQualificationTypes(
@@ -150,7 +150,7 @@ public class SupplierServiceImpl extends BaseService implements SupplierService 
      */
     @Override
     public SupplierQualificationModel getHospitalSupplierQualifications(Long supplier, Integer pageSize,
-                                                                        Integer pageNo) {
+            Integer pageNo) {
 
         // 本供应商已经提供了的证件--分页
         PageInfo<HospitalSupplierQualification> pageInfo = getSupplierQualificationPageInfo(supplier, pageSize, pageNo);
@@ -242,7 +242,8 @@ public class SupplierServiceImpl extends BaseService implements SupplierService 
 
     /**
      * 供应商新增一个证件资料
-     *  @param supplier      供应商
+     *
+     * @param supplier      供应商
      * @param qualification 证件信息
      * @param files         证件附件
      */
@@ -267,14 +268,14 @@ public class SupplierServiceImpl extends BaseService implements SupplierService 
 
         supplierQualificationMapper.insertSelective(supplierQualification);
 
-
         if (!CollectionUtils.isEmpty(files)) {
             // 记录附件保存后的路径
             List<SupplierQualificationAttachment> attachments = new ArrayList<>();
             // 保存附件
             files.forEach(file -> {
                 // 保存附件到文件服务器，接收保存全路径
-                String uploadPath = FileOperate.upload(file, Constants.FilePath.SUPPLIER_QUALIFICATION_ATTACHMENT.path());
+                String uploadPath = FileOperate
+                        .upload(file, Constants.FilePath.SUPPLIER_QUALIFICATION_ATTACHMENT.path());
 
                 SupplierQualificationAttachment attachment = new SupplierQualificationAttachment();
 
@@ -287,7 +288,8 @@ public class SupplierServiceImpl extends BaseService implements SupplierService 
 
             if (!CollectionUtils.isEmpty(attachments)) {
                 // 保存附件信息
-                SupplierQualificationAttachmentMapper attachmentMapper = getMapper(SupplierQualificationAttachmentMapper.class);
+                SupplierQualificationAttachmentMapper attachmentMapper = getMapper(
+                        SupplierQualificationAttachmentMapper.class);
                 attachmentMapper.batchInsert(attachments);
             }
 
@@ -392,6 +394,30 @@ public class SupplierServiceImpl extends BaseService implements SupplierService 
         return mapper.selectByExample(example);
     }
 
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void editQualification(Qualification qualification) {
+
+        if (null == qualification.getId()) {
+            throw new BusinessLogicRunTimeException("请选择证件修改");
+        }
+
+        SupplierQualificationMapper mapper = getMapper(SupplierQualificationMapper.class);
+
+        SupplierQualification supplierQualification = new SupplierQualification();
+
+        supplierQualification.setId(qualification.getId());
+
+        supplierQualification.setIssue(qualification.getIssue());
+        supplierQualification.setNumber(qualification.getNumber());
+        supplierQualification.setQualificationType(qualification.getType());
+        supplierQualification.setValidityPeriodBegin(qualification.getValidityPeriodBegin());
+        supplierQualification.setValidityPeriodEnd(qualification.getValidityPeriodEnd());
+        supplierQualification.setRemark(qualification.getRemark());
+
+        mapper.updateByPrimaryKeySelective(supplierQualification);
+    }
+
     /**
      * 将供应商证件附件复制一份给医院
      *
@@ -427,7 +453,7 @@ public class SupplierServiceImpl extends BaseService implements SupplierService 
      * @return PageInfo<HospitalSupplierQualification>
      */
     private PageInfo<HospitalSupplierQualification> getHospitalSupplierQualificationPageInfo(Long supplier,
-                                                                                             Long hospital, Integer pageSize, Integer pageNo) {
+            Long hospital, Integer pageSize, Integer pageNo) {
 
         HospitalSupplierQualificationMapper hospitalSupplierQualificationMapper = getMapper(
                 HospitalSupplierQualificationMapper.class);
@@ -459,7 +485,7 @@ public class SupplierServiceImpl extends BaseService implements SupplierService 
      * @return PageInfo<HospitalSupplierQualification>
      */
     private PageInfo<HospitalSupplierQualification> getSupplierQualificationPageInfo(Long supplier,
-                                                                                     Integer pageSize, Integer pageNo) {
+            Integer pageSize, Integer pageNo) {
 
         return getHospitalSupplierQualificationPageInfo(supplier, null, pageSize, pageNo);
     }
