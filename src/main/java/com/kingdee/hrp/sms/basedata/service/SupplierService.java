@@ -93,6 +93,15 @@ public interface SupplierService {
     void delQualificationAttachment(Long supplier, Long qualificationId, List<Long> attachmentIds);
 
     /**
+     * 供应商删除证件附件
+     *
+     * @param supplier        供应商
+     * @param qualificationId 证件id
+     * @param attachmentId   附件id
+     */
+    void delQualificationAttachment(Long supplier, Long qualificationId, Long attachmentId);
+
+    /**
      * 供应商资质获取附件列表
      *
      * @param supplier        供应商

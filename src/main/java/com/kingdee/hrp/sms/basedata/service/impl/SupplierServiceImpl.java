@@ -122,8 +122,8 @@ public class SupplierServiceImpl extends BaseService implements SupplierService 
      */
     @Override
     public SupplierQualificationModel getHospitalSupplierQualificationsByHospital(Long supplier, Long hospital,
-            Integer pageSize,
-            Integer pageNo) {
+                                                                                  Integer pageSize,
+                                                                                  Integer pageNo) {
 
         // 医院对供应商的资质需求类别
         List<HospitalSupplierQualificationType> hospitalSupplierQualificationTypes = getHospitalSupplierQualificationTypes(
@@ -150,7 +150,7 @@ public class SupplierServiceImpl extends BaseService implements SupplierService 
      */
     @Override
     public SupplierQualificationModel getHospitalSupplierQualifications(Long supplier, Integer pageSize,
-            Integer pageNo) {
+                                                                        Integer pageNo) {
 
         // 本供应商已经提供了的证件--分页
         PageInfo<HospitalSupplierQualification> pageInfo = getSupplierQualificationPageInfo(supplier, pageSize, pageNo);
@@ -376,6 +376,17 @@ public class SupplierServiceImpl extends BaseService implements SupplierService 
 
     }
 
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void delQualificationAttachment(Long supplier, Long qualificationId, Long attachmentId) {
+
+        List<Long> ids = new ArrayList<Long>() {{
+            add(attachmentId);
+        }};
+
+        delQualificationAttachment(supplier, qualificationId, ids);
+    }
+
     /**
      * 供应商资质获取附件列表
      *
@@ -453,7 +464,7 @@ public class SupplierServiceImpl extends BaseService implements SupplierService 
      * @return PageInfo<HospitalSupplierQualification>
      */
     private PageInfo<HospitalSupplierQualification> getHospitalSupplierQualificationPageInfo(Long supplier,
-            Long hospital, Integer pageSize, Integer pageNo) {
+                                                                                             Long hospital, Integer pageSize, Integer pageNo) {
 
         HospitalSupplierQualificationMapper hospitalSupplierQualificationMapper = getMapper(
                 HospitalSupplierQualificationMapper.class);
@@ -485,7 +496,7 @@ public class SupplierServiceImpl extends BaseService implements SupplierService 
      * @return PageInfo<HospitalSupplierQualification>
      */
     private PageInfo<HospitalSupplierQualification> getSupplierQualificationPageInfo(Long supplier,
-            Integer pageSize, Integer pageNo) {
+                                                                                     Integer pageSize, Integer pageNo) {
 
         return getHospitalSupplierQualificationPageInfo(supplier, null, pageSize, pageNo);
     }

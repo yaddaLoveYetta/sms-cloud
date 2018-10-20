@@ -2562,7 +2562,7 @@
 
             },
 
-            getItem:function (name) {
+            getItem: function (name) {
 
                 var meta = mapper.get(this);
                 var list = meta.list;
@@ -6345,6 +6345,9 @@
                         {
                             value: '取消',
                             className: 'sms-cancel-btn',
+                            callback: function () {
+                                this.isSubmit = false;
+                            },
                         },
                     ],
                 });
@@ -6841,6 +6844,8 @@
                 }
 
                 $selector.on(name, fn);
+
+                return this;
             },
 
             disable: function () {

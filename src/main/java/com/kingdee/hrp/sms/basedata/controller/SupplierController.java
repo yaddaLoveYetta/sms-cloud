@@ -52,7 +52,7 @@ public class SupplierController {
     @ResponseBody
     @RequestMapping(value = "changeLogo", method = RequestMethod.POST)
     public Map<String, Object> changeLogo(HttpServletRequest request, HttpServletResponse response, Integer classId,
-            Long id) {
+                                          Long id) {
 
         if (classId == null || id == null) {
             throw new BusinessLogicRunTimeException("缺少参数classId或id");
@@ -118,8 +118,8 @@ public class SupplierController {
     @RequestMapping(value = "getHospitalSupplierQualificationsByHospital")
     @ResponseBody
     public SupplierQualificationModel getHospitalSupplierQualificationsByHospital(Long hospital,
-            @RequestParam(defaultValue = "10") Integer pageSize,
-            @RequestParam(defaultValue = "1") Integer pageNo) {
+                                                                                  @RequestParam(defaultValue = "10") Integer pageSize,
+                                                                                  @RequestParam(defaultValue = "1") Integer pageNo) {
 
         // 供应商
         Long supplier = SessionUtil.checkSupplier();
@@ -162,7 +162,7 @@ public class SupplierController {
     @RequestMapping(value = "transferQualification")
     @ResponseBody
     public void transferQualification(HttpServletRequest request, Long type, Long hospital,
-            Long supplierQualificationId) {
+                                      Long supplierQualificationId) {
 
         Long supplier = SessionUtil.checkSupplier();
 
@@ -228,7 +228,7 @@ public class SupplierController {
     @RequestMapping(value = "addQualificationAttachment")
     @ResponseBody
     public void addQualificationAttachment(HttpServletRequest request, Long id,
-            @RequestParam(defaultValue = "0") Integer overwrite) throws IOException {
+                                           @RequestParam(defaultValue = "0") Integer overwrite) throws IOException {
 
         Long supplier = SessionUtil.checkSupplier();
 
@@ -252,7 +252,7 @@ public class SupplierController {
     @RequestMapping(value = "delQualificationAttachment")
     @ResponseBody
     public void delQualificationAttachment(Long qualificationId,
-            String attachmentIds) {
+                                           String attachmentIds) {
 
         Long supplier = SessionUtil.checkSupplier();
 
@@ -263,6 +263,27 @@ public class SupplierController {
         List<Long> ids = JsonUtil.json2Collection(attachmentIds, List.class, Long.class);
 
         supplierService.delQualificationAttachment(supplier, qualificationId, ids);
+
+    }
+
+    /**
+     * 删除证件附件(只是删除附件绑定资料，非物理清楚附件文件)
+     *
+     * @param qualificationId 证件信息
+     * @param attachmentId    附件记录id
+     */
+    @RequestMapping(value = "delQualificationAttachmentById")
+    @ResponseBody
+    public void delQualificationAttachment(Long qualificationId,
+                                           Long attachmentId) {
+
+        Long supplier = SessionUtil.checkSupplier();
+
+        if (null == qualificationId || null == attachmentId) {
+            throw new BusinessLogicRunTimeException("参数错误：必须指定删除的项!");
+        }
+
+        supplierService.delQualificationAttachment(supplier, qualificationId, attachmentId);
 
     }
 

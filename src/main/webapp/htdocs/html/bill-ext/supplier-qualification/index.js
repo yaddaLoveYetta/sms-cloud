@@ -127,64 +127,15 @@
         },
         'afterFill': function (classId, metaData, data) {
 
-            if (operate === 1) {
-                // 新增
-                return;
-            }
-
             if (attachment) {
                 attachment.destroy();
             }
 
             var option = buildFileInputInitOption(operate);
 
-            var attachments = data.entry && data.entry[1];
-
-            if (attachments) {
-                var initialPreview = [];
-                var initialPreviewConfig = [];
-                $.Array.each(attachments, function (item, index) {
-
-                    if(item.path.indexOf(".txt")>0){// 非图片类型的展示
-                        //initialPreview.push("<div class='file-preview-other-frame'><div class='file-preview-other'></div></div>");
-                    }else{// 图片类型
-                        initialPreview.push("<img src='" + item.path + "' class='file-preview-image img-responsive'>");
-                    }
-
-                    initialPreview.push("<img src='" + item.path + "' class='file-preview-image img-responsive'>");
-                    initialPreviewConfig.push({
-                        caption: data.qualification_type_DspName, // 展示的文件名
-                        url: 'supplier/delQualificationAttachment', // 删除url
-                        key: item.id, // 删除是Ajax向后台传递的参数
-                        extra: {id: item.id}
-                    });
-                });
-
-                option.initialPreview = initialPreview;
-                option.initialPreviewConfig = initialPreviewConfig;
-            }
-
-            // 查看时预览附件
-            SMS.use('FileInput', function (FileInput) {
-
-                attachment = new FileInput('#attachment', option);
-
-                attachment.lock();
-
-            });
-
-        },
-        'afterFieldLock': function (metaData, itemData) {
-            /*            if (operate === 0) {
-                            Address.lock();
-                        }*/
-        },
-        'afterInitPage': function (metaData) {
-
             if (operate === 1) {
 
                 // 新增-初始化附件上传控件
-                var option = buildFileInputInitOption(operate);
 
                 SMS.use('FileInput', function (FileInput) {
 
@@ -247,7 +198,81 @@
                     });
 
                 });
+
+                return;
             }
+
+            if (operate === 0 || operate === 2) {
+                // 查看修改时，初始化附件预览
+
+                var attachments = data.entry && data.entry[1];
+
+                if (attachments) {
+                    var initialPreview = [];
+                    var initialPreviewConfig = [];
+                    $.Array.each(attachments, function (item, index) {
+
+                        if (item.path.indexOf(".txt") > 0) {// 非图片类型的展示
+                            initialPreview.push("<div class='file-preview-other-frame'><div class='file-preview-other'></div></div>");
+                        } else {// 图片类型
+                            initialPreview.push("<img src='" + item.path + "' class='file-preview-image img-responsive'>");
+                        }
+                        initialPreviewConfig.push({
+                            caption: data.qualification_type_DspName, // 展示的文件名
+                            url: new API('supplier/delQualificationAttachmentById').getUrl(), // 删除url
+                            key: item.attachment_id, // 删除是Ajax向后台传递的参数
+                            extra: {
+                                qualificationId: item.parent,
+                                attachmentId:item.attachment_id
+                            }
+                        });
+                    });
+
+                    option.initialPreview = initialPreview;
+                    option.initialPreviewConfig = initialPreviewConfig;
+                }
+
+                // 查看时预览附件
+                SMS.use('FileInput', function (FileInput) {
+
+                    attachment = new FileInput('#attachment', option);
+
+
+                    attachment.on('filesuccessremove', function (event, id) {
+                        // 图片上传成功后，点击删除按钮的回调函数
+                        //return false;
+
+                    });
+
+                    attachment.on('filebeforedelete', function (event, key, data) {
+                        // 预览时点击缩略图上的删除按钮才能触发的
+                        /*MessageBox.confirm('确定删除该附件?', function (result) {
+                            // return true 时不删除
+                            return !result;
+                        });*/
+                        // return true 时不删除
+                        //return true;
+
+                    });
+
+                    attachment.on('filepredelete', function (event, key, jqXHR, data) {
+                        console.log('Key = ' + key);
+                    });
+
+                });
+
+
+                return;
+            }
+
+
+        },
+        'afterFieldLock': function (metaData, itemData) {
+            /*            if (operate === 0) {
+                            Address.lock();
+                        }*/
+        },
+        'afterInitPage': function (metaData) {
 
         },
         'beforeSave': function (metaData, headData) {
@@ -266,11 +291,22 @@
 
         if (operateType === 0) {
             // 查看
-            option.fileActionSettings = {
-                showUpload: false,
-                showRemove: false,
-                showZoom: false
-            }
+            /*  option.fileActionSettings = {
+                  showUpload: false,
+                  showRemove: false,
+                  showZoom: true
+              };*/
+            option.layoutTemplates = {
+                actionDelete: '',//显示移除按钮,缩略图中的那个
+                actionUpload: '', //是否显示上传按钮,缩略图中的那个
+                actionDrag: '', //是否显示移动按钮,缩略图中的那个
+                //actionZoom: '',//显示预览按钮,缩略图中的那个
+            };
+            option.showUpload = false; //是否显示上传按钮,跟随文本框的那个
+            option.showRemove = false; //显示移除按钮,跟随文本框的那个
+            option.showCaption = false;//是否显示标题,就是那个文本框
+            option.showBrowse = false;//是否显示浏览按钮,跟随那个文本框
+
         }
 
         if (operateType === 1) {
@@ -278,11 +314,13 @@
             var api = new API("supplier/addQualification");
             // 上传请求路径
             option.uploadUrl = api.getUrl();
-            option.fileActionSettings = {
-                showUpload: false,
-                showRemove: true,
-                showZoom: true
-            }
+            option.layoutTemplates = {
+                actionDrag: '',
+            };
+            option.layoutTemplates = {
+                actionUpload: '',
+                actionDrag: '',
+            };
         }
 
         if (operateType === 2) {
@@ -291,11 +329,10 @@
             api = new API("supplier/editQualification");
             // 上传请求路径
             option.uploadUrl = api.getUrl();
-            option.fileActionSettings = {
-                showUpload: false,
-                showRemove: true,
-                showZoom: true
-            }
+            option.layoutTemplates = {
+                actionDrag: ''
+            };
+            option.overwriteInitial = false; //选择文件后是否自动替换预览列表文件
         }
 
         return option;
