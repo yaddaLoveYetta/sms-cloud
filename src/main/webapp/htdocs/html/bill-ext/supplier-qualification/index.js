@@ -223,7 +223,7 @@
                             key: item.attachment_id, // 删除是Ajax向后台传递的参数
                             extra: {
                                 qualificationId: item.parent,
-                                attachmentId:item.attachment_id
+                                attachmentId: item.attachment_id
                             }
                         });
                     });
@@ -291,17 +291,20 @@
 
         if (operateType === 0) {
             // 查看
-            /*  option.fileActionSettings = {
-                  showUpload: false,
-                  showRemove: false,
-                  showZoom: true
-              };*/
-            option.layoutTemplates = {
+            option.fileActionSettings = {
+                showUpload: false,
+                showRemove: false,
+                showDrag: false,
+                showZoom: true,
+                showDownload: true
+            };
+/*            option.layoutTemplates = {
                 actionDelete: '',//显示移除按钮,缩略图中的那个
                 actionUpload: '', //是否显示上传按钮,缩略图中的那个
                 actionDrag: '', //是否显示移动按钮,缩略图中的那个
+                actionDownload: '<button type="button" class="{downloadClass}" title="{downloadTitle}" data-url="{downloadUrl}" data-caption="{caption}">{downloadIcon}</button>\\n'
                 //actionZoom: '',//显示预览按钮,缩略图中的那个
-            };
+            };*/
             option.showUpload = false; //是否显示上传按钮,跟随文本框的那个
             option.showRemove = false; //显示移除按钮,跟随文本框的那个
             option.showCaption = false;//是否显示标题,就是那个文本框
