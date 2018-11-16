@@ -67,16 +67,16 @@ define('SimpleSelector', function (require, module, exports) {
             dataFieldKey: config.dataFieldKey || {
                 'id': 'id', 'name': 'name'
             },
-            data: [{
-                'id': '',
+            data: {
+                'id': -1,
                 'name': '',
                 'info': ''
-            }],
+            },
+            optionData: [],
             defaults: (function () {
                 if (!!config.defaults) {
 
-                    var cDefaults = $.Object.extend({}, defaults, config.defaults);
-                    return cDefaults;
+                    return $.Object.extend({}, defaults, config.defaults);
 
                 } else {
                     return defaults;
@@ -99,6 +99,7 @@ define('SimpleSelector', function (require, module, exports) {
                     'condition': config.conditions.length > 0 ? config.conditions : ''
                 }, function (data) {
 
+                    meta.optionData = data;
                     var html = $.String.format(samples.selector, {
                         key: meta.fieldKey,
                         options: $.Array.keep(data, function (item, no) {
@@ -115,6 +116,19 @@ define('SimpleSelector', function (require, module, exports) {
                     //加载select框选择器
                     $(meta.fieldKey).selectpicker('refresh');
                 });
+
+            });
+
+            $(meta.container).delegate('select', 'change', function (e) {
+
+                // 选择项数据
+                var index = $(this).find('option:selected').data('index');
+
+                meta.data = {
+                    id: $(this).val(),
+                    name: $(this).find('option:selected').text(),
+                    info: meta.optionData[index]
+                }
 
             });
         };
@@ -154,4 +168,36 @@ define('SimpleSelector', function (require, module, exports) {
     //静态变量 F7 选择框集合
     SimpleSelector.SimpleSelectors = {};
 
+    SimpleSelector.prototype = {
+        constructor: SimpleSelector,
+        getData: function () {
+            var meta = mapper.get(this);
+            return meta.data;
+        },
+        render: function () {
+
+            var meta = mapper.get(this);
+
+            var html = $.String.format(samples.selector, {
+                key: meta.fieldKey,
+                options: ''
+            });
+
+            $(meta.container).html(html);
+            meta.bindEvents(this);
+
+        }
+    };
+
+    //静态方法
+    return $.Object.extend(SimpleSelector, {
+        create: function (config) {
+
+            var selector = new SimpleSelector(config);
+            selector.render();
+            return selector;
+
+        },
+        on: emitter.on.bind(emitter)
+    });
 });
