@@ -23,6 +23,7 @@ import org.springframework.http.server.ServletServerHttpResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import sun.text.normalizer.CharTrie;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -57,31 +58,31 @@ public class ResponseAspect {
     @Resource
     private MappingJackson2HttpMessageConverter converter;
 
-    private final Logger logger = LoggerFactory.getLogger(getClass());
+    private static final Logger logger = LoggerFactory.getLogger(ResponseAspect.class);
 
     /**
      * 这些返回类型的方法，返回值进行统一包装成value
      */
-    private static Set<String> TYPES = new HashSet<>(32);
+    private static Set<Class> TYPES = new HashSet<>(32);
 
     static {
-        TYPES.add("java.lang.Integer");
-        TYPES.add("java.lang.Double");
-        TYPES.add("java.lang.Float");
-        TYPES.add("java.lang.Long");
-        TYPES.add("java.lang.Short");
-        TYPES.add("java.lang.Byte");
-        TYPES.add("java.lang.Boolean");
-        TYPES.add("java.lang.Char");
-        TYPES.add("java.lang.String");
-        TYPES.add("int");
-        TYPES.add("double");
-        TYPES.add("long");
-        TYPES.add("short");
-        TYPES.add("byte");
-        TYPES.add("boolean");
-        TYPES.add("char");
-        TYPES.add("float");
+        TYPES.add(Integer.class);
+        TYPES.add(Double.class);
+        TYPES.add(Float.class);
+        TYPES.add(Long.class);
+        TYPES.add(Short.class);
+        TYPES.add(Byte.class);
+        TYPES.add(Boolean.class);
+        TYPES.add(Character.class);
+        TYPES.add(String.class);
+        TYPES.add(int.class);
+        TYPES.add(double.class);
+        TYPES.add(long.class);
+        TYPES.add(short.class);
+        TYPES.add(byte.class);
+        TYPES.add(boolean.class);
+        TYPES.add(char.class);
+        TYPES.add(float.class);
     }
 
     /**
@@ -208,10 +209,10 @@ public class ResponseAspect {
      */
     private Object warpResult(Method method, Object result) {
 
-        if (Objects.equals(method.getReturnType().getTypeName(), "void")) {
+        if (method.getReturnType() == Void.TYPE) {
             // void类型方法
             result = "";
-        } else if (TYPES.contains(method.getReturnType().getName())) {
+        } else if (TYPES.contains(method.getReturnType())) {
             result = new NoJsonWarp(result);
         }
 
@@ -340,15 +341,13 @@ public class ResponseAspect {
             f.setAccessible(true);
 
             try {
-                for (String str : TYPES) {
-                    if (f.getType().getName().equals(str)) {
+                for (Class aClass : TYPES) {
+                    if (f.getType() == aClass) {
                         sb.append(f.getName() + " = " + f.get(obj) + "; ");
                     }
                 }
-            } catch (IllegalArgumentException e) {
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
+            } catch (IllegalArgumentException | IllegalAccessException e) {
+                logger.error(e.getMessage(), e);
             }
         }
         sb.append("]");
