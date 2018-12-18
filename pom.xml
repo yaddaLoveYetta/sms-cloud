@@ -314,23 +314,23 @@
             <version>${baidu.aip.version}</version>
         </dependency>
 
-<!--        <dependency>
-            <groupId>javax.validation</groupId>
-            <artifactId>validation-api</artifactId>
-            <version>${validation.api.version}</version>
-        </dependency>
+        <!--        <dependency>
+                    <groupId>javax.validation</groupId>
+                    <artifactId>validation-api</artifactId>
+                    <version>${validation.api.version}</version>
+                </dependency>
 
-        <dependency>
-            <groupId>org.apache.bval</groupId>
-            <artifactId>bval-jsr303</artifactId>
-            <version>${bval.jsr303.version}</version>
-        </dependency>-->
+                <dependency>
+                    <groupId>org.apache.bval</groupId>
+                    <artifactId>bval-jsr303</artifactId>
+                    <version>${bval.jsr303.version}</version>
+                </dependency>-->
 
     </dependencies>
 
     <build>
         <defaultGoal>compile</defaultGoal>
-        <finalName>${project.artifactId}</finalName>
+        <finalName>${project.artifactId}-${project.version}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -412,6 +412,12 @@
                         <version>1.2.9</version>
                     </dependency>
 
+                    <dependency>
+                        <groupId>com.kingdee.hrp</groupId>
+                        <artifactId>sms-cloud</artifactId>
+                        <version>1.0-SNAPSHOT</version>
+                    </dependency>
+
                 </dependencies>
             </plugin>
             <plugin>
@@ -423,6 +429,50 @@
                         <goals>
                             <goal>jar</goal>
                         </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-install-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>install-file</goal>
+                        </goals>
+                        <configuration>
+                            <packaging>jar</packaging>
+                            <artifactId>${project.artifactId}</artifactId>
+                            <groupId>${project.groupId}</groupId>
+                            <version>${project.version}</version>
+                            <file>
+                                ${project.build.directory}/${project.artifactId}-${project.version}.jar
+                            </file>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- deploy jar to remote repository -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>deploy</phase>
+                        <goals>
+                            <goal>deploy-file</goal>
+                        </goals>
+                        <configuration>
+                            <packaging>jar</packaging>
+                            <generatePom>true</generatePom>
+                            <url>${project.distributionManagement.repository.url}</url>
+                            <artifactId>${project.artifactId}</artifactId>
+                            <groupId>${project.groupId}</groupId>
+                            <version>${project.version}</version>
+                            <file>${project.build.directory}/${project.artifactId}.jar</file>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>

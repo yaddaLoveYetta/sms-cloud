@@ -23,7 +23,6 @@ import org.springframework.http.server.ServletServerHttpResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-import sun.text.normalizer.CharTrie;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
