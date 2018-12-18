@@ -48,7 +48,7 @@ public interface PurchaseOrderService {
     /**
      * 获取一张订单信息
      * <p>
-     * 可指定获取的分录
+     * 可指定获取的分录,未指定分录时获取所有分录
      *
      * @param orderId   订单id
      * @param detailIds 订单分录id，可多个
@@ -111,7 +111,7 @@ public interface PurchaseOrderService {
      * @return Map<String, Object>
      */
     Map<String, Object> getPurchaseOrdersByTemplate(List<Condition> conditions, List<Sort> sorts, Integer pageSize,
-                                            Integer pageNo);
+            Integer pageNo);
 
     /**
      * add a new order
@@ -192,7 +192,7 @@ public interface PurchaseOrderService {
     Boolean unConfirm(List<Long> ids);
 
     /**
-     * create deliver order from order
+     * create deliver order from order，and change the order deliver status when create an deliver order successful
      *
      * @param deliverModel order which deal to create deliver order
      * @return a temp deliver order info which is not save in database yet

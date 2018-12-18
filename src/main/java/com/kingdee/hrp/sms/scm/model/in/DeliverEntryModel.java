@@ -24,5 +24,5 @@ public class DeliverEntryModel {
     /**
      * 订单分录id
      */
-    private List<Long> childId;
+    private List<Long> childIds;
 }

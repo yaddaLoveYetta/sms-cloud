@@ -94,8 +94,8 @@ public class TemplateController {
             throw new BusinessLogicRunTimeException("参数错误：必须提交classId");
         }
 
-        List<Condition> conditions = new ArrayList<Condition>();
-        List<Sort> sorts = new ArrayList<Sort>();
+        List<Condition> conditions = new ArrayList<>();
+        List<Sort> sorts = new ArrayList<>();
 
         // 包装查询条件-方便操作
         if (StringUtils.isNotBlank(condition)) {

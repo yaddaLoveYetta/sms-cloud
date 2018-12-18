@@ -1,5 +1,8 @@
 package com.kingdee.hrp.sms.scm.service.impl;
 
+import com.google.common.base.Joiner;
+import com.google.common.base.Strings;
+import com.google.common.collect.Lists;
 import com.kingdee.hrp.sms.common.dao.generate.PurchaseOrderEntryMapper;
 import com.kingdee.hrp.sms.common.dao.generate.PurchaseOrderMapper;
 import com.kingdee.hrp.sms.common.enums.Constants;
@@ -128,7 +131,7 @@ public class PurchaseOrderServiceImpl extends AbstractOrderService implements Pu
     /**
      * 获取一张订单信息
      * <p>
-     * 可指定获取的分录
+     * 可指定获取的分录,未指定分录时获取所有分录
      *
      * @param orderId   订单id
      * @param detailIds 订单分录id，可多个
@@ -147,15 +150,24 @@ public class PurchaseOrderServiceImpl extends AbstractOrderService implements Pu
         List<PurchaseOrder> purchaseOrders = purchaseOrderMapper.selectByExample(criteria.example());
 
         if (CollectionUtils.isEmpty(purchaseOrders)) {
-            logger.error("不存在id为{}的订单");
-            throw new BusinessLogicRunTimeException(String.format("不存在id为%s的订单!", detailIds));
+            logger.error("不存在id为{}的订单", orderId);
+            throw new BusinessLogicRunTimeException(String.format("不存在id为%s的订单!", orderId));
         }
         // 只可能有一单
         PurchaseOrder purchaseOrder = purchaseOrders.get(0);
 
         PurchaseOrderEntryMapper purchaseOrderEntryMapper = sqlSession.getMapper(PurchaseOrderEntryMapper.class);
+
         PurchaseOrderEntryExample purchaseOrderEntryExample = new PurchaseOrderEntryExample();
-        purchaseOrderEntryExample.createCriteria().andParentEqualTo(orderId).andIdIn(detailIds);
+        PurchaseOrderEntryExample.Criteria purchaseOrderEntryExampleCriteria = purchaseOrderEntryExample
+                .createCriteria();
+
+        purchaseOrderEntryExampleCriteria.andParentEqualTo(orderId);
+
+        if (!CollectionUtils.isEmpty(detailIds)) {
+            // 指定了分录
+            purchaseOrderEntryExampleCriteria.andIdIn(detailIds);
+        }
         // 按照行号排序
         purchaseOrderEntryExample.setOrderByClause(PurchaseOrderEntry.Column.sequence.asc());
 
@@ -197,7 +209,8 @@ public class PurchaseOrderServiceImpl extends AbstractOrderService implements Pu
 
         purchaseOrderEntryExample.createCriteria().andParentEqualTo(orderId);
 
-        List<PurchaseOrderEntry> purchaseOrderEntries = purchaseOrderEntryMapper.selectByExample(purchaseOrderEntryExample);
+        List<PurchaseOrderEntry> purchaseOrderEntries = purchaseOrderEntryMapper
+                .selectByExample(purchaseOrderEntryExample);
 
         if (CollectionUtils.isEmpty(purchaseOrderEntries)) {
             return null;
@@ -223,7 +236,8 @@ public class PurchaseOrderServiceImpl extends AbstractOrderService implements Pu
 
         purchaseOrderEntryExample.createCriteria().andParentEqualTo(orderId).andIdEqualTo(detailId);
 
-        List<PurchaseOrderEntry> purchaseOrderEntries = purchaseOrderEntryMapper.selectByExample(purchaseOrderEntryExample);
+        List<PurchaseOrderEntry> purchaseOrderEntries = purchaseOrderEntryMapper
+                .selectByExample(purchaseOrderEntryExample);
 
         if (!CollectionUtils.isEmpty(purchaseOrderEntries)) {
             return purchaseOrderEntries.get(0);
@@ -263,7 +277,8 @@ public class PurchaseOrderServiceImpl extends AbstractOrderService implements Pu
         PurchaseOrderHeaderModel header = new PurchaseOrderHeaderModel();
         List<PurchaseOrderEntryModel> entries = new ArrayList<>();
 
-        for (PurchaseOrderHeaderModel.FieldKeyLinkedColumn column : PurchaseOrderHeaderModel.FieldKeyLinkedColumn.values()) {
+        for (PurchaseOrderHeaderModel.FieldKeyLinkedColumn column : PurchaseOrderHeaderModel.FieldKeyLinkedColumn
+                .values()) {
             String fieldName = column.getJavaProperty();
             String fieldKey = column.getFieldKey();
 
@@ -331,7 +346,8 @@ public class PurchaseOrderServiceImpl extends AbstractOrderService implements Pu
      * @param pageNo     当前页码
      */
     @Override
-    public Map<String, Object> getPurchaseOrdersByTemplate(List<Condition> conditions, List<Sort> sorts, Integer pageSize,
+    public Map<String, Object> getPurchaseOrdersByTemplate(List<Condition> conditions, List<Sort> sorts,
+            Integer pageSize,
             Integer pageNo) {
 
         return templateService.getItems(CLASS_ID, conditions, sorts, pageSize, pageNo);
@@ -624,16 +640,33 @@ public class PurchaseOrderServiceImpl extends AbstractOrderService implements Pu
         // 需要发货的订单详细信息
         List<PurchaseOrderModel> toBeDeliverOrders = new ArrayList<>();
 
+        // 不可进行发货操作的订单
+        List<String> errOrders = new ArrayList<>();
+
         // 查询出待发货的订单信息
         for (DeliverEntryModel deliverEntryModel : deliverModel.getOrders()) {
             //deliverEntryModel 是一张待发货的订单信息
 
             Long orderId = deliverEntryModel.getId();
-            List<Long> childIds = deliverEntryModel.getChildId();
+            List<Long> childIds = deliverEntryModel.getChildIds();
 
             PurchaseOrderModel purchaseOrderModel = getPurchaseOrderModel(orderId, childIds);
 
+            // 订单状态校验- 只有已确认的订单可进行发货
+            if (purchaseOrderModel.getHeader().getOrderStatus() != OrderStatus.CONFIRMED.value()) {
+
+                errOrders.add(String.format("订单[%s]状态为[%s],不可进行发货操作!", purchaseOrderModel.getHeader().getNumber(),
+                        OrderStatus.getOrderStatus(purchaseOrderModel.getHeader().getOrderStatus()).getName()));
+
+                continue;
+            }
+
             toBeDeliverOrders.add(purchaseOrderModel);
+        }
+
+        if (!CollectionUtils.isEmpty(errOrders)) {
+            // 用户选择了不可进行发货操作的订单
+            throw new BusinessLogicRunTimeException(Joiner.on(";").join(errOrders));
         }
 
         if (CollectionUtils.isEmpty(toBeDeliverOrders)) {

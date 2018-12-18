@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * 订单发货状态
+ * 值参考t_assistance表 type=45
  *
  * @author le.xiao
  */

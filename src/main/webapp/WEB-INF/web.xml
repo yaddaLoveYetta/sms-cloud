@@ -20,6 +20,12 @@
         <param-name>contextConfigLocation</param-name>
         <param-value>classpath:/config/applicationContext.xml</param-value>
     </context-param>
+
+    <context-param>
+        <param-name>contextInitializerClasses</param-name>
+        <param-value>com.kingdee.hrp.sms.common.filter.SpringApplicationContextInitializer</param-value>
+    </context-param>
+
     <context-param>
         <param-name>webAppRootKey</param-name>
         <param-value>sms-cloud.root</param-value>
@@ -64,9 +70,16 @@
             <param-name>contextConfigLocation</param-name>
             <param-value>classpath:/config/spring-mvc.xml</param-value>
         </init-param>
+        
+        <init-param>
+            <param-name>contextInitializerClasses</param-name>
+            <param-value>com.kingdee.hrp.sms.common.filter.SpringApplicationContextInitializer</param-value>
+        </init-param>
+
         <load-on-startup>1</load-on-startup>
-      <!--  <async-supported>true</async-supported>-->
+        <!--  <async-supported>true</async-supported>-->
     </servlet>
+
     <servlet-mapping>
         <servlet-name>sms</servlet-name>
         <url-pattern>/manager/*</url-pattern>

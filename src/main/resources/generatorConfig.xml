@@ -37,10 +37,10 @@
         <!-- Example Criteria 增强插件 -->
         <plugin type="com.itfsw.mybatis.generator.plugins.ExampleEnhancedPlugin"/>
 
-        <commentGenerator>
+        <commentGenerator type="com.kingdee.hrp.sms.util.CustomerCommentGenerator">
             <property name="suppressDate" value="false"/>
-            <!--  关闭自动生成的注释  -->
-            <property name="suppressAllComments" value="true"/>
+            <!--  关闭自动生成的注释 true:关闭 false:不关闭 -->
+            <property name="suppressAllComments" value="false"/>
         </commentGenerator>
 
         <jdbcConnection driverClass="${jdbc.driverClass}" connectionURL="${jdbc.jdbcUrl}"
@@ -93,12 +93,12 @@
 
         <table tableName="t_form_field" domainObjectName="FormField">
             <property name="useActualColumnNames" value="false"/>
-             
+
         </table>
 
         <table tableName="t_form_action" domainObjectName="FormAction">
             <property name="useActualColumnNames" value="false"/>
-             
+
         </table>
 
         <table tableName="t_menu" domainObjectName="Menu">
@@ -107,64 +107,64 @@
             <!--Dao 继承接口-->
             <!-- <property name="rootInterface" value="java.io.Serializable"/>-->
             <!--java Model继承类-->
-             
+
 
         </table>
 
         <table tableName="t_user" domainObjectName="User">
             <property name="useActualColumnNames" value="false"/>
-             
+
         </table>
 
         <table tableName="t_user_entry" domainObjectName="UserEntry">
             <property name="useActualColumnNames" value="false"/>
-             
+
         </table>
 
         <table tableName="t_role" domainObjectName="Role">
             <property name="useActualColumnNames" value="false"/>
-             
+
         </table>
 
         <table tableName="t_role_type" domainObjectName="RoleType">
             <property name="useActualColumnNames" value="false"/>
-             
+
         </table>
 
         <table tableName="t_hospital" domainObjectName="Hospital">
             <property name="useActualColumnNames" value="false"/>
-             
+
 
         </table>
 
         <table tableName="t_supplier" domainObjectName="Supplier">
             <property name="useActualColumnNames" value="false"/>
-             
+
         </table>
 
         <table tableName="t_assistance_type" domainObjectName="AssistanceType">
             <property name="useActualColumnNames" value="false"/>
-             
+
         </table>
 
         <table tableName="t_assistance" domainObjectName="Assistance">
             <property name="useActualColumnNames" value="false"/>
-             
+
         </table>
 
         <table tableName="t_access_control" domainObjectName="AccessControl">
             <property name="useActualColumnNames" value="false"/>
-             
+
         </table>
 
         <table tableName="t_supplier_type" domainObjectName="SupplierType">
             <property name="useActualColumnNames" value="false"/>
-             
+
         </table>
 
         <table tableName="t_hospital_supplier" domainObjectName="HospitalSupplier">
             <property name="useActualColumnNames" value="false"/>
-             
+
         </table>
 
         <table tableName="t_approved_supplier" domainObjectName="ApprovedSupplier">
@@ -174,27 +174,27 @@
 
         <table tableName="t_material" domainObjectName="Material">
             <property name="useActualColumnNames" value="false"/>
-             
+
         </table>
 
         <table tableName="t_cooperation_apply" domainObjectName="CooperationApply">
             <property name="useActualColumnNames" value="false"/>
-             
+
         </table>
 
         <table tableName="t_partner" domainObjectName="Partner">
             <property name="useActualColumnNames" value="false"/>
-             
+
         </table>
 
         <table tableName="t_message" domainObjectName="Message">
             <property name="useActualColumnNames" value="false"/>
-             
+
         </table>
 
         <table tableName="t_system_setting" domainObjectName="SystemSetting">
             <property name="useActualColumnNames" value="false"/>
-             
+
         </table>
 
         <table tableName="t_purchase_order" domainObjectName="PurchaseOrder">
@@ -203,7 +203,14 @@
         </table>
         <table tableName="t_purchase_order_entry" domainObjectName="PurchaseOrderEntry">
             <property name="useActualColumnNames" value="false"/>
+        </table>
 
+        <table tableName="t_deliver_order" domainObjectName="DeliverOrder">
+            <property name="useActualColumnNames" value="false"/>
+
+        </table>
+        <table tableName="t_deliver_order_entry" domainObjectName="DeliverOrderEntry">
+            <property name="useActualColumnNames" value="false"/>
         </table>
 
         <table tableName="t_material_document_type" domainObjectName="MaterialDocumentType">
@@ -226,7 +233,8 @@
 
         </table>
 
-        <table tableName="t_hospital_supplier_qualification_attachment" domainObjectName="HospitalSupplierQualificationAttachment">
+        <table tableName="t_hospital_supplier_qualification_attachment"
+               domainObjectName="HospitalSupplierQualificationAttachment">
             <property name="useActualColumnNames" value="false"/>
 
         </table>

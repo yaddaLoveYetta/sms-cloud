@@ -7,7 +7,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * 订单状态
+ * 订单基本状态
+ * 值参考t_assistance表 type=44
  *
  * @author le.xiao
  */
@@ -33,6 +34,10 @@ public enum OrderStatus {
     OrderStatus(Integer number, String name) {
         this.number = number;
         this.name = name;
+    }
+
+    public int value() {
+        return this.number;
     }
 
     public static OrderStatus getOrderStatus(Integer number) {
