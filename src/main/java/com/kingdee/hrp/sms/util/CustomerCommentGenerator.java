@@ -205,7 +205,7 @@ public class CustomerCommentGenerator implements CommentGenerator {
         sb.append(introspectedTable.getFullyQualifiedTable());
         sb.append("]生成");
         topLevelClass.addJavaDocLine(sb.toString());
-        topLevelClass.addJavaDocLine(" * @author le.xiao");
+        topLevelClass.addJavaDocLine(" * @author yadda");
         topLevelClass.addJavaDocLine(" */");
 
     }

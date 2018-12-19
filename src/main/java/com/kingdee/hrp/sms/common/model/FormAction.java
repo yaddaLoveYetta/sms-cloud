@@ -3,159 +3,119 @@ package com.kingdee.hrp.sms.common.model;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+import lombok.experimental.Accessors;
 
+/**
+ * 由数据库表[t_form_action]生成
+ * @author yadda
+ */
+@Getter
+@Setter
+@ToString
+@Accessors(chain = true)
 public class FormAction extends FormActionKey implements Serializable {
+    /**
+     * 功能名称
+     */
     private String name;
 
+    /**
+     * 操作方法名(前端使用)
+     */
     private String text;
 
+    /**
+     * 权限掩码(每一个权限掩码代表了一个功能)
+     */
     private Integer accessMask;
 
+    /**
+     * 关联权限掩码总和。
+如有删除权限则一定具备查看及修改权限，
+所以删除权限的access_use应配置成查看及修改权限的
+access_mask之和
+     */
     private Integer accessUse;
 
+    /**
+     * 按钮显示性控制(参考t_assistance表type=20配置)
+
+查看按钮只在列表显示（所有角色类别用户）
+新增按钮在列表及新增界面显示（所有角色类别用户）
+修改按钮在列表及修改界面显示（所有角色类别用户）
+删除按钮只在列表显示（所有角色类别用户）
+禁用按钮只在列表显示（所有角色类别用户）
+反禁用按钮只在列表显示（所有角色类别用户）
+刷新按钮在列表、新增及修改界面显示（所有角色类别用户）
+
+     */
     private Integer display;
 
+    /**
+     * 权限所属角色类别，
+可指定该权限只能由哪些类别的角色可用
+采用三位二进制描述
+001（1）:系统类别角色可用
+010（2）:医院类别角色可用
+100（4）:供应商类别角色可用
+还可以有其他组合设置如
+011（3）: 系统类别角色与医院类别角色可用
+111（7）:三类角色类别都可用
+
+默认三类角色都可用
+     */
     private Integer ownerType;
 
+    /**
+     * 按钮分组，前端渲染菜单使用
+
+将功能按钮的group值设置为一样，表名这些功能按钮创建一个按钮组
+如将 审核与反审核功能按钮 的group都设置为1，则前端会将这两个按钮创建到一组，下拉方式打开组内按钮。
+
+当业务单据上的菜单项（按钮组为1项）超过五项后，其他的按钮会统一放在一个按钮组
+
+     */
     private Integer group;
 
+    /**
+     * 菜单图标
+     */
     private String icon;
 
+    /**
+     * 描述
+     */
     private String desc;
 
+    /**
+     * 按钮打开的url(如列表页面的新增修改按钮通常是打开另外一个页面)
+当同时配置了url与api_url时以url为准，即有限打开页面
+
+前端不完全依赖该配置，有前端本身处理逻辑
+     */
     private String url;
 
+    /**
+     * 按钮点击时请求的后台api地址(如保存，审核，删除等按钮点击时需请求后台api处理)
+
+当同时配置了url与api_url时以url为准，即有限打开页面
+     */
     private String apiUrl;
 
+    /**
+     * 是否需要授权，0：不需要，1：需要。默认1
+有些功能可能不需要授权，如导入导出可以不用进行权限控制。
+有些功能可能验证的是相同的权限，只需要授权一个就可以了，如列表页面的新增与新增页面的保存功能，都验证是否有新增权限，此时保存功能就可以不需要授权，保存功能只需要保证与新增功能有一样的权限掩码即可，不需在角色授权页面显示保存权限项
+     */
     private Boolean needAuthorization;
 
     private static final long serialVersionUID = 1L;
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name == null ? null : name.trim();
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text == null ? null : text.trim();
-    }
-
-    public Integer getAccessMask() {
-        return accessMask;
-    }
-
-    public void setAccessMask(Integer accessMask) {
-        this.accessMask = accessMask;
-    }
-
-    public Integer getAccessUse() {
-        return accessUse;
-    }
-
-    public void setAccessUse(Integer accessUse) {
-        this.accessUse = accessUse;
-    }
-
-    public Integer getDisplay() {
-        return display;
-    }
-
-    public void setDisplay(Integer display) {
-        this.display = display;
-    }
-
-    public Integer getOwnerType() {
-        return ownerType;
-    }
-
-    public void setOwnerType(Integer ownerType) {
-        this.ownerType = ownerType;
-    }
-
-    public Integer getGroup() {
-        return group;
-    }
-
-    public void setGroup(Integer group) {
-        this.group = group;
-    }
-
-    public String getIcon() {
-        return icon;
-    }
-
-    public void setIcon(String icon) {
-        this.icon = icon == null ? null : icon.trim();
-    }
-
-    public String getDesc() {
-        return desc;
-    }
-
-    public void setDesc(String desc) {
-        this.desc = desc == null ? null : desc.trim();
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url == null ? null : url.trim();
-    }
-
-    public String getApiUrl() {
-        return apiUrl;
-    }
-
-    public void setApiUrl(String apiUrl) {
-        this.apiUrl = apiUrl == null ? null : apiUrl.trim();
-    }
-
-    public Boolean getNeedAuthorization() {
-        return needAuthorization;
-    }
-
-    public void setNeedAuthorization(Boolean needAuthorization) {
-        this.needAuthorization = needAuthorization;
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(getClass().getSimpleName());
-        sb.append(" [");
-        sb.append("Hash = ").append(hashCode());
-        sb.append(", name=").append(name);
-        sb.append(", text=").append(text);
-        sb.append(", accessMask=").append(accessMask);
-        sb.append(", accessUse=").append(accessUse);
-        sb.append(", display=").append(display);
-        sb.append(", ownerType=").append(ownerType);
-        sb.append(", group=").append(group);
-        sb.append(", icon=").append(icon);
-        sb.append(", desc=").append(desc);
-        sb.append(", url=").append(url);
-        sb.append(", apiUrl=").append(apiUrl);
-        sb.append(", needAuthorization=").append(needAuthorization);
-        sb.append(", serialVersionUID=").append(serialVersionUID);
-        sb.append("]");
-        return sb.toString();
-    }
-
     /**
-     * This enum was generated by MyBatis Generator.
-     * This enum corresponds to the database table t_form_action
-     *
-     * @mbg.generated
-     * @project https://github.com/itfsw/mybatis-generator-plugin
+     * t_form_action
      */
     public enum Column {
         classId("class_id", "classId", "INTEGER", false),
@@ -173,111 +133,34 @@ public class FormAction extends FormActionKey implements Serializable {
         apiUrl("api_url", "apiUrl", "VARCHAR", false),
         needAuthorization("need_authorization", "needAuthorization", "BIT", false);
 
-        /**
-         * This field was generated by MyBatis Generator.
-         * This field corresponds to the database table t_form_action
-         *
-         * @mbg.generated
-         * @project https://github.com/itfsw/mybatis-generator-plugin
-         */
         private static final String BEGINNING_DELIMITER = "`";
 
-        /**
-         * This field was generated by MyBatis Generator.
-         * This field corresponds to the database table t_form_action
-         *
-         * @mbg.generated
-         * @project https://github.com/itfsw/mybatis-generator-plugin
-         */
         private static final String ENDING_DELIMITER = "`";
 
-        /**
-         * This field was generated by MyBatis Generator.
-         * This field corresponds to the database table t_form_action
-         *
-         * @mbg.generated
-         * @project https://github.com/itfsw/mybatis-generator-plugin
-         */
         private final String column;
 
-        /**
-         * This field was generated by MyBatis Generator.
-         * This field corresponds to the database table t_form_action
-         *
-         * @mbg.generated
-         * @project https://github.com/itfsw/mybatis-generator-plugin
-         */
         private final boolean isColumnNameDelimited;
 
-        /**
-         * This field was generated by MyBatis Generator.
-         * This field corresponds to the database table t_form_action
-         *
-         * @mbg.generated
-         * @project https://github.com/itfsw/mybatis-generator-plugin
-         */
         private final String javaProperty;
 
-        /**
-         * This field was generated by MyBatis Generator.
-         * This field corresponds to the database table t_form_action
-         *
-         * @mbg.generated
-         * @project https://github.com/itfsw/mybatis-generator-plugin
-         */
         private final String jdbcType;
 
-        /**
-         * This method was generated by MyBatis Generator.
-         * This method corresponds to the database table t_form_action
-         *
-         * @mbg.generated
-         * @project https://github.com/itfsw/mybatis-generator-plugin
-         */
         public String value() {
             return this.column;
         }
 
-        /**
-         * This method was generated by MyBatis Generator.
-         * This method corresponds to the database table t_form_action
-         *
-         * @mbg.generated
-         * @project https://github.com/itfsw/mybatis-generator-plugin
-         */
         public String getValue() {
             return this.column;
         }
 
-        /**
-         * This method was generated by MyBatis Generator.
-         * This method corresponds to the database table t_form_action
-         *
-         * @mbg.generated
-         * @project https://github.com/itfsw/mybatis-generator-plugin
-         */
         public String getJavaProperty() {
             return this.javaProperty;
         }
 
-        /**
-         * This method was generated by MyBatis Generator.
-         * This method corresponds to the database table t_form_action
-         *
-         * @mbg.generated
-         * @project https://github.com/itfsw/mybatis-generator-plugin
-         */
         public String getJdbcType() {
             return this.jdbcType;
         }
 
-        /**
-         * This method was generated by MyBatis Generator.
-         * This method corresponds to the database table t_form_action
-         *
-         * @mbg.generated
-         * @project https://github.com/itfsw/mybatis-generator-plugin
-         */
         Column(String column, String javaProperty, String jdbcType, boolean isColumnNameDelimited) {
             this.column = column;
             this.javaProperty = javaProperty;
@@ -285,35 +168,14 @@ public class FormAction extends FormActionKey implements Serializable {
             this.isColumnNameDelimited = isColumnNameDelimited;
         }
 
-        /**
-         * This method was generated by MyBatis Generator.
-         * This method corresponds to the database table t_form_action
-         *
-         * @mbg.generated
-         * @project https://github.com/itfsw/mybatis-generator-plugin
-         */
         public String desc() {
             return this.getEscapedColumnName() + " DESC";
         }
 
-        /**
-         * This method was generated by MyBatis Generator.
-         * This method corresponds to the database table t_form_action
-         *
-         * @mbg.generated
-         * @project https://github.com/itfsw/mybatis-generator-plugin
-         */
         public String asc() {
             return this.getEscapedColumnName() + " ASC";
         }
 
-        /**
-         * This method was generated by MyBatis Generator.
-         * This method corresponds to the database table t_form_action
-         *
-         * @mbg.generated
-         * @project https://github.com/itfsw/mybatis-generator-plugin
-         */
         public static Column[] excludes(Column ... excludes) {
             ArrayList<Column> columns = new ArrayList<>(Arrays.asList(Column.values()));
             if (excludes != null && excludes.length > 0) {
@@ -322,13 +184,6 @@ public class FormAction extends FormActionKey implements Serializable {
             return columns.toArray(new Column[]{});
         }
 
-        /**
-         * This method was generated by MyBatis Generator.
-         * This method corresponds to the database table t_form_action
-         *
-         * @mbg.generated
-         * @project https://github.com/itfsw/mybatis-generator-plugin
-         */
         public String getEscapedColumnName() {
             if (this.isColumnNameDelimited) {
                 return new StringBuilder().append(BEGINNING_DELIMITER).append(this.column).append(ENDING_DELIMITER).toString();

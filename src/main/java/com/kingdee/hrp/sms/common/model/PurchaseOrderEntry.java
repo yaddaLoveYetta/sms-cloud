@@ -5,236 +5,124 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+import lombok.experimental.Accessors;
 
+/**
+ * 由数据库表[t_purchase_order_entry]生成
+ * @author yadda
+ */
+@Getter
+@Setter
+@ToString
+@Accessors(chain = true)
 public class PurchaseOrderEntry implements Serializable {
+    /**
+     * 
+     */
     private Long id;
 
+    /**
+     * 主表id,t_order表主键
+     */
     private Long parent;
 
+    /**
+     * 行号,分录的序号
+     */
     private Integer sequence;
 
+    /**
+     * 物料基础资料id
+     */
     private Long material;
 
+    /**
+     * 单位,计量单位
+     */
     private Long unit;
 
+    /**
+     * 数量,小数位数由系统参数设定，最多3位
+     */
     private Float qty;
 
+    /**
+     * confirm_qty
+     */
     private Float confirmQty;
 
+    /**
+     * 确认日期，供应商确认订单时填的日期
+     */
     private Date confirmDate;
 
+    /**
+     * 单价，小数位数由系统参数设定，最多3位
+     */
     private BigDecimal price;
 
+    /**
+     * 金额，两位小数
+     */
     private BigDecimal amount;
 
+    /**
+     * 交货日期，医院下订单时要求的交货日期
+     */
     private Date deliveryDate;
 
+    /**
+     * 确认交货日期，供应商对医院订单确认时填入的交货日期
+     */
     private Date confirmDeliveryDate;
 
+    /**
+     * 发货状态，默认未发货
+值参考t_assistance表 type=45
+     */
     private Integer deliverStatus;
 
+    /**
+     * 发货数量
+     */
     private Float deliverQty;
 
+    /**
+     * 收货状态
+发货状态，默认未收货
+值参考t_assistance表 type=46
+     */
     private Integer receiveStatus;
 
+    /**
+     * 收货数量
+     */
     private Float receiveQty;
 
+    /**
+     * 退货状态
+发货状态，默认未退货
+值参考t_assistance表 type=47
+     */
     private Integer returnStatus;
 
+    /**
+     * 退货数量
+     */
     private Float returnQty;
 
+    /**
+     * 备注,其他备注说明信息
+     */
     private String remark;
 
     private static final long serialVersionUID = 1L;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getParent() {
-        return parent;
-    }
-
-    public void setParent(Long parent) {
-        this.parent = parent;
-    }
-
-    public Integer getSequence() {
-        return sequence;
-    }
-
-    public void setSequence(Integer sequence) {
-        this.sequence = sequence;
-    }
-
-    public Long getMaterial() {
-        return material;
-    }
-
-    public void setMaterial(Long material) {
-        this.material = material;
-    }
-
-    public Long getUnit() {
-        return unit;
-    }
-
-    public void setUnit(Long unit) {
-        this.unit = unit;
-    }
-
-    public Float getQty() {
-        return qty;
-    }
-
-    public void setQty(Float qty) {
-        this.qty = qty;
-    }
-
-    public Float getConfirmQty() {
-        return confirmQty;
-    }
-
-    public void setConfirmQty(Float confirmQty) {
-        this.confirmQty = confirmQty;
-    }
-
-    public Date getConfirmDate() {
-        return confirmDate;
-    }
-
-    public void setConfirmDate(Date confirmDate) {
-        this.confirmDate = confirmDate;
-    }
-
-    public BigDecimal getPrice() {
-        return price;
-    }
-
-    public void setPrice(BigDecimal price) {
-        this.price = price;
-    }
-
-    public BigDecimal getAmount() {
-        return amount;
-    }
-
-    public void setAmount(BigDecimal amount) {
-        this.amount = amount;
-    }
-
-    public Date getDeliveryDate() {
-        return deliveryDate;
-    }
-
-    public void setDeliveryDate(Date deliveryDate) {
-        this.deliveryDate = deliveryDate;
-    }
-
-    public Date getConfirmDeliveryDate() {
-        return confirmDeliveryDate;
-    }
-
-    public void setConfirmDeliveryDate(Date confirmDeliveryDate) {
-        this.confirmDeliveryDate = confirmDeliveryDate;
-    }
-
-    public Integer getDeliverStatus() {
-        return deliverStatus;
-    }
-
-    public void setDeliverStatus(Integer deliverStatus) {
-        this.deliverStatus = deliverStatus;
-    }
-
-    public Float getDeliverQty() {
-        return deliverQty;
-    }
-
-    public void setDeliverQty(Float deliverQty) {
-        this.deliverQty = deliverQty;
-    }
-
-    public Integer getReceiveStatus() {
-        return receiveStatus;
-    }
-
-    public void setReceiveStatus(Integer receiveStatus) {
-        this.receiveStatus = receiveStatus;
-    }
-
-    public Float getReceiveQty() {
-        return receiveQty;
-    }
-
-    public void setReceiveQty(Float receiveQty) {
-        this.receiveQty = receiveQty;
-    }
-
-    public Integer getReturnStatus() {
-        return returnStatus;
-    }
-
-    public void setReturnStatus(Integer returnStatus) {
-        this.returnStatus = returnStatus;
-    }
-
-    public Float getReturnQty() {
-        return returnQty;
-    }
-
-    public void setReturnQty(Float returnQty) {
-        this.returnQty = returnQty;
-    }
-
-    public String getRemark() {
-        return remark;
-    }
-
-    public void setRemark(String remark) {
-        this.remark = remark == null ? null : remark.trim();
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(getClass().getSimpleName());
-        sb.append(" [");
-        sb.append("Hash = ").append(hashCode());
-        sb.append(", id=").append(id);
-        sb.append(", parent=").append(parent);
-        sb.append(", sequence=").append(sequence);
-        sb.append(", material=").append(material);
-        sb.append(", unit=").append(unit);
-        sb.append(", qty=").append(qty);
-        sb.append(", confirmQty=").append(confirmQty);
-        sb.append(", confirmDate=").append(confirmDate);
-        sb.append(", price=").append(price);
-        sb.append(", amount=").append(amount);
-        sb.append(", deliveryDate=").append(deliveryDate);
-        sb.append(", confirmDeliveryDate=").append(confirmDeliveryDate);
-        sb.append(", deliverStatus=").append(deliverStatus);
-        sb.append(", deliverQty=").append(deliverQty);
-        sb.append(", receiveStatus=").append(receiveStatus);
-        sb.append(", receiveQty=").append(receiveQty);
-        sb.append(", returnStatus=").append(returnStatus);
-        sb.append(", returnQty=").append(returnQty);
-        sb.append(", remark=").append(remark);
-        sb.append(", serialVersionUID=").append(serialVersionUID);
-        sb.append("]");
-        return sb.toString();
-    }
-
     /**
-     * This enum was generated by MyBatis Generator.
-     * This enum corresponds to the database table t_purchase_order_entry
-     *
-     * @mbg.generated
-     * @project https://github.com/itfsw/mybatis-generator-plugin
+     * t_purchase_order_entry
      */
     public enum Column {
         id("id", "id", "BIGINT", false),
@@ -257,111 +145,34 @@ public class PurchaseOrderEntry implements Serializable {
         returnQty("return_qty", "returnQty", "REAL", false),
         remark("remark", "remark", "VARCHAR", false);
 
-        /**
-         * This field was generated by MyBatis Generator.
-         * This field corresponds to the database table t_purchase_order_entry
-         *
-         * @mbg.generated
-         * @project https://github.com/itfsw/mybatis-generator-plugin
-         */
         private static final String BEGINNING_DELIMITER = "`";
 
-        /**
-         * This field was generated by MyBatis Generator.
-         * This field corresponds to the database table t_purchase_order_entry
-         *
-         * @mbg.generated
-         * @project https://github.com/itfsw/mybatis-generator-plugin
-         */
         private static final String ENDING_DELIMITER = "`";
 
-        /**
-         * This field was generated by MyBatis Generator.
-         * This field corresponds to the database table t_purchase_order_entry
-         *
-         * @mbg.generated
-         * @project https://github.com/itfsw/mybatis-generator-plugin
-         */
         private final String column;
 
-        /**
-         * This field was generated by MyBatis Generator.
-         * This field corresponds to the database table t_purchase_order_entry
-         *
-         * @mbg.generated
-         * @project https://github.com/itfsw/mybatis-generator-plugin
-         */
         private final boolean isColumnNameDelimited;
 
-        /**
-         * This field was generated by MyBatis Generator.
-         * This field corresponds to the database table t_purchase_order_entry
-         *
-         * @mbg.generated
-         * @project https://github.com/itfsw/mybatis-generator-plugin
-         */
         private final String javaProperty;
 
-        /**
-         * This field was generated by MyBatis Generator.
-         * This field corresponds to the database table t_purchase_order_entry
-         *
-         * @mbg.generated
-         * @project https://github.com/itfsw/mybatis-generator-plugin
-         */
         private final String jdbcType;
 
-        /**
-         * This method was generated by MyBatis Generator.
-         * This method corresponds to the database table t_purchase_order_entry
-         *
-         * @mbg.generated
-         * @project https://github.com/itfsw/mybatis-generator-plugin
-         */
         public String value() {
             return this.column;
         }
 
-        /**
-         * This method was generated by MyBatis Generator.
-         * This method corresponds to the database table t_purchase_order_entry
-         *
-         * @mbg.generated
-         * @project https://github.com/itfsw/mybatis-generator-plugin
-         */
         public String getValue() {
             return this.column;
         }
 
-        /**
-         * This method was generated by MyBatis Generator.
-         * This method corresponds to the database table t_purchase_order_entry
-         *
-         * @mbg.generated
-         * @project https://github.com/itfsw/mybatis-generator-plugin
-         */
         public String getJavaProperty() {
             return this.javaProperty;
         }
 
-        /**
-         * This method was generated by MyBatis Generator.
-         * This method corresponds to the database table t_purchase_order_entry
-         *
-         * @mbg.generated
-         * @project https://github.com/itfsw/mybatis-generator-plugin
-         */
         public String getJdbcType() {
             return this.jdbcType;
         }
 
-        /**
-         * This method was generated by MyBatis Generator.
-         * This method corresponds to the database table t_purchase_order_entry
-         *
-         * @mbg.generated
-         * @project https://github.com/itfsw/mybatis-generator-plugin
-         */
         Column(String column, String javaProperty, String jdbcType, boolean isColumnNameDelimited) {
             this.column = column;
             this.javaProperty = javaProperty;
@@ -369,35 +180,14 @@ public class PurchaseOrderEntry implements Serializable {
             this.isColumnNameDelimited = isColumnNameDelimited;
         }
 
-        /**
-         * This method was generated by MyBatis Generator.
-         * This method corresponds to the database table t_purchase_order_entry
-         *
-         * @mbg.generated
-         * @project https://github.com/itfsw/mybatis-generator-plugin
-         */
         public String desc() {
             return this.getEscapedColumnName() + " DESC";
         }
 
-        /**
-         * This method was generated by MyBatis Generator.
-         * This method corresponds to the database table t_purchase_order_entry
-         *
-         * @mbg.generated
-         * @project https://github.com/itfsw/mybatis-generator-plugin
-         */
         public String asc() {
             return this.getEscapedColumnName() + " ASC";
         }
 
-        /**
-         * This method was generated by MyBatis Generator.
-         * This method corresponds to the database table t_purchase_order_entry
-         *
-         * @mbg.generated
-         * @project https://github.com/itfsw/mybatis-generator-plugin
-         */
         public static Column[] excludes(Column ... excludes) {
             ArrayList<Column> columns = new ArrayList<>(Arrays.asList(Column.values()));
             if (excludes != null && excludes.length > 0) {
@@ -406,13 +196,6 @@ public class PurchaseOrderEntry implements Serializable {
             return columns.toArray(new Column[]{});
         }
 
-        /**
-         * This method was generated by MyBatis Generator.
-         * This method corresponds to the database table t_purchase_order_entry
-         *
-         * @mbg.generated
-         * @project https://github.com/itfsw/mybatis-generator-plugin
-         */
         public String getEscapedColumnName() {
             if (this.isColumnNameDelimited) {
                 return new StringBuilder().append(BEGINNING_DELIMITER).append(this.column).append(ENDING_DELIMITER).toString();

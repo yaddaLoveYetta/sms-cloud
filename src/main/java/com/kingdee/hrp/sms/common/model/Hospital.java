@@ -4,247 +4,124 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+import lombok.experimental.Accessors;
 
+/**
+ * 由数据库表[t_hospital]生成
+ * @author yadda
+ */
+@Getter
+@Setter
+@ToString
+@Accessors(chain = true)
 public class Hospital implements Serializable {
+    /**
+     * 内码
+     */
     private Long id;
 
+    /**
+     * 代码
+     */
     private String number;
 
+    /**
+     * 名称
+     */
     private String name;
 
+    /**
+     * 医疗机构登记号
+     */
     private String registrationNo;
 
+    /**
+     * 医院地址
+     */
     private String address;
 
+    /**
+     * 简介
+     */
     private String introduction;
 
+    /**
+     * 医疗科目
+     */
     private String medicalSubjects;
 
+    /**
+     * 负责人
+     */
     private String principal;
 
+    /**
+     * 发证机关
+     */
     private String issueAgency;
 
+    /**
+     * 法定代表人
+     */
     private String legalPerson;
 
+    /**
+     * 省
+     */
     private Integer province;
 
+    /**
+     * 城市
+     */
     private Integer city;
 
+    /**
+     * 地区
+     */
     private Integer district;
 
+    /**
+     * 发证日期
+     */
     private Date issueDate;
 
+    /**
+     * 有效期开始
+     */
     private Date validityPeriodBegin;
 
+    /**
+     * 有效期结束
+     */
     private Date validityPeriodEnd;
 
+    /**
+     * 医院logo
+     */
     private String logo;
 
+    /**
+     * 是否禁用(0可用1禁用，默认0可用)
+     */
     private Boolean status;
 
+    /**
+     * 联系人
+     */
     private String contacts;
 
+    /**
+     * 联系电话
+     */
     private String phone;
 
     private static final long serialVersionUID = 1L;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getNumber() {
-        return number;
-    }
-
-    public void setNumber(String number) {
-        this.number = number == null ? null : number.trim();
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name == null ? null : name.trim();
-    }
-
-    public String getRegistrationNo() {
-        return registrationNo;
-    }
-
-    public void setRegistrationNo(String registrationNo) {
-        this.registrationNo = registrationNo == null ? null : registrationNo.trim();
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address == null ? null : address.trim();
-    }
-
-    public String getIntroduction() {
-        return introduction;
-    }
-
-    public void setIntroduction(String introduction) {
-        this.introduction = introduction == null ? null : introduction.trim();
-    }
-
-    public String getMedicalSubjects() {
-        return medicalSubjects;
-    }
-
-    public void setMedicalSubjects(String medicalSubjects) {
-        this.medicalSubjects = medicalSubjects == null ? null : medicalSubjects.trim();
-    }
-
-    public String getPrincipal() {
-        return principal;
-    }
-
-    public void setPrincipal(String principal) {
-        this.principal = principal == null ? null : principal.trim();
-    }
-
-    public String getIssueAgency() {
-        return issueAgency;
-    }
-
-    public void setIssueAgency(String issueAgency) {
-        this.issueAgency = issueAgency == null ? null : issueAgency.trim();
-    }
-
-    public String getLegalPerson() {
-        return legalPerson;
-    }
-
-    public void setLegalPerson(String legalPerson) {
-        this.legalPerson = legalPerson == null ? null : legalPerson.trim();
-    }
-
-    public Integer getProvince() {
-        return province;
-    }
-
-    public void setProvince(Integer province) {
-        this.province = province;
-    }
-
-    public Integer getCity() {
-        return city;
-    }
-
-    public void setCity(Integer city) {
-        this.city = city;
-    }
-
-    public Integer getDistrict() {
-        return district;
-    }
-
-    public void setDistrict(Integer district) {
-        this.district = district;
-    }
-
-    public Date getIssueDate() {
-        return issueDate;
-    }
-
-    public void setIssueDate(Date issueDate) {
-        this.issueDate = issueDate;
-    }
-
-    public Date getValidityPeriodBegin() {
-        return validityPeriodBegin;
-    }
-
-    public void setValidityPeriodBegin(Date validityPeriodBegin) {
-        this.validityPeriodBegin = validityPeriodBegin;
-    }
-
-    public Date getValidityPeriodEnd() {
-        return validityPeriodEnd;
-    }
-
-    public void setValidityPeriodEnd(Date validityPeriodEnd) {
-        this.validityPeriodEnd = validityPeriodEnd;
-    }
-
-    public String getLogo() {
-        return logo;
-    }
-
-    public void setLogo(String logo) {
-        this.logo = logo == null ? null : logo.trim();
-    }
-
-    public Boolean getStatus() {
-        return status;
-    }
-
-    public void setStatus(Boolean status) {
-        this.status = status;
-    }
-
-    public String getContacts() {
-        return contacts;
-    }
-
-    public void setContacts(String contacts) {
-        this.contacts = contacts == null ? null : contacts.trim();
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone == null ? null : phone.trim();
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(getClass().getSimpleName());
-        sb.append(" [");
-        sb.append("Hash = ").append(hashCode());
-        sb.append(", id=").append(id);
-        sb.append(", number=").append(number);
-        sb.append(", name=").append(name);
-        sb.append(", registrationNo=").append(registrationNo);
-        sb.append(", address=").append(address);
-        sb.append(", introduction=").append(introduction);
-        sb.append(", medicalSubjects=").append(medicalSubjects);
-        sb.append(", principal=").append(principal);
-        sb.append(", issueAgency=").append(issueAgency);
-        sb.append(", legalPerson=").append(legalPerson);
-        sb.append(", province=").append(province);
-        sb.append(", city=").append(city);
-        sb.append(", district=").append(district);
-        sb.append(", issueDate=").append(issueDate);
-        sb.append(", validityPeriodBegin=").append(validityPeriodBegin);
-        sb.append(", validityPeriodEnd=").append(validityPeriodEnd);
-        sb.append(", logo=").append(logo);
-        sb.append(", status=").append(status);
-        sb.append(", contacts=").append(contacts);
-        sb.append(", phone=").append(phone);
-        sb.append(", serialVersionUID=").append(serialVersionUID);
-        sb.append("]");
-        return sb.toString();
-    }
-
     /**
-     * This enum was generated by MyBatis Generator.
-     * This enum corresponds to the database table t_hospital
-     *
-     * @mbg.generated
-     * @project https://github.com/itfsw/mybatis-generator-plugin
+     * t_hospital
      */
     public enum Column {
         id("id", "id", "BIGINT", false),
@@ -268,111 +145,34 @@ public class Hospital implements Serializable {
         contacts("contacts", "contacts", "VARCHAR", false),
         phone("phone", "phone", "VARCHAR", false);
 
-        /**
-         * This field was generated by MyBatis Generator.
-         * This field corresponds to the database table t_hospital
-         *
-         * @mbg.generated
-         * @project https://github.com/itfsw/mybatis-generator-plugin
-         */
         private static final String BEGINNING_DELIMITER = "`";
 
-        /**
-         * This field was generated by MyBatis Generator.
-         * This field corresponds to the database table t_hospital
-         *
-         * @mbg.generated
-         * @project https://github.com/itfsw/mybatis-generator-plugin
-         */
         private static final String ENDING_DELIMITER = "`";
 
-        /**
-         * This field was generated by MyBatis Generator.
-         * This field corresponds to the database table t_hospital
-         *
-         * @mbg.generated
-         * @project https://github.com/itfsw/mybatis-generator-plugin
-         */
         private final String column;
 
-        /**
-         * This field was generated by MyBatis Generator.
-         * This field corresponds to the database table t_hospital
-         *
-         * @mbg.generated
-         * @project https://github.com/itfsw/mybatis-generator-plugin
-         */
         private final boolean isColumnNameDelimited;
 
-        /**
-         * This field was generated by MyBatis Generator.
-         * This field corresponds to the database table t_hospital
-         *
-         * @mbg.generated
-         * @project https://github.com/itfsw/mybatis-generator-plugin
-         */
         private final String javaProperty;
 
-        /**
-         * This field was generated by MyBatis Generator.
-         * This field corresponds to the database table t_hospital
-         *
-         * @mbg.generated
-         * @project https://github.com/itfsw/mybatis-generator-plugin
-         */
         private final String jdbcType;
 
-        /**
-         * This method was generated by MyBatis Generator.
-         * This method corresponds to the database table t_hospital
-         *
-         * @mbg.generated
-         * @project https://github.com/itfsw/mybatis-generator-plugin
-         */
         public String value() {
             return this.column;
         }
 
-        /**
-         * This method was generated by MyBatis Generator.
-         * This method corresponds to the database table t_hospital
-         *
-         * @mbg.generated
-         * @project https://github.com/itfsw/mybatis-generator-plugin
-         */
         public String getValue() {
             return this.column;
         }
 
-        /**
-         * This method was generated by MyBatis Generator.
-         * This method corresponds to the database table t_hospital
-         *
-         * @mbg.generated
-         * @project https://github.com/itfsw/mybatis-generator-plugin
-         */
         public String getJavaProperty() {
             return this.javaProperty;
         }
 
-        /**
-         * This method was generated by MyBatis Generator.
-         * This method corresponds to the database table t_hospital
-         *
-         * @mbg.generated
-         * @project https://github.com/itfsw/mybatis-generator-plugin
-         */
         public String getJdbcType() {
             return this.jdbcType;
         }
 
-        /**
-         * This method was generated by MyBatis Generator.
-         * This method corresponds to the database table t_hospital
-         *
-         * @mbg.generated
-         * @project https://github.com/itfsw/mybatis-generator-plugin
-         */
         Column(String column, String javaProperty, String jdbcType, boolean isColumnNameDelimited) {
             this.column = column;
             this.javaProperty = javaProperty;
@@ -380,35 +180,14 @@ public class Hospital implements Serializable {
             this.isColumnNameDelimited = isColumnNameDelimited;
         }
 
-        /**
-         * This method was generated by MyBatis Generator.
-         * This method corresponds to the database table t_hospital
-         *
-         * @mbg.generated
-         * @project https://github.com/itfsw/mybatis-generator-plugin
-         */
         public String desc() {
             return this.getEscapedColumnName() + " DESC";
         }
 
-        /**
-         * This method was generated by MyBatis Generator.
-         * This method corresponds to the database table t_hospital
-         *
-         * @mbg.generated
-         * @project https://github.com/itfsw/mybatis-generator-plugin
-         */
         public String asc() {
             return this.getEscapedColumnName() + " ASC";
         }
 
-        /**
-         * This method was generated by MyBatis Generator.
-         * This method corresponds to the database table t_hospital
-         *
-         * @mbg.generated
-         * @project https://github.com/itfsw/mybatis-generator-plugin
-         */
         public static Column[] excludes(Column ... excludes) {
             ArrayList<Column> columns = new ArrayList<>(Arrays.asList(Column.values()));
             if (excludes != null && excludes.length > 0) {
@@ -417,13 +196,6 @@ public class Hospital implements Serializable {
             return columns.toArray(new Column[]{});
         }
 
-        /**
-         * This method was generated by MyBatis Generator.
-         * This method corresponds to the database table t_hospital
-         *
-         * @mbg.generated
-         * @project https://github.com/itfsw/mybatis-generator-plugin
-         */
         public String getEscapedColumnName() {
             if (this.isColumnNameDelimited) {
                 return new StringBuilder().append(BEGINNING_DELIMITER).append(this.column).append(ENDING_DELIMITER).toString();
