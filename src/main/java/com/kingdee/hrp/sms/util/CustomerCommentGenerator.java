@@ -85,6 +85,7 @@ public class CustomerCommentGenerator implements CommentGenerator {
     public void addClassAnnotation(InnerClass innerClass, IntrospectedTable introspectedTable,
             Set<FullyQualifiedJavaType> set) {
 
+
     }
 
     @Override
@@ -187,21 +188,25 @@ public class CustomerCommentGenerator implements CommentGenerator {
 
     @Override
     public void addFieldComment(Field field, IntrospectedTable introspectedTable) {
+
+    }
+
+    @Override
+    public void addModelClassComment(TopLevelClass topLevelClass, IntrospectedTable introspectedTable) {
+
         if (suppressAllComments) {
             return;
         }
 
         StringBuilder sb = new StringBuilder();
 
-        field.addJavaDocLine("/**");
-        sb.append(" * ");
+        topLevelClass.addJavaDocLine("/**");
+        sb.append(" * 由数据库表[");
         sb.append(introspectedTable.getFullyQualifiedTable());
-        field.addJavaDocLine(sb.toString());
-        field.addJavaDocLine(" */");
-    }
-
-    @Override
-    public void addModelClassComment(TopLevelClass topLevelClass, IntrospectedTable introspectedTable) {
+        sb.append("]生成");
+        topLevelClass.addJavaDocLine(sb.toString());
+        topLevelClass.addJavaDocLine(" * @author le.xiao");
+        topLevelClass.addJavaDocLine(" */");
 
     }
 
