@@ -161,8 +161,9 @@ public class CustomerCommentGenerator implements CommentGenerator {
 
         innerEnum.addJavaDocLine("/**");
         //      addJavadocTag(innerEnum, false);
-        sb.append(" * ");
+        sb.append(" * 数据库表[");
         sb.append(introspectedTable.getFullyQualifiedTable());
+        sb.append("]列对应的枚举");
         innerEnum.addJavaDocLine(sb.toString());
         innerEnum.addJavaDocLine(" */");
     }
