@@ -66,10 +66,13 @@ public class Menu implements Serializable {
      */
     private Integer formActionId;
 
+    /**
+     * serialVersion
+     */
     private static final long serialVersionUID = 1L;
 
     /**
-     * t_menu
+     * 数据库表[t_menu]列对应的枚举
      */
     public enum Column {
         id("id", "id", "INTEGER", false),

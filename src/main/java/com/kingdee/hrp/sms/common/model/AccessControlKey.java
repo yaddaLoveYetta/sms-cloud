@@ -27,10 +27,13 @@ public class AccessControlKey implements Serializable {
      */
     private Long roleId;
 
+    /**
+     * serialVersion
+     */
     private static final long serialVersionUID = 1L;
 
     /**
-     * t_access_control
+     * 数据库表[t_access_control]列对应的枚举
      */
     public enum Column {
         classId("class_id", "classId", "INTEGER", false),

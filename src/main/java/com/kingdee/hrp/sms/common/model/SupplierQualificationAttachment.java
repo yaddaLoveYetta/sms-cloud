@@ -32,10 +32,13 @@ public class SupplierQualificationAttachment implements Serializable {
      */
     private String path;
 
+    /**
+     * serialVersion
+     */
     private static final long serialVersionUID = 1L;
 
     /**
-     * t_supplier_qualification_attachment
+     * 数据库表[t_supplier_qualification_attachment]列对应的枚举
      */
     public enum Column {
         id("id", "id", "BIGINT", false),

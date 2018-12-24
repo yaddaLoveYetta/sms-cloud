@@ -32,10 +32,13 @@ public class RoleType implements Serializable {
      */
     private String name;
 
+    /**
+     * serialVersion
+     */
     private static final long serialVersionUID = 1L;
 
     /**
-     * t_role_type
+     * 数据库表[t_role_type]列对应的枚举
      */
     public enum Column {
         id("id", "id", "INTEGER", false),

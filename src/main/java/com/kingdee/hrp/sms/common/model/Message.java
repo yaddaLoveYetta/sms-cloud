@@ -68,10 +68,13 @@ public class Message implements Serializable {
      */
     private Integer status;
 
+    /**
+     * serialVersion
+     */
     private static final long serialVersionUID = 1L;
 
     /**
-     * t_message
+     * 数据库表[t_message]列对应的枚举
      */
     public enum Column {
         id("id", "id", "BIGINT", false),

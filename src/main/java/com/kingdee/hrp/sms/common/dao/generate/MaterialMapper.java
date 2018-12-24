@@ -6,7 +6,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 /**
-* Created by Mybatis Generator on 2018/12/19
+* Created by Mybatis Generator on 2018/12/24
 * @author le.xiao
 */
 public interface MaterialMapper {

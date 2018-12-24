@@ -27,10 +27,13 @@ public class FormClassEntryKey implements Serializable {
      */
     private Integer entryIndex;
 
+    /**
+     * serialVersion
+     */
     private static final long serialVersionUID = 1L;
 
     /**
-     * t_form_class_entry
+     * 数据库表[t_form_class_entry]列对应的枚举
      */
     public enum Column {
         classId("class_id", "classId", "INTEGER", false),

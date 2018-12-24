@@ -67,10 +67,13 @@ public class HospitalSupplier implements Serializable {
      */
     private Boolean status;
 
+    /**
+     * serialVersion
+     */
     private static final long serialVersionUID = 1L;
 
     /**
-     * t_hospital_supplier
+     * 数据库表[t_hospital_supplier]列对应的枚举
      */
     public enum Column {
         id("id", "id", "BIGINT", false),

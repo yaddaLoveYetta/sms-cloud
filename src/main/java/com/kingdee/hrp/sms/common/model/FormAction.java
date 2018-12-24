@@ -112,10 +112,13 @@ access_mask之和
      */
     private Boolean needAuthorization;
 
+    /**
+     * serialVersion
+     */
     private static final long serialVersionUID = 1L;
 
     /**
-     * t_form_action
+     * 数据库表[t_form_action]列对应的枚举
      */
     public enum Column {
         classId("class_id", "classId", "INTEGER", false),

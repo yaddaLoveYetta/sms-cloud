@@ -52,10 +52,13 @@ public class Partner implements Serializable {
      */
     private Long hrpSupplier;
 
+    /**
+     * serialVersion
+     */
     private static final long serialVersionUID = 1L;
 
     /**
-     * t_partner
+     * 数据库表[t_partner]列对应的枚举
      */
     public enum Column {
         id("id", "id", "BIGINT", false),

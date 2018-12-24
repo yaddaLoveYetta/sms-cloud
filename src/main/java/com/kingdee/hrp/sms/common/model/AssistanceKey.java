@@ -27,10 +27,13 @@ public class AssistanceKey implements Serializable {
      */
     private Integer type;
 
+    /**
+     * serialVersion
+     */
     private static final long serialVersionUID = 1L;
 
     /**
-     * t_assistance
+     * 数据库表[t_assistance]列对应的枚举
      */
     public enum Column {
         id("id", "id", "INTEGER", false),

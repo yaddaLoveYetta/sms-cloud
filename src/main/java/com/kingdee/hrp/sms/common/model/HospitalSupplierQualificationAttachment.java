@@ -39,10 +39,13 @@ public class HospitalSupplierQualificationAttachment implements Serializable {
      */
     private Byte status;
 
+    /**
+     * serialVersion
+     */
     private static final long serialVersionUID = 1L;
 
     /**
-     * t_hospital_supplier_qualification_attachment
+     * 数据库表[t_hospital_supplier_qualification_attachment]列对应的枚举
      */
     public enum Column {
         id("id", "id", "BIGINT", false),

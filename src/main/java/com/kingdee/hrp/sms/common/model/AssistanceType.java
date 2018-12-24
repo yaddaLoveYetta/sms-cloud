@@ -32,10 +32,13 @@ public class AssistanceType implements Serializable {
      */
     private String desc;
 
+    /**
+     * serialVersion
+     */
     private static final long serialVersionUID = 1L;
 
     /**
-     * t_assistance_type
+     * 数据库表[t_assistance_type]列对应的枚举
      */
     public enum Column {
         id("id", "id", "INTEGER", false),

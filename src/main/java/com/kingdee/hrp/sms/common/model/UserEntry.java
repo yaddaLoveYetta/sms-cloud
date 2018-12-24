@@ -32,10 +32,13 @@ public class UserEntry implements Serializable {
      */
     private Long role;
 
+    /**
+     * serialVersion
+     */
     private static final long serialVersionUID = 1L;
 
     /**
-     * t_user_entry
+     * 数据库表[t_user_entry]列对应的枚举
      */
     public enum Column {
         id("id", "id", "BIGINT", false),

@@ -84,7 +84,7 @@ public class PurchaseOrderEntryExample {
     }
 
     /**
-     * t_purchase_order_entry 2018-12-19
+     * t_purchase_order_entry 2018-12-24
      */
     protected abstract static class GeneratedCriteria {
         protected List<Criterion> criteria;
@@ -1902,7 +1902,7 @@ public class PurchaseOrderEntryExample {
     }
 
     /**
-     * t_purchase_order_entry 2018-12-19
+     * t_purchase_order_entry 2018-12-24
      */
     public static class Criterion {
         private String condition;

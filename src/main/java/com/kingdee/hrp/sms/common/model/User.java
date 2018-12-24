@@ -62,10 +62,13 @@ public class User implements Serializable {
      */
     private Boolean status;
 
+    /**
+     * serialVersion
+     */
     private static final long serialVersionUID = 1L;
 
     /**
-     * t_user
+     * 数据库表[t_user]列对应的枚举
      */
     public enum Column {
         id("id", "id", "BIGINT", false),

@@ -119,10 +119,13 @@ public class PurchaseOrderEntry implements Serializable {
      */
     private String remark;
 
+    /**
+     * serialVersion
+     */
     private static final long serialVersionUID = 1L;
 
     /**
-     * t_purchase_order_entry
+     * 数据库表[t_purchase_order_entry]列对应的枚举
      */
     public enum Column {
         id("id", "id", "BIGINT", false),

@@ -3,6 +3,7 @@ package com.kingdee.hrp.sms.common.model;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -10,6 +11,7 @@ import lombok.experimental.Accessors;
 
 /**
  * 由数据库表[t_access_control]生成
+ *
  * @author yadda
  */
 @Getter
@@ -22,10 +24,13 @@ public class AccessControl extends AccessControlKey implements Serializable {
      */
     private Integer accessMask;
 
+    /**
+     * serialVersion
+     */
     private static final long serialVersionUID = 1L;
 
     /**
-     * t_access_control
+     * 数据库表[t_access_control]列对应的枚举
      */
     public enum Column {
         classId("class_id", "classId", "INTEGER", false),
@@ -75,17 +80,18 @@ public class AccessControl extends AccessControlKey implements Serializable {
             return this.getEscapedColumnName() + " ASC";
         }
 
-        public static Column[] excludes(Column ... excludes) {
+        public static Column[] excludes(Column... excludes) {
             ArrayList<Column> columns = new ArrayList<>(Arrays.asList(Column.values()));
             if (excludes != null && excludes.length > 0) {
                 columns.removeAll(new ArrayList<>(Arrays.asList(excludes)));
             }
-            return columns.toArray(new Column[]{});
+            return columns.toArray(new Column[] {});
         }
 
         public String getEscapedColumnName() {
             if (this.isColumnNameDelimited) {
-                return new StringBuilder().append(BEGINNING_DELIMITER).append(this.column).append(ENDING_DELIMITER).toString();
+                return new StringBuilder().append(BEGINNING_DELIMITER).append(this.column).append(ENDING_DELIMITER)
+                        .toString();
             } else {
                 return this.column;
             }

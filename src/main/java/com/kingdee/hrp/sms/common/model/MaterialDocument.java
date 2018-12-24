@@ -68,10 +68,13 @@ public class MaterialDocument implements Serializable {
      */
     private Long hospital;
 
+    /**
+     * serialVersion
+     */
     private static final long serialVersionUID = 1L;
 
     /**
-     * t_material_document
+     * 数据库表[t_material_document]列对应的枚举
      */
     public enum Column {
         id("id", "id", "BIGINT", false),

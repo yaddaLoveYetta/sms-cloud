@@ -82,7 +82,7 @@ public class SupplierExample {
     }
 
     /**
-     * t_supplier 2018-12-19
+     * t_supplier 2018-12-24
      */
     protected abstract static class GeneratedCriteria {
         protected List<Criterion> criteria;
@@ -3074,7 +3074,7 @@ public class SupplierExample {
     }
 
     /**
-     * t_supplier 2018-12-19
+     * t_supplier 2018-12-24
      */
     public static class Criterion {
         private String condition;

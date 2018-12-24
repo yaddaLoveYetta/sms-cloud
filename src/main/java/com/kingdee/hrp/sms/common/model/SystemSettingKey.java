@@ -32,10 +32,13 @@ public class SystemSettingKey implements Serializable {
      */
     private String key;
 
+    /**
+     * serialVersion
+     */
     private static final long serialVersionUID = 1L;
 
     /**
-     * t_system_setting
+     * 数据库表[t_system_setting]列对应的枚举
      */
     public enum Column {
         org("org", "org", "BIGINT", false),
