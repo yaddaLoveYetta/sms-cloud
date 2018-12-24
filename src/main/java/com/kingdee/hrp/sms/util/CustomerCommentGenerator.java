@@ -85,7 +85,6 @@ public class CustomerCommentGenerator implements CommentGenerator {
     public void addClassAnnotation(InnerClass innerClass, IntrospectedTable introspectedTable,
             Set<FullyQualifiedJavaType> set) {
 
-
     }
 
     @Override
@@ -190,6 +189,16 @@ public class CustomerCommentGenerator implements CommentGenerator {
     @Override
     public void addFieldComment(Field field, IntrospectedTable introspectedTable) {
 
+        if (suppressAllComments) {
+            return;
+        }
+
+        if ("serialVersionUID".equalsIgnoreCase(field.getName())) {
+
+            field.addJavaDocLine("/**");
+            field.addJavaDocLine(" * serialVersion");
+            field.addJavaDocLine(" */");
+        }
     }
 
     @Override
@@ -208,7 +217,6 @@ public class CustomerCommentGenerator implements CommentGenerator {
         topLevelClass.addJavaDocLine(sb.toString());
         topLevelClass.addJavaDocLine(" * @author yadda");
         topLevelClass.addJavaDocLine(" */");
-
     }
 
     @Override
