@@ -32,6 +32,7 @@ public class LombokPlugin extends PluginAdapter {
         //Mapper class文件的注释
         interfaze.addJavaDocLine("/**");
         interfaze.addJavaDocLine("* Created by Mybatis Generator on " + date2Str(new Date()));
+        interfaze.addJavaDocLine("* 请不要改动此文件");
         interfaze.addJavaDocLine("* @author le.xiao");
         interfaze.addJavaDocLine("*/");
         return true;
