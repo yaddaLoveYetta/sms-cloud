@@ -4,6 +4,8 @@ import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.web.context.support.XmlWebApplicationContext;
 
 /**
+ * 重设allowBeanDefinitionOverriding为false，控制ioc中不能配置id或name一样的多个bean，规范bean定义
+ *
  * @author le.xiao
  */
 public class SpringApplicationContextInitializer implements ApplicationContextInitializer<XmlWebApplicationContext> {

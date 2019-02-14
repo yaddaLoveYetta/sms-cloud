@@ -3,9 +3,7 @@ package com.kingdee.hrp.sms.util;
 import org.mybatis.generator.api.IntrospectedColumn;
 import org.mybatis.generator.api.IntrospectedTable;
 import org.mybatis.generator.api.PluginAdapter;
-import org.mybatis.generator.api.dom.java.Interface;
-import org.mybatis.generator.api.dom.java.Method;
-import org.mybatis.generator.api.dom.java.TopLevelClass;
+import org.mybatis.generator.api.dom.java.*;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -88,5 +86,43 @@ public class LombokPlugin extends PluginAdapter {
             IntrospectedColumn introspectedColumn, IntrospectedTable introspectedTable, ModelClassType modelClassType) {
         //不生成setter
         return false;
+    }
+
+    @Override
+    public boolean modelFieldGenerated(Field field, TopLevelClass topLevelClass, IntrospectedColumn introspectedColumn,
+            IntrospectedTable introspectedTable, ModelClassType modelClassType) {
+
+        if (introspectedColumn.getJdbcType() == 91) {
+            // Date
+            field.addAnnotation("@JsonFormat(pattern = \"yyyy-MM-dd\")");
+            field.addAnnotation("@DateTimeFormat(pattern = \"yyyy-MM-dd\")");
+
+            addDateTimeFormatImportedType(topLevelClass);
+
+        } else if (introspectedColumn.getJdbcType() == 92) {
+            // Time
+            field.addAnnotation("@JsonFormat(pattern = \"HH:mm:ss\")");
+            field.addAnnotation("@DateTimeFormat(pattern = \"HH:mm:ss\")");
+
+            addDateTimeFormatImportedType(topLevelClass);
+
+        } else if (introspectedColumn.getJdbcType() == 93) {
+            // DateTime || timestamp
+            field.addAnnotation("@JsonFormat(pattern = \"yyyy-MM-dd HH:mm:ss\")");
+            field.addAnnotation("@DateTimeFormat(pattern = \"yyyy-MM-dd HH:mm:ss\")");
+
+            addDateTimeFormatImportedType(topLevelClass);
+
+        }
+
+        return true;
+
+    }
+
+    private void addDateTimeFormatImportedType(TopLevelClass topLevelClass) {
+
+        topLevelClass.addImportedType("com.fasterxml.jackson.annotation.JsonFormat");
+        topLevelClass.addImportedType("org.springframework.format.annotation.DateTimeFormat");
+
     }
 }

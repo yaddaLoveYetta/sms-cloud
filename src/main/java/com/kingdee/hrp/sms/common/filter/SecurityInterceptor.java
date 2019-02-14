@@ -47,15 +47,16 @@ public class SecurityInterceptor extends HandlerInterceptorAdapter {
     /**
      * 判断用户是否登陆，未登陆用户不允许访问
      *
-     * @param request
-     * @param response
-     * @param handler
-     * @return
-     * @throws Exception
+     * @param request  HttpServletRequest
+     * @param response HttpServletResponse
+     * @param handler  MethodHandler
+     * @return true or false
+     * @throws Exception Exception
      */
     @SuppressWarnings("unchecked")
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
+            throws Exception {
 
         String requestUrl = request.getRequestURI().replace(request.getContextPath(), "");
 

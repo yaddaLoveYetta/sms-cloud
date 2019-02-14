@@ -2,11 +2,18 @@ package com.kingdee.hrp.sms.util;
 
 import com.baidu.aip.ocr.AipOcr;
 import com.baidu.aip.util.Util;
+import com.kingdee.hrp.sms.common.model.AccessControl;
+import lombok.experimental.Accessors;
 import org.json.JSONObject;
 import org.junit.Test;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.concurrent.Executors;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.Assert.*;
 
@@ -14,6 +21,7 @@ public class BaiduAiUtilTest {
 
     /**
      * 身份证识别
+     *
      * @throws IOException
      */
     @Test
@@ -41,6 +49,7 @@ public class BaiduAiUtilTest {
 
     /**
      * 营业执照识别
+     *
      * @throws IOException
      */
     @Test
@@ -64,4 +73,62 @@ public class BaiduAiUtilTest {
 
         System.out.println(res.toString(2));
     }
+
+    @Test
+    public void bitMove() {
+        Integer COUNT_BITS = Integer.SIZE - 3;
+        System.out.println(COUNT_BITS);
+        System.out.println(Integer.toBinaryString(-1));
+        System.out.println(-1 << COUNT_BITS);
+        System.out.println(Integer.toBinaryString(0));
+        System.out.println(0 << COUNT_BITS);
+        System.out.println(Integer.toBinaryString(1));
+        System.out.println(1 << COUNT_BITS);
+        System.out.println(Integer.toBinaryString(2));
+        System.out.println(2 << COUNT_BITS);
+        System.out.println(Integer.toBinaryString(3));
+        System.out.println(3 << COUNT_BITS);
+    }
+
+    @Test
+    public void threadTest() {
+
+        ThreadPoolExecutor executor = new ThreadPoolExecutor(1, 20, 10, TimeUnit.SECONDS,
+                new LinkedBlockingQueue<Runnable>(1));
+
+        for (int i = 1; i <= 21; i++) {
+            executor.execute(new Task(i));
+        }
+
+        executor.shutdown();
+
+    }
+
+    @Test
+    public void toStringTest() {
+        AccessControl accessControl = new AccessControl();
+
+        System.out.println(accessControl.toString());
+    }
+
+    private class Task implements Runnable {
+
+        private int index;
+
+        public Task(int index) {
+            this.index = index;
+        }
+
+        @Override
+        public void run() {
+            System.out.println(Thread.currentThread().getName() + "========index=" + this.index);
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+        }
+    }
+
 }

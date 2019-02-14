@@ -89,7 +89,7 @@
             <property name="useActualColumnNames" value="false"/>
         </table>
 
-        <table tableName="t_form_class_entry" domainObjectName="FormClassEntry">
+        <table tableName="t_form_class_entry" domainObjectName="FormClassEntry" >
             <property name="useActualColumnNames" value="false"/>
         </table>
 
