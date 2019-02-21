@@ -29,6 +29,11 @@ public class LombokPlugin extends PluginAdapter {
      */
     private static boolean fastJsonAvailable = false;
 
+    /**
+     * is springDateFormatter available
+     */
+    private static boolean springDateFormatterAvailable = false;
+
     static {
 
         try {
@@ -57,6 +62,15 @@ public class LombokPlugin extends PluginAdapter {
         } catch (Throwable t) {
             fastJsonAvailable = false;
         }
+
+        try {
+            Thread.currentThread().getContextClassLoader()
+                    .loadClass("org.springframework.format.datetime.DateFormatter");
+            springDateFormatterAvailable = true;
+        } catch (Throwable t) {
+            springDateFormatterAvailable = false;
+        }
+
     }
 
     private String date2Str(Date date) {
@@ -141,37 +155,59 @@ public class LombokPlugin extends PluginAdapter {
     public boolean modelFieldGenerated(Field field, TopLevelClass topLevelClass, IntrospectedColumn introspectedColumn,
             IntrospectedTable introspectedTable, ModelClassType modelClassType) {
 
-        if (fastJsonAvailable) {
-            addFastJsonDateTimeFormatImportedType(topLevelClass);
-        }
-
-        if (jacksonAvailable) {
-            addJacksonDateTimeFormatImportedType(topLevelClass);
-        }
-
         if (introspectedColumn.getJdbcType() == 91) {
             // Date
-            field.addAnnotation("@JsonFormat(pattern = \"yyyy-MM-dd\",timezone=\"GMT+8\")");
-            field.addAnnotation("@JSONField(format = \"yyyy-MM-dd\")");
-            field.addAnnotation("@DateTimeFormat(pattern = \"yyyy-MM-dd\")");
 
-            addJacksonDateTimeFormatImportedType(topLevelClass);
+            if (fastJsonAvailable) {
+                addFastJsonDateTimeFormatImportedType(topLevelClass);
+                field.addAnnotation("@JSONField(format = \"yyyy-MM-dd\")");
+            }
+
+            if (jacksonAvailable) {
+                addJacksonDateTimeFormatImportedType(topLevelClass);
+                field.addAnnotation("@JsonFormat(pattern = \"yyyy-MM-dd\",timezone=\"GMT+8\")");
+            }
+
+            if (springDateFormatterAvailable) {
+                addSpringDateTimeFormatImportedType(topLevelClass);
+                field.addAnnotation("@DateTimeFormat(pattern = \"yyyy-MM-dd\")");
+            }
 
         } else if (introspectedColumn.getJdbcType() == 92) {
             // Time
-            field.addAnnotation("@JsonFormat(pattern = \"HH:mm:ss\",timezone=\"GMT+8\")");
-            field.addAnnotation("@JSONField(format = \"HH:mm:ss\")");
-            field.addAnnotation("@DateTimeFormat(pattern = \"HH:mm:ss\")");
 
-            addJacksonDateTimeFormatImportedType(topLevelClass);
+            if (fastJsonAvailable) {
+                addFastJsonDateTimeFormatImportedType(topLevelClass);
+                field.addAnnotation("@JSONField(format = \"HH:mm:ss\")");
+            }
+
+            if (jacksonAvailable) {
+                addJacksonDateTimeFormatImportedType(topLevelClass);
+                field.addAnnotation("@JsonFormat(pattern = \"HH:mm:ss\",timezone=\"GMT+8\")");
+            }
+
+            if (springDateFormatterAvailable) {
+                addSpringDateTimeFormatImportedType(topLevelClass);
+                field.addAnnotation("@DateTimeFormat(pattern = \"HH:mm:ss\")");
+            }
 
         } else if (introspectedColumn.getJdbcType() == 93) {
             // DateTime || timestamp
-            field.addAnnotation("@JsonFormat(pattern = \"yyyy-MM-dd HH:mm:ss\",timezone=\"GMT+8\")");
-            field.addAnnotation("@JSONField(format = \"yyyy-MM-dd HH:mm:ss\")");
-            field.addAnnotation("@DateTimeFormat(pattern = \"yyyy-MM-dd HH:mm:ss\")");
 
-            addJacksonDateTimeFormatImportedType(topLevelClass);
+            if (fastJsonAvailable) {
+                addFastJsonDateTimeFormatImportedType(topLevelClass);
+                field.addAnnotation("@JSONField(format = \"yyyy-MM-dd HH:mm:ss\")");
+            }
+
+            if (jacksonAvailable) {
+                addJacksonDateTimeFormatImportedType(topLevelClass);
+                field.addAnnotation("@JsonFormat(pattern = \"yyyy-MM-dd HH:mm:ss\",timezone=\"GMT+8\")");
+            }
+
+            if (springDateFormatterAvailable) {
+                addSpringDateTimeFormatImportedType(topLevelClass);
+                field.addAnnotation("@DateTimeFormat(pattern = \"yyyy-MM-dd HH:mm:ss\")");
+            }
 
         }
 
@@ -183,7 +219,6 @@ public class LombokPlugin extends PluginAdapter {
 
         if (jacksonAvailable) {
             topLevelClass.addImportedType("com.fasterxml.jackson.annotation.JsonFormat");
-            topLevelClass.addImportedType("org.springframework.format.annotation.DateTimeFormat");
         }
 
     }
@@ -194,4 +229,12 @@ public class LombokPlugin extends PluginAdapter {
             topLevelClass.addImportedType("com.alibaba.fastjson.annotation.JSONField");
         }
     }
+
+    private void addSpringDateTimeFormatImportedType(TopLevelClass topLevelClass) {
+
+        if (springDateFormatterAvailable) {
+            topLevelClass.addImportedType("org.springframework.format.annotation.DateTimeFormat");
+        }
+    }
+
 }

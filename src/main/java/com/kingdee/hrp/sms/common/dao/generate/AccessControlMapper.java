@@ -7,7 +7,8 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 /**
-* Created by Mybatis Generator on 2018/12/24
+* Created by Mybatis Generator on 2019/02/21
+* 请不要改动此文件
 * @author le.xiao
 */
 public interface AccessControlMapper {

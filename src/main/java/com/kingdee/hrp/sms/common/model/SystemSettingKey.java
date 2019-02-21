@@ -14,7 +14,7 @@ import lombok.experimental.Accessors;
  */
 @Getter
 @Setter
-@ToString
+@ToString(callSuper = true)
 @Accessors(chain = true)
 public class SystemSettingKey implements Serializable {
     /**

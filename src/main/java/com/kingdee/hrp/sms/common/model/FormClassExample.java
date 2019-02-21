@@ -81,7 +81,7 @@ public class FormClassExample {
     }
 
     /**
-     * t_form_class 2018-12-24
+     * t_form_class 2019-02-21
      */
     protected abstract static class GeneratedCriteria {
         protected List<Criterion> criteria;
@@ -643,7 +643,7 @@ public class FormClassExample {
     }
 
     /**
-     * t_form_class 2018-12-24
+     * t_form_class 2019-02-21
      */
     public static class Criterion {
         private String condition;

@@ -1,5 +1,6 @@
 package com.kingdee.hrp.sms.common.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -8,6 +9,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  * 由数据库表[t_message]生成
@@ -15,7 +17,7 @@ import lombok.experimental.Accessors;
  */
 @Getter
 @Setter
-@ToString
+@ToString(callSuper = true)
 @Accessors(chain = true)
 public class Message implements Serializable {
     /**
@@ -56,6 +58,8 @@ public class Message implements Serializable {
     /**
      * 接收时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date date;
 
     /**

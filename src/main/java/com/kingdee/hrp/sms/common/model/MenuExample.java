@@ -81,7 +81,7 @@ public class MenuExample {
     }
 
     /**
-     * t_menu 2018-12-24
+     * t_menu 2019-02-21
      */
     protected abstract static class GeneratedCriteria {
         protected List<Criterion> criteria;
@@ -1003,7 +1003,7 @@ public class MenuExample {
     }
 
     /**
-     * t_menu 2018-12-24
+     * t_menu 2019-02-21
      */
     public static class Criterion {
         private String condition;

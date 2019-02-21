@@ -81,7 +81,7 @@ public class HospitalSupplierQualificationAttachmentExample {
     }
 
     /**
-     * t_hospital_supplier_qualification_attachment 2018-12-24
+     * t_hospital_supplier_qualification_attachment 2019-02-21
      */
     protected abstract static class GeneratedCriteria {
         protected List<Criterion> criteria;
@@ -523,7 +523,7 @@ public class HospitalSupplierQualificationAttachmentExample {
     }
 
     /**
-     * t_hospital_supplier_qualification_attachment 2018-12-24
+     * t_hospital_supplier_qualification_attachment 2019-02-21
      */
     public static class Criterion {
         private String condition;

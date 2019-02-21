@@ -1,5 +1,6 @@
 package com.kingdee.hrp.sms.common.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -9,6 +10,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  * 由数据库表[t_purchase_order_entry]生成
@@ -16,7 +18,7 @@ import lombok.experimental.Accessors;
  */
 @Getter
 @Setter
-@ToString
+@ToString(callSuper = true)
 @Accessors(chain = true)
 public class PurchaseOrderEntry implements Serializable {
     /**
@@ -57,6 +59,8 @@ public class PurchaseOrderEntry implements Serializable {
     /**
      * 确认日期，供应商确认订单时填的日期
      */
+    @JsonFormat(pattern = "yyyy-MM-dd",timezone="GMT+8")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date confirmDate;
 
     /**
@@ -72,11 +76,15 @@ public class PurchaseOrderEntry implements Serializable {
     /**
      * 交货日期，医院下订单时要求的交货日期
      */
+    @JsonFormat(pattern = "yyyy-MM-dd",timezone="GMT+8")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date deliveryDate;
 
     /**
      * 确认交货日期，供应商对医院订单确认时填入的交货日期
      */
+    @JsonFormat(pattern = "yyyy-MM-dd",timezone="GMT+8")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date confirmDeliveryDate;
 
     /**

@@ -81,7 +81,7 @@ public class MaterialDocumentTypeExample {
     }
 
     /**
-     * t_material_document_type 2018-12-24
+     * t_material_document_type 2019-02-21
      */
     protected abstract static class GeneratedCriteria {
         protected List<Criterion> criteria;
@@ -623,7 +623,7 @@ public class MaterialDocumentTypeExample {
     }
 
     /**
-     * t_material_document_type 2018-12-24
+     * t_material_document_type 2019-02-21
      */
     public static class Criterion {
         private String condition;
