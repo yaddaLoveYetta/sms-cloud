@@ -335,7 +335,7 @@
 
             xhr.onreadystatechange = function () {
 
-                if (xhr.readyState != 4) {
+                if (xhr.readyState !== 4) {
                     return;
                 }
 
@@ -343,7 +343,7 @@
                 var sessionLostCode = defaults.codes['sessionLost'];
                 var fnError = config.error;
 
-                if (xhr.status != successCode) {
+                if (xhr.status !== successCode) {
                     fnError && fnError(xhr);
                     return;
                 }
@@ -355,10 +355,10 @@
                 }
 
                 var code = json['code'];
-                if (code == successCode) {
+                if (code === successCode) {
                     var fnSuccess = config.success;
                     fnSuccess && fnSuccess(json['data'] || {}, json, xhr);
-                } else if (code == sessionLostCode) {
+                } else if (code === sessionLostCode) {
                     // 只移除会话级的
                     $.SessionStorage.remove('SMS.Login.user.F5F2BA55218E');
                     // 重新登录

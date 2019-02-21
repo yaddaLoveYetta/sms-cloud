@@ -14,6 +14,51 @@ import java.util.List;
  */
 public class LombokPlugin extends PluginAdapter {
 
+    /**
+     * is Lombok available
+     */
+    private static boolean lombokAvailable = false;
+
+    /**
+     * is Jackson available
+     */
+    private static boolean jacksonAvailable = false;
+
+    /**
+     * is fastJson available
+     */
+    private static boolean fastJsonAvailable = false;
+
+    static {
+
+        try {
+            //
+            //判断类是否存在可使用的方法
+            // lombokAvailable = null != Class.forName("lombok.Lombok");
+            // Thread.currentThread().getContextClassLoader().loadClass("lombok.Lombok");
+            // Class.forName,loadClass 区别参见
+            // https://blog.csdn.net/x_iya/article/details/73199280
+            Thread.currentThread().getContextClassLoader().loadClass("lombok.Lombok");
+            lombokAvailable = true;
+        } catch (Throwable t) {
+            lombokAvailable = false;
+        }
+
+        try {
+            Thread.currentThread().getContextClassLoader().loadClass("com.fasterxml.jackson.databind.ObjectMapper");
+            jacksonAvailable = true;
+        } catch (Throwable t) {
+            jacksonAvailable = false;
+        }
+
+        try {
+            Thread.currentThread().getContextClassLoader().loadClass("com.alibaba.fastjson.JSONObject");
+            fastJsonAvailable = true;
+        } catch (Throwable t) {
+            fastJsonAvailable = false;
+        }
+    }
+
     private String date2Str(Date date) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
         return sdf.format(date);
@@ -39,8 +84,10 @@ public class LombokPlugin extends PluginAdapter {
     @Override
     public boolean modelBaseRecordClassGenerated(TopLevelClass topLevelClass, IntrospectedTable introspectedTable) {
 
-        addImportedType(topLevelClass, introspectedTable);
-        addAnnotation(topLevelClass, introspectedTable);
+        if (lombokAvailable) {
+            addLombokImportedType(topLevelClass, introspectedTable);
+            addLombokAnnotation(topLevelClass, introspectedTable);
+        }
 
         return true;
 
@@ -50,13 +97,15 @@ public class LombokPlugin extends PluginAdapter {
     public boolean modelPrimaryKeyClassGenerated(TopLevelClass topLevelClass,
             IntrospectedTable introspectedTable) {
 
-        addImportedType(topLevelClass, introspectedTable);
-        addAnnotation(topLevelClass, introspectedTable);
+        if (lombokAvailable) {
+            addLombokImportedType(topLevelClass, introspectedTable);
+            addLombokAnnotation(topLevelClass, introspectedTable);
+        }
 
         return true;
     }
 
-    private void addImportedType(TopLevelClass topLevelClass,
+    private void addLombokImportedType(TopLevelClass topLevelClass,
             IntrospectedTable introspectedTable) {
         //添加domain的import
         topLevelClass.addImportedType("lombok.Getter");
@@ -65,7 +114,7 @@ public class LombokPlugin extends PluginAdapter {
         topLevelClass.addImportedType("lombok.experimental.Accessors");
     }
 
-    private void addAnnotation(TopLevelClass topLevelClass,
+    private void addLombokAnnotation(TopLevelClass topLevelClass,
             IntrospectedTable introspectedTable) {
         //添加domain的注解
         topLevelClass.addAnnotation("@Getter");
@@ -92,26 +141,37 @@ public class LombokPlugin extends PluginAdapter {
     public boolean modelFieldGenerated(Field field, TopLevelClass topLevelClass, IntrospectedColumn introspectedColumn,
             IntrospectedTable introspectedTable, ModelClassType modelClassType) {
 
+        if (fastJsonAvailable) {
+            addFastJsonDateTimeFormatImportedType(topLevelClass);
+        }
+
+        if (jacksonAvailable) {
+            addJacksonDateTimeFormatImportedType(topLevelClass);
+        }
+
         if (introspectedColumn.getJdbcType() == 91) {
             // Date
-            field.addAnnotation("@JsonFormat(pattern = \"yyyy-MM-dd\")");
+            field.addAnnotation("@JsonFormat(pattern = \"yyyy-MM-dd\",timezone=\"GMT+8\")");
+            field.addAnnotation("@JSONField(format = \"yyyy-MM-dd\")");
             field.addAnnotation("@DateTimeFormat(pattern = \"yyyy-MM-dd\")");
 
-            addDateTimeFormatImportedType(topLevelClass);
+            addJacksonDateTimeFormatImportedType(topLevelClass);
 
         } else if (introspectedColumn.getJdbcType() == 92) {
             // Time
-            field.addAnnotation("@JsonFormat(pattern = \"HH:mm:ss\")");
+            field.addAnnotation("@JsonFormat(pattern = \"HH:mm:ss\",timezone=\"GMT+8\")");
+            field.addAnnotation("@JSONField(format = \"HH:mm:ss\")");
             field.addAnnotation("@DateTimeFormat(pattern = \"HH:mm:ss\")");
 
-            addDateTimeFormatImportedType(topLevelClass);
+            addJacksonDateTimeFormatImportedType(topLevelClass);
 
         } else if (introspectedColumn.getJdbcType() == 93) {
             // DateTime || timestamp
-            field.addAnnotation("@JsonFormat(pattern = \"yyyy-MM-dd HH:mm:ss\")");
+            field.addAnnotation("@JsonFormat(pattern = \"yyyy-MM-dd HH:mm:ss\",timezone=\"GMT+8\")");
+            field.addAnnotation("@JSONField(format = \"yyyy-MM-dd HH:mm:ss\")");
             field.addAnnotation("@DateTimeFormat(pattern = \"yyyy-MM-dd HH:mm:ss\")");
 
-            addDateTimeFormatImportedType(topLevelClass);
+            addJacksonDateTimeFormatImportedType(topLevelClass);
 
         }
 
@@ -119,10 +179,19 @@ public class LombokPlugin extends PluginAdapter {
 
     }
 
-    private void addDateTimeFormatImportedType(TopLevelClass topLevelClass) {
+    private void addJacksonDateTimeFormatImportedType(TopLevelClass topLevelClass) {
 
-        topLevelClass.addImportedType("com.fasterxml.jackson.annotation.JsonFormat");
-        topLevelClass.addImportedType("org.springframework.format.annotation.DateTimeFormat");
+        if (jacksonAvailable) {
+            topLevelClass.addImportedType("com.fasterxml.jackson.annotation.JsonFormat");
+            topLevelClass.addImportedType("org.springframework.format.annotation.DateTimeFormat");
+        }
 
+    }
+
+    private void addFastJsonDateTimeFormatImportedType(TopLevelClass topLevelClass) {
+
+        if (fastJsonAvailable) {
+            topLevelClass.addImportedType("com.alibaba.fastjson.annotation.JSONField");
+        }
     }
 }
