@@ -131,4 +131,15 @@ public class BaiduAiUtilTest {
         }
     }
 
+    @Test
+    public void lombokLoadTest() {
+
+        try {
+            Class<?> aClass = Thread.currentThread().getContextClassLoader().loadClass("lombok.Lombok");
+            System.out.println(aClass.getName());
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

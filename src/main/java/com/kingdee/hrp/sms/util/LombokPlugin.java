@@ -119,7 +119,7 @@ public class LombokPlugin extends PluginAdapter {
         //添加domain的注解
         topLevelClass.addAnnotation("@Getter");
         topLevelClass.addAnnotation("@Setter");
-        topLevelClass.addAnnotation("@ToString");
+        topLevelClass.addAnnotation("@ToString(callSuper = true)");
         topLevelClass.addAnnotation("@Accessors(chain = true)");
     }
 
