@@ -13,7 +13,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -24,7 +23,7 @@ import java.util.Map;
  * @author yadda
  * @date 2018-02-27 17:32:12 星期四
  */
-public abstract class AbstractPlugInAdapter extends BaseService implements PlugIn,CurrentUserInfo {
+public abstract class AbstractPlugInAdapter extends BaseService implements PlugIn, CurrentUserInfo {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -52,7 +51,7 @@ public abstract class AbstractPlugInAdapter extends BaseService implements PlugI
 
     @Override
     public PlugInRet beforeEntryModify(int classId, String primaryId, String entryId, FormTemplate formTemplate,
-            JsonNode data) {
+                                       JsonNode data) {
         return result;
     }
 
@@ -70,7 +69,7 @@ public abstract class AbstractPlugInAdapter extends BaseService implements PlugI
 
     @Override
     public PlugInRet beforeEntryDelete(int classId, String primaryId, String entryId,
-            FormTemplate formTemplate) {
+                                       FormTemplate formTemplate) {
         return result;
     }
 
@@ -124,9 +123,9 @@ public abstract class AbstractPlugInAdapter extends BaseService implements PlugI
      * @return 校验结果
      */
     @SuppressWarnings("unchecked")
-    protected Map<String, Object> mustInputCheck(FormTemplate template, JsonNode data) {
+    protected MustInputCheckResult mustInputCheck(FormTemplate template, JsonNode data) {
 
-        Map<String, Object> ret = new HashMap<>(4);
+        MustInputCheckResult checkResult = new MustInputCheckResult();
 
         // 单据头校验结果
         List<String> headCheckError = new ArrayList<>();
@@ -155,6 +154,7 @@ public abstract class AbstractPlugInAdapter extends BaseService implements PlugI
                 // 必录字段没提交值
                 errMsg = String.format("[%s]不能为空", formField.getName());
                 headCheckError.add(errMsg);
+                checkResult.setHeadCheckSuccess(false);
             }
         }
 
@@ -176,18 +176,19 @@ public abstract class AbstractPlugInAdapter extends BaseService implements PlugI
                         // 必录字段没提交值
                         errMsg = String.format("第[%s]行:[%s]不能为空", i + 1, formField.getName());
                         bodyCheckError.add(errMsg);
+                        checkResult.setBodyCheckSuccess(false);
                     }
                 }
             }
 
         }
 
-        ret.put("headCheckError", headCheckError);
-        ret.put("bodyCheckError", bodyCheckError);
+        checkResult.setHeadCheckError(headCheckError);
+        checkResult.setBodyCheckError(bodyCheckError);
 
-        logger.info("mustInputCheck result:{}", ret);
+        logger.info("mustInputCheck result:{}", checkResult);
 
-        return ret;
+        return checkResult;
     }
 
     /**

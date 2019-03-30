@@ -401,7 +401,7 @@
                     <overwrite>true</overwrite>
                     <configurationFile>${basedir}/src/main/resources/generatorConfig.xml</configurationFile>
                     <jdbcDriver>com.mysql.jdbc.Driver</jdbcDriver>
-                    <jdbcURL>jdbc:mysql://127.0.0.1:3306/sms-cloud</jdbcURL>
+                    <jdbcURL>jdbc:mysql://127.0.0.1:3306/hrp-sms</jdbcURL>
                     <jdbcUserId>root</jdbcUserId>
                     <jdbcPassword>root</jdbcPassword>
                 </configuration>

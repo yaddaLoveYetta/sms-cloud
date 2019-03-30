@@ -82,7 +82,7 @@ public abstract class BaseService {
      * <p>
      * SnowFlake算法，会产生一个long类型不重复数字
      *
-     * @return
+     * @return Long
      */
     protected Long getId() {
         return SnowFlake.getId(0, 0);
@@ -137,12 +137,11 @@ public abstract class BaseService {
         default:
         }
 
-        int maskAll = Constants.DisplayType.VIEW_SYSTEM_SHOW.value() | Constants.DisplayType.ADD_SYSTEM_SHOW.value() |
+        return Constants.DisplayType.VIEW_SYSTEM_SHOW.value() | Constants.DisplayType.ADD_SYSTEM_SHOW.value() |
                 Constants.DisplayType.EDIT_SYSTEM_SHOW.value() | Constants.DisplayType.VIEW_HOSPITAL_SHOW.value() |
                 Constants.DisplayType.ADD_HOSPITAL_SHOW.value() | Constants.DisplayType.EDIT_HOSPITAL_SHOW.value() |
                 Constants.DisplayType.VIEW_SUPPLIER_SHOW.value() | Constants.DisplayType.ADD_SUPPLIER_SHOW.value() |
                 Constants.DisplayType.EDIT_SUPPLIER_SHOW.value();
-        return maskAll;
 
     }
 
