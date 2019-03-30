@@ -48,9 +48,9 @@
         <jdbcConnection driverClass="${jdbc.driverClass}" connectionURL="${jdbc.jdbcUrl}"
                         userId="${jdbc.user}" password="${jdbc.password}">
             <!-- 针对oracle数据库 -->
-            <property name="remarksReporting" value="true"></property>
+            <property name="remarksReporting" value="true"/>
             <!-- 针对mysql数据库 -->
-            <property name="useInformationSchema" value="true"></property>
+            <property name="useInformationSchema" value="true"/>
         </jdbcConnection>
 
         <javaTypeResolver type="org.mybatis.generator.internal.types.JavaTypeResolverDefaultImpl">

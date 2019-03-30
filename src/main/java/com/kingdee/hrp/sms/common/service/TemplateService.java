@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * 根据单据模板可通用的抽象业务功能
+ *
  * @author le.xiao
  */
 public interface TemplateService {
@@ -21,7 +23,7 @@ public interface TemplateService {
      *
      * @param classId 业务类别
      * @param type    查询方式（0:后端查询 1:前端获取）
-     * @return
+     * @return 完整的单据模板
      */
     FormTemplate getFormTemplate(Integer classId, Integer type);
 
