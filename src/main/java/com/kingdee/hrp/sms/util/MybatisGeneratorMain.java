@@ -1,7 +1,7 @@
 package com.kingdee.hrp.sms.util;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.mybatis.generator.api.MyBatisGenerator;
 import org.mybatis.generator.api.PluginAdapter;
 import org.mybatis.generator.api.VerboseProgressCallback;

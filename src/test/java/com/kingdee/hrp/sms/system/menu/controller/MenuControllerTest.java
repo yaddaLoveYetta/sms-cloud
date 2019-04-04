@@ -1,16 +1,13 @@
 package com.kingdee.hrp.sms.system.menu.controller;
 
 import com.kingdee.hrp.sms.AbstractControllerTests;
-import org.junit.Before;
+import com.kingdee.hrp.sms.InitRequest;
 import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -19,17 +16,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @since 2018/2/7
  */
 public class MenuControllerTest extends AbstractControllerTests {
-
-    private MockMvc mockMvc;
-
-    //该方法在每个方法执行之前都会执行一遍
-    @Before
-    public void setUp() throws Exception {
-        // mockMvc = MockMvcBuilders.standaloneSetup(new MenuController()).build();
-        mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
-        ;
-    }
-
 
     /**
      * perform：执行一个RequestBuilder请求，会自动执行SpringMVC的流程并映射到相应的控制器执行处理；
@@ -43,20 +29,34 @@ public class MenuControllerTest extends AbstractControllerTests {
      */
     @Test
     public void getMenu() throws Exception {
-        //请求的url,请求的方法是get
-        String responseString = mockMvc.perform(get("/menu/getMenu")
-                //数据的格式
-                .contentType(MediaType.APPLICATION_JSON)
-                //添加参数
-                .param("parentId", "-1")
 
-        ).andExpect(status().isOk())     //返回的状态是200
-                //打印出请求和相应的内容
-                .andDo(print())
-                //将相应的数据转换为字符串
-                .andReturn().getResponse().getContentAsString();
+        //请求的url,请求的方法是post
+        ResultActions resultActions = super.perform("/menu/getMenu", HttpMethod.POST, new InitRequest() {
+            @Override
+            public void paramsSet(MockHttpServletRequestBuilder requestBuilder) {
+                //添加参数
+                requestBuilder.param("parentId", "-1");
+            }
+        });
+
+        //返回的状态是200
+        resultActions.andExpect(status().isOk());
+        //打印出请求和相应的内容
+        resultActions.andDo(print());
+        //将相应的数据转换为字符串
+        String responseString = resultActions.andReturn().getResponse().getContentAsString();
 
         System.out.println("===========返回的json数据=========> " + responseString);
+
     }
 
+    @Override
+    public String getUserName() {
+        return null;
+    }
+
+    @Override
+    public String getPassword() {
+        return null;
+    }
 }

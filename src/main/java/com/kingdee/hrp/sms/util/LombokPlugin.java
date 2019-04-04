@@ -165,7 +165,7 @@ public class LombokPlugin extends PluginAdapter {
 
             if (jacksonAvailable) {
                 addJacksonDateTimeFormatImportedType(topLevelClass);
-                field.addAnnotation("@JsonFormat(pattern = \"yyyy-MM-dd\",timezone=\"GMT+8\")");
+                field.addAnnotation("@JsonFormat(pattern = \"yyyy-MM-dd HH:mm:ss\", timezone = \"GMT+8\")");
             }
 
             if (springDateFormatterAvailable) {
@@ -183,7 +183,7 @@ public class LombokPlugin extends PluginAdapter {
 
             if (jacksonAvailable) {
                 addJacksonDateTimeFormatImportedType(topLevelClass);
-                field.addAnnotation("@JsonFormat(pattern = \"HH:mm:ss\",timezone=\"GMT+8\")");
+                field.addAnnotation("@JsonFormat(pattern = \"yyyy-MM-dd HH:mm:ss\", timezone = \"GMT+8\")");
             }
 
             if (springDateFormatterAvailable) {
@@ -201,7 +201,7 @@ public class LombokPlugin extends PluginAdapter {
 
             if (jacksonAvailable) {
                 addJacksonDateTimeFormatImportedType(topLevelClass);
-                field.addAnnotation("@JsonFormat(pattern = \"yyyy-MM-dd HH:mm:ss\",timezone=\"GMT+8\")");
+                field.addAnnotation("@JsonFormat(pattern = \"yyyy-MM-dd HH:mm:ss\", timezone = \"GMT+8\")");
             }
 
             if (springDateFormatterAvailable) {

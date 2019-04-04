@@ -1,7 +1,5 @@
 package com.kingdee.hrp.sms.document;
 
-import org.apache.commons.lang.time.DateUtils;
-
 /**
  * 物料证件管理
  *

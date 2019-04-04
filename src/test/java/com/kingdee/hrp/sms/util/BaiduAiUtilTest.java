@@ -2,18 +2,21 @@ package com.kingdee.hrp.sms.util;
 
 import com.baidu.aip.ocr.AipOcr;
 import com.baidu.aip.util.Util;
+import com.google.common.primitives.Booleans;
 import com.kingdee.hrp.sms.common.model.AccessControl;
+import lombok.*;
 import lombok.experimental.Accessors;
 import org.json.JSONObject;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.util.HashMap;
+import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 import static org.junit.Assert.*;
 
@@ -142,4 +145,52 @@ public class BaiduAiUtilTest {
         }
     }
 
+    @Test
+    public void bTest(){
+        Boolean b =null;
+
+/*        System.out.println(true==b);
+        System.out.println(false==b);*/
+        //Boolean.valueOf(b);
+        System.out.println(Boolean.valueOf(b));
+
+
+    }
+    @Test
+    public void streamTest() {
+
+        A a = new A();
+
+        List<String> items = new ArrayList<>();
+        items.add("yadda");
+        items.add("yetta");
+        items.add("kitty");
+        items.add("marry");
+
+        a.setItems(items);
+
+        System.out.println(System.identityHashCode(a.getItems()));
+
+        List<String> aItems = a.getItems();
+
+        System.out.println(System.identityHashCode(aItems));
+
+        aItems = aItems.stream().filter(item -> !"yadda".equals(item)).collect(Collectors.toList());
+
+        System.out.println(System.identityHashCode(aItems));
+        System.out.println(aItems);
+
+        System.out.println(System.identityHashCode(a.getItems()));
+        System.out.println("=================> after filter==========================>");
+        System.out.println(a);
+
+    }
+
+    @Getter
+    @Setter
+    @ToString
+    private class A {
+
+        private List<String> items;
+    }
 }

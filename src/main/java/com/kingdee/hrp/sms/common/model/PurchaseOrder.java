@@ -1,11 +1,13 @@
 package com.kingdee.hrp.sms.common.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -14,6 +16,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  * 由数据库表[t_purchase_order]生成
+ *
  * @author yadda
  */
 @Getter
@@ -54,7 +57,7 @@ public class PurchaseOrder implements Serializable {
     /**
      * 创建时间,指的是订单在sms系统创建的日期，同步的订单用hrp日期
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createDate;
 
@@ -66,32 +69,32 @@ public class PurchaseOrder implements Serializable {
     /**
      * 审核时间
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date checkDate;
 
     /**
      * 订单状态,分录状态集合,默认新增状态
-值参考t_assistance表 type=44
+     * 值参考t_assistance表 type=44
      */
     private Integer orderStatus;
 
     /**
      * 订单发货状态,分录状态集合，默认未发货
-值参考t_assistance表 type=45
+     * 值参考t_assistance表 type=45
      */
     private Integer deliverStatus;
 
     /**
      * 订单收货状态,分录状态集合，默认未收货
-值参考t_assistance表 type=46
+     * 值参考t_assistance表 type=46
      */
     private Integer receiveStatus;
 
     /**
      * 订单退货状态,分录状态集合
-发货状态，默认未退货
-值参考t_assistance表 type=47
+     * 发货状态，默认未退货
+     * 值参考t_assistance表 type=47
      */
     private Integer returnStatus;
 
@@ -179,17 +182,18 @@ public class PurchaseOrder implements Serializable {
             return this.getEscapedColumnName() + " ASC";
         }
 
-        public static Column[] excludes(Column ... excludes) {
+        public static Column[] excludes(Column... excludes) {
             ArrayList<Column> columns = new ArrayList<>(Arrays.asList(Column.values()));
             if (excludes != null && excludes.length > 0) {
                 columns.removeAll(new ArrayList<>(Arrays.asList(excludes)));
             }
-            return columns.toArray(new Column[]{});
+            return columns.toArray(new Column[] {});
         }
 
         public String getEscapedColumnName() {
             if (this.isColumnNameDelimited) {
-                return new StringBuilder().append(BEGINNING_DELIMITER).append(this.column).append(ENDING_DELIMITER).toString();
+                return new StringBuilder().append(BEGINNING_DELIMITER).append(this.column).append(ENDING_DELIMITER)
+                        .toString();
             } else {
                 return this.column;
             }

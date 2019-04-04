@@ -36,6 +36,8 @@
         <plugin type="com.itfsw.mybatis.generator.plugins.ModelColumnPlugin"/>
         <!-- Example Criteria 增强插件 -->
         <plugin type="com.itfsw.mybatis.generator.plugins.ExampleEnhancedPlugin"/>
+        <!-- 查询结果选择性返回插件 -->
+        <plugin type="com.itfsw.mybatis.generator.plugins.SelectSelectivePlugin" />
         <!-- 使用Lombok -->
         <plugin type="com.kingdee.hrp.sms.util.LombokPlugin"/>
 

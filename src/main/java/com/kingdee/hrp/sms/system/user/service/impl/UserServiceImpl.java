@@ -13,7 +13,7 @@ import com.kingdee.hrp.sms.system.user.service.UserService;
 import com.kingdee.hrp.sms.util.Common;
 import com.kingdee.hrp.sms.util.Pinyin4jUtil;
 import com.kingdee.hrp.sms.util.SessionUtil;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;

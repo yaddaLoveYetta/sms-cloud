@@ -310,10 +310,22 @@ public class ResponseAspect {
 
         int pos = Modifier.isStatic(cm.getModifiers()) ? 0 : 1;
 
-        for (int i = 0; i < paramNames.length; i++) {
+        // https://blog.csdn.net/tabactivity/article/details/80770076
+        // 读取方法变量名需要依赖字节码中的本地变量表，这个写法假设方法参数在本地变量表中一定是保存在最前面的，而且有序。
+        // 这个假设很不靠谱的假设：
+/*        for (int i = 0; i < paramNames.length; i++) {
             //paramNames即参数名
             paramNames[i] = attr.variableName(i + pos);
+        }*/
+
+        TreeMap<Integer, String> sortMap = new TreeMap<Integer, String>();
+
+        for (int i = 0; i < attr.tableLength(); i++) {
+            sortMap.put(attr.index(i), attr.variableName(i));
         }
+
+        paramNames = Arrays.copyOfRange(sortMap.values().toArray(new String[0]), pos, paramNames.length + pos);
+
 
         return paramNames;
     }

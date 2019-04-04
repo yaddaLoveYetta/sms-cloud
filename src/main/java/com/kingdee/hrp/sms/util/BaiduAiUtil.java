@@ -2,7 +2,7 @@ package com.kingdee.hrp.sms.util;
 
 import com.baidu.aip.ocr.AipOcr;
 import com.kingdee.hrp.sms.common.controller.TemplateController;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

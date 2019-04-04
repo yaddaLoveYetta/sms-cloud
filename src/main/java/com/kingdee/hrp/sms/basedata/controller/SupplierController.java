@@ -9,7 +9,7 @@ import com.kingdee.hrp.sms.util.FileOperate;
 import com.kingdee.hrp.sms.util.JsonUtil;
 import com.kingdee.hrp.sms.util.RequestUtil;
 import com.kingdee.hrp.sms.util.SessionUtil;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.CollectionUtils;

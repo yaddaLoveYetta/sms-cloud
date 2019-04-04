@@ -12,7 +12,7 @@ import com.kingdee.hrp.sms.util.Common;
 import com.kingdee.hrp.sms.util.JsonUtil;
 import com.kingdee.hrp.sms.util.SessionUtil;
 import com.kingdee.hrp.sms.util.ValidateCode;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -92,9 +92,12 @@ public class UserController {
             throw new BusinessLogicRunTimeException("用户名或密码不能为空!");
         }
 
-        if (StringUtils.isBlank(code) || !checkVerificationCode(code, request.getSession(true))) {
-            logger.error("验证码错误!");
-            throw new BusinessLogicRunTimeException(StatusCode.VERIFICATION_CODE_ERROR, "验证码错误!");
+        if (!"true".equalsIgnoreCase(System.getenv("debug"))) {
+            // 开发环境不校验code
+            if (StringUtils.isBlank(code) || !checkVerificationCode(code, request.getSession(true))) {
+                logger.error("验证码错误!");
+                throw new BusinessLogicRunTimeException(StatusCode.VERIFICATION_CODE_ERROR, "验证码错误!");
+            }
         }
 
         User user = userService.login(userName, password);
@@ -223,7 +226,7 @@ public class UserController {
     @RequestMapping(value = "getMessage")
     @ResponseBody
     public Map<String, Object> getMessage(Integer type, @RequestParam(defaultValue = "10") Integer pageSize,
-                                          @RequestParam(defaultValue = "1") Integer pageNo) {
+            @RequestParam(defaultValue = "1") Integer pageNo) {
 
         type = type == null ? -1 : type;
 

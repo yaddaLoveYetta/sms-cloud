@@ -24,7 +24,7 @@ import com.kingdee.hrp.sms.scm.model.out.PurchaseOrderHeaderModel;
 import com.kingdee.hrp.sms.scm.model.out.PurchaseOrderModel;
 import com.kingdee.hrp.sms.scm.model.out.PurchaseOrderOutModel;
 import com.kingdee.hrp.sms.scm.service.PurchaseOrderService;
-import org.apache.commons.lang.reflect.FieldUtils;
+import org.apache.commons.lang3.reflect.FieldUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
