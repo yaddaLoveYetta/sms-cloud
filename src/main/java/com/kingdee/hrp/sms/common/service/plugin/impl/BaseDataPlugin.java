@@ -2,6 +2,7 @@ package com.kingdee.hrp.sms.common.service.plugin.impl;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.google.common.base.Joiner;
 import com.kingdee.hrp.sms.common.dao.generate.UserMapper;
 import com.kingdee.hrp.sms.common.enums.Constants;
 import com.kingdee.hrp.sms.common.exception.BusinessLogicRunTimeException;
@@ -10,6 +11,7 @@ import com.kingdee.hrp.sms.common.model.UserExample;
 import com.kingdee.hrp.sms.common.pojo.Condition;
 import com.kingdee.hrp.sms.common.pojo.FormTemplate;
 import com.kingdee.hrp.sms.common.service.plugin.AbstractPlugInAdapter;
+import com.kingdee.hrp.sms.common.service.plugin.MustInputCheckResult;
 import com.kingdee.hrp.sms.common.service.plugin.PlugInRet;
 import com.kingdee.hrp.sms.util.Environ;
 import com.kingdee.hrp.sms.util.SessionUtil;
@@ -179,27 +181,22 @@ public class BaseDataPlugin extends AbstractPlugInAdapter implements Initializin
         dataProcess(classId, formTemplate, data);
 
         // 通用必录性校验(按模板校验)
-        Map<String, Object> checkResult = mustInputCheck(formTemplate, data);
+        MustInputCheckResult checkResult = mustInputCheck(formTemplate, data);
 
-        if (!checkResult.isEmpty()) {
-            // 没有通过必录性校验
+        if (!checkResult.isHeadCheckSuccess()) {
+            // 单据头必须性校验不通过
+            // 单据头必录校验有错误
+            throw new BusinessLogicRunTimeException(Joiner.on(System.getProperty("line.separator")).join(checkResult.getHeadCheckError()));
+        }
 
-            List<String> headCheckError = (List<String>) checkResult.get("headCheckError");
-            List<String> bodyCheckError = (List<String>) checkResult.get("bodyCheckError");
-
-            if (!headCheckError.isEmpty()) {
-                // 单据头必录校验有错误
-                throw new BusinessLogicRunTimeException(headCheckError.toString());
-            }
-
-            if (!bodyCheckError.isEmpty()) {
-                // 单据体必录校验有错误
-                throw new BusinessLogicRunTimeException(bodyCheckError.toString());
-            }
-
+        if (!checkResult.isBodyCheckSuccess()) {
+            // 单据头必须性校验不通过
+            // 单据体必录校验有错误
+            throw new BusinessLogicRunTimeException(Joiner.on(System.getProperty("line.separator")).join(checkResult.getBodyCheckError()));
         }
 
         return super.beforeSave(classId, formTemplate, data);
+
     }
 
     /**
