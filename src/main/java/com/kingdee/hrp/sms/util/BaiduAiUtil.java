@@ -1,7 +1,6 @@
 package com.kingdee.hrp.sms.util;
 
 import com.baidu.aip.ocr.AipOcr;
-import com.kingdee.hrp.sms.common.controller.TemplateController;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,7 +21,7 @@ public class BaiduAiUtil {
 
     private static final AipOcr client;
 
-    //private static Logger logger = LoggerFactory.getLogger(BaiduAiUtil.class);
+    private static Logger logger = LoggerFactory.getLogger(BaiduAiUtil.class);
 
     static {
 
